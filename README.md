@@ -1,8 +1,8 @@
 # Cyber Scotland Connect (CSC) Website
 
-[![GitHub Pages Deployment](https://img.shields.io/github/deployments/cyber-scotland-connect/website/github-pages?label=GitHub%20Pages&logo=github)](https://cyber-scotland-connect.github.io/website/)
+[![GitHub Pages Deployment](https://img.shields.io/github/deployments/cyber-scotland-connect/csc-website/github-pages?label=GitHub%20Pages&logo=github)](https://cyber-scotland-connect.github.io/csc-website/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Branch Protection](https://img.shields.io/badge/main-protected-green.svg)](https://github.com/cyber-scotland-connect/website)
+[![Branch Protection](https://img.shields.io/badge/main-protected-green.svg)](https://github.com/cyber-scotland-connect/csc-website)
 
 The official website for **Cyber Scotland Connect (CSC)** — an inclusive, grassroots community connecting cyber security professionals, students, academics, and enthusiasts across Scotland.
 
@@ -37,7 +37,7 @@ This repository houses the source code, assets, and content for the CSC public w
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/cyber-scotland-connect/website.git csc-website
+git clone https://github.com/cyber-scotland-connect/csc-website.git
 cd csc-website
 ```
 

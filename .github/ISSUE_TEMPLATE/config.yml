@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 🛡️ Security Vulnerability Reporting
+    url: https://github.com/cyber-scotland-connect/csc-website/security/advisories/new
+    about: Please report security vulnerabilities privately via GitHub Security Advisories.
+  - name: 💬 Community Discussions & Chat
+    url: https://cyberscotlandconnect.com
+    about: Ask general questions and connect with the community.
