@@ -105,3 +105,40 @@ The website should be designed around structured, typed content models:
 - **Event Schema:** `title`, `date`, `time`, `location` (venue name, address, chapter), `format` (in-person/virtual/hybrid), `meetupUrl`, `streamUrl`, `slidoUrl`, `accessibility` (stepFree, hearingLoop, notes), `speakers` (refs), `slidesUrl`, `recordingUrl`.
 - **Speaker Schema:** `name`, `role`, `company`, `bio`, `avatar`, `socialLinks`, `talks` (refs).
 - **Partner Schema:** `name`, `tier` (Host, Community Partner, Sponsor), `logoUrl`, `websiteUrl`, `active`.
+
+---
+
+## 7. Community Origins & Foundational Leadership
+
+Cyber Scotland Connect was established through the merger of two prominent Scottish cyber security meetup groups, co-founded by **Harry McLaren** and **Stu Hirst**, and announced at DIGIT Expo.
+
+### 7.1 Community Moderators & Advisory Network
+The community is guided by local cyber security leaders across industry, government, and academia:
+- **Harry McLaren** (Founder & Organiser)
+- **Stu Hirst** (Founder & Organiser)
+- **Maggie de Jager** (easyJet)
+- **Jamie Graves** (ZoneFox)
+- **Federico Charosky** (Quorum Cyber)
+- **Chelsea Jarvie** (Scottish Government / Information Security Lead)
+- **Jamie O'Hare** (Edinburgh Napier University / ENUSEC)
+- **Jordan Schroeder** (HEFESTIS)
+- **Rory Alsop** (HSBC)
+- **Gary Hunter** (Skyscanner)
+- **Rich MacFarlane** (Edinburgh Napier University)
+- **Liam Somerville** (FanDuel)
+
+### 7.2 Ecosystem Collaborations
+CSC maintains active relationships across Scotland's broader cyber resilience ecosystem, including **ScotlandIS Cyber Cluster**, **Scottish Business Resilience Centre (SBRC) / Cyber and Fraud Centre Scotland**, **Abertay cyberQuarter**, **CodeBase**, and university student societies (e.g. ENUSEC).
+
+---
+
+## 8. Brand System & Local Assets
+
+- **Brand Specification:** Detailed colour codes, CSS tokens, and font hierarchy live in [`docs/BRAND_GUIDELINES.md`](BRAND_GUIDELINES.md).
+- **Historical Event Seed Data:** Curated past meetup talks, venues, and speaker abstracts live in [`docs/PAST_EVENTS_ARCHIVE.md`](PAST_EVENTS_ARCHIVE.md).
+- **Static Brand Assets:** High-resolution transparent PNG logos, icons, and badges are available in [`public/branding/`](../public/branding/):
+  - `logo-fullcolor-horizontal.png` & `logo-fullcolor-stacked.png`
+  - `logo-white-horizontal.png` & `logo-white-stacked.png`
+  - `icon-fullcolor.png`, `icon-deeppurple.png`, `icon-lilac.png`, `icon-pink.png`
+  - `icon-linkedin.png`
+
