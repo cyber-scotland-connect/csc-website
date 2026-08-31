@@ -114,18 +114,7 @@ Cyber Scotland Connect was established through the merger of two prominent Scott
 
 ### 7.1 Community Moderators & Advisory Network
 The community is guided by local cyber security leaders across industry, government, and academia:
-- **Harry McLaren** (Founder & Organiser)
-- **Stu Hirst** (Founder & Organiser)
-- **Maggie de Jager** (easyJet)
-- **Jamie Graves** (ZoneFox)
-- **Federico Charosky** (Quorum Cyber)
-- **Chelsea Jarvie** (Scottish Government / Information Security Lead)
-- **Jamie O'Hare** (Edinburgh Napier University / ENUSEC)
-- **Jordan Schroeder** (HEFESTIS)
-- **Rory Alsop** (HSBC)
-- **Gary Hunter** (Skyscanner)
-- **Rich MacFarlane** (Edinburgh Napier University)
-- **Liam Somerville** (FanDuel)
+- 
 
 ### 7.2 Ecosystem Collaborations
 CSC maintains active relationships across Scotland's broader cyber resilience ecosystem, including **ScotlandIS Cyber Cluster**, **Scottish Business Resilience Centre (SBRC) / Cyber and Fraud Centre Scotland**, **Abertay cyberQuarter**, **CodeBase**, and university student societies (e.g. ENUSEC).
