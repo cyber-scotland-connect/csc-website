@@ -1,0 +1,184 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const events = await getCollection('events');
+  return events.map(event => ({
+    params: { slug: event.slug },
+    props: { event },
+  }));
+}
+
+const { event } = Astro.props;
+const { data } = event;
+const { Content } = await event.render();
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const eventDate = new Date(data.date);
+const isUpcoming = eventDate.getTime() >= new Date().setHours(0, 0, 0, 0);
+
+const formattedDate = eventDate.toLocaleDateString('en-GB', {
+  weekday: 'long',
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+});
+---
+
+<BaseLayout title={data.title} description={`Cyber Scotland Connect gathering in ${data.city} on ${formattedDate}`}>
+  <article class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <!-- Back link -->
+    <div class="mb-8">
+      <a href={`${base}/events`} class="text-[#6fb7e6] hover:text-white font-medium text-sm inline-flex items-center gap-1">
+        ← Back to all events
+      </a>
+    </div>
+
+    <!-- Header & Metadata -->
+    <header class="border-b border-[#3e3c66] pb-8 mb-10">
+      <div class="flex flex-wrap items-center gap-2 mb-4">
+        <span class="text-xs px-3 py-1 rounded-full font-bold bg-[#56548c] text-white">
+          {data.city} Chapter
+        </span>
+        {data.isPartnerEvent ? (
+          <span class="text-xs px-3 py-1 rounded-full font-medium bg-[#895294]/30 text-pink-300 border border-[#895294]">
+            Partner: {data.partnerName || 'Ecosystem Event'}
+          </span>
+        ) : (
+          <span class="text-xs px-3 py-1 rounded-full font-medium bg-[#6fb7e6]/20 text-[#6fb7e6] border border-[#6fb7e6]/40">
+            CSC Community Gathering
+          </span>
+        )}
+        <span class={`text-xs font-semibold px-2.5 py-1 rounded ${isUpcoming ? 'bg-emerald-950 text-emerald-300 border border-emerald-600' : 'bg-slate-800 text-slate-400'}`}>
+          {isUpcoming ? '● Upcoming' : 'Archived Event'}
+        </span>
+      </div>
+
+      <h1 class="text-3xl sm:text-4xl lg:text-5xl font-heading font-bold text-white uppercase tracking-tight mb-6">
+        {data.title}
+      </h1>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-[#bdaccf] bg-[#2a2948] p-5 rounded-xl border border-[#3e3c66]">
+        <div class="space-y-1">
+          <span class="text-xs uppercase text-slate-400 font-semibold block">Date & Time</span>
+          <p class="font-medium text-white text-base">{formattedDate}</p>
+          {data.time && <p class="text-xs text-[#bdaccf]">{data.time}</p>}
+        </div>
+
+        <div class="space-y-1">
+          <span class="text-xs uppercase text-slate-400 font-semibold block">Venue & Location</span>
+          <p class="font-medium text-white text-base">{data.location}</p>
+          <p class="text-xs text-[#bdaccf]">Physical Gathering ({data.city})</p>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex flex-wrap items-center gap-3 mt-6">
+        {data.meetupUrl && (
+          <a
+            href={data.meetupUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="px-5 py-2.5 rounded-lg bg-[#895294] hover:bg-[#9d5fa8] text-white font-bold text-sm shadow transition-colors flex items-center gap-1.5"
+          >
+            <span>RSVP on Meetup</span> ↗
+          </a>
+        )}
+        {data.registrationUrl && (
+          <a
+            href={data.registrationUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="px-5 py-2.5 rounded-lg bg-[#56548c] hover:bg-[#6764a8] text-white font-bold text-sm shadow transition-colors flex items-center gap-1.5"
+          >
+            <span>External Registration</span> ↗
+          </a>
+        )}
+        {data.slidesUrl && (
+          <a
+            href={data.slidesUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="px-4 py-2.5 rounded-lg bg-[#2a2948] hover:bg-[#382b5c] border border-[#56548c] text-white font-medium text-sm transition-colors flex items-center gap-1.5"
+          >
+            <span>Slide Deck</span> ↗
+          </a>
+        )}
+        {data.recordingUrl && (
+          <a
+            href={data.recordingUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="px-4 py-2.5 rounded-lg bg-[#2a2948] hover:bg-[#382b5c] border border-[#56548c] text-white font-medium text-sm transition-colors flex items-center gap-1.5"
+          >
+            <span>Watch Recording</span> ↗
+          </a>
+        )}
+      </div>
+    </header>
+
+    <!-- Venue Accessibility Disclosure -->
+    <div class="bg-[#1b1a30] rounded-xl border border-[#3e3c66] p-6 mb-10">
+      <h2 class="text-lg font-heading font-bold text-white uppercase tracking-wide flex items-center gap-2 mb-3">
+        <span>♿</span>
+        <span>Accessibility Baseline</span>
+      </h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs text-[#bdaccf] mb-3">
+        <div class="flex items-center gap-2">
+          <span class={data.accessibility.stepFree ? 'text-emerald-400 font-bold' : 'text-slate-400'}>
+            {data.accessibility.stepFree ? '✓ Step-free Route & Lifts' : '✗ Limited Step-free Access'}
+          </span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class={data.accessibility.hearingLoop ? 'text-emerald-400 font-bold' : 'text-slate-400'}>
+            {data.accessibility.hearingLoop ? '✓ Induction Hearing Loop Available' : '✗ Induction Loop Not Installed'}
+          </span>
+        </div>
+      </div>
+      {data.accessibility.notes && (
+        <p class="text-xs text-slate-300 bg-[#2a2948] p-3 rounded border border-[#3e3c66]/60">
+          {data.accessibility.notes}
+        </p>
+      )}
+    </div>
+
+    <!-- Speakers Section -->
+    {data.speakers && data.speakers.length > 0 && (
+      <section class="mb-12">
+        <h2 class="text-2xl font-heading font-bold text-white uppercase tracking-wide mb-6">
+          Featured Speakers & Sessions
+        </h2>
+        <div class="space-y-4">
+          {data.speakers.map(speaker => (
+            <div class="bg-[#2a2948] rounded-xl border border-[#3e3c66] p-6">
+              <div class="flex flex-wrap items-baseline justify-between gap-2 mb-2">
+                <h3 class="text-xl font-heading font-bold text-white">
+                  {speaker.name}
+                </h3>
+                {speaker.company && (
+                  <span class="text-xs px-2 py-0.5 rounded bg-[#382b5c] text-[#bdaccf] border border-[#56548c]">
+                    {speaker.role ? `${speaker.role}, ` : ''}{speaker.company}
+                  </span>
+                )}
+              </div>
+              <h4 class="text-base font-semibold text-[#6fb7e6] mb-3">
+                "{speaker.talkTitle}"
+              </h4>
+              {speaker.abstract && (
+                <p class="text-sm text-[#bdaccf] leading-relaxed">
+                  {speaker.abstract}
+                </p>
+              )}
+            </div>
+          ))}
+        </div>
+      </section>
+    )}
+
+    <!-- Event Body Content (Markdown) -->
+    <section class="prose prose-invert max-w-none text-[#bdaccf] prose-headings:font-heading prose-headings:text-white prose-a:text-[#6fb7e6] pt-6 border-t border-[#3e3c66]">
+      <Content />
+    </section>
+  </article>
+</BaseLayout>

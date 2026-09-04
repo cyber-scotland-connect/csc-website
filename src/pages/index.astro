@@ -1,0 +1,220 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import EventCard from '../components/EventCard.astro';
+import PartnerCard from '../components/PartnerCard.astro';
+import { getCollection } from 'astro:content';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+// Fetch and sort events
+const allEvents = await getCollection('events');
+const sortedEvents = allEvents.sort(
+  (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+);
+
+const upcomingEvents = sortedEvents
+  .filter(e => new Date(e.data.date).getTime() >= new Date().setHours(0, 0, 0, 0))
+  .reverse();
+
+const featuredUpcoming = upcomingEvents.slice(0, 2);
+const pastEvents = sortedEvents.filter(e => new Date(e.data.date).getTime() < new Date().setHours(0, 0, 0, 0)).slice(0, 2);
+
+// Fetch partners
+const partners = await getCollection('partners');
+const topPartners = partners.sort((a, b) => a.data.order - b.data.order).slice(0, 4);
+---
+
+<BaseLayout title="Home — Scotland's Grassroots Cyber Security Community">
+  <!-- Hero Section -->
+  <section class="relative overflow-hidden bg-gradient-to-b from-[#21203a] via-[#2a2948] to-[#21203a] py-16 sm:py-24 border-b border-[#3e3c66]">
+    <div class="absolute inset-0 opacity-15 pointer-events-none bg-[radial-gradient(#6fb7e6_1px,transparent_1px)] [background-size:24px_24px]"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="max-w-3xl">
+        <!-- Badge -->
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#382b5c] border border-[#56548c] text-xs font-semibold text-[#bdaccf] mb-6">
+          <span class="w-2 h-2 rounded-full bg-[#6fb7e6] animate-pulse"></span>
+          <span>Grassroots • Inclusive • High-Signal</span>
+        </div>
+
+        <h1 class="text-4xl sm:text-6xl font-heading font-bold text-white tracking-tight uppercase leading-tight mb-6">
+          Connecting Scotland's <br />
+          <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#6fb7e6] via-[#bdaccf] to-[#895294]">
+            Cyber Security
+          </span> Community
+        </h1>
+
+        <p class="text-lg sm:text-xl text-[#bdaccf] leading-relaxed mb-8">
+          Cyber Scotland Connect (CSC) unites security practitioners, students, researchers, career switchers, and enthusiasts across Scotland. Free, volunteer-run, and grounded in practical defense.
+        </p>
+
+        <!-- CTA Buttons -->
+        <div class="flex flex-wrap items-center gap-4">
+          <a
+            href={`${base}/events`}
+            class="px-6 py-3.5 rounded-lg text-base font-bold text-white bg-[#895294] hover:bg-[#9d5fa8] shadow-lg shadow-[#895294]/20 transition-all flex items-center gap-2 focus:ring-2 focus:ring-[#6fb7e6]"
+          >
+            <span>Explore Events</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            </svg>
+          </a>
+
+          <a
+            href="https://www.meetup.com/cyberscotconnect/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="px-6 py-3.5 rounded-lg text-base font-bold text-white bg-[#2a2948] hover:bg-[#382b5c] border border-[#56548c] transition-all flex items-center gap-2 focus:ring-2 focus:ring-[#6fb7e6]"
+          >
+            <span>Join on Meetup (1,500+ Members)</span> ↗
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Core Ethos: The "Zero-Sales" Rule -->
+  <section class="py-12 bg-[#1b1a30] border-b border-[#3e3c66]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="p-6 rounded-xl bg-[#2a2948]/70 border border-[#3e3c66]">
+          <div class="w-10 h-10 rounded-lg bg-[#895294]/20 text-[#895294] flex items-center justify-center font-bold text-lg mb-3">
+            🎯
+          </div>
+          <h2 class="text-lg font-heading font-bold text-white mb-2">High-Signal, Zero-Sales</h2>
+          <p class="text-sm text-[#bdaccf] leading-relaxed">
+            Strict anti-pitch ban. Talks must focus on open methodologies, operational strategies, detection engineering, and hard failure retrospectives.
+          </p>
+        </div>
+
+        <div class="p-6 rounded-xl bg-[#2a2948]/70 border border-[#3e3c66]">
+          <div class="w-10 h-10 rounded-lg bg-[#56548c]/20 text-[#6fb7e6] flex items-center justify-center font-bold text-lg mb-3">
+            🤝
+          </div>
+          <h2 class="text-lg font-heading font-bold text-white mb-2">Radically Welcoming</h2>
+          <p class="text-sm text-[#bdaccf] leading-relaxed">
+            From university freshmen and career-switchers to seasoned CISOs. Every venue audited for step-free mobility, induction loops, and safe space standards.
+          </p>
+        </div>
+
+        <div class="p-6 rounded-xl bg-[#2a2948]/70 border border-[#3e3c66]">
+          <div class="w-10 h-10 rounded-lg bg-[#6fb7e6]/20 text-[#6fb7e6] flex items-center justify-center font-bold text-lg mb-3">
+            🏴󠁧󠁢󠁳󠁣󠁴󠁿
+          </div>
+          <h2 class="text-lg font-heading font-bold text-white mb-2">Scotland-Wide Network</h2>
+          <p class="text-sm text-[#bdaccf] leading-relaxed">
+            Coordinating regular gatherings across Edinburgh, Glasgow, Dundee, and virtual streams to break regional silos and connect ecosystem partners.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Events Showcase -->
+  <section class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex flex-wrap items-center justify-between gap-4 mb-8">
+      <div>
+        <h2 class="text-3xl font-heading font-bold text-white uppercase tracking-wide">
+          Featured & Upcoming Events
+        </h2>
+        <p class="text-[#bdaccf] text-sm mt-1">
+          Join our regular in-person meetups, virtual workshops, and collaborative partner summits.
+        </p>
+      </div>
+
+      <a
+        href={`${base}/events`}
+        class="text-[#6fb7e6] hover:text-white font-semibold text-sm flex items-center gap-1 transition-colors"
+      >
+        <span>View Full Events Calendar</span> →
+      </a>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {featuredUpcoming.length > 0 ? (
+        featuredUpcoming.map(event => <EventCard event={event} />)
+      ) : (
+        pastEvents.map(event => <EventCard event={event} />)
+      )}
+    </div>
+  </section>
+
+  <!-- About CSC / Fragmented Shield Story -->
+  <section class="py-16 bg-[#1b1a30] border-y border-[#3e3c66]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        <div class="lg:col-span-7 space-y-5">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#382b5c] border border-[#56548c] text-xs font-semibold text-[#6fb7e6]">
+            Our Story & Origins
+          </div>
+          <h2 class="text-3xl sm:text-4xl font-heading font-bold text-white uppercase tracking-tight">
+            Forged by the Community, for the Community
+          </h2>
+          <p class="text-[#bdaccf] leading-relaxed">
+            Cyber Scotland Connect was formed through the merger of regional Scottish cyber meetups, co-founded by Harry McLaren and Stu Hirst, and announced on the keynote stage at DIGIT Expo.
+          </p>
+          <p class="text-[#bdaccf] leading-relaxed">
+            Our emblem — <strong>The Fragmented Shield</strong> — represents individuals from across different domains, companies, academic universities, and regional towns assembling together to form a resilient collective shield.
+          </p>
+          <div class="pt-2">
+            <a
+              href={`${base}/leaders`}
+              class="text-sm font-semibold text-[#6fb7e6] hover:text-white inline-flex items-center gap-1 transition-colors"
+            >
+              <span>Meet our volunteer moderators and founders</span> →
+            </a>
+          </div>
+        </div>
+
+        <div class="lg:col-span-5 bg-[#2a2948] p-8 rounded-2xl border border-[#3e3c66] shadow-xl text-center">
+          <div class="w-24 h-24 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-[#895294] via-[#56548c] to-[#6fb7e6] p-1 flex items-center justify-center shadow-lg">
+            <div class="w-full h-full bg-[#21203a] rounded-xl flex items-center justify-center">
+              <svg class="w-12 h-12 text-[#6fb7e6]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v8" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h8" />
+              </svg>
+            </div>
+          </div>
+          <h3 class="text-xl font-heading font-bold text-white uppercase mb-2">Join 1,500+ Scottish Defenders</h3>
+          <p class="text-xs text-[#bdaccf] mb-6">
+            Meetups take place quarterly in Edinburgh, Glasgow, and Dundee, complemented by livestreams and open Discord discussions.
+          </p>
+          <a
+            href="https://www.meetup.com/cyberscotconnect/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="w-full block py-3 px-4 rounded-lg bg-[#895294] hover:bg-[#9d5fa8] text-white font-bold text-sm shadow-md transition-all"
+          >
+            RSVP for Next Meetup
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Partners & Supporters Grid -->
+  <section class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex flex-wrap items-center justify-between gap-4 mb-8">
+      <div>
+        <h2 class="text-2xl font-heading font-bold text-white uppercase tracking-wide">
+          Our Partners & Supporters
+        </h2>
+        <p class="text-[#bdaccf] text-sm mt-1">
+          Generous venues, academic clusters, and community organizations that make CSC free for everyone.
+        </p>
+      </div>
+
+      <a
+        href={`${base}/partners`}
+        class="text-[#6fb7e6] hover:text-white font-semibold text-sm flex items-center gap-1 transition-colors"
+      >
+        <span>View All Supporters</span> →
+      </a>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      {topPartners.map(partner => <PartnerCard partner={partner} />)}
+    </div>
+  </section>
+</BaseLayout>

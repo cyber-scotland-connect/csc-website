@@ -1,0 +1,121 @@
+---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+  ogImage?: string;
+}
+
+const {
+  title,
+  description = "Cyber Scotland Connect (CSC) — Grassroots community connecting cyber security practitioners, students, and enthusiasts across Scotland.",
+  ogImage = "/branding/logo-fullcolor-horizontal.png",
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://cyber-scotland-connect.github.io');
+const fullTitle = `${title} | Cyber Scotland Connect`;
+
+const schemaData = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Cyber Scotland Connect",
+  "alternateName": "CSC",
+  "url": "https://cyber-scotland-connect.github.io/csc-website",
+  "logo": "https://cyber-scotland-connect.github.io/csc-website/branding/logo-fullcolor-stacked.png",
+  "description": description,
+  "sameAs": [
+    "https://www.meetup.com/cyberscotconnect/",
+    "https://www.linkedin.com/company/cyber-scotland-connect/",
+    "https://github.com/cyber-scotland-connect"
+  ]
+};
+---
+
+<!DOCTYPE html>
+<html lang="en-GB" class="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#21203a" />
+    <link rel="canonical" href={canonicalURL} />
+
+    <!-- Security & Hygiene -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+
+    <!-- Primary Meta Tags -->
+    <title>{fullTitle}</title>
+    <meta name="title" content={fullTitle} />
+    <meta name="description" content={description} />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={canonicalURL} />
+    <meta property="twitter:title" content={fullTitle} />
+    <meta property="twitter:description" content={description} />
+    <meta property="twitter:image" content={ogImage} />
+
+    <!-- Typography Fonts: Roboto, Roboto Condensed, and Atkinson Hyperlegible (for A11y & Dyslexia) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&family=Roboto+Condensed:wght@400;700&family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- JSON-LD Structured Data -->
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(schemaData)} />
+
+    <!-- Inline script to prevent FOUC for dark/light mode and accessibility prefs -->
+    <script is:inline>
+      (function() {
+        try {
+          const theme = localStorage.getItem('csc-theme') || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+          if (theme === 'light') {
+            document.documentElement.classList.remove('dark');
+            document.documentElement.classList.add('light');
+          } else {
+            document.documentElement.classList.remove('light');
+            document.documentElement.classList.add('dark');
+          }
+
+          if (localStorage.getItem('csc-font-dyslexic') === 'true') {
+            document.documentElement.classList.add('font-dyslexic');
+          }
+
+          const size = localStorage.getItem('csc-text-size');
+          if (size) {
+            document.documentElement.classList.add('text-scale-' + size);
+          }
+
+          if (localStorage.getItem('csc-high-contrast') === 'true') {
+            document.documentElement.classList.add('high-contrast');
+          }
+        } catch (e) {
+          // Fallback gracefully if localStorage is disabled
+        }
+      })();
+    </script>
+  </head>
+  <body class="min-h-screen flex flex-col antialiased selection:bg-[#895294] selection:text-white">
+    <a href="#main-content" class="skip-to-content">Skip to main content</a>
+
+    <Header />
+
+    <main id="main-content" class="flex-grow">
+      <slot />
+    </main>
+
+    <Footer />
+  </body>
+</html>

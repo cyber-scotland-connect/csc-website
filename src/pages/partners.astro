@@ -1,0 +1,109 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PartnerCard from '../components/PartnerCard.astro';
+import { getCollection } from 'astro:content';
+
+const allPartners = await getCollection('partners');
+const activePartners = allPartners.filter(p => p.data.active).sort((a, b) => a.data.order - b.data.order);
+
+const venuePartners = activePartners.filter(p => p.data.tier === 'Host Venue');
+const ecosystemPartners = activePartners.filter(p => p.data.tier === 'Ecosystem Partner');
+const academicPartners = activePartners.filter(p => p.data.tier === 'Academic Partner');
+const sponsors = activePartners.filter(p => p.data.tier === 'Sponsor');
+---
+
+<BaseLayout 
+  title="Partners & Sponsors" 
+  description="Explore the venue hosts, ecosystem clusters, academic institutions, and sponsors supporting Cyber Scotland Connect."
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <!-- Header -->
+    <div class="border-b border-[#3e3c66] pb-8 mb-12">
+      <span class="text-xs font-semibold uppercase tracking-wider text-[#6fb7e6] block mb-1">
+        Community Supporters & Venues
+      </span>
+      <h1 class="text-3xl sm:text-5xl font-heading font-bold text-white uppercase tracking-tight">
+        Partners & Sponsors
+      </h1>
+      <p class="text-[#bdaccf] text-base mt-2 max-w-2xl">
+        Cyber Scotland Connect is entirely free for all attendees thanks to our venue hosts, academic collaborations, and ethical community sponsors.
+      </p>
+    </div>
+
+    <!-- Host Venues -->
+    <section class="mb-14">
+      <div class="flex items-center gap-3 mb-6">
+        <span class="text-xl">🏢</span>
+        <h2 class="text-2xl font-heading font-bold text-white uppercase tracking-wide">
+          Host Venues
+        </h2>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {venuePartners.map(partner => <PartnerCard partner={partner} />)}
+      </div>
+    </section>
+
+    <!-- Ecosystem & Academic Clusters -->
+    <section class="mb-14">
+      <div class="flex items-center gap-3 mb-6">
+        <span class="text-xl">🌐</span>
+        <h2 class="text-2xl font-heading font-bold text-white uppercase tracking-wide">
+          Ecosystem & Academic Partners
+        </h2>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {[...ecosystemPartners, ...academicPartners].map(partner => <PartnerCard partner={partner} />)}
+      </div>
+    </section>
+
+    <!-- Sponsors -->
+    {sponsors.length > 0 && (
+      <section class="mb-16">
+        <div class="flex items-center gap-3 mb-6">
+          <span class="text-xl">🤝</span>
+          <h2 class="text-2xl font-heading font-bold text-white uppercase tracking-wide">
+            Sponsors & Supporters
+          </h2>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {sponsors.map(partner => <PartnerCard partner={partner} />)}
+        </div>
+      </section>
+    )}
+
+    <!-- Hosting & Ethical Sponsorship Policy -->
+    <div class="bg-[#1b1a30] rounded-2xl border border-[#3e3c66] p-8 sm:p-10 text-[#bdaccf] space-y-6">
+      <h2 class="text-2xl font-heading font-bold text-white uppercase">
+        Our Ethical Sponsorship & Venue Policy
+      </h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm leading-relaxed">
+        <div class="space-y-3">
+          <h3 class="text-base font-bold text-[#6fb7e6]">1. Zero Pay-to-Play Speaking</h3>
+          <p>
+            Speaking slots are never sold. Sponsorship funds pay directly for pizza, soft drinks, recording gear, and accessibility requirements. Presentation abstracts are selected purely on technical merit by our volunteer organizers.
+          </p>
+          <h3 class="text-base font-bold text-[#6fb7e6]">2. Privacy & Attendee Data Protection</h3>
+          <p>
+            We never share, sell, or distribute attendee contact lists or attendee emails to sponsors. Our community trust is non-negotiable.
+          </p>
+        </div>
+
+        <div class="space-y-3">
+          <h3 class="text-base font-bold text-[#895294]">3. Venue Accessibility Baselines</h3>
+          <p>
+            Any venue wishing to host a CSC gathering must provide step-free access, working elevator access to presentation floors, accessible restrooms, and induction loop compatibility.
+          </p>
+          <div class="pt-2">
+            <a
+              href="mailto:partners@cyberscotlandconnect.com"
+              class="inline-block px-5 py-2.5 rounded-lg bg-[#56548c] hover:bg-[#6764a8] text-white font-bold text-xs shadow transition-colors"
+            >
+              Enquire About Hosting or Sponsoring
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

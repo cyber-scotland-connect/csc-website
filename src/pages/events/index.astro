@@ -1,0 +1,185 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import EventCard from '../../components/EventCard.astro';
+import { getCollection } from 'astro:content';
+
+const allEvents = await getCollection('events');
+const sortedEvents = allEvents.sort(
+  (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+);
+
+const nowTime = new Date().setHours(0, 0, 0, 0);
+const upcomingEvents = sortedEvents
+  .filter(e => new Date(e.data.date).getTime() >= nowTime)
+  .reverse();
+
+const pastEvents = sortedEvents.filter(e => new Date(e.data.date).getTime() < nowTime);
+const partnerEvents = sortedEvents.filter(e => e.data.isPartnerEvent);
+---
+
+<BaseLayout 
+  title="Events & Meetups" 
+  description="Explore upcoming and historical Cyber Scotland Connect meetups, workshops, and partner events across Edinburgh, Glasgow, Dundee, and virtual."
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <!-- Header -->
+    <div class="border-b border-[#3e3c66] pb-8 mb-10">
+      <div class="flex flex-wrap items-center justify-between gap-4">
+        <div>
+          <span class="text-xs font-semibold uppercase tracking-wider text-[#6fb7e6] block mb-1">
+            Scottish Community Calendar
+          </span>
+          <h1 class="text-3xl sm:text-5xl font-heading font-bold text-white uppercase tracking-tight">
+            Events & Gatherings
+          </h1>
+          <p class="text-[#bdaccf] text-base mt-2 max-w-2xl">
+            Discover upcoming regional meetups, virtual technical streams, and collaborative Scottish cyber partner events. Always free, always high-signal.
+          </p>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <a
+            href="https://www.meetup.com/cyberscotconnect/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="px-5 py-2.5 rounded-lg bg-[#895294] hover:bg-[#9d5fa8] text-white font-bold text-sm shadow-md transition-all flex items-center gap-1.5"
+          >
+            <span>Join on Meetup</span> ↗
+          </a>
+        </div>
+      </div>
+
+      <!-- Filter Controls -->
+      <div class="flex flex-wrap gap-2 mt-8" role="tablist" aria-label="Event category filters">
+        <button
+          type="button"
+          data-filter="all"
+          class="filter-btn active px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold bg-[#895294] text-white transition-colors"
+          role="tab"
+          aria-selected="true"
+        >
+          All Events ({sortedEvents.length})
+        </button>
+        <button
+          type="button"
+          data-filter="upcoming"
+          class="filter-btn px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold bg-[#2a2948] text-[#bdaccf] hover:text-white border border-[#3e3c66] transition-colors"
+          role="tab"
+          aria-selected="false"
+        >
+          Upcoming ({upcomingEvents.length})
+        </button>
+        <button
+          type="button"
+          data-filter="csc"
+          class="filter-btn px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold bg-[#2a2948] text-[#bdaccf] hover:text-white border border-[#3e3c66] transition-colors"
+          role="tab"
+          aria-selected="false"
+        >
+          CSC Gatherings ({sortedEvents.filter(e => !e.data.isPartnerEvent).length})
+        </button>
+        <button
+          type="button"
+          data-filter="partner"
+          class="filter-btn px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold bg-[#2a2948] text-[#bdaccf] hover:text-white border border-[#3e3c66] transition-colors"
+          role="tab"
+          aria-selected="false"
+        >
+          Partner Events ({partnerEvents.length})
+        </button>
+        <button
+          type="button"
+          data-filter="past"
+          class="filter-btn px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold bg-[#2a2948] text-[#bdaccf] hover:text-white border border-[#3e3c66] transition-colors"
+          role="tab"
+          aria-selected="false"
+        >
+          Archive ({pastEvents.length})
+        </button>
+      </div>
+    </div>
+
+    <!-- Events Grid -->
+    <div id="events-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+      {sortedEvents.map(event => {
+        const isUp = new Date(event.data.date).getTime() >= nowTime;
+        const isPartner = event.data.isPartnerEvent;
+        return (
+          <div 
+            class="event-item"
+            data-is-upcoming={isUp ? 'true' : 'false'}
+            data-is-partner={isPartner ? 'true' : 'false'}
+          >
+            <EventCard event={event} />
+          </div>
+        );
+      })}
+    </div>
+
+    <!-- Call for Speakers / High-Signal Policy Box -->
+    <div class="bg-[#1b1a30] rounded-2xl border border-[#3e3c66] p-8 sm:p-10 text-[#bdaccf]">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+        <div class="md:col-span-2 space-y-3">
+          <span class="text-xs font-semibold uppercase tracking-wider text-[#6fb7e6]">
+            Call for Presentations (CFP)
+          </span>
+          <h2 class="text-2xl font-heading font-bold text-white uppercase">
+            Want to speak at an upcoming gathering?
+          </h2>
+          <p class="text-sm leading-relaxed">
+            We actively support first-time speakers, student researchers, and seasoned defenders. Every talk must respect our <strong>"High-Signal, Zero-Sales"</strong> charter: 60-second limit on company intros, zero product pitches, and 100% focus on actionable security engineering and hard lessons learned.
+          </p>
+        </div>
+
+        <div class="flex flex-col gap-3">
+          <a
+            href="mailto:organizers@cyberscotlandconnect.com"
+            class="px-5 py-3 rounded-lg bg-[#56548c] hover:bg-[#6764a8] text-white font-bold text-sm text-center shadow transition-colors"
+          >
+            Submit a Talk Idea
+          </a>
+          <a
+            href="https://github.com/cyber-scotland-connect/csc-website/blob/main/AGENT.md"
+            class="px-5 py-3 rounded-lg bg-[#2a2948] hover:bg-[#382b5c] border border-[#3e3c66] text-white text-xs text-center transition-colors"
+          >
+            Review Speaker Guidelines ↗
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<script is:inline>
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const eventItems = document.querySelectorAll('.event-item');
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => {
+        b.classList.remove('active', 'bg-[#895294]', 'text-white');
+        b.classList.add('bg-[#2a2948]', 'text-[#bdaccf]');
+        b.setAttribute('aria-selected', 'false');
+      });
+
+      btn.classList.add('active', 'bg-[#895294]', 'text-white');
+      btn.classList.remove('bg-[#2a2948]', 'text-[#bdaccf]');
+      btn.setAttribute('aria-selected', 'true');
+
+      const filter = btn.getAttribute('data-filter');
+
+      eventItems.forEach(item => {
+        const isUp = item.getAttribute('data-is-upcoming') === 'true';
+        const isPartner = item.getAttribute('data-is-partner') === 'true';
+
+        let show = true;
+        if (filter === 'upcoming') show = isUp;
+        else if (filter === 'past') show = !isUp;
+        else if (filter === 'partner') show = isPartner;
+        else if (filter === 'csc') show = !isPartner;
+
+        item.style.display = show ? 'block' : 'none';
+      });
+    });
+  });
+</script>

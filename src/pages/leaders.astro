@@ -1,0 +1,65 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import LeaderCard from '../components/LeaderCard.astro';
+import { getCollection } from 'astro:content';
+
+const allLeaders = await getCollection('leaders');
+const leaders = allLeaders.sort((a, b) => a.data.order - b.data.order);
+---
+
+<BaseLayout 
+  title="Leadership & Moderators" 
+  description="Meet the founders, regional chapter leads, and volunteer moderators behind Cyber Scotland Connect."
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <!-- Header -->
+    <div class="border-b border-[#3e3c66] pb-8 mb-12">
+      <span class="text-xs font-semibold uppercase tracking-wider text-[#6fb7e6] block mb-1">
+        Grassroots Leadership
+      </span>
+      <h1 class="text-3xl sm:text-5xl font-heading font-bold text-white uppercase tracking-tight">
+        Founders, Organizers & Moderators
+      </h1>
+      <p class="text-[#bdaccf] text-base mt-2 max-w-2xl">
+        Cyber Scotland Connect is steered by passionate volunteer cybersecurity practitioners and community leaders dedicated to open, accessible, and high-integrity knowledge exchange.
+      </p>
+    </div>
+
+    <!-- Leaders Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+      {leaders.map(leader => <LeaderCard leader={leader} />)}
+    </div>
+
+    <!-- Volunteer & Moderator Info -->
+    <div class="bg-[#1b1a30] rounded-2xl border border-[#3e3c66] p-8 sm:p-10 text-[#bdaccf]">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
+        <div class="lg:col-span-2 space-y-3">
+          <span class="text-xs font-semibold uppercase tracking-wider text-[#895294]">
+            Get Involved
+          </span>
+          <h2 class="text-2xl font-heading font-bold text-white uppercase">
+            Volunteer with Cyber Scotland Connect
+          </h2>
+          <p class="text-sm leading-relaxed">
+            CSC is 100% powered by volunteer time. We welcome community members who want to help run check-in desks at regional meetups, manage audiovisual and YouTube livestreams, curate speaker abstracts, or moderate our online community discussions.
+          </p>
+        </div>
+
+        <div class="flex flex-col gap-3">
+          <a
+            href="mailto:volunteers@cyberscotlandconnect.com"
+            class="px-5 py-3 rounded-lg bg-[#895294] hover:bg-[#9d5fa8] text-white font-bold text-sm text-center shadow transition-colors"
+          >
+            Join as a Volunteer
+          </a>
+          <a
+            href="https://github.com/cyber-scotland-connect/csc-website/blob/main/CODE_OF_CONDUCT.md"
+            class="px-5 py-3 rounded-lg bg-[#2a2948] hover:bg-[#382b5c] border border-[#3e3c66] text-white text-xs text-center transition-colors"
+          >
+            Review Code of Conduct ↗
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

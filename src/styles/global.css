@@ -1,0 +1,141 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Brand Primary Colors */
+    --csc-purple: #21203a;
+    --csc-lilac: #56548c;
+    --csc-pink: #895294;
+
+    /* Secondary / Accents */
+    --csc-indigo: #382b5c;
+    --csc-lavender: #bdaccf;
+    --csc-cyan: #6fb7e6;
+
+    /* Default Theme: Dark (Cyber Community First) */
+    --bg-primary: #21203a;
+    --bg-secondary: #2a2948;
+    --bg-tertiary: #1b1a30;
+    --bg-card: #2a2948;
+    --bg-card-hover: #333257;
+    --border-color: #3e3c66;
+    --border-highlight: #56548c;
+    --text-primary: #ffffff;
+    --text-secondary: #bdaccf;
+    --text-muted: #8c89b0;
+    --accent-glow: rgba(111, 183, 230, 0.15);
+
+    /* Text Scale */
+    --font-size-multiplier: 1;
+  }
+
+  /* Explicit Light Mode */
+  html.light {
+    --bg-primary: #f8f8fb;
+    --bg-secondary: #ffffff;
+    --bg-tertiary: #ebebf2;
+    --bg-card: #ffffff;
+    --bg-card-hover: #f1f0f7;
+    --border-color: #dcdbe8;
+    --border-highlight: #56548c;
+    --text-primary: #19182d;
+    --text-secondary: #4a486e;
+    --text-muted: #6e6c8e;
+    --accent-glow: rgba(86, 84, 140, 0.1);
+  }
+
+  /* Explicit Dark Mode */
+  html.dark {
+    --bg-primary: #21203a;
+    --bg-secondary: #2a2948;
+    --bg-tertiary: #1b1a30;
+    --bg-card: #2a2948;
+    --bg-card-hover: #333257;
+    --border-color: #3e3c66;
+    --border-highlight: #56548c;
+    --text-primary: #ffffff;
+    --text-secondary: #bdaccf;
+    --text-muted: #8c89b0;
+    --accent-glow: rgba(111, 183, 230, 0.15);
+  }
+
+  /* High Contrast Mode */
+  html.high-contrast {
+    --border-color: #ffffff;
+    --border-highlight: #6fb7e6;
+  }
+  html.light.high-contrast {
+    --border-color: #000000;
+    --border-highlight: #21203a;
+  }
+
+  /* Text Sizing Multipliers */
+  html.text-scale-normal {
+    font-size: 100%;
+  }
+  html.text-scale-lg {
+    font-size: 112.5%;
+  }
+  html.text-scale-xl {
+    font-size: 125%;
+  }
+
+  /* Dyslexia-friendly font class applied to html or body */
+  html.font-dyslexic body,
+  html.font-dyslexic input,
+  html.font-dyslexic button,
+  html.font-dyslexic select,
+  html.font-dyslexic textarea {
+    font-family: 'Atkinson Hyperlegible', 'OpenDyslexic', sans-serif !important;
+    letter-spacing: 0.03em !important;
+    word-spacing: 0.08em !important;
+    line-height: 1.75 !important;
+  }
+
+  body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    overflow-x: hidden;
+  }
+
+  /* Skip Link for A11y */
+  .skip-to-content {
+    position: absolute;
+    top: -100px;
+    left: 1rem;
+    background: #895294;
+    color: #ffffff;
+    padding: 0.75rem 1.25rem;
+    font-weight: 700;
+    z-index: 9999;
+    border-radius: 0.375rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: top 0.2s ease-in-out;
+  }
+  .skip-to-content:focus {
+    top: 1rem;
+    outline: 3px solid #6fb7e6;
+  }
+
+  /* Accessible Focus Rings */
+  :focus-visible {
+    outline: 2px solid var(--csc-cyan);
+    outline-offset: 2px;
+  }
+}
+
+/* Reduced motion preference respect */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

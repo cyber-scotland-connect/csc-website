@@ -98,3 +98,23 @@ Before declaring any task or PR complete, execute and document the following:
 - **No Junk Files:** Ensure `.gitignore` prevents `.DS_Store`, local `.env`, temporary logs, or editor configs from entering git.
 - **Maintain Scannability:** Keep components modular, file names predictable, and inline comments focused on *why* (non-obvious rationale), not *what*.
 - **Documentation Parity:** Whenever modifying build commands, directory conventions, or dependencies, immediately update [`README.md`](README.md) and [`AGENT.md`](AGENT.md).
+
+---
+
+## 📚 Content Collections & Schema Specifications
+
+When creating or modifying content, AI agents must strictly conform to the Zod schemas in `src/content/config.ts`. Markdown templates are provided under `.github/content-templates/`:
+
+1. **Events (`src/content/events/*.md`):**
+   - Fields: `title` (string), `date` (YYYY-MM-DD), `time` (string), `location` (string), `city` (Edinburgh | Glasgow | Dundee | Virtual | Aberdeen | Scotland-wide), `isPartnerEvent` (boolean), `partnerName` (optional), `meetupUrl` (url), `registrationUrl` (url), `slidesUrl` (url), `recordingUrl` (url), `accessibility` (stepFree: boolean, hearingLoop: boolean, notes: string), `speakers` (array of { name, talkTitle, company, role, abstract }), `featured` (boolean).
+2. **Leaders & Moderators (`src/content/leaders/*.md`):**
+   - Fields: `name` (string), `role` (string), `chapter` (string), `bio` (string), `avatar` (url/path), `linkedin` (url), `github` (url), `website` (url), `order` (number).
+3. **Partners & Sponsors (`src/content/partners/*.md`):**
+   - Fields: `name` (string), `tier` (Host Venue | Ecosystem Partner | Sponsor | Academic Partner), `websiteUrl` (url), `description` (string), `logo` (path), `active` (boolean), `order` (number).
+
+### Verification Gate for Agents
+Every AI agent must run the production build before submitting a PR:
+```bash
+bun run build # or: npm run build
+```
+Verify exit code 0, 0 errors, and 0 warnings.
