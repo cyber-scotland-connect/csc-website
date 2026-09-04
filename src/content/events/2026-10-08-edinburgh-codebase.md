@@ -46,18 +46,7 @@ A massive thank you to [Cyera UK](https://www.cyera.com/) for supporting this ga
 
 ---
 
-### ☕ Keeping CSC Accessible for All: Pay It Forward
-
-Cyber Scotland Connect has always been, and will always be, **free to attend**. We firmly believe that barriers to entry—especially for students, career switchers, and those currently seeking new opportunities—should be nonexistent.
-
-* **Tickets:** Always **£0**.
-* **The Goal:** A sustainable, community-funded future for CSC across Scotland.
-* **The Impact:** Supporting the next generation of Scotland's cyber talent.
-
-If you are established in your career and find value in our sessions, we invite you to **Pay It Forward**. While there is zero obligation, we have launched a **[Buy Me a Coffee page](https://buymeacoffee.com/cyberscotlandconnect)**. Your contributions help us cover our essential running costs—mostly refreshments and minor community infrastructure—ensuring that everyone in our community can continue to attend and network at no cost.
-
----
-
 ### 🛡️ Community Code of Conduct
 
 Please ensure you have reviewed our [Code of Conduct](https://cyber-scotland-connect.github.io/csc-website/code-of-conduct), which outlines our expectations for all participants in our community and the consequences for unacceptable behaviour. We are committed to providing a harassment-free, friendly, and welcoming experience for all.
+
