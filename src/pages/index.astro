@@ -200,7 +200,7 @@ const topPartners = partners.sort((a, b) => a.data.order - b.data.order).slice(0
     </div>
   </section>
 
-  <!-- About CSC / Fragmented Shield Story -->
+  <!-- About CSC / Fragmented Shield Story (FEATURING FULL ORIGINAL EMBLEM) -->
   <section class="py-16 bg-slate-50 dark:bg-[#1b1a30] border-y border-slate-200 dark:border-[#3e3c66] transition-colors">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
@@ -215,7 +215,7 @@ const topPartners = partners.sort((a, b) => a.data.order - b.data.order).slice(0
             Cyber Scotland Connect was formed through the merger of regional Scottish cyber meetups, co-founded by Harry McLaren and Stu Hirst, and announced on the keynote stage at DIGIT Expo.
           </p>
           <p class="text-slate-600 dark:text-[#bdaccf] leading-relaxed transition-colors">
-            Our emblem — <strong>The Fragmented Shield</strong> — represents individuals from across different domains, companies, academic universities, and regional towns assembling together to form a resilient collective shield.
+            Our emblem — <strong>The Fragmented Shield</strong>, designed by Sophie Lanc — represents individuals from across different disciplines, companies, academic universities, and regional towns assembling together to form a resilient collective shield.
           </p>
           <div class="pt-2">
             <a
@@ -227,15 +227,23 @@ const topPartners = partners.sort((a, b) => a.data.order - b.data.order).slice(0
           </div>
         </div>
 
-        <div class="lg:col-span-5 bg-white dark:bg-[#2a2948] p-8 rounded-2xl border border-slate-200 dark:border-[#3e3c66] shadow-xl text-center transition-colors">
-          <div class="w-24 h-24 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-[#895294] via-[#56548c] to-[#6fb7e6] p-1 flex items-center justify-center shadow-lg">
-            <div class="w-full h-full bg-slate-50 dark:bg-[#21203a] rounded-xl flex items-center justify-center transition-colors">
-              <svg class="w-12 h-12 text-[#895294] dark:text-[#6fb7e6]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v8" />
-                <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h8" />
-              </svg>
-            </div>
+        <!-- Full Stacked Emblem Showcase Box -->
+        <div class="lg:col-span-5 bg-white dark:bg-[#2a2948] p-8 sm:p-10 rounded-3xl border border-slate-200 dark:border-[#3e3c66] shadow-xl text-center transition-colors">
+          <div class="mb-6 flex items-center justify-center">
+            <img 
+              src={`${base}/branding/logo-white-stacked.png`} 
+              alt="Cyber Scotland Connect Full Stacked Brand Logo" 
+              class="w-52 sm:w-60 h-auto hidden dark:block drop-shadow-2xl transition-transform hover:scale-105"
+              width="240"
+              height="240"
+            />
+            <img 
+              src={`${base}/branding/logo-fullcolor-stacked.png`} 
+              alt="Cyber Scotland Connect Full Stacked Brand Logo" 
+              class="w-52 sm:w-60 h-auto block dark:hidden drop-shadow-lg transition-transform hover:scale-105"
+              width="240"
+              height="240"
+            />
           </div>
           <h3 class="text-xl font-heading font-bold text-slate-900 dark:text-white uppercase mb-2 transition-colors">Join 1,500+ Scottish Defenders</h3>
           <p class="text-xs text-slate-600 dark:text-[#bdaccf] mb-6 transition-colors">
@@ -245,7 +253,7 @@ const topPartners = partners.sort((a, b) => a.data.order - b.data.order).slice(0
             href="https://www.meetup.com/cyberscotconnect/"
             target="_blank"
             rel="noopener noreferrer"
-            class="w-full block py-3 px-4 rounded-xl bg-[#895294] hover:bg-[#9d5fa8] text-white font-bold text-sm shadow-md hover:shadow-lg transition-all"
+            class="w-full block py-3.5 px-4 rounded-xl bg-[#895294] hover:bg-[#9d5fa8] text-white font-bold text-sm shadow-md hover:shadow-lg transition-all"
           >
             RSVP for Next Meetup
           </a>

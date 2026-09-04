@@ -6,25 +6,33 @@ const currentYear = new Date().getFullYear();
 <footer class="bg-slate-100 dark:bg-[#1b1a30] text-slate-600 dark:text-[#bdaccf] border-t border-slate-200 dark:border-[#3e3c66] mt-20 transition-colors">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
     <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
-      <!-- Col 1: About & Mission -->
+      <!-- Col 1: About & Mission with Brand Logo -->
       <div class="md:col-span-2 space-y-4">
-        <div class="flex items-center gap-3">
-          <div class="w-8 h-8 rounded bg-gradient-to-br from-[#895294] to-[#56548c] flex items-center justify-center text-white font-bold text-sm shadow">
-            CSC
-          </div>
-          <span class="font-heading font-bold text-slate-900 dark:text-white text-lg tracking-wide uppercase">
-            Cyber Scotland Connect
-          </span>
-        </div>
+        <a href={`${base}/`} class="inline-block" aria-label="Cyber Scotland Connect Home">
+          <img 
+            src={`${base}/branding/logo-white-horizontal.png`} 
+            alt="Cyber Scotland Connect" 
+            class="h-9 w-auto hidden dark:block" 
+            width="230"
+            height="36"
+          />
+          <img 
+            src={`${base}/branding/logo-fullcolor-horizontal.png`} 
+            alt="Cyber Scotland Connect" 
+            class="h-9 w-auto block dark:hidden" 
+            width="230"
+            height="36"
+          />
+        </a>
         <p class="text-sm text-slate-600 dark:text-[#bdaccf] max-w-md leading-relaxed">
           An inclusive, grassroots community connecting cyber security practitioners, students, researchers, career switchers, and enthusiasts across Scotland. High-signal, zero-sales.
         </p>
-        <div class="flex items-center gap-4 pt-2">
+        <div class="flex items-center gap-4 pt-1">
           <a
             href="https://www.meetup.com/cyberscotconnect/"
             target="_blank"
             rel="noopener noreferrer"
-            class="text-[#56548c] dark:text-[#6fb7e6] hover:underline transition-colors text-sm flex items-center gap-1 font-semibold"
+            class="text-[#895294] dark:text-[#6fb7e6] hover:underline transition-colors text-sm flex items-center gap-1 font-semibold"
           >
             <span>Meetup</span> ↗
           </a>
@@ -32,7 +40,7 @@ const currentYear = new Date().getFullYear();
             href="https://www.linkedin.com/company/cyber-scotland-connect/"
             target="_blank"
             rel="noopener noreferrer"
-            class="text-[#56548c] dark:text-[#6fb7e6] hover:underline transition-colors text-sm flex items-center gap-1 font-semibold"
+            class="text-[#895294] dark:text-[#6fb7e6] hover:underline transition-colors text-sm flex items-center gap-1 font-semibold"
           >
             <span>LinkedIn</span> ↗
           </a>
@@ -40,7 +48,7 @@ const currentYear = new Date().getFullYear();
             href="https://github.com/cyber-scotland-connect/csc-website"
             target="_blank"
             rel="noopener noreferrer"
-            class="text-[#56548c] dark:text-[#6fb7e6] hover:underline transition-colors text-sm flex items-center gap-1 font-semibold"
+            class="text-[#895294] dark:text-[#6fb7e6] hover:underline transition-colors text-sm flex items-center gap-1 font-semibold"
           >
             <span>GitHub</span> ↗
           </a>
@@ -79,7 +87,7 @@ const currentYear = new Date().getFullYear();
               href="https://github.com/cyber-scotland-connect/csc-website/blob/main/AGENT.md"
               target="_blank"
               rel="noopener noreferrer"
-              class="hover:text-slate-900 dark:hover:text-white transition-colors text-[#56548c] dark:text-[#6fb7e6] font-semibold"
+              class="hover:text-slate-900 dark:hover:text-white transition-colors text-[#895294] dark:text-[#6fb7e6] font-semibold"
             >
               AI Agents (AGENT.md) ↗
             </a>
