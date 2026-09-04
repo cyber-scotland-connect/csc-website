@@ -23,16 +23,16 @@ const partnerEvents = sortedEvents.filter(e => e.data.isPartnerEvent);
 >
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
     <!-- Header -->
-    <div class="border-b border-[#3e3c66] pb-8 mb-10">
+    <div class="border-b border-slate-200 dark:border-[#3e3c66] pb-8 mb-10 transition-colors">
       <div class="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <span class="text-xs font-semibold uppercase tracking-wider text-[#6fb7e6] block mb-1">
+          <span class="text-xs font-semibold uppercase tracking-wider text-[#56548c] dark:text-[#6fb7e6] block mb-1">
             Scottish Community Calendar
           </span>
-          <h1 class="text-3xl sm:text-5xl font-heading font-bold text-white uppercase tracking-tight">
+          <h1 class="text-3xl sm:text-5xl font-heading font-bold text-slate-900 dark:text-white uppercase tracking-tight transition-colors">
             Events & Gatherings
           </h1>
-          <p class="text-[#bdaccf] text-base mt-2 max-w-2xl">
+          <p class="text-slate-600 dark:text-[#bdaccf] text-base mt-2 max-w-2xl transition-colors">
             Discover upcoming regional meetups, virtual technical streams, and collaborative Scottish cyber partner events. Always free, always high-signal.
           </p>
         </div>
@@ -63,7 +63,7 @@ const partnerEvents = sortedEvents.filter(e => e.data.isPartnerEvent);
         <button
           type="button"
           data-filter="upcoming"
-          class="filter-btn px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold bg-[#2a2948] text-[#bdaccf] hover:text-white border border-[#3e3c66] transition-colors"
+          class="filter-btn px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold bg-white dark:bg-[#2a2948] text-slate-700 dark:text-[#bdaccf] hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-[#3e3c66] transition-colors"
           role="tab"
           aria-selected="false"
         >
@@ -72,7 +72,7 @@ const partnerEvents = sortedEvents.filter(e => e.data.isPartnerEvent);
         <button
           type="button"
           data-filter="csc"
-          class="filter-btn px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold bg-[#2a2948] text-[#bdaccf] hover:text-white border border-[#3e3c66] transition-colors"
+          class="filter-btn px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold bg-white dark:bg-[#2a2948] text-slate-700 dark:text-[#bdaccf] hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-[#3e3c66] transition-colors"
           role="tab"
           aria-selected="false"
         >
@@ -81,7 +81,7 @@ const partnerEvents = sortedEvents.filter(e => e.data.isPartnerEvent);
         <button
           type="button"
           data-filter="partner"
-          class="filter-btn px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold bg-[#2a2948] text-[#bdaccf] hover:text-white border border-[#3e3c66] transition-colors"
+          class="filter-btn px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold bg-white dark:bg-[#2a2948] text-slate-700 dark:text-[#bdaccf] hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-[#3e3c66] transition-colors"
           role="tab"
           aria-selected="false"
         >
@@ -90,7 +90,7 @@ const partnerEvents = sortedEvents.filter(e => e.data.isPartnerEvent);
         <button
           type="button"
           data-filter="past"
-          class="filter-btn px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold bg-[#2a2948] text-[#bdaccf] hover:text-white border border-[#3e3c66] transition-colors"
+          class="filter-btn px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold bg-white dark:bg-[#2a2948] text-slate-700 dark:text-[#bdaccf] hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-[#3e3c66] transition-colors"
           role="tab"
           aria-selected="false"
         >
@@ -117,13 +117,13 @@ const partnerEvents = sortedEvents.filter(e => e.data.isPartnerEvent);
     </div>
 
     <!-- Call for Speakers / High-Signal Policy Box -->
-    <div class="bg-[#1b1a30] rounded-2xl border border-[#3e3c66] p-8 sm:p-10 text-[#bdaccf]">
+    <div class="bg-slate-50 dark:bg-[#1b1a30] rounded-2xl border border-slate-200 dark:border-[#3e3c66] p-8 sm:p-10 text-slate-600 dark:text-[#bdaccf] transition-colors">
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
         <div class="md:col-span-2 space-y-3">
-          <span class="text-xs font-semibold uppercase tracking-wider text-[#6fb7e6]">
+          <span class="text-xs font-semibold uppercase tracking-wider text-[#56548c] dark:text-[#6fb7e6]">
             Call for Presentations (CFP)
           </span>
-          <h2 class="text-2xl font-heading font-bold text-white uppercase">
+          <h2 class="text-2xl font-heading font-bold text-slate-900 dark:text-white uppercase">
             Want to speak at an upcoming gathering?
           </h2>
           <p class="text-sm leading-relaxed">
@@ -140,7 +140,7 @@ const partnerEvents = sortedEvents.filter(e => e.data.isPartnerEvent);
           </a>
           <a
             href="https://github.com/cyber-scotland-connect/csc-website/blob/main/AGENT.md"
-            class="px-5 py-3 rounded-lg bg-[#2a2948] hover:bg-[#382b5c] border border-[#3e3c66] text-white text-xs text-center transition-colors"
+            class="px-5 py-3 rounded-lg bg-white dark:bg-[#2a2948] hover:bg-slate-100 dark:hover:bg-[#382b5c] border border-slate-200 dark:border-[#3e3c66] text-slate-800 dark:text-white text-xs text-center transition-colors shadow-sm"
           >
             Review Speaker Guidelines ↗
           </a>
@@ -158,12 +158,12 @@ const partnerEvents = sortedEvents.filter(e => e.data.isPartnerEvent);
     btn.addEventListener('click', () => {
       filterBtns.forEach(b => {
         b.classList.remove('active', 'bg-[#895294]', 'text-white');
-        b.classList.add('bg-[#2a2948]', 'text-[#bdaccf]');
+        b.classList.add('bg-white', 'dark:bg-[#2a2948]', 'text-slate-700', 'dark:text-[#bdaccf]');
         b.setAttribute('aria-selected', 'false');
       });
 
       btn.classList.add('active', 'bg-[#895294]', 'text-white');
-      btn.classList.remove('bg-[#2a2948]', 'text-[#bdaccf]');
+      btn.classList.remove('bg-white', 'dark:bg-[#2a2948]', 'text-slate-700', 'dark:text-[#bdaccf]');
       btn.setAttribute('aria-selected', 'true');
 
       const filter = btn.getAttribute('data-filter');

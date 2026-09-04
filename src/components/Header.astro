@@ -13,14 +13,14 @@ const navLinks = [
 ];
 ---
 
-<header class="sticky top-0 z-50 bg-[#21203a] border-b border-[#3e3c66] transition-colors shadow-lg">
+<header class="sticky top-0 z-50 bg-white dark:bg-[#21203a] border-b border-slate-200 dark:border-[#3e3c66] transition-colors shadow-sm dark:shadow-lg">
   <AccessibilityBar />
 
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex items-center justify-between h-20">
       <!-- Brand Logo -->
       <a href={`${base}/`} class="flex items-center gap-3 group focus:outline-none focus:ring-2 focus:ring-[#6fb7e6] rounded-lg p-1">
-        <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-[#895294] to-[#56548c] flex items-center justify-center shadow-md group-hover:scale-105 transition-transform">
+        <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-[#895294] to-[#56548c] flex items-center justify-center shadow-md group-hover:scale-105 transition-transform shrink-0">
           <!-- Fragmented Shield Glyph -->
           <svg class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
@@ -29,10 +29,10 @@ const navLinks = [
           </svg>
         </div>
         <div class="flex flex-col">
-          <span class="font-heading font-bold text-lg sm:text-xl tracking-wider text-white uppercase group-hover:text-[#6fb7e6] transition-colors">
+          <span class="font-heading font-bold text-lg sm:text-xl tracking-wider text-slate-900 dark:text-white uppercase group-hover:text-[#56548c] dark:group-hover:text-[#6fb7e6] transition-colors">
             Cyber Scotland Connect
           </span>
-          <span class="text-xs text-[#bdaccf] tracking-tight">Grassroots Security Community</span>
+          <span class="text-xs text-slate-500 dark:text-[#bdaccf] tracking-tight">Grassroots Security Community</span>
         </div>
       </a>
 
@@ -43,8 +43,8 @@ const navLinks = [
             href={link.href}
             class={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
               link.active
-                ? 'bg-[#382b5c] text-white border-b-2 border-[#895294]'
-                : 'text-[#bdaccf] hover:text-white hover:bg-[#2a2948]'
+                ? 'bg-slate-100 dark:bg-[#382b5c] text-[#56548c] dark:text-white border-b-2 border-[#895294]'
+                : 'text-slate-600 dark:text-[#bdaccf] hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#2a2948]'
             }`}
             aria-current={link.active ? 'page' : undefined}
           >
@@ -69,7 +69,7 @@ const navLinks = [
         <button
           id="mobile-menu-btn"
           type="button"
-          class="p-2 rounded-md text-[#bdaccf] hover:text-white hover:bg-[#2a2948] focus:outline-none focus:ring-2 focus:ring-[#6fb7e6]"
+          class="p-2 rounded-md text-slate-600 dark:text-[#bdaccf] hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#2a2948] focus:outline-none focus:ring-2 focus:ring-[#6fb7e6]"
           aria-expanded="false"
           aria-controls="mobile-menu"
           aria-label="Toggle navigation menu"
@@ -86,14 +86,14 @@ const navLinks = [
   </div>
 
   <!-- Mobile Dropdown Menu -->
-  <div id="mobile-menu" class="hidden md:hidden bg-[#1b1a30] border-t border-[#3e3c66] px-4 pt-2 pb-4 space-y-1">
+  <div id="mobile-menu" class="hidden md:hidden bg-white dark:bg-[#1b1a30] border-t border-slate-200 dark:border-[#3e3c66] px-4 pt-2 pb-4 space-y-1 shadow-lg">
     {navLinks.map(link => (
       <a
         href={link.href}
         class={`block px-3 py-2 rounded-md text-base font-medium ${
           link.active
-            ? 'bg-[#382b5c] text-white'
-            : 'text-[#bdaccf] hover:text-white hover:bg-[#2a2948]'
+            ? 'bg-slate-100 dark:bg-[#382b5c] text-[#56548c] dark:text-white'
+            : 'text-slate-600 dark:text-[#bdaccf] hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#2a2948]'
         }`}
         aria-current={link.active ? 'page' : undefined}
       >

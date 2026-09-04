@@ -3,14 +3,14 @@
 ---
 
 <div 
-  class="bg-[#1b1a30] text-[#bdaccf] border-b border-[#3e3c66] py-1.5 px-4 text-xs select-none transition-colors"
+  class="bg-slate-100 dark:bg-[#1b1a30] text-slate-700 dark:text-[#bdaccf] border-b border-slate-200 dark:border-[#3e3c66] py-1.5 px-4 text-xs select-none transition-colors"
   id="a11y-bar"
   role="region" 
   aria-label="Accessibility Preferences"
 >
   <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
-    <div class="flex items-center gap-1.5 font-medium text-slate-300">
-      <svg class="w-3.5 h-3.5 text-[#6fb7e6]" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+    <div class="flex items-center gap-1.5 font-medium text-slate-700 dark:text-slate-300">
+      <svg class="w-3.5 h-3.5 text-[#56548c] dark:text-[#6fb7e6]" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
       </svg>
@@ -20,11 +20,10 @@
     <div class="flex flex-wrap items-center gap-3">
       <!-- Font Family Selector -->
       <div class="flex items-center gap-1">
-        <label for="font-select" class="sr-only">Font Selection</label>
         <button 
           id="toggle-font-btn" 
           type="button" 
-          class="px-2 py-0.5 rounded border border-[#56548c] bg-[#2a2948] hover:bg-[#382b5c] text-white focus:outline-none focus:ring-2 focus:ring-[#6fb7e6] transition-all flex items-center gap-1"
+          class="px-2.5 py-0.5 rounded border border-slate-300 dark:border-[#56548c] bg-white dark:bg-[#2a2948] hover:bg-slate-50 dark:hover:bg-[#382b5c] text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#6fb7e6] transition-all flex items-center gap-1"
           aria-pressed="false"
           title="Toggle Dyslexia-Friendly Atkinson / OpenDyslexic font"
         >
@@ -35,11 +34,11 @@
 
       <!-- Text Size Multipliers -->
       <div class="flex items-center gap-0.5" role="group" aria-label="Text Size Controls">
-        <span class="text-slate-400 mr-1 hidden sm:inline">Size:</span>
+        <span class="text-slate-500 dark:text-slate-400 mr-1 hidden sm:inline">Size:</span>
         <button 
           type="button" 
           data-size="normal"
-          class="size-btn px-2 py-0.5 rounded border border-[#56548c] bg-[#2a2948] hover:bg-[#382b5c] text-white focus:outline-none focus:ring-2 focus:ring-[#6fb7e6] font-medium"
+          class="size-btn px-2 py-0.5 rounded border border-slate-300 dark:border-[#56548c] bg-white dark:bg-[#2a2948] hover:bg-slate-50 dark:hover:bg-[#382b5c] text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#6fb7e6] font-medium"
           aria-label="Default text size (100%)"
         >
           A
@@ -47,7 +46,7 @@
         <button 
           type="button" 
           data-size="lg"
-          class="size-btn px-2 py-0.5 rounded border border-[#56548c] bg-[#2a2948] hover:bg-[#382b5c] text-white focus:outline-none focus:ring-2 focus:ring-[#6fb7e6] font-semibold text-sm"
+          class="size-btn px-2 py-0.5 rounded border border-slate-300 dark:border-[#56548c] bg-white dark:bg-[#2a2948] hover:bg-slate-50 dark:hover:bg-[#382b5c] text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#6fb7e6] font-semibold text-sm"
           aria-label="Large text size (112%)"
         >
           A+
@@ -55,7 +54,7 @@
         <button 
           type="button" 
           data-size="xl"
-          class="size-btn px-2 py-0.5 rounded border border-[#56548c] bg-[#2a2948] hover:bg-[#382b5c] text-white focus:outline-none focus:ring-2 focus:ring-[#6fb7e6] font-bold text-base"
+          class="size-btn px-2 py-0.5 rounded border border-slate-300 dark:border-[#56548c] bg-white dark:bg-[#2a2948] hover:bg-slate-50 dark:hover:bg-[#382b5c] text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#6fb7e6] font-bold text-base"
           aria-label="Extra large text size (125%)"
         >
           A++
@@ -66,7 +65,7 @@
       <button 
         id="toggle-contrast-btn" 
         type="button" 
-        class="px-2 py-0.5 rounded border border-[#56548c] bg-[#2a2948] hover:bg-[#382b5c] text-white focus:outline-none focus:ring-2 focus:ring-[#6fb7e6] transition-all hidden md:inline-flex items-center gap-1"
+        class="px-2.5 py-0.5 rounded border border-slate-300 dark:border-[#56548c] bg-white dark:bg-[#2a2948] hover:bg-slate-50 dark:hover:bg-[#382b5c] text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#6fb7e6] transition-all hidden md:inline-flex items-center gap-1"
         aria-pressed="false"
       >
         <span>High Contrast</span>
@@ -76,7 +75,7 @@
       <button 
         id="theme-toggle-btn" 
         type="button" 
-        class="px-2.5 py-0.5 rounded border border-[#56548c] bg-[#2a2948] hover:bg-[#382b5c] text-white focus:outline-none focus:ring-2 focus:ring-[#6fb7e6] transition-all flex items-center gap-1"
+        class="px-2.5 py-0.5 rounded border border-slate-300 dark:border-[#56548c] bg-white dark:bg-[#2a2948] hover:bg-slate-50 dark:hover:bg-[#382b5c] text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#6fb7e6] transition-all flex items-center gap-1"
         aria-label="Toggle dark and light theme"
       >
         <span id="theme-icon" aria-hidden="true">🌙</span>
@@ -88,7 +87,6 @@
 
 <script is:inline>
   (function() {
-    // Theme toggle
     const themeBtn = document.getElementById('theme-toggle-btn');
     const themeIcon = document.getElementById('theme-icon');
     const themeLabel = document.getElementById('theme-label');
@@ -116,7 +114,6 @@
       });
     }
 
-    // Font toggle
     const fontBtn = document.getElementById('toggle-font-btn');
     const fontLabel = document.getElementById('font-toggle-label');
 
@@ -141,7 +138,6 @@
       });
     }
 
-    // Text Size
     const sizeBtns = document.querySelectorAll('.size-btn');
     function applyTextSize(size) {
       document.documentElement.classList.remove('text-scale-normal', 'text-scale-lg', 'text-scale-xl');
@@ -149,9 +145,11 @@
       localStorage.setItem('csc-text-size', size);
       sizeBtns.forEach(btn => {
         if (btn.getAttribute('data-size') === size) {
-          btn.classList.add('bg-[#895294]', 'border-white');
+          btn.classList.add('bg-[#895294]', 'text-white', 'border-transparent');
+          btn.classList.remove('bg-white', 'dark:bg-[#2a2948]', 'text-slate-800');
         } else {
-          btn.classList.remove('bg-[#895294]', 'border-white');
+          btn.classList.remove('bg-[#895294]', 'text-white', 'border-transparent');
+          btn.classList.add('bg-white', 'dark:bg-[#2a2948]', 'text-slate-800');
         }
       });
     }
@@ -163,7 +161,6 @@
       });
     });
 
-    // High Contrast
     const contrastBtn = document.getElementById('toggle-contrast-btn');
     if (contrastBtn) {
       contrastBtn.addEventListener('click', () => {

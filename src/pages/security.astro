@@ -7,63 +7,63 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   description="Security standards, scope, and confidential vulnerability disclosure guidelines for Cyber Scotland Connect."
 >
   <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    <div class="border-b border-[#3e3c66] pb-8 mb-10">
-      <span class="text-xs font-semibold uppercase tracking-wider text-[#6fb7e6] block mb-1">
+    <div class="border-b border-slate-200 dark:border-[#3e3c66] pb-8 mb-10 transition-colors">
+      <span class="text-xs font-semibold uppercase tracking-wider text-[#56548c] dark:text-[#6fb7e6] block mb-1">
         Integrity & Safety
       </span>
-      <h1 class="text-3xl sm:text-5xl font-heading font-bold text-white uppercase tracking-tight">
+      <h1 class="text-3xl sm:text-5xl font-heading font-bold text-slate-900 dark:text-white uppercase tracking-tight transition-colors">
         Security Policy
       </h1>
-      <p class="text-[#bdaccf] text-base mt-2">
+      <p class="text-slate-600 dark:text-[#bdaccf] text-base mt-2">
         Cyber Scotland Connect takes the security of our community infrastructure and members seriously.
       </p>
     </div>
 
-    <div class="prose prose-invert max-w-none text-[#bdaccf] space-y-8 leading-relaxed">
-      <section class="bg-[#2a2948] p-6 sm:p-8 rounded-xl border border-[#3e3c66]">
-        <h2 class="text-2xl font-heading font-bold text-white uppercase mb-4">Supported Scope</h2>
+    <div class="space-y-8 leading-relaxed text-slate-700 dark:text-[#bdaccf]">
+      <section class="bg-white dark:bg-[#2a2948] p-6 sm:p-8 rounded-xl border border-slate-200 dark:border-[#3e3c66] shadow-sm transition-colors">
+        <h2 class="text-2xl font-heading font-bold text-slate-900 dark:text-white uppercase mb-4">Supported Scope</h2>
         <p class="mb-3">This security policy applies to:</p>
         <ul class="list-disc pl-5 space-y-2 text-sm">
-          <li>The <a href="https://github.com/cyber-scotland-connect/csc-website" class="text-[#6fb7e6] underline">CSC Website Repository</a></li>
-          <li>Hosted static assets under <code class="text-pink-300">cyber-scotland-connect.github.io/csc-website</code> and associated custom domains.</li>
+          <li>The <a href="https://github.com/cyber-scotland-connect/csc-website" class="text-[#56548c] dark:text-[#6fb7e6] underline font-medium">CSC Website Repository</a></li>
+          <li>Hosted static assets under <code class="text-[#895294] font-semibold">cyber-scotland-connect.github.io/csc-website</code> and associated custom domains.</li>
         </ul>
       </section>
 
-      <section class="bg-[#2a2948] p-6 sm:p-8 rounded-xl border border-[#3e3c66]">
-        <h2 class="text-2xl font-heading font-bold text-white uppercase mb-4">Confidential Disclosure</h2>
-        <div class="p-4 bg-[#1b1a30] rounded-lg border border-amber-500/40 text-amber-200 text-sm mb-6">
+      <section class="bg-white dark:bg-[#2a2948] p-6 sm:p-8 rounded-xl border border-slate-200 dark:border-[#3e3c66] shadow-sm transition-colors">
+        <h2 class="text-2xl font-heading font-bold text-slate-900 dark:text-white uppercase mb-4">Confidential Disclosure</h2>
+        <div class="p-4 bg-amber-50 dark:bg-[#1b1a30] rounded-lg border border-amber-300 dark:border-amber-500/40 text-amber-900 dark:text-amber-200 text-sm mb-6">
           <strong>⚠️ Please DO NOT report security vulnerabilities through public GitHub issues.</strong>
         </div>
 
-        <p class="mb-4">If you believe you have discovered a vulnerability or misconfiguration:</p>
+        <p class="mb-4 text-sm">If you believe you have discovered a vulnerability or misconfiguration:</p>
         <ol class="list-decimal pl-5 space-y-3 text-sm">
           <li>
             <strong>GitHub Private Vulnerability Reporting (Preferred):</strong><br />
             Submit a confidential advisory directly via the 
-            <a href="https://github.com/cyber-scotland-connect/csc-website/security/advisories/new" target="_blank" rel="noopener noreferrer" class="text-[#6fb7e6] underline">
+            <a href="https://github.com/cyber-scotland-connect/csc-website/security/advisories/new" target="_blank" rel="noopener noreferrer" class="text-[#56548c] dark:text-[#6fb7e6] underline font-medium">
               GitHub Security Advisory Tab ↗
             </a>.
           </li>
           <li>
             <strong>Direct Contact:</strong><br />
-            Email the core maintainers at <a href="mailto:security@cyberscotlandconnect.com" class="text-[#6fb7e6] underline">security@cyberscotlandconnect.com</a>.
+            Email the core maintainers at <a href="mailto:security@cyberscotlandconnect.com" class="text-[#56548c] dark:text-[#6fb7e6] underline font-medium">security@cyberscotlandconnect.com</a>.
           </li>
         </ol>
       </section>
 
-      <section class="bg-[#1b1a30] p-6 sm:p-8 rounded-xl border border-[#3e3c66]">
-        <h2 class="text-2xl font-heading font-bold text-white uppercase mb-4">Response Commitments</h2>
+      <section class="bg-slate-50 dark:bg-[#1b1a30] p-6 sm:p-8 rounded-xl border border-slate-200 dark:border-[#3e3c66] transition-colors">
+        <h2 class="text-2xl font-heading font-bold text-slate-900 dark:text-white uppercase mb-4">Response Commitments</h2>
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
-          <div class="p-3 bg-[#2a2948] rounded border border-[#3e3c66]">
-            <span class="font-bold text-white block mb-1">48 Hours</span>
+          <div class="p-3 bg-white dark:bg-[#2a2948] rounded border border-slate-200 dark:border-[#3e3c66] shadow-sm">
+            <span class="font-bold text-slate-900 dark:text-white block mb-1">48 Hours</span>
             Initial acknowledgment of incoming report.
           </div>
-          <div class="p-3 bg-[#2a2948] rounded border border-[#3e3c66]">
-            <span class="font-bold text-white block mb-1">5 Business Days</span>
+          <div class="p-3 bg-white dark:bg-[#2a2948] rounded border border-slate-200 dark:border-[#3e3c66] shadow-sm">
+            <span class="font-bold text-slate-900 dark:text-white block mb-1">5 Business Days</span>
             Triage, assessment, and reproduction update.
           </div>
-          <div class="p-3 bg-[#2a2948] rounded border border-[#3e3c66]">
-            <span class="font-bold text-white block mb-1">Coordinated Fix</span>
+          <div class="p-3 bg-white dark:bg-[#2a2948] rounded border border-slate-200 dark:border-[#3e3c66] shadow-sm">
+            <span class="font-bold text-slate-900 dark:text-white block mb-1">Coordinated Fix</span>
             Collaborative disclosure with reporter credit.
           </div>
         </div>

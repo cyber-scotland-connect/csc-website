@@ -30,46 +30,46 @@ const formattedDate = eventDate.toLocaleDateString('en-GB', {
   <article class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
     <!-- Back link -->
     <div class="mb-8">
-      <a href={`${base}/events`} class="text-[#6fb7e6] hover:text-white font-medium text-sm inline-flex items-center gap-1">
+      <a href={`${base}/events`} class="text-[#56548c] dark:text-[#6fb7e6] hover:underline font-medium text-sm inline-flex items-center gap-1">
         ← Back to all events
       </a>
     </div>
 
     <!-- Header & Metadata -->
-    <header class="border-b border-[#3e3c66] pb-8 mb-10">
+    <header class="border-b border-slate-200 dark:border-[#3e3c66] pb-8 mb-10 transition-colors">
       <div class="flex flex-wrap items-center gap-2 mb-4">
         <span class="text-xs px-3 py-1 rounded-full font-bold bg-[#56548c] text-white">
           {data.city} Chapter
         </span>
         {data.isPartnerEvent ? (
-          <span class="text-xs px-3 py-1 rounded-full font-medium bg-[#895294]/30 text-pink-300 border border-[#895294]">
+          <span class="text-xs px-3 py-1 rounded-full font-medium bg-pink-100 dark:bg-[#895294]/30 text-pink-800 dark:text-pink-300 border border-pink-200 dark:border-[#895294]">
             Partner: {data.partnerName || 'Ecosystem Event'}
           </span>
         ) : (
-          <span class="text-xs px-3 py-1 rounded-full font-medium bg-[#6fb7e6]/20 text-[#6fb7e6] border border-[#6fb7e6]/40">
+          <span class="text-xs px-3 py-1 rounded-full font-medium bg-sky-100 dark:bg-[#6fb7e6]/20 text-sky-800 dark:text-[#6fb7e6] border border-sky-200 dark:border-[#6fb7e6]/40">
             CSC Community Gathering
           </span>
         )}
-        <span class={`text-xs font-semibold px-2.5 py-1 rounded ${isUpcoming ? 'bg-emerald-950 text-emerald-300 border border-emerald-600' : 'bg-slate-800 text-slate-400'}`}>
+        <span class={`text-xs font-semibold px-2.5 py-1 rounded ${isUpcoming ? 'bg-emerald-100 text-emerald-800 border border-emerald-300 dark:bg-emerald-950 dark:text-emerald-300 dark:border-emerald-600' : 'bg-slate-100 text-slate-600 border border-slate-200 dark:bg-slate-800 dark:text-slate-400 dark:border-slate-700'}`}>
           {isUpcoming ? '● Upcoming' : 'Archived Event'}
         </span>
       </div>
 
-      <h1 class="text-3xl sm:text-4xl lg:text-5xl font-heading font-bold text-white uppercase tracking-tight mb-6">
+      <h1 class="text-3xl sm:text-4xl lg:text-5xl font-heading font-bold text-slate-900 dark:text-white uppercase tracking-tight mb-6 transition-colors">
         {data.title}
       </h1>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-[#bdaccf] bg-[#2a2948] p-5 rounded-xl border border-[#3e3c66]">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-slate-600 dark:text-[#bdaccf] bg-slate-50 dark:bg-[#2a2948] p-5 rounded-xl border border-slate-200 dark:border-[#3e3c66] transition-colors">
         <div class="space-y-1">
-          <span class="text-xs uppercase text-slate-400 font-semibold block">Date & Time</span>
-          <p class="font-medium text-white text-base">{formattedDate}</p>
-          {data.time && <p class="text-xs text-[#bdaccf]">{data.time}</p>}
+          <span class="text-xs uppercase text-slate-500 dark:text-slate-400 font-semibold block">Date & Time</span>
+          <p class="font-medium text-slate-900 dark:text-white text-base">{formattedDate}</p>
+          {data.time && <p class="text-xs text-slate-500 dark:text-[#bdaccf]">{data.time}</p>}
         </div>
 
         <div class="space-y-1">
-          <span class="text-xs uppercase text-slate-400 font-semibold block">Venue & Location</span>
-          <p class="font-medium text-white text-base">{data.location}</p>
-          <p class="text-xs text-[#bdaccf]">Physical Gathering ({data.city})</p>
+          <span class="text-xs uppercase text-slate-500 dark:text-slate-400 font-semibold block">Venue & Location</span>
+          <p class="font-medium text-slate-900 dark:text-white text-base">{data.location}</p>
+          <p class="text-xs text-slate-500 dark:text-[#bdaccf]">Physical Gathering ({data.city})</p>
         </div>
       </div>
 
@@ -100,7 +100,7 @@ const formattedDate = eventDate.toLocaleDateString('en-GB', {
             href={data.slidesUrl}
             target="_blank"
             rel="noopener noreferrer"
-            class="px-4 py-2.5 rounded-lg bg-[#2a2948] hover:bg-[#382b5c] border border-[#56548c] text-white font-medium text-sm transition-colors flex items-center gap-1.5"
+            class="px-4 py-2.5 rounded-lg bg-white dark:bg-[#2a2948] hover:bg-slate-50 dark:hover:bg-[#382b5c] border border-slate-300 dark:border-[#56548c] text-slate-800 dark:text-white font-medium text-sm transition-colors flex items-center gap-1.5"
           >
             <span>Slide Deck</span> ↗
           </a>
@@ -110,7 +110,7 @@ const formattedDate = eventDate.toLocaleDateString('en-GB', {
             href={data.recordingUrl}
             target="_blank"
             rel="noopener noreferrer"
-            class="px-4 py-2.5 rounded-lg bg-[#2a2948] hover:bg-[#382b5c] border border-[#56548c] text-white font-medium text-sm transition-colors flex items-center gap-1.5"
+            class="px-4 py-2.5 rounded-lg bg-white dark:bg-[#2a2948] hover:bg-slate-50 dark:hover:bg-[#382b5c] border border-slate-300 dark:border-[#56548c] text-slate-800 dark:text-white font-medium text-sm transition-colors flex items-center gap-1.5"
           >
             <span>Watch Recording</span> ↗
           </a>
@@ -119,25 +119,25 @@ const formattedDate = eventDate.toLocaleDateString('en-GB', {
     </header>
 
     <!-- Venue Accessibility Disclosure -->
-    <div class="bg-[#1b1a30] rounded-xl border border-[#3e3c66] p-6 mb-10">
-      <h2 class="text-lg font-heading font-bold text-white uppercase tracking-wide flex items-center gap-2 mb-3">
+    <div class="bg-slate-50 dark:bg-[#1b1a30] rounded-xl border border-slate-200 dark:border-[#3e3c66] p-6 mb-10 transition-colors">
+      <h2 class="text-lg font-heading font-bold text-slate-900 dark:text-white uppercase tracking-wide flex items-center gap-2 mb-3">
         <span>♿</span>
         <span>Accessibility Baseline</span>
       </h2>
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs text-[#bdaccf] mb-3">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs text-slate-600 dark:text-[#bdaccf] mb-3">
         <div class="flex items-center gap-2">
-          <span class={data.accessibility.stepFree ? 'text-emerald-400 font-bold' : 'text-slate-400'}>
+          <span class={data.accessibility.stepFree ? 'text-emerald-600 dark:text-emerald-400 font-bold' : 'text-slate-400'}>
             {data.accessibility.stepFree ? '✓ Step-free Route & Lifts' : '✗ Limited Step-free Access'}
           </span>
         </div>
         <div class="flex items-center gap-2">
-          <span class={data.accessibility.hearingLoop ? 'text-emerald-400 font-bold' : 'text-slate-400'}>
+          <span class={data.accessibility.hearingLoop ? 'text-emerald-600 dark:text-emerald-400 font-bold' : 'text-slate-400'}>
             {data.accessibility.hearingLoop ? '✓ Induction Hearing Loop Available' : '✗ Induction Loop Not Installed'}
           </span>
         </div>
       </div>
       {data.accessibility.notes && (
-        <p class="text-xs text-slate-300 bg-[#2a2948] p-3 rounded border border-[#3e3c66]/60">
+        <p class="text-xs text-slate-700 dark:text-slate-300 bg-white dark:bg-[#2a2948] p-3 rounded border border-slate-200 dark:border-[#3e3c66]/60">
           {data.accessibility.notes}
         </p>
       )}
@@ -146,27 +146,27 @@ const formattedDate = eventDate.toLocaleDateString('en-GB', {
     <!-- Speakers Section -->
     {data.speakers && data.speakers.length > 0 && (
       <section class="mb-12">
-        <h2 class="text-2xl font-heading font-bold text-white uppercase tracking-wide mb-6">
+        <h2 class="text-2xl font-heading font-bold text-slate-900 dark:text-white uppercase tracking-wide mb-6">
           Featured Speakers & Sessions
         </h2>
         <div class="space-y-4">
           {data.speakers.map(speaker => (
-            <div class="bg-[#2a2948] rounded-xl border border-[#3e3c66] p-6">
+            <div class="bg-white dark:bg-[#2a2948] rounded-xl border border-slate-200 dark:border-[#3e3c66] p-6 shadow-sm">
               <div class="flex flex-wrap items-baseline justify-between gap-2 mb-2">
-                <h3 class="text-xl font-heading font-bold text-white">
+                <h3 class="text-xl font-heading font-bold text-slate-900 dark:text-white">
                   {speaker.name}
                 </h3>
                 {speaker.company && (
-                  <span class="text-xs px-2 py-0.5 rounded bg-[#382b5c] text-[#bdaccf] border border-[#56548c]">
+                  <span class="text-xs px-2 py-0.5 rounded bg-purple-50 dark:bg-[#382b5c] text-[#56548c] dark:text-[#bdaccf] border border-purple-200 dark:border-[#56548c]">
                     {speaker.role ? `${speaker.role}, ` : ''}{speaker.company}
                   </span>
                 )}
               </div>
-              <h4 class="text-base font-semibold text-[#6fb7e6] mb-3">
+              <h4 class="text-base font-semibold text-[#56548c] dark:text-[#6fb7e6] mb-3">
                 "{speaker.talkTitle}"
               </h4>
               {speaker.abstract && (
-                <p class="text-sm text-[#bdaccf] leading-relaxed">
+                <p class="text-sm text-slate-600 dark:text-[#bdaccf] leading-relaxed">
                   {speaker.abstract}
                 </p>
               )}
@@ -177,7 +177,7 @@ const formattedDate = eventDate.toLocaleDateString('en-GB', {
     )}
 
     <!-- Event Body Content (Markdown) -->
-    <section class="prose prose-invert max-w-none text-[#bdaccf] prose-headings:font-heading prose-headings:text-white prose-a:text-[#6fb7e6] pt-6 border-t border-[#3e3c66]">
+    <section class="prose prose-slate dark:prose-invert max-w-none text-slate-700 dark:text-[#bdaccf] prose-headings:font-heading prose-headings:text-slate-900 dark:prose-headings:text-white prose-a:text-[#56548c] dark:prose-a:text-[#6fb7e6] pt-6 border-t border-slate-200 dark:border-[#3e3c66]">
       <Content />
     </section>
   </article>
