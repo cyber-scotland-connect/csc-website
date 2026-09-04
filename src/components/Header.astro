@@ -13,37 +13,37 @@ const navLinks = [
 ];
 ---
 
-<header class="sticky top-0 z-50 bg-white dark:bg-[#21203a] border-b border-slate-200 dark:border-[#3e3c66] transition-colors shadow-sm dark:shadow-lg">
+<header class="sticky top-0 z-50 bg-white/95 dark:bg-[#21203a]/95 backdrop-blur-md border-b border-slate-200 dark:border-[#3e3c66] transition-colors shadow-sm dark:shadow-lg">
   <AccessibilityBar />
 
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex items-center justify-between h-20">
-      <!-- Brand Logo -->
-      <a href={`${base}/`} class="flex items-center gap-3 group focus:outline-none focus:ring-2 focus:ring-[#6fb7e6] rounded-lg p-1">
-        <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-[#895294] to-[#56548c] flex items-center justify-center shadow-md group-hover:scale-105 transition-transform shrink-0">
-          <!-- Fragmented Shield Glyph -->
-          <svg class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v8" />
-            <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h8" />
-          </svg>
-        </div>
-        <div class="flex flex-col">
-          <span class="font-heading font-bold text-lg sm:text-xl tracking-wider text-slate-900 dark:text-white uppercase group-hover:text-[#56548c] dark:group-hover:text-[#6fb7e6] transition-colors">
-            Cyber Scotland Connect
-          </span>
-          <span class="text-xs text-slate-500 dark:text-[#bdaccf] tracking-tight">Grassroots Security Community</span>
-        </div>
+      <!-- Official Brand Logo -->
+      <a href={`${base}/`} class="flex items-center gap-3 group focus:outline-none focus:ring-2 focus:ring-[#6fb7e6] rounded-lg py-1 px-1.5 transition-transform hover:scale-[1.02]" aria-label="Cyber Scotland Connect Home">
+        <img 
+          src={`${base}/branding/logo-white-horizontal.png`} 
+          alt="Cyber Scotland Connect" 
+          class="h-10 sm:h-11 w-auto hidden dark:block" 
+          width="260" 
+          height="44"
+        />
+        <img 
+          src={`${base}/branding/logo-fullcolor-horizontal.png`} 
+          alt="Cyber Scotland Connect" 
+          class="h-10 sm:h-11 w-auto block dark:hidden" 
+          width="260" 
+          height="44"
+        />
       </a>
 
       <!-- Desktop Navigation Links -->
-      <nav class="hidden md:flex items-center gap-1" aria-label="Main Navigation">
+      <nav class="hidden md:flex items-center gap-1.5" aria-label="Main Navigation">
         {navLinks.map(link => (
           <a
             href={link.href}
-            class={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+            class={`px-3.5 py-2 rounded-lg text-sm font-semibold transition-all ${
               link.active
-                ? 'bg-slate-100 dark:bg-[#382b5c] text-[#56548c] dark:text-white border-b-2 border-[#895294]'
+                ? 'bg-purple-50 dark:bg-[#382b5c] text-[#895294] dark:text-white border-b-2 border-[#895294]'
                 : 'text-slate-600 dark:text-[#bdaccf] hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#2a2948]'
             }`}
             aria-current={link.active ? 'page' : undefined}
@@ -55,7 +55,7 @@ const navLinks = [
           href="https://www.meetup.com/cyberscotconnect/"
           target="_blank"
           rel="noopener noreferrer"
-          class="ml-3 px-4 py-2 text-sm font-bold text-white bg-gradient-to-r from-[#895294] to-[#56548c] hover:from-[#9d5fa8] hover:to-[#6764a8] rounded-md shadow-md focus:outline-none focus:ring-2 focus:ring-[#6fb7e6] transition-all flex items-center gap-1.5"
+          class="ml-3 px-4 py-2 text-sm font-bold text-white bg-gradient-to-r from-[#895294] to-[#56548c] hover:from-[#9d5fa8] hover:to-[#6764a8] rounded-lg shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-[#6fb7e6] transition-all flex items-center gap-1.5"
         >
           <span>Join Meetup</span>
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -69,7 +69,7 @@ const navLinks = [
         <button
           id="mobile-menu-btn"
           type="button"
-          class="p-2 rounded-md text-slate-600 dark:text-[#bdaccf] hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#2a2948] focus:outline-none focus:ring-2 focus:ring-[#6fb7e6]"
+          class="p-2 rounded-lg text-slate-600 dark:text-[#bdaccf] hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#2a2948] focus:outline-none focus:ring-2 focus:ring-[#6fb7e6] transition-colors"
           aria-expanded="false"
           aria-controls="mobile-menu"
           aria-label="Toggle navigation menu"
@@ -86,14 +86,14 @@ const navLinks = [
   </div>
 
   <!-- Mobile Dropdown Menu -->
-  <div id="mobile-menu" class="hidden md:hidden bg-white dark:bg-[#1b1a30] border-t border-slate-200 dark:border-[#3e3c66] px-4 pt-2 pb-4 space-y-1 shadow-lg">
+  <div id="mobile-menu" class="hidden md:hidden bg-white/98 dark:bg-[#1b1a30]/98 backdrop-blur-lg border-t border-slate-200 dark:border-[#3e3c66] px-4 pt-3 pb-5 space-y-1.5 shadow-xl">
     {navLinks.map(link => (
       <a
         href={link.href}
-        class={`block px-3 py-2 rounded-md text-base font-medium ${
+        class={`block px-3.5 py-2.5 rounded-lg text-base font-semibold ${
           link.active
-            ? 'bg-slate-100 dark:bg-[#382b5c] text-[#56548c] dark:text-white'
-            : 'text-slate-600 dark:text-[#bdaccf] hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#2a2948]'
+            ? 'bg-purple-50 dark:bg-[#382b5c] text-[#895294] dark:text-white'
+            : 'text-slate-700 dark:text-[#bdaccf] hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#2a2948]'
         }`}
         aria-current={link.active ? 'page' : undefined}
       >
@@ -104,7 +104,7 @@ const navLinks = [
       href="https://www.meetup.com/cyberscotconnect/"
       target="_blank"
       rel="noopener noreferrer"
-      class="block w-full text-center mt-3 px-4 py-2.5 text-sm font-bold text-white bg-gradient-to-r from-[#895294] to-[#56548c] rounded-md shadow-md"
+      class="block w-full text-center mt-4 px-4 py-3 text-sm font-bold text-white bg-gradient-to-r from-[#895294] to-[#56548c] rounded-lg shadow-md"
     >
       Join on Meetup.com ↗
     </a>

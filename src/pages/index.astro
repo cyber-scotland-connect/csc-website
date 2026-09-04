@@ -18,11 +18,8 @@ const upcomingEvents = sortedEvents
   .filter(e => new Date(e.data.date).getTime() >= nowTime)
   .reverse();
 
-const pastEvents = sortedEvents.filter(e => new Date(e.data.date).getTime() < nowTime);
-
-const featuredEvents = upcomingEvents.length > 0 
-  ? upcomingEvents.slice(0, 2)
-  : pastEvents.slice(0, 2);
+const nextMeetup = upcomingEvents[0] || sortedEvents[0];
+const featuredEvents = upcomingEvents.slice(0, 2);
 
 // Fetch partners
 const partners = await getCollection('partners');
@@ -30,85 +27,148 @@ const topPartners = partners.sort((a, b) => a.data.order - b.data.order).slice(0
 ---
 
 <BaseLayout title="Home — Scotland's Grassroots Cyber Security Community">
-  <!-- Hero Section -->
+  <!-- Hero Section with Dual Column on Desktop -->
   <section class="relative overflow-hidden bg-gradient-to-b from-slate-50 via-white to-slate-50 dark:from-[#21203a] dark:via-[#2a2948] dark:to-[#21203a] py-16 sm:py-24 border-b border-slate-200 dark:border-[#3e3c66] transition-colors">
     <div class="absolute inset-0 opacity-20 dark:opacity-15 pointer-events-none bg-[radial-gradient(#56548c_1px,transparent_1px)] dark:bg-[radial-gradient(#6fb7e6_1px,transparent_1px)] [background-size:24px_24px]"></div>
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-      <div class="max-w-3xl">
-        <!-- Badge -->
-        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-50 dark:bg-[#382b5c] border border-purple-200 dark:border-[#56548c] text-xs font-semibold text-[#56548c] dark:text-[#bdaccf] mb-6 shadow-sm">
-          <span class="w-2 h-2 rounded-full bg-[#56548c] dark:bg-[#6fb7e6] animate-pulse"></span>
-          <span>Grassroots • Inclusive • High-Signal</span>
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        <!-- Left Column: Value Proposition -->
+        <div class="lg:col-span-7">
+          <!-- Announcement Pill -->
+          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-purple-50 dark:bg-[#382b5c] border border-purple-200 dark:border-[#56548c] text-xs font-semibold text-[#895294] dark:text-[#bdaccf] mb-6 shadow-sm">
+            <span class="w-2 h-2 rounded-full bg-[#895294] dark:bg-[#6fb7e6] animate-ping"></span>
+            <span>🏴󠁧󠁢󠁳󠁣󠁴󠁿 Grassroots • Inclusive • High-Signal</span>
+          </div>
+
+          <h1 class="text-4xl sm:text-6xl font-heading font-bold text-slate-900 dark:text-white tracking-tight uppercase leading-tight mb-6 transition-colors">
+            Connecting Scotland's <br />
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#56548c] via-[#895294] to-[#382b5c] dark:from-[#6fb7e6] dark:via-[#bdaccf] dark:to-[#e08be9]">
+              Cyber Security
+            </span> Community
+          </h1>
+
+          <p class="text-lg sm:text-xl text-slate-600 dark:text-[#bdaccf] leading-relaxed mb-8 max-w-2xl transition-colors">
+            Cyber Scotland Connect (CSC) unites security practitioners, students, researchers, career switchers, and enthusiasts across Scotland. Free, volunteer-run, and grounded in practical defense.
+          </p>
+
+          <!-- Action Buttons -->
+          <div class="flex flex-wrap items-center gap-4">
+            <a
+              href={`${base}/events`}
+              class="px-6 py-3.5 rounded-xl text-base font-bold text-white bg-[#895294] hover:bg-[#9d5fa8] shadow-lg shadow-[#895294]/25 hover:shadow-xl hover:-translate-y-0.5 transition-all flex items-center gap-2 focus:ring-2 focus:ring-[#6fb7e6]"
+            >
+              <span>Explore Meetups</span>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              </svg>
+            </a>
+
+            <a
+              href="https://www.meetup.com/cyberscotconnect/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="px-6 py-3.5 rounded-xl text-base font-bold text-slate-800 dark:text-white bg-white dark:bg-[#2a2948] hover:bg-slate-50 dark:hover:bg-[#382b5c] border border-slate-300 dark:border-[#56548c] shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all flex items-center gap-2 focus:ring-2 focus:ring-[#6fb7e6]"
+            >
+              <span>Join on Meetup (1,500+ Members)</span> ↗
+            </a>
+          </div>
         </div>
 
-        <h1 class="text-4xl sm:text-6xl font-heading font-bold text-slate-900 dark:text-white tracking-tight uppercase leading-tight mb-6 transition-colors">
-          Connecting Scotland's <br />
-          <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#56548c] via-[#895294] to-[#382b5c] dark:from-[#6fb7e6] dark:via-[#bdaccf] dark:to-[#e08be9]">
-            Cyber Security
-          </span> Community
-        </h1>
+        <!-- Right Column: Next Gathering Spotlight Card -->
+        {nextMeetup && (
+          <div class="lg:col-span-5">
+            <div class="bg-white dark:bg-[#2a2948] p-7 rounded-2xl border-2 border-[#895294] dark:border-[#56548c] shadow-xl relative">
+              <div class="absolute -top-3.5 right-6 bg-[#895294] text-white text-[11px] uppercase font-bold tracking-wider px-3 py-1 rounded-full shadow">
+                Next Upcoming Gathering
+              </div>
 
-        <p class="text-lg sm:text-xl text-slate-600 dark:text-[#bdaccf] leading-relaxed mb-8 transition-colors">
-          Cyber Scotland Connect (CSC) unites security practitioners, students, researchers, career switchers, and enthusiasts across Scotland. Free, volunteer-run, and grounded in practical defense.
-        </p>
+              <div class="flex items-center gap-2 text-xs font-semibold text-[#895294] dark:text-[#6fb7e6] mb-3">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span>{nextMeetup.data.city} Chapter · In-Person</span>
+              </div>
 
-        <!-- CTA Buttons -->
-        <div class="flex flex-wrap items-center gap-4">
-          <a
-            href={`${base}/events`}
-            class="px-6 py-3.5 rounded-lg text-base font-bold text-white bg-[#895294] hover:bg-[#9d5fa8] shadow-lg shadow-[#895294]/20 transition-all flex items-center gap-2 focus:ring-2 focus:ring-[#6fb7e6]"
-          >
-            <span>Explore Events</span>
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-            </svg>
-          </a>
+              <h3 class="text-2xl font-heading font-bold text-slate-900 dark:text-white mb-3">
+                <a href={`${base}/events/${nextMeetup.slug}`} class="hover:underline">
+                  {nextMeetup.data.title}
+                </a>
+              </h3>
 
-          <a
-            href="https://www.meetup.com/cyberscotconnect/"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="px-6 py-3.5 rounded-lg text-base font-bold text-slate-800 dark:text-white bg-white dark:bg-[#2a2948] hover:bg-slate-50 dark:hover:bg-[#382b5c] border border-slate-300 dark:border-[#56548c] shadow-sm transition-all flex items-center gap-2 focus:ring-2 focus:ring-[#6fb7e6]"
-          >
-            <span>Join on Meetup (1,500+ Members)</span> ↗
-          </a>
-        </div>
+              <div class="space-y-2 text-xs sm:text-sm text-slate-600 dark:text-[#bdaccf] mb-6">
+                <div class="flex items-center gap-2">
+                  <svg class="w-4 h-4 text-[#895294]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                  <span class="font-medium text-slate-900 dark:text-white">
+                    {new Date(nextMeetup.data.date).toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' })}
+                  </span>
+                  {nextMeetup.data.time && <span>({nextMeetup.data.time})</span>}
+                </div>
+                <div class="flex items-center gap-2">
+                  <svg class="w-4 h-4 text-[#56548c] dark:text-[#6fb7e6]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                  </svg>
+                  <span class="truncate">{nextMeetup.data.location}</span>
+                </div>
+              </div>
+
+              <div class="pt-4 border-t border-slate-100 dark:border-[#3e3c66] flex items-center justify-between">
+                <a
+                  href={`${base}/events/${nextMeetup.slug}`}
+                  class="text-xs font-bold text-[#895294] dark:text-[#6fb7e6] hover:underline"
+                >
+                  View Talk Abstracts →
+                </a>
+                <a
+                  href={nextMeetup.data.meetupUrl || 'https://www.meetup.com/cyberscotconnect/'}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="px-4 py-2 bg-[#895294] hover:bg-[#9d5fa8] text-white text-xs font-bold rounded-lg shadow transition-all"
+                >
+                  RSVP on Meetup ↗
+                </a>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   </section>
 
-  <!-- Core Ethos: The "Zero-Sales" Rule -->
-  <section class="py-12 bg-slate-50 dark:bg-[#1b1a30] border-b border-slate-200 dark:border-[#3e3c66] transition-colors">
+  <!-- Core Ethos: The 3 Pillars -->
+  <section class="py-14 bg-slate-50 dark:bg-[#1b1a30] border-b border-slate-200 dark:border-[#3e3c66] transition-colors">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="p-6 rounded-xl bg-white dark:bg-[#2a2948]/70 border border-slate-200 dark:border-[#3e3c66] shadow-sm">
-          <div class="w-10 h-10 rounded-lg bg-[#895294]/15 text-[#895294] flex items-center justify-center font-bold text-lg mb-3">
+        <!-- Pillar 1 -->
+        <div class="p-7 rounded-2xl bg-white dark:bg-[#2a2948]/80 border border-slate-200 dark:border-[#3e3c66] border-t-4 border-t-[#895294] shadow-sm hover:shadow-md transition-shadow">
+          <div class="w-12 h-12 rounded-xl bg-purple-100 dark:bg-[#895294]/20 text-[#895294] flex items-center justify-center font-bold text-xl mb-4">
             🎯
           </div>
-          <h2 class="text-lg font-heading font-bold text-slate-900 dark:text-white mb-2">High-Signal, Zero-Sales</h2>
+          <h2 class="text-xl font-heading font-bold text-slate-900 dark:text-white mb-2.5">High-Signal, Zero-Sales</h2>
           <p class="text-sm text-slate-600 dark:text-[#bdaccf] leading-relaxed">
-            Strict anti-pitch ban. Talks must focus on open methodologies, operational strategies, detection engineering, and hard failure retrospectives.
+            Strict anti-pitch ban. Talks focus entirely on defensive architectures, operational detection engineering, threat intelligence, and hard lessons from real failures.
           </p>
         </div>
 
-        <div class="p-6 rounded-xl bg-white dark:bg-[#2a2948]/70 border border-slate-200 dark:border-[#3e3c66] shadow-sm">
-          <div class="w-10 h-10 rounded-lg bg-[#56548c]/15 text-[#56548c] dark:text-[#6fb7e6] flex items-center justify-center font-bold text-lg mb-3">
+        <!-- Pillar 2 -->
+        <div class="p-7 rounded-2xl bg-white dark:bg-[#2a2948]/80 border border-slate-200 dark:border-[#3e3c66] border-t-4 border-t-[#56548c] shadow-sm hover:shadow-md transition-shadow">
+          <div class="w-12 h-12 rounded-xl bg-indigo-100 dark:bg-[#56548c]/20 text-[#56548c] dark:text-[#6fb7e6] flex items-center justify-center font-bold text-xl mb-4">
             🤝
           </div>
-          <h2 class="text-lg font-heading font-bold text-slate-900 dark:text-white mb-2">Radically Welcoming</h2>
+          <h2 class="text-xl font-heading font-bold text-slate-900 dark:text-white mb-2.5">Radically Welcoming</h2>
           <p class="text-sm text-slate-600 dark:text-[#bdaccf] leading-relaxed">
-            From university freshmen and career-switchers to seasoned CISOs. Every venue audited for step-free mobility, induction loops, and safe space standards.
+            Welcoming students, career-switchers, and seasoned leaders alike. Every venue audited for step-free mobility, induction hearing loops, and psychological safety.
           </p>
         </div>
 
-        <div class="p-6 rounded-xl bg-white dark:bg-[#2a2948]/70 border border-slate-200 dark:border-[#3e3c66] shadow-sm">
-          <div class="w-10 h-10 rounded-lg bg-[#6fb7e6]/20 text-[#56548c] dark:text-[#6fb7e6] flex items-center justify-center font-bold text-lg mb-3">
+        <!-- Pillar 3 -->
+        <div class="p-7 rounded-2xl bg-white dark:bg-[#2a2948]/80 border border-slate-200 dark:border-[#3e3c66] border-t-4 border-t-[#6fb7e6] shadow-sm hover:shadow-md transition-shadow">
+          <div class="w-12 h-12 rounded-xl bg-sky-100 dark:bg-[#6fb7e6]/20 text-[#56548c] dark:text-[#6fb7e6] flex items-center justify-center font-bold text-xl mb-4">
             🏴󠁧󠁢󠁳󠁣󠁴󠁿
           </div>
-          <h2 class="text-lg font-heading font-bold text-slate-900 dark:text-white mb-2">Scotland-Wide Network</h2>
+          <h2 class="text-xl font-heading font-bold text-slate-900 dark:text-white mb-2.5">Scotland-Wide Network</h2>
           <p class="text-sm text-slate-600 dark:text-[#bdaccf] leading-relaxed">
-            Coordinating regular gatherings across Edinburgh, Glasgow, Dundee, and virtual streams to break regional silos and connect ecosystem partners.
+            Coordinating quarterly gatherings in Edinburgh, Glasgow, Dundee, and virtual livestreams to connect Scotland's regional cyber ecosystem.
           </p>
         </div>
       </div>
@@ -129,9 +189,9 @@ const topPartners = partners.sort((a, b) => a.data.order - b.data.order).slice(0
 
       <a
         href={`${base}/events`}
-        class="text-[#56548c] dark:text-[#6fb7e6] hover:underline font-semibold text-sm flex items-center gap-1 transition-colors"
+        class="text-[#895294] dark:text-[#6fb7e6] hover:underline font-bold text-sm flex items-center gap-1 transition-colors"
       >
-        <span>View Full Events Calendar</span> →
+        <span>View Full Events Calendar ({allEvents.length})</span> →
       </a>
     </div>
 
@@ -145,7 +205,7 @@ const topPartners = partners.sort((a, b) => a.data.order - b.data.order).slice(0
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
         <div class="lg:col-span-7 space-y-5">
-          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-50 dark:bg-[#382b5c] border border-purple-200 dark:border-[#56548c] text-xs font-semibold text-[#56548c] dark:text-[#6fb7e6]">
+          <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-purple-50 dark:bg-[#382b5c] border border-purple-200 dark:border-[#56548c] text-xs font-bold text-[#895294] dark:text-[#6fb7e6]">
             Our Story & Origins
           </div>
           <h2 class="text-3xl sm:text-4xl font-heading font-bold text-slate-900 dark:text-white uppercase tracking-tight transition-colors">
@@ -160,7 +220,7 @@ const topPartners = partners.sort((a, b) => a.data.order - b.data.order).slice(0
           <div class="pt-2">
             <a
               href={`${base}/leaders`}
-              class="text-sm font-semibold text-[#56548c] dark:text-[#6fb7e6] hover:underline inline-flex items-center gap-1 transition-colors"
+              class="text-sm font-bold text-[#895294] dark:text-[#6fb7e6] hover:underline inline-flex items-center gap-1 transition-colors"
             >
               <span>Meet our volunteer moderators and founders</span> →
             </a>
@@ -170,7 +230,7 @@ const topPartners = partners.sort((a, b) => a.data.order - b.data.order).slice(0
         <div class="lg:col-span-5 bg-white dark:bg-[#2a2948] p-8 rounded-2xl border border-slate-200 dark:border-[#3e3c66] shadow-xl text-center transition-colors">
           <div class="w-24 h-24 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-[#895294] via-[#56548c] to-[#6fb7e6] p-1 flex items-center justify-center shadow-lg">
             <div class="w-full h-full bg-slate-50 dark:bg-[#21203a] rounded-xl flex items-center justify-center transition-colors">
-              <svg class="w-12 h-12 text-[#56548c] dark:text-[#6fb7e6]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <svg class="w-12 h-12 text-[#895294] dark:text-[#6fb7e6]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v8" />
                 <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h8" />
@@ -185,7 +245,7 @@ const topPartners = partners.sort((a, b) => a.data.order - b.data.order).slice(0
             href="https://www.meetup.com/cyberscotconnect/"
             target="_blank"
             rel="noopener noreferrer"
-            class="w-full block py-3 px-4 rounded-lg bg-[#895294] hover:bg-[#9d5fa8] text-white font-bold text-sm shadow-md transition-all"
+            class="w-full block py-3 px-4 rounded-xl bg-[#895294] hover:bg-[#9d5fa8] text-white font-bold text-sm shadow-md hover:shadow-lg transition-all"
           >
             RSVP for Next Meetup
           </a>
@@ -208,7 +268,7 @@ const topPartners = partners.sort((a, b) => a.data.order - b.data.order).slice(0
 
       <a
         href={`${base}/partners`}
-        class="text-[#56548c] dark:text-[#6fb7e6] hover:underline font-semibold text-sm flex items-center gap-1 transition-colors"
+        class="text-[#895294] dark:text-[#6fb7e6] hover:underline font-bold text-sm flex items-center gap-1 transition-colors"
       >
         <span>View All Supporters</span> →
       </a>
