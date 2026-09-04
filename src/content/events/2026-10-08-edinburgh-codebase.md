@@ -3,6 +3,7 @@ title: "CSC Edinburgh Meetup: Refactoring the Enterprise & UK Post-Quantum Crypt
 date: 2026-10-08
 time: "17:30 – 19:30 BST (Social from 19:30+)"
 location: "CodeBase Edinburgh, 37a Castle Terrace, Edinburgh EH1 2EL"
+locationUrl: "https://maps.app.goo.gl/3Fk8TNPhqXYdSLkc9"
 city: "Edinburgh"
 isPartnerEvent: false
 featured: true

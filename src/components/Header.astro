@@ -7,9 +7,10 @@ const pathname = Astro.url.pathname.replace(/\/$/, '') || '/';
 const navLinks = [
   { href: `${base}/`, label: 'Home', active: pathname === `${base}` || pathname === '/' },
   { href: `${base}/events`, label: 'Events', active: pathname.startsWith(`${base}/events`) },
+  { href: `${base}/speakers`, label: 'Speakers', active: pathname.startsWith(`${base}/speakers`) },
   { href: `${base}/leaders`, label: 'Leadership', active: pathname === `${base}/leaders` },
-  { href: `${base}/partners`, label: 'Partners & Sponsors', active: pathname === `${base}/partners` },
-  { href: `${base}/code-of-conduct`, label: 'Code of Conduct', active: pathname === `${base}/code-of-conduct` },
+  { href: `${base}/partners`, label: 'Partners', active: pathname === `${base}/partners` },
+  { href: `${base}/faq`, label: 'FAQ', active: pathname === `${base}/faq` },
 ];
 ---
 

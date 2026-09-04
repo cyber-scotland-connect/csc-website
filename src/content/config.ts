@@ -7,6 +7,7 @@ const eventsCollection = defineCollection({
     date: z.coerce.date(),
     time: z.string().optional(),
     location: z.string(),
+    locationUrl: z.string().url().optional(),
     city: z.enum(['Edinburgh', 'Glasgow', 'Dundee', 'Virtual', 'Aberdeen', 'Scotland-wide']),
     isPartnerEvent: z.boolean().default(false),
     partnerName: z.string().optional(),

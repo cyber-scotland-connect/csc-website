@@ -24,6 +24,7 @@ const formattedDate = eventDate.toLocaleDateString('en-GB', {
   month: 'long',
   year: 'numeric',
 });
+const mapsUrl = data.locationUrl || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(data.location)}`;
 ---
 
 <BaseLayout title={data.title} description={`Cyber Scotland Connect gathering in ${data.city} on ${formattedDate}`}>
@@ -69,7 +70,18 @@ const formattedDate = eventDate.toLocaleDateString('en-GB', {
         <div class="space-y-1">
           <span class="text-xs uppercase text-slate-500 dark:text-slate-400 font-semibold block">Venue & Location</span>
           <p class="font-medium text-slate-900 dark:text-white text-base">{data.location}</p>
-          <p class="text-xs text-slate-500 dark:text-[#bdaccf]">Physical Gathering ({data.city})</p>
+          <div class="flex items-center gap-2 pt-1 text-xs">
+            <span class="text-slate-500 dark:text-[#bdaccf]">Physical Gathering ({data.city})</span>
+            <span>•</span>
+            <a
+              href={mapsUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="font-semibold text-[#895294] dark:text-[#6fb7e6] hover:underline inline-flex items-center gap-0.5"
+            >
+              <span>View on Google Maps</span> 📍 ↗
+            </a>
+          </div>
         </div>
       </div>
 
