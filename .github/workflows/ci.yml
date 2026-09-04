@@ -27,20 +27,16 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  audit:
-    name: Dependency Audit
+  dependency-review:
+    name: Dependency Review
     runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: latest
-
-      - name: Audit Dependencies
-        run: bun pm audit
+      - name: Dependency Review
+        uses: actions/dependency-review-action@v4
 
   build-and-lint:
     name: Lint, Typecheck & Static Build
