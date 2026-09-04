@@ -21,7 +21,7 @@ If you believe you have found a security vulnerability or security misconfigurat
 1. **GitHub Private Vulnerability Reporting:**  
    Navigate to the [Security Advisory Tab](https://github.com/cyber-scotland-connect/csc-website/security/advisories/new) and submit a confidential report.
 2. **Direct Maintainer Contact:**  
-   If you cannot use GitHub Advisories, contact the repository maintainers via security@cyberscotlandconnect.com or reach out directly to the core organizing team on our community channels.
+   If you cannot use GitHub Advisories, contact the repository maintainers via hello@cyberscotlandconnect.com or reach out directly to the core organizing team on our community channels.
 
 ### Report Guidelines
 Please include as much detail as possible to help us understand and resolve the issue quickly:
