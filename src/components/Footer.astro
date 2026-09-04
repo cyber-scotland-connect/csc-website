@@ -27,12 +27,12 @@ const currentYear = new Date().getFullYear();
         <p class="text-sm text-slate-600 dark:text-[#bdaccf] max-w-md leading-relaxed">
           An inclusive, grassroots community connecting cyber security practitioners, students, researchers, career switchers, and enthusiasts across Scotland. High-signal, zero-sales.
         </p>
-        <div class="flex items-center gap-4 pt-1">
+        <div class="flex flex-wrap items-center gap-4 pt-1 text-sm font-semibold">
           <a
             href="https://www.meetup.com/cyberscotconnect/"
             target="_blank"
             rel="noopener noreferrer"
-            class="text-[#895294] dark:text-[#6fb7e6] hover:underline transition-colors text-sm flex items-center gap-1 font-semibold"
+            class="text-[#895294] dark:text-[#6fb7e6] hover:underline transition-colors flex items-center gap-1"
           >
             <span>Meetup</span> ↗
           </a>
@@ -40,7 +40,7 @@ const currentYear = new Date().getFullYear();
             href="https://www.linkedin.com/company/cyber-scotland-connect/"
             target="_blank"
             rel="noopener noreferrer"
-            class="text-[#895294] dark:text-[#6fb7e6] hover:underline transition-colors text-sm flex items-center gap-1 font-semibold"
+            class="text-[#895294] dark:text-[#6fb7e6] hover:underline transition-colors flex items-center gap-1"
           >
             <span>LinkedIn</span> ↗
           </a>
@@ -48,9 +48,17 @@ const currentYear = new Date().getFullYear();
             href="https://github.com/cyber-scotland-connect/csc-website"
             target="_blank"
             rel="noopener noreferrer"
-            class="text-[#895294] dark:text-[#6fb7e6] hover:underline transition-colors text-sm flex items-center gap-1 font-semibold"
+            class="text-[#895294] dark:text-[#6fb7e6] hover:underline transition-colors flex items-center gap-1"
           >
             <span>GitHub</span> ↗
+          </a>
+          <a
+            href="https://discord.gg/cyberscotlandconnect"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-[#895294] dark:text-[#6fb7e6] hover:underline transition-colors flex items-center gap-1"
+          >
+            <span>Discord</span> ↗
           </a>
         </div>
       </div>
@@ -63,6 +71,7 @@ const currentYear = new Date().getFullYear();
           <li><a href={`${base}/events`} class="hover:text-slate-900 dark:hover:text-white transition-colors">Events & Meetups</a></li>
           <li><a href={`${base}/leaders`} class="hover:text-slate-900 dark:hover:text-white transition-colors">Leadership & Mods</a></li>
           <li><a href={`${base}/partners`} class="hover:text-slate-900 dark:hover:text-white transition-colors">Partners & Sponsors</a></li>
+          <li><a href={`${base}/brand`} class="hover:text-slate-900 dark:hover:text-white transition-colors">Brand & Media Kit</a></li>
         </ul>
       </div>
 

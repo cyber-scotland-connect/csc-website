@@ -1,0 +1,255 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const brandColors = [
+  { name: 'Deep Purple', hex: '#21203a', rgb: 'rgb(32, 31, 57)', role: 'Primary background, high-contrast dark surfaces, primary heading text.' },
+  { name: 'Lilac', hex: '#56548c', rgb: 'rgb(85, 86, 133)', role: 'Primary brand accent, button backgrounds, interactive states, borders.' },
+  { name: 'Pink / Magenta', hex: '#895294', rgb: 'rgb(137, 82, 148)', role: 'Vibrant highlight, badge fills, active states, callouts.' },
+  { name: 'Electric Cyan', hex: '#6fb7e6', rgb: 'rgb(113, 183, 230)', role: 'Highlighting technical terms, focus rings, info callouts.' },
+  { name: 'Deep Indigo', hex: '#382b5c', rgb: 'rgb(55, 43, 92)', role: 'Elevated card backgrounds, dark mode surfaces.' },
+  { name: 'Soft Lavender', hex: '#bdaccf', rgb: 'rgb(189, 172, 207)', role: 'Secondary text on dark backgrounds, subtle tags.' },
+];
+
+const assets = [
+  {
+    title: 'Horizontal Logo (Full Color)',
+    file: 'logo-fullcolor-horizontal.png',
+    desc: 'Primary logo for light backgrounds, slides, and web headers.',
+    bg: 'bg-white',
+    darkFile: false,
+  },
+  {
+    title: 'Horizontal Logo (White)',
+    file: 'logo-white-horizontal.png',
+    desc: 'Primary logo for dark backgrounds, video overlays, and dark mode UI.',
+    bg: 'bg-[#21203a]',
+    darkFile: true,
+  },
+  {
+    title: 'Stacked Logo (Full Color)',
+    file: 'logo-fullcolor-stacked.png',
+    desc: 'Square/portrait emblem for conference programs, posters, and print.',
+    bg: 'bg-white',
+    darkFile: false,
+  },
+  {
+    title: 'Stacked Logo (White)',
+    file: 'logo-white-stacked.png',
+    desc: 'White stacked emblem for dark conference slides and merchandise.',
+    bg: 'bg-[#21203a]',
+    darkFile: true,
+  },
+  {
+    title: 'Shield Icon (Full Color)',
+    file: 'icon-fullcolor.png',
+    desc: 'Standalone Fragmented Shield brand icon.',
+    bg: 'bg-white',
+    darkFile: false,
+  },
+  {
+    title: 'Shield Icon (Lilac)',
+    file: 'icon-lilac.png',
+    desc: 'Monochrome Lilac shield mark.',
+    bg: 'bg-[#21203a]',
+    darkFile: true,
+  },
+  {
+    title: 'Shield Icon (Pink)',
+    file: 'icon-pink.png',
+    desc: 'Vibrant Magenta Pink shield mark.',
+    bg: 'bg-[#21203a]',
+    darkFile: true,
+  },
+  {
+    title: 'LinkedIn & Social Banner Mark',
+    file: 'icon-linkedin.png',
+    desc: 'Sized and optimized for social sharing and platform avatars.',
+    bg: 'bg-[#21203a]',
+    darkFile: true,
+  },
+];
+---
+
+<BaseLayout 
+  title="Brand Guidelines & Media Kit" 
+  description="Official Cyber Scotland Connect logos, brand assets, color specifications, and clearspace rules for speakers and partners."
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <!-- Header -->
+    <div class="border-b border-slate-200 dark:border-[#3e3c66] pb-8 mb-12 transition-colors">
+      <span class="text-xs font-semibold uppercase tracking-wider text-[#895294] dark:text-[#6fb7e6] block mb-1">
+        Media Kit & Lookbook
+      </span>
+      <h1 class="text-3xl sm:text-5xl font-heading font-bold text-slate-900 dark:text-white uppercase tracking-tight transition-colors">
+        Brand Guidelines & Assets
+      </h1>
+      <p class="text-slate-600 dark:text-[#bdaccf] text-base mt-2 max-w-3xl transition-colors">
+        Official visual assets, brand specifications, and usage standards for conference organizers, meetup partners, and community speakers.
+      </p>
+    </div>
+
+    <!-- The Mark & Story -->
+    <section class="mb-16 bg-white dark:bg-[#2a2948] p-8 sm:p-10 rounded-2xl border border-slate-200 dark:border-[#3e3c66] shadow-sm">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        <div class="lg:col-span-8 space-y-4">
+          <span class="text-xs font-bold uppercase tracking-wider text-[#895294] dark:text-[#6fb7e6]">
+            Symbolism & Design Concept
+          </span>
+          <h2 class="text-2xl sm:text-3xl font-heading font-bold text-slate-900 dark:text-white uppercase">
+            The Fragmented Shield
+          </h2>
+          <p class="text-sm sm:text-base text-slate-600 dark:text-[#bdaccf] leading-relaxed">
+            Designed by <strong>Sophie Lanc</strong>, the mark embodies individuals from across varied cyber security disciplines, sectors, and Scottish regions uniting to forge a stronger collective community.
+          </p>
+          <p class="text-sm text-slate-600 dark:text-[#bdaccf] leading-relaxed">
+            The intertwining geometry also pays homage to co-founders <strong>Harry McLaren</strong> and <strong>Stu Hirst</strong>, who merged two regional Scottish meetups under the single unified Cyber Scotland Connect banner.
+          </p>
+        </div>
+
+        <div class="lg:col-span-4 flex justify-center">
+          <img 
+            src={`${base}/branding/icon-fullcolor.png`} 
+            alt="CSC Fragmented Shield Icon" 
+            class="w-36 h-36 object-contain drop-shadow-xl"
+            width="144"
+            height="144"
+          />
+        </div>
+      </div>
+    </section>
+
+    <!-- Usage & Clearspace Rules -->
+    <section class="mb-16">
+      <h2 class="text-2xl font-heading font-bold text-slate-900 dark:text-white uppercase tracking-wide mb-6">
+        Usage & Clearspace Standards
+      </h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="p-6 rounded-2xl bg-white dark:bg-[#2a2948] border border-slate-200 dark:border-[#3e3c66] shadow-sm">
+          <span class="text-2xl mb-2 block">📐</span>
+          <h3 class="text-lg font-heading font-bold text-slate-900 dark:text-white mb-2">Clearspace Rule</h3>
+          <p class="text-xs sm:text-sm text-slate-600 dark:text-[#bdaccf] leading-relaxed">
+            The exclusion zone around the mark must equal at least <strong>half the logo's height</strong>. Never place text or contrasting graphic elements inside this perimeter.
+          </p>
+        </div>
+
+        <div class="p-6 rounded-2xl bg-white dark:bg-[#2a2948] border border-slate-200 dark:border-[#3e3c66] shadow-sm">
+          <span class="text-2xl mb-2 block">📏</span>
+          <h3 class="text-lg font-heading font-bold text-slate-900 dark:text-white mb-2">Minimum Display Size</h3>
+          <p class="text-xs sm:text-sm text-slate-600 dark:text-[#bdaccf] leading-relaxed">
+            Minimum height is <strong>24px</strong> for standalone icons, and <strong>32px</strong> for horizontal lockups with text to ensure legibility across all screen densities.
+          </p>
+        </div>
+
+        <div class="p-6 rounded-2xl bg-white dark:bg-[#2a2948] border border-slate-200 dark:border-[#3e3c66] shadow-sm">
+          <span class="text-2xl mb-2 block">🎨</span>
+          <h3 class="text-lg font-heading font-bold text-slate-900 dark:text-white mb-2">Background Contrast</h3>
+          <p class="text-xs sm:text-sm text-slate-600 dark:text-[#bdaccf] leading-relaxed">
+            Always use the <strong>White</strong> logo variant on dark purple or high-density backgrounds, and the <strong>Full Color</strong> variant on white or light surfaces.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Official Color Palette -->
+    <section class="mb-16">
+      <h2 class="text-2xl font-heading font-bold text-slate-900 dark:text-white uppercase tracking-wide mb-6">
+        Color Palette & Tokens
+      </h2>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {brandColors.map(color => (
+          <div class="bg-white dark:bg-[#2a2948] rounded-2xl border border-slate-200 dark:border-[#3e3c66] overflow-hidden shadow-sm">
+            <div class="h-20 w-full" style={`background-color: ${color.hex};`}></div>
+            <div class="p-5 space-y-2">
+              <div class="flex items-center justify-between">
+                <h3 class="font-heading font-bold text-slate-900 dark:text-white text-base">{color.name}</h3>
+                <code class="text-xs font-mono font-bold px-2 py-0.5 rounded bg-slate-100 dark:bg-[#21203a] text-[#895294] dark:text-[#6fb7e6]">
+                  {color.hex}
+                </code>
+              </div>
+              <p class="text-xs text-slate-500 dark:text-slate-400 font-mono">{color.rgb}</p>
+              <p class="text-xs text-slate-600 dark:text-[#bdaccf] leading-relaxed pt-1 border-t border-slate-100 dark:border-[#3e3c66]/60">
+                {color.role}
+              </p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Downloadable Assets Grid -->
+    <section class="mb-16">
+      <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+        <div>
+          <h2 class="text-2xl font-heading font-bold text-slate-900 dark:text-white uppercase tracking-wide">
+            Downloadable High-Res Assets
+          </h2>
+          <p class="text-sm text-slate-600 dark:text-[#bdaccf]">
+            Transparent PNG assets suitable for web, slide decks, and print.
+          </p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {assets.map(asset => (
+          <div class="bg-white dark:bg-[#2a2948] rounded-2xl border border-slate-200 dark:border-[#3e3c66] p-5 shadow-sm flex flex-col justify-between group hover:border-[#895294] transition-all">
+            <div>
+              <div class={`h-36 rounded-xl ${asset.bg} border border-slate-200 dark:border-[#3e3c66] p-4 flex items-center justify-center mb-4 shadow-inner`}>
+                <img 
+                  src={`${base}/branding/${asset.file}`} 
+                  alt={asset.title} 
+                  class="max-h-full max-w-full object-contain" 
+                  loading="lazy"
+                />
+              </div>
+
+              <h3 class="font-heading font-bold text-sm text-slate-900 dark:text-white mb-1">
+                {asset.title}
+              </h3>
+              <p class="text-xs text-slate-600 dark:text-[#bdaccf] mb-4 leading-relaxed">
+                {asset.desc}
+              </p>
+            </div>
+
+            <div class="pt-3 border-t border-slate-100 dark:border-[#3e3c66]">
+              <a
+                href={`${base}/branding/${asset.file}`}
+                download={asset.file}
+                class="w-full inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg bg-slate-100 hover:bg-[#895294] hover:text-white dark:bg-[#21203a] dark:hover:bg-[#895294] text-slate-800 dark:text-white text-xs font-bold transition-all shadow-sm"
+              >
+                <span>Download PNG</span> ↓
+              </a>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Community Channels Notice -->
+    <div class="bg-slate-50 dark:bg-[#1b1a30] rounded-2xl border border-slate-200 dark:border-[#3e3c66] p-8 text-center max-w-2xl mx-auto">
+      <h3 class="text-lg font-heading font-bold text-slate-900 dark:text-white uppercase mb-2">
+        Official Community Channels
+      </h3>
+      <p class="text-xs sm:text-sm text-slate-600 dark:text-[#bdaccf] mb-6">
+        Cyber Scotland Connect operates exclusively on our primary community platforms:
+      </p>
+      <div class="flex flex-wrap items-center justify-center gap-4 text-xs font-bold">
+        <a href="https://www.meetup.com/cyberscotconnect/" target="_blank" rel="noopener noreferrer" class="px-4 py-2 rounded-lg bg-[#895294] text-white hover:bg-[#9d5fa8] transition-colors">
+          Meetup ↗
+        </a>
+        <a href="https://www.linkedin.com/company/cyber-scotland-connect/" target="_blank" rel="noopener noreferrer" class="px-4 py-2 rounded-lg bg-[#56548c] text-white hover:bg-[#6764a8] transition-colors">
+          LinkedIn ↗
+        </a>
+        <a href="https://github.com/cyber-scotland-connect/csc-website" target="_blank" rel="noopener noreferrer" class="px-4 py-2 rounded-lg bg-slate-200 dark:bg-[#2a2948] text-slate-900 dark:text-white hover:bg-slate-300 dark:hover:bg-[#382b5c] transition-colors">
+          GitHub ↗
+        </a>
+        <a href="https://discord.gg/cyberscotlandconnect" target="_blank" rel="noopener noreferrer" class="px-4 py-2 rounded-lg bg-[#5865F2] text-white hover:opacity-90 transition-opacity">
+          Discord ↗
+        </a>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
