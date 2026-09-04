@@ -180,5 +180,22 @@ const formattedDate = eventDate.toLocaleDateString('en-GB', {
     <section class="prose prose-slate dark:prose-invert max-w-none text-slate-700 dark:text-[#bdaccf] prose-headings:font-heading prose-headings:text-slate-900 dark:prose-headings:text-white prose-a:text-[#56548c] dark:prose-a:text-[#6fb7e6] pt-6 border-t border-slate-200 dark:border-[#3e3c66]">
       <Content />
     </section>
+
+    <!-- Standardized Community Code of Conduct Link -->
+    <div class="mt-12 p-6 rounded-2xl bg-slate-50 dark:bg-[#1b1a30] border border-slate-200 dark:border-[#3e3c66] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-xs text-slate-600 dark:text-[#bdaccf] transition-colors">
+      <div class="flex items-center gap-3">
+        <span class="text-2xl" aria-hidden="true">🛡️</span>
+        <div>
+          <span class="font-bold text-slate-900 dark:text-white block text-sm">Community Code of Conduct</span>
+          <span>All attendees, speakers, and organizers are required to uphold our inclusive community standards.</span>
+        </div>
+      </div>
+      <a
+        href={`${base}/code-of-conduct`}
+        class="shrink-0 px-4 py-2 rounded-lg bg-white dark:bg-[#2a2948] hover:bg-slate-100 dark:hover:bg-[#382b5c] border border-slate-300 dark:border-[#56548c] text-slate-800 dark:text-white font-semibold transition-colors"
+      >
+        Read Code of Conduct →
+      </a>
+    </div>
   </article>
 </BaseLayout>

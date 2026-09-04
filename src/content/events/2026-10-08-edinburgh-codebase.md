@@ -44,9 +44,4 @@ Cyber Scotland Connect is thrilled to announce our next event in Central Edinbur
 
 A massive thank you to [Cyera UK](https://www.cyera.com/) for supporting this gathering and sponsoring the community social following the talks! We will be heading across to **BrewDog Lothian Road** right after the talks wrap at 19:30 for drinks, conversation, and networking.
 
----
-
-### 🛡️ Community Code of Conduct
-
-Please ensure you have reviewed our [Code of Conduct](https://cyber-scotland-connect.github.io/csc-website/code-of-conduct), which outlines our expectations for all participants in our community and the consequences for unacceptable behaviour. We are committed to providing a harassment-free, friendly, and welcoming experience for all.
 
