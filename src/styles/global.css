@@ -61,14 +61,167 @@
     --accent-glow: rgba(111, 183, 230, 0.15);
   }
 
-  /* High Contrast Mode */
+  /* ==========================================================================
+     High Contrast Mode (Dark & Light)
+     ========================================================================== */
   html.high-contrast {
+    --bg-primary: #000000;
+    --bg-secondary: #000000;
+    --bg-tertiary: #000000;
+    --bg-card: #000000;
+    --bg-card-hover: #111111;
     --border-color: #ffffff;
-    --border-highlight: #6fb7e6;
+    --border-highlight: #ffff00;
+    --text-primary: #ffffff;
+    --text-secondary: #ffffff;
+    --text-muted: #e2e8f0;
   }
+
+  html.high-contrast body {
+    background-color: #000000 !important;
+    color: #ffffff !important;
+  }
+
+  /* High contrast surfaces, containers, cards, headers, footers */
+  html.high-contrast article,
+  html.high-contrast nav,
+  html.high-contrast aside,
+  html.high-contrast header,
+  html.high-contrast footer,
+  html.high-contrast .bg-white,
+  html.high-contrast .bg-slate-50,
+  html.high-contrast .bg-slate-100,
+  html.high-contrast [class*="dark:bg-[#2a2948]"],
+  html.high-contrast [class*="dark:bg-[#21203a]"],
+  html.high-contrast [class*="dark:bg-[#1b1a30]"],
+  html.high-contrast [class*="dark:bg-[#252440]"] {
+    background-color: #000000 !important;
+    color: #ffffff !important;
+    border-color: #ffffff !important;
+  }
+
+  /* Force strong visible borders in high contrast */
+  html.high-contrast [class*="border-"],
+  html.high-contrast [class*="dark:border-"] {
+    border-color: #ffffff !important;
+  }
+
+  html.high-contrast [class*="rounded-"] {
+    border-width: 2px !important;
+  }
+
+  /* Text elements in high contrast */
+  html.high-contrast p,
+  html.high-contrast span:not(.size-btn):not(#contrast-toggle-label):not(#font-toggle-label),
+  html.high-contrast li,
+  html.high-contrast div {
+    color: #ffffff !important;
+  }
+
+  html.high-contrast h1,
+  html.high-contrast h2,
+  html.high-contrast h3,
+  html.high-contrast h4 {
+    color: #ffffff !important;
+  }
+
+  /* Highly visible hyperlinks with electric yellow */
+  html.high-contrast a:not([class*="bg-"]) {
+    color: #ffff00 !important;
+    text-decoration: underline !important;
+    text-underline-offset: 3px !important;
+    font-weight: 700 !important;
+  }
+
+  html.high-contrast a:hover,
+  html.high-contrast a:focus {
+    background-color: #ffff00 !important;
+    color: #000000 !important;
+    outline: 2px solid #ffffff !important;
+  }
+
+  /* Buttons in high contrast */
+  html.high-contrast button {
+    border: 2px solid #ffffff !important;
+    color: #ffffff !important;
+  }
+
+  html.high-contrast button:hover,
+  html.high-contrast button:focus {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    outline: 2px solid #ffff00 !important;
+  }
+
+  /* Light Theme High Contrast */
   html.light.high-contrast {
+    --bg-primary: #ffffff;
+    --bg-secondary: #ffffff;
+    --bg-tertiary: #ffffff;
+    --bg-card: #ffffff;
+    --bg-card-hover: #f0f0f0;
     --border-color: #000000;
-    --border-highlight: #21203a;
+    --border-highlight: #0000ee;
+    --text-primary: #000000;
+    --text-secondary: #000000;
+    --text-muted: #1a1a1a;
+  }
+
+  html.light.high-contrast body {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+  }
+
+  html.light.high-contrast article,
+  html.light.high-contrast nav,
+  html.light.high-contrast aside,
+  html.light.high-contrast header,
+  html.light.high-contrast footer,
+  html.light.high-contrast .bg-white,
+  html.light.high-contrast .bg-slate-50,
+  html.light.high-contrast .bg-slate-100 {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    border-color: #000000 !important;
+  }
+
+  html.light.high-contrast [class*="border-"] {
+    border-color: #000000 !important;
+  }
+
+  html.light.high-contrast p,
+  html.light.high-contrast span:not(.size-btn),
+  html.light.high-contrast li,
+  html.light.high-contrast div,
+  html.light.high-contrast h1,
+  html.light.high-contrast h2,
+  html.light.high-contrast h3,
+  html.light.high-contrast h4 {
+    color: #000000 !important;
+  }
+
+  html.light.high-contrast a:not([class*="bg-"]) {
+    color: #0000ee !important;
+    text-decoration: underline !important;
+    text-underline-offset: 3px !important;
+    font-weight: 700 !important;
+  }
+
+  html.light.high-contrast a:hover,
+  html.light.high-contrast a:focus {
+    background-color: #000000 !important;
+    color: #ffffff !important;
+  }
+
+  html.light.high-contrast button {
+    border: 2px solid #000000 !important;
+    color: #000000 !important;
+  }
+
+  html.light.high-contrast button:hover,
+  html.light.high-contrast button:focus {
+    background-color: #000000 !important;
+    color: #ffffff !important;
   }
 
   /* Text Sizing Multipliers */
