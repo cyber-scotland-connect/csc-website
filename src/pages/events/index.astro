@@ -114,6 +114,15 @@ const partnerEvents = sortedEvents.filter(e => e.data.isPartnerEvent);
           </div>
         );
       })}
+
+      <!-- Empty state when filter has no matches -->
+      <div id="no-events-msg" class="hidden col-span-full py-12 px-6 text-center bg-slate-50 dark:bg-[#1b1a30] rounded-2xl border border-dashed border-slate-300 dark:border-[#3e3c66]">
+        <span class="text-3xl mb-2 block">📅</span>
+        <h3 class="text-lg font-heading font-bold text-slate-900 dark:text-white uppercase mb-1">No Events Found</h3>
+        <p class="text-sm text-slate-600 dark:text-[#bdaccf] max-w-md mx-auto">
+          There are currently no events matching this filter. Check back soon or follow our <a href="https://www.meetup.com/cyberscotconnect/" target="_blank" rel="noopener noreferrer" class="text-[#895294] dark:text-[#6fb7e6] underline font-semibold">Meetup group</a> for announcements.
+        </p>
+      </div>
     </div>
 
     <!-- Call for Speakers / High-Signal Policy Box -->
@@ -153,6 +162,7 @@ const partnerEvents = sortedEvents.filter(e => e.data.isPartnerEvent);
 <script is:inline>
   const filterBtns = document.querySelectorAll('.filter-btn');
   const eventItems = document.querySelectorAll('.event-item');
+  const noEventsMsg = document.getElementById('no-events-msg');
 
   filterBtns.forEach(btn => {
     btn.addEventListener('click', () => {
@@ -167,6 +177,7 @@ const partnerEvents = sortedEvents.filter(e => e.data.isPartnerEvent);
       btn.setAttribute('aria-selected', 'true');
 
       const filter = btn.getAttribute('data-filter');
+      let visibleCount = 0;
 
       eventItems.forEach(item => {
         const isUp = item.getAttribute('data-is-upcoming') === 'true';
@@ -179,7 +190,16 @@ const partnerEvents = sortedEvents.filter(e => e.data.isPartnerEvent);
         else if (filter === 'csc') show = !isPartner;
 
         item.style.display = show ? 'block' : 'none';
+        if (show) visibleCount++;
       });
+
+      if (noEventsMsg) {
+        if (visibleCount === 0) {
+          noEventsMsg.classList.remove('hidden');
+        } else {
+          noEventsMsg.classList.add('hidden');
+        }
+      }
     });
   });
 </script>
