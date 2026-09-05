@@ -1,0 +1,185 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+interface Book {
+  title: string;
+  author: string;
+  year: string;
+  category: 'Offensive Security' | 'Defensive & Incident Response' | 'Scripting & Automation';
+  description?: string;
+}
+
+const books: Book[] = [
+  // Offensive
+  { title: "The Web Application Hacker's Handbook", author: "Dafydd Stuttard & Marcus Pinto", year: "2011", category: "Offensive Security", description: "The definitive guide to finding and exploiting security flaws in web applications." },
+  { title: "The Browser Hacker's Handbook", author: "Christian Frichot, Michele Orru, Wade Alcorn", year: "2014", category: "Offensive Security", description: "Deep dive into client-side browser exploitation, XSS, and security models." },
+  { title: "Penetration Testing: A Hands-On Introduction", author: "Georgia Weidman", year: "2014", category: "Offensive Security", description: "Core hands-on methodology for practical security testing, lab setup, and exploit development." },
+  { title: "The Hacker Playbook 3: Practical Guide to Penetration Testing", author: "Peter Kim", year: "2018", category: "Offensive Security", description: "Red team tradecraft, evasion techniques, and modern adversary campaigns." },
+  { title: "Nmap Network Scanning", author: "Gordon 'Fyodor' Lyon", year: "2009", category: "Offensive Security", description: "The official master guide to network discovery and vulnerability analysis." },
+  { title: "Metasploit: The Penetration Tester's Guide", author: "Dave Kennedy, Jim O'Gorman, Devon Kearns, Mati Aharoni", year: "2011", category: "Offensive Security", description: "Practical framework usage and exploit writing from leading industry practitioners." },
+  { title: "Practical Malware Analysis", author: "Michael Sikorski & Andrew Honig", year: "2012", category: "Offensive Security", description: "Hands-on disassembly, dynamic debugging, and dissecting malicious binaries." },
+  { title: "Attacking Network Protocols", author: "James Forshaw", year: "2017", category: "Offensive Security", description: "A hacker's guide to capturing, analyzing, and exploiting proprietary network protocols." },
+  { title: "Hash Crack: Password Cracking Manual", author: "Joshua Picolet", year: "2017", category: "Offensive Security", description: "Compact reference for wordlists, rulesets, and GPU password cracking." },
+
+  // Defensive
+  { title: "Defensive Security Handbook", author: "Amanda Berlin & Lee Brotherston", year: "2017", category: "Defensive & Incident Response", description: "Practical, cost-effective best practices for hardening infrastructure and endpoints." },
+  { title: "Blue Team Field Manual (BTFM)", author: "Alan J. White & Ben Clark", year: "2017", category: "Defensive & Incident Response", description: "Critical commands, event IDs, and forensic artifacts for blue team defenders." },
+  { title: "Red Team Field Manual (RTFM)", author: "Ben Clark", year: "2014", category: "Defensive & Incident Response", description: "Quick-reference syntax cheat sheet for network testing and system administration." },
+  { title: "Blue Team Handbook: Incident Response Edition", author: "Don Murdoch", year: "2013", category: "Defensive & Incident Response", description: "Condensed triage checklists and forensic investigation workflows." },
+  { title: "Blue Team Handbook: SOC, SIEM, and Threat Hunting", author: "Don Murdoch", year: "2018", category: "Defensive & Incident Response", description: "Designing high-fidelity detections and correlation rules for modern SOCs." },
+  { title: "Serious Cryptography: A Practical Introduction to Modern Encryption", author: "Jean-Philippe Aumasson", year: "2017", category: "Defensive & Incident Response", description: "Rigorous yet accessible breakdown of modern cryptographic primitives and common pitfalls." },
+
+  // Scripting
+  { title: "Black Hat Python", author: "Justin Seitz", year: "2014", category: "Scripting & Automation", description: "Building network sniffers, infecting processes, and creating trojans with Python." },
+  { title: "Grey Hat Python", author: "Justin Seitz", year: "2009", category: "Scripting & Automation", description: "Python programming for hackers, reverse engineers, and forensic analysts." },
+  { title: "Violent Python: A Cookbook for Hackers & Forensic Analysts", author: "T.J. O'Connor", year: "2012", category: "Scripting & Automation", description: "Developing custom automation scripts for penetration testing and digital forensics." },
+  { title: "Automate the Boring Stuff with Python", author: "Al Sweigart", year: "2015", category: "Scripting & Automation", description: "Practical programming for beginners to automate repetitive daily tasks." },
+];
+
+---
+
+<BaseLayout 
+  title="Community Resources & Reading Room" 
+  description="Curated cybersecurity literature, technical references, and mental health support resources for the Scottish cyber community."
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <!-- Header -->
+    <div class="border-b border-slate-200 dark:border-[#3e3c66] pb-8 mb-12 transition-colors">
+      <span class="text-xs font-semibold uppercase tracking-wider text-[#56548c] dark:text-[#6fb7e6] block mb-1">
+        Knowledge & Community Care
+      </span>
+      <h1 class="text-3xl sm:text-5xl font-heading font-bold text-slate-900 dark:text-white uppercase tracking-tight transition-colors">
+        Community Resources
+      </h1>
+      <p class="text-slate-600 dark:text-[#bdaccf] text-base mt-2 max-w-3xl transition-colors">
+        A curated reading curriculum and support directory maintained by the Cyber Scotland Connect community to help you grow your technical skills and sustain your personal wellbeing.
+      </p>
+    </div>
+
+    <!-- Mental Health & Community Wellbeing Banner -->
+    <section class="mb-16 bg-gradient-to-br from-purple-50 to-indigo-50 dark:from-[#211f3d] dark:to-[#1b1a30] rounded-2xl border border-purple-200 dark:border-[#3e3c66] p-8 sm:p-10 shadow-sm transition-colors">
+      <div class="max-w-3xl mb-8">
+        <span class="text-xs font-semibold uppercase tracking-wider text-[#895294] dark:text-[#6fb7e6] block mb-1">
+          💚 Community Wellbeing & Support
+        </span>
+        <h2 class="text-2xl font-heading font-bold text-slate-900 dark:text-white uppercase tracking-wide">
+          Mental Health in Infosec
+        </h2>
+        <p class="text-sm text-slate-600 dark:text-[#bdaccf] leading-relaxed mt-2">
+          Working in cybersecurity involves high-pressure environments, on-call rotations, and intense incident response cycles. Mental health challenges do not discriminate, and our community believes support should always be accessible, judgement-free, and stigma-free.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- SAMH -->
+        <div class="bg-white dark:bg-[#2a2948] p-6 rounded-xl border border-slate-200 dark:border-[#3e3c66] shadow-sm flex flex-col justify-between">
+          <div>
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-xl">🏴󠁧󠁢󠁳󠁣󠁴󠁿</span>
+              <h3 class="font-heading font-bold text-base text-slate-900 dark:text-white">SAMH</h3>
+            </div>
+            <p class="text-xs text-slate-600 dark:text-[#bdaccf] leading-relaxed">
+              Scottish Association for Mental Health. Operating across Scottish communities to provide direct support, suicide prevention, and mental health services.
+            </p>
+          </div>
+          <a
+            href="https://www.samh.org.uk"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="mt-4 text-xs font-bold text-[#895294] dark:text-[#6fb7e6] hover:underline flex items-center gap-1"
+          >
+            <span>Visit samh.org.uk</span> ↗
+          </a>
+        </div>
+
+        <!-- Nightline -->
+        <div class="bg-white dark:bg-[#2a2948] p-6 rounded-xl border border-slate-200 dark:border-[#3e3c66] shadow-sm flex flex-col justify-between">
+          <div>
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-xl">🌙</span>
+              <h3 class="font-heading font-bold text-base text-slate-900 dark:text-white">Nightline</h3>
+            </div>
+            <p class="text-xs text-slate-600 dark:text-[#bdaccf] leading-relaxed">
+              Confidential, non-judgemental listening and practical support service run by students, for students across Scottish university campuses.
+            </p>
+          </div>
+          <a
+            href="https://www.nightline.ac.uk/want-to-talk/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="mt-4 text-xs font-bold text-[#895294] dark:text-[#6fb7e6] hover:underline flex items-center gap-1"
+          >
+            <span>Talk to Nightline</span> ↗
+          </a>
+        </div>
+
+        <!-- Community Chat -->
+        <div class="bg-white dark:bg-[#2a2948] p-6 rounded-xl border border-slate-200 dark:border-[#3e3c66] shadow-sm flex flex-col justify-between">
+          <div>
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-xl">💬</span>
+              <h3 class="font-heading font-bold text-base text-slate-900 dark:text-white">#well-being Space</h3>
+            </div>
+            <p class="text-xs text-slate-600 dark:text-[#bdaccf] leading-relaxed">
+              Our community chat includes a dedicated space for peer conversations on work-life balance, imposter syndrome, and coping with on-call burnout.
+            </p>
+          </div>
+          <a
+            href="https://discord.gg/cyberscotlandconnect"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="mt-4 text-xs font-bold text-[#895294] dark:text-[#6fb7e6] hover:underline flex items-center gap-1"
+          >
+            <span>Join Community Chat</span> ↗
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Reading Room Section -->
+    <section>
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+        <div>
+          <div class="flex items-center gap-3">
+            <span class="text-xl">📚</span>
+            <h2 class="text-2xl font-heading font-bold text-slate-900 dark:text-white uppercase tracking-wide">
+              The Reading Room
+            </h2>
+          </div>
+          <p class="text-sm text-slate-600 dark:text-[#bdaccf] mt-1 max-w-2xl">
+            A timeless reading list recommended by CSC mentors and speakers for practitioners, students, and career switchers.
+          </p>
+        </div>
+      </div>
+
+      <!-- Book Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {books.map(book => (
+          <div class="bg-white dark:bg-[#2a2948] rounded-xl border border-slate-200 dark:border-[#3e3c66] p-6 hover:border-[#895294] shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between gap-2 mb-3">
+                <span class="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-slate-100 dark:bg-[#21203a] text-[#895294] dark:text-[#6fb7e6] border border-slate-200 dark:border-[#3e3c66]">
+                  {book.category}
+                </span>
+                <span class="text-xs text-slate-500 dark:text-slate-400 font-mono">
+                  {book.year}
+                </span>
+              </div>
+              <h3 class="text-base font-heading font-bold text-slate-900 dark:text-white leading-snug mb-1">
+                {book.title}
+              </h3>
+              <p class="text-xs text-slate-500 dark:text-[#bdaccf] font-medium mb-3">
+                {book.author}
+              </p>
+              {book.description && (
+                <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                  {book.description}
+                </p>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  </div>
+</BaseLayout>
