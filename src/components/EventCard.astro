@@ -135,6 +135,17 @@ const mapsUrl = data.locationUrl || `https://www.google.com/maps/search/?api=1&q
       >
         <span>Details</span> →
       </a>
+      {data.recordingUrl && (
+        <a
+          href={data.recordingUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="bg-red-700 hover:bg-red-800 text-white px-3 py-1.5 rounded-lg font-bold transition-all shadow-sm flex items-center gap-1 text-xs"
+          title="Watch recording on YouTube"
+        >
+          <span>Watch</span> 📺
+        </a>
+      )}
       {data.meetupUrl && (
         <a
           href={data.meetupUrl}
