@@ -11,8 +11,13 @@ accessibility:
   hearingLoop: false
   notes: "Full lift and step-free access via Skyscanner reception."
 speakers:
-  - name: "Harry McLaren & Stu Hirst"
-    role: "Co-Founders"
+  - name: "Harry McLaren"
+    role: "Co-Founder"
+    company: "Cyber Scotland Connect"
+    talkTitle: "Welcome to Cyber Scotland Connect"
+    abstract: "The vision behind merging two thriving Scottish infosec communities into an inclusive, regular, community-led platform."
+  - name: "Stu Hirst"
+    role: "Co-Founder"
     company: "Cyber Scotland Connect"
     talkTitle: "Welcome to Cyber Scotland Connect"
     abstract: "The vision behind merging two thriving Scottish infosec communities into an inclusive, regular, community-led platform."

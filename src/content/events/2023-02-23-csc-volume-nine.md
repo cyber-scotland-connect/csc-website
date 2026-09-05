@@ -10,8 +10,13 @@ accessibility:
   hearingLoop: true
   notes: "Full lift and ramp access via Castle Terrace."
 speakers:
-  - name: "Harry McLaren & Stu Hirst"
-    role: "Co-Founders"
+  - name: "Harry McLaren"
+    role: "Co-Founder"
+    company: "Cyber Scotland Connect"
+    talkTitle: "Cyber Scotland Connect Reconnect"
+    abstract: "Welcoming the community back in person after three years of pandemic disruption, detailing CSC's roadmap for regular regional meetups."
+  - name: "Stu Hirst"
+    role: "Co-Founder"
     company: "Cyber Scotland Connect"
     talkTitle: "Cyber Scotland Connect Reconnect"
     abstract: "Welcoming the community back in person after three years of pandemic disruption, detailing CSC's roadmap for regular regional meetups."

@@ -25,6 +25,19 @@ const formattedDate = eventDate.toLocaleDateString('en-GB', {
   year: 'numeric',
 });
 const mapsUrl = data.locationUrl || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(data.location)}`;
+
+const leadershipRoles: Record<string, string> = {
+  'harry mclaren': 'Co-Founder & Organiser',
+  'stu hirst': 'Co-Founder & Organiser',
+  'sophie lanc': 'Community Organiser',
+  'gary hunter': 'Community Moderator',
+  'magda de jager': 'Community Moderator',
+  'dr. rich macfarlane': 'Community Moderator',
+  'rich macfarlane': 'Community Moderator',
+  'kevin gray': 'Community Moderator',
+  'richard grey': 'Community Moderator',
+  'james ramirez': 'Community Moderator',
+};
 ---
 
 <BaseLayout title={data.title} description={`Cyber Scotland Connect gathering in ${data.city} on ${formattedDate}`}>
@@ -162,28 +175,42 @@ const mapsUrl = data.locationUrl || `https://www.google.com/maps/search/?api=1&q
           Featured Speakers & Sessions
         </h2>
         <div class="space-y-4">
-          {data.speakers.map(speaker => (
-            <div class="bg-white dark:bg-[#2a2948] rounded-xl border border-slate-200 dark:border-[#3e3c66] p-6 shadow-sm">
-              <div class="flex flex-wrap items-baseline justify-between gap-2 mb-2">
-                <h3 class="text-xl font-heading font-bold text-slate-900 dark:text-white">
-                  {speaker.name}
-                </h3>
-                {speaker.company && (
-                  <span class="text-xs px-2 py-0.5 rounded bg-purple-50 dark:bg-[#382b5c] text-[#56548c] dark:text-[#bdaccf] border border-purple-200 dark:border-[#56548c]">
-                    {speaker.role ? `${speaker.role}, ` : ''}{speaker.company}
-                  </span>
+          {data.speakers.map(speaker => {
+            const leadershipRole = leadershipRoles[speaker.name.trim().toLowerCase()];
+            return (
+              <div class="bg-white dark:bg-[#2a2948] rounded-xl border border-slate-200 dark:border-[#3e3c66] p-6 shadow-sm">
+                <div class="flex flex-wrap items-baseline justify-between gap-2 mb-2">
+                  <div class="flex flex-wrap items-center gap-2">
+                    <h3 class="text-xl font-heading font-bold text-slate-900 dark:text-white">
+                      {speaker.name}
+                    </h3>
+                    {leadershipRole && (
+                      <span 
+                        class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-[#895294]/15 dark:bg-[#6fb7e6]/20 text-[#895294] dark:text-[#6fb7e6] border border-[#895294]/30 dark:border-[#6fb7e6]/40 flex items-center gap-1 shadow-sm"
+                        title={`${speaker.name} is part of the CSC Leadership Team: ${leadershipRole}`}
+                      >
+                        <span aria-hidden="true">🛡️</span>
+                        <span>{leadershipRole}</span>
+                      </span>
+                    )}
+                  </div>
+                  {speaker.company && (
+                    <span class="text-xs px-2 py-0.5 rounded bg-purple-50 dark:bg-[#382b5c] text-[#56548c] dark:text-[#bdaccf] border border-purple-200 dark:border-[#56548c]">
+                      {speaker.role ? `${speaker.role}, ` : ''}{speaker.company}
+                    </span>
+                  )}
+                </div>
+                <h4 class="text-base font-semibold text-[#56548c] dark:text-[#6fb7e6] mb-3">
+                  "{speaker.talkTitle}"
+                </h4>
+                {speaker.abstract && (
+                  <p class="text-sm text-slate-600 dark:text-[#bdaccf] leading-relaxed">
+                    {speaker.abstract}
+                  </p>
                 )}
               </div>
-              <h4 class="text-base font-semibold text-[#56548c] dark:text-[#6fb7e6] mb-3">
-                "{speaker.talkTitle}"
-              </h4>
-              {speaker.abstract && (
-                <p class="text-sm text-slate-600 dark:text-[#bdaccf] leading-relaxed">
-                  {speaker.abstract}
-                </p>
-              )}
-            </div>
-          ))}
+            );
+          })}
         </div>
       </section>
     )}
