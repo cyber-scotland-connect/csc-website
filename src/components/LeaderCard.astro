@@ -17,11 +17,11 @@ const avatarUrl = data.avatar
 <div class="bg-white dark:bg-[#2a2948] rounded-2xl border border-slate-200 dark:border-[#3e3c66] p-6 sm:p-7 hover:border-[#895294] shadow-sm hover:shadow-xl transition-all duration-200 flex flex-col justify-between">
   <div>
     <div class="flex items-start gap-4 mb-4">
-      <div class="w-16 h-16 rounded-2xl bg-slate-100 dark:bg-[#21203a] border border-slate-200 dark:border-[#3e3c66] p-2 flex items-center justify-center shrink-0 shadow-inner group">
+      <div class="w-16 h-16 rounded-2xl bg-[#895294]/10 dark:bg-[#21203a] border border-slate-200 dark:border-[#3e3c66] p-2 flex items-center justify-center shrink-0 shadow-inner group">
         {avatarUrl ? (
           <img src={avatarUrl} alt={data.name} class="w-full h-full object-contain" width="48" height="48" />
         ) : (
-          <span class="text-white text-xl font-bold font-heading">{data.name.split(' ').map(n => n[0]).join('')}</span>
+          <span class="text-[#895294] dark:text-[#6fb7e6] text-xl font-bold font-heading">{data.name.split(' ').map(n => n[0]).join('')}</span>
         )}
       </div>
       <div>

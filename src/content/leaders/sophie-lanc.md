@@ -1,10 +1,11 @@
 ---
 name: "Sophie Lanc"
-role: "Brand & Design Lead"
+role: "Brand Lead & Community Moderator"
 chapter: "Scotland-wide"
 bio: "Creative designer and visual strategist who created the CSC Fragmented Shield brand identity and lookbook."
 avatar: "/branding/icon-fullcolor.png"
-order: 3
+status: "active"
+order: 4
 ---
 
-Sophie shaped the visual identity and aesthetic foundations of Cyber Scotland Connect.
+Sophie shaped the visual identity, brand guidelines, and aesthetic foundations of Cyber Scotland Connect.
