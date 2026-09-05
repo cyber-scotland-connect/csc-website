@@ -1,6 +1,6 @@
 ---
 name: "Stu Hirst"
-role: "Co-Founder"
+role: "Co-Founder & Moderator"
 chapter: "Scotland-wide"
 bio: "Chief Information Security Officer and seasoned security community leader with decades of experience guiding enterprise security operations and mentoring practitioners."
 avatar: "/branding/icon-pink.png"

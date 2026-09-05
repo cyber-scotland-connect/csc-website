@@ -1,6 +1,6 @@
 ---
 name: "Harry McLaren"
-role: "Co-Founder"
+role: "Co-Founder & Moderator"
 chapter: "Edinburgh & Scotland-wide"
 bio: "Cyber security leader, community builder, and speaker passionate about collaborative defence, psychological safety, and making technology accessible to all."
 avatar: "/branding/icon-lilac.png"
