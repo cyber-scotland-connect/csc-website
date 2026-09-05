@@ -10,8 +10,8 @@ accessibility:
   hearingLoop: true
   notes: "Full ramp access to main lecture theatre and cyberQuarter atrium."
 speakers:
-  - name: "Dr. Rich Macfarlane"
-    role: "Associate Professor & Cybersecurity Researcher"
+  - name: "Rich Macfarlane"
+    role: "Cybersecurity Lecturer"
     company: "Edinburgh Napier University"
     talkTitle: "Hardware Attacks & Physical Security Analysis"
     abstract: "Practical demonstrations of side-channel attacks, hardware hacking, and firmware reverse engineering."
