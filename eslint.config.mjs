@@ -1,8 +1,9 @@
 import eslintPluginAstro from 'eslint-plugin-astro';
 
 export default [
-  // add more generic rule sets here, such as:
-  // js.configs.recommended,
+  {
+    ignores: ['dist/**', '.astro/**', 'temp/**', 'node_modules/**'],
+  },
   ...eslintPluginAstro.configs.recommended,
   {
     rules: {

@@ -6,7 +6,7 @@ interface Props {
 }
 
 const { event } = Astro.props;
-const { data, slug } = event;
+const { data, id: slug } = event;
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 const eventDate = new Date(data.date);
