@@ -47,6 +47,7 @@ const leadersCollection = defineCollection({
     linkedin: z.string().url().optional(),
     github: z.string().url().optional(),
     website: z.string().url().optional(),
+    status: z.enum(['active', 'alumni']).default('active'),
     order: z.number().default(99),
   }),
 });

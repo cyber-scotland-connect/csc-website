@@ -25,7 +25,14 @@ const avatarUrl = data.avatar
         )}
       </div>
       <div>
-        <h3 class="text-xl font-heading font-bold text-slate-900 dark:text-white mb-0.5">{data.name}</h3>
+        <div class="flex flex-wrap items-center gap-2 mb-0.5">
+          <h3 class="text-xl font-heading font-bold text-slate-900 dark:text-white">{data.name}</h3>
+          {data.status === 'alumni' && (
+            <span class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-[#bdaccf] border border-slate-200 dark:border-slate-700">
+              Community Alumni
+            </span>
+          )}
+        </div>
         <p class="text-sm font-semibold text-[#895294] dark:text-[#6fb7e6]">{data.role}</p>
         <p class="text-xs text-slate-500 dark:text-[#bdaccf] flex items-center gap-1 mt-1">
           <svg class="w-3.5 h-3.5 text-[#895294]" fill="none" stroke="currentColor" viewBox="0 0 24 24">

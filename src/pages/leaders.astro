@@ -4,7 +4,8 @@ import LeaderCard from '../components/LeaderCard.astro';
 import { getCollection } from 'astro:content';
 
 const allLeaders = await getCollection('leaders');
-const leaders = allLeaders.sort((a, b) => a.data.order - b.data.order);
+const activeLeaders = allLeaders.filter(l => l.data.status !== 'alumni').sort((a, b) => a.data.order - b.data.order);
+const alumniLeaders = allLeaders.filter(l => l.data.status === 'alumni').sort((a, b) => a.data.order - b.data.order);
 ---
 
 <BaseLayout 
@@ -25,10 +26,38 @@ const leaders = allLeaders.sort((a, b) => a.data.order - b.data.order);
       </p>
     </div>
 
-    <!-- Leaders Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
-      {leaders.map(leader => <LeaderCard leader={leader} />)}
-    </div>
+    <!-- Active Leaders Grid -->
+    <section class="mb-16">
+      <div class="flex items-center gap-3 mb-6">
+        <span class="text-xl">🛡️</span>
+        <h2 class="text-2xl font-heading font-bold text-slate-900 dark:text-white uppercase tracking-wide">
+          Current Leadership & Chapter Leads
+        </h2>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {activeLeaders.map(leader => <LeaderCard leader={leader} />)}
+      </div>
+    </section>
+
+    <!-- Alumni & Historic Moderators Grid -->
+    {alumniLeaders.length > 0 && (
+      <section class="mb-16 border-t border-slate-200 dark:border-[#3e3c66] pt-12">
+        <div class="mb-8">
+          <div class="flex items-center gap-3 mb-2">
+            <span class="text-xl">🤝</span>
+            <h2 class="text-2xl font-heading font-bold text-slate-900 dark:text-white uppercase tracking-wide">
+              Community Moderators & Alumni
+            </h2>
+          </div>
+          <p class="text-sm text-slate-600 dark:text-[#bdaccf] max-w-2xl">
+            Celebrating the founding moderators and volunteer contributors who helped establish, nurture, and grow Cyber Scotland Connect across the years.
+          </p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {alumniLeaders.map(leader => <LeaderCard leader={leader} />)}
+        </div>
+      </section>
+    )}
 
     <!-- Volunteer & Moderator Info -->
     <div class="bg-slate-50 dark:bg-[#1b1a30] rounded-2xl border border-slate-200 dark:border-[#3e3c66] p-8 sm:p-10 text-slate-600 dark:text-[#bdaccf] transition-colors">
