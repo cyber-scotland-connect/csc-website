@@ -10,8 +10,13 @@ accessibility:
   hearingLoop: true
   notes: "Full lift and ramp access via Castle Terrace."
 speakers:
-  - name: "Harry McLaren & Sophie Lanc"
-    role: "Community Organisers"
+  - name: "Harry McLaren"
+    role: "Co-Founder"
+    company: "Cyber Scotland Connect"
+    talkTitle: "Cyber Scotland Week: Empowering Grassroots Communities"
+    abstract: "Opening Cyber Scotland Week 2026 with a celebration of grassroots initiatives, student mentorship, and cross-sector cyber resilience."
+  - name: "Sophie Lanc"
+    role: "Community Organiser"
     company: "Cyber Scotland Connect"
     talkTitle: "Cyber Scotland Week: Empowering Grassroots Communities"
     abstract: "Opening Cyber Scotland Week 2026 with a celebration of grassroots initiatives, student mentorship, and cross-sector cyber resilience."

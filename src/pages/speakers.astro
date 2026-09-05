@@ -20,9 +20,23 @@ interface AggregatedSpeaker {
   name: string;
   role?: string;
   company?: string;
+  leadershipRole?: string;
   talks: SpeakerTalk[];
   talkCount: number;
 }
+
+const leadershipRoles: Record<string, string> = {
+  'harry mclaren': 'Co-Founder & Organiser',
+  'stu hirst': 'Co-Founder & Organiser',
+  'sophie lanc': 'Community Organiser',
+  'gary hunter': 'Community Moderator',
+  'magda de jager': 'Community Moderator',
+  'dr. rich macfarlane': 'Community Moderator',
+  'rich macfarlane': 'Community Moderator',
+  'kevin gray': 'Community Moderator',
+  'richard grey': 'Community Moderator',
+  'james ramirez': 'Community Moderator',
+};
 
 const speakerMap = new Map<string, AggregatedSpeaker>();
 const citiesSet = new Set<string>();
@@ -44,16 +58,20 @@ allEvents.forEach(event => {
       city: event.data.city,
     };
 
+    const leadershipRole = leadershipRoles[key];
+
     if (existing) {
       existing.talks.push(talk);
       existing.talkCount = existing.talks.length;
       if (speaker.role) existing.role = speaker.role;
       if (speaker.company) existing.company = speaker.company;
+      if (leadershipRole && !existing.leadershipRole) existing.leadershipRole = leadershipRole;
     } else {
       speakerMap.set(key, {
         name: speaker.name.trim(),
         role: speaker.role,
         company: speaker.company,
+        leadershipRole,
         talks: [talk],
         talkCount: 1,
       });
@@ -137,9 +155,20 @@ const totalTalks = speakersList.reduce((acc, s) => acc + s.talkCount, 0);
               <!-- Header Row: Speaker Name & Talk Count Badge -->
               <div class="flex items-start justify-between gap-3 mb-2">
                 <div>
-                  <h2 class="text-xl font-heading font-bold text-slate-900 dark:text-white">
-                    {speaker.name}
-                  </h2>
+                  <div class="flex flex-wrap items-center gap-2">
+                    <h2 class="text-xl font-heading font-bold text-slate-900 dark:text-white">
+                      {speaker.name}
+                    </h2>
+                    {speaker.leadershipRole && (
+                      <span 
+                        class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-[#895294]/15 dark:bg-[#6fb7e6]/20 text-[#895294] dark:text-[#6fb7e6] border border-[#895294]/30 dark:border-[#6fb7e6]/40 flex items-center gap-1 shadow-sm"
+                        title={`${speaker.name} is part of the CSC Leadership Team: ${speaker.leadershipRole}`}
+                      >
+                        <span aria-hidden="true">🛡️</span>
+                        <span>{speaker.leadershipRole}</span>
+                      </span>
+                    )}
+                  </div>
                   {(speaker.role || speaker.company) && (
                     <p class="text-xs text-slate-500 dark:text-[#bdaccf] mt-0.5">
                       {speaker.role}{speaker.role && speaker.company ? ' · ' : ''}{speaker.company}
