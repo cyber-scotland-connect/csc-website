@@ -52,7 +52,7 @@ allEvents.forEach(event => {
     const talk: SpeakerTalk = {
       talkTitle: speaker.talkTitle,
       abstract: speaker.abstract,
-      eventSlug: event.slug,
+      eventSlug: event.id,
       eventTitle: event.data.title,
       eventDate: new Date(event.data.date),
       city: event.data.city,

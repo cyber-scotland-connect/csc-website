@@ -1,7 +1,9 @@
-import { defineCollection, z } from 'astro:content';
+import { defineCollection } from 'astro:content';
+import { z } from 'astro/zod';
+import { glob } from 'astro/loaders';
 
 const eventsCollection = defineCollection({
-  type: 'content',
+  loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: './src/content/events' }),
   schema: z.object({
     title: z.string(),
     date: z.coerce.date(),
@@ -20,7 +22,7 @@ const eventsCollection = defineCollection({
       stepFree: z.boolean().default(true),
       hearingLoop: z.boolean().default(false),
       notes: z.string().optional(),
-    }).default({}),
+    }).default({ stepFree: true, hearingLoop: false }),
     speakers: z.array(
       z.object({
         name: z.string(),
@@ -35,7 +37,7 @@ const eventsCollection = defineCollection({
 });
 
 const leadersCollection = defineCollection({
-  type: 'content',
+  loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: './src/content/leaders' }),
   schema: z.object({
     name: z.string(),
     role: z.string(),
@@ -50,7 +52,7 @@ const leadersCollection = defineCollection({
 });
 
 const partnersCollection = defineCollection({
-  type: 'content',
+  loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: './src/content/partners' }),
   schema: z.object({
     name: z.string(),
     tier: z.enum(['Host Venue', 'Ecosystem Partner', 'Sponsor', 'Academic Partner']),
