@@ -4,7 +4,8 @@ import LeaderCard from '../components/LeaderCard.astro';
 import { getCollection } from 'astro:content';
 
 const allLeaders = await getCollection('leaders');
-const activeLeaders = allLeaders.filter(l => l.data.status !== 'alumni').sort((a, b) => a.data.order - b.data.order);
+// Shuffle active leaders at build time so static HTML doesn't favor any leader
+const activeLeaders = allLeaders.filter(l => l.data.status !== 'alumni').sort(() => Math.random() - 0.5);
 const alumniLeaders = allLeaders.filter(l => l.data.status === 'alumni').sort((a, b) => a.data.order - b.data.order);
 ---
 
@@ -34,9 +35,23 @@ const alumniLeaders = allLeaders.filter(l => l.data.status === 'alumni').sort((a
           Community Leadership & Moderators
         </h2>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div id="active-leaders-grid" class="grid grid-cols-1 md:grid-cols-2 gap-8">
         {activeLeaders.map(leader => <LeaderCard leader={leader} />)}
       </div>
+
+      <!-- Client-side shuffle to randomize order on every page visit -->
+      <script is:inline>
+        (function() {
+          const grid = document.getElementById('active-leaders-grid');
+          if (!grid) return;
+          const cards = Array.from(grid.children);
+          for (let i = cards.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [cards[i], cards[j]] = [cards[j], cards[i]];
+          }
+          cards.forEach(card => grid.appendChild(card));
+        })();
+      </script>
     </section>
 
     <!-- Alumni & Historic Moderators Grid -->
