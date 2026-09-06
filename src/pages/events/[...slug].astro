@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import EventAgenda from '../../components/EventAgenda.astro';
 import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
@@ -173,6 +174,11 @@ const leadershipRoles: Record<string, string> = {
       )}
     </div>
 
+    <!-- Event Agenda Section -->
+    {data.agenda && data.agenda.length > 0 && (
+      <EventAgenda agenda={data.agenda} />
+    )}
+
     <!-- Speakers Section -->
     {data.speakers && data.speakers.length > 0 && (
       <section class="mb-12">
@@ -221,7 +227,7 @@ const leadershipRoles: Record<string, string> = {
     )}
 
     <!-- Event Body Content (Markdown) -->
-    <section class="prose prose-slate dark:prose-invert max-w-none text-slate-700 dark:text-[#bdaccf] prose-headings:font-heading prose-headings:text-slate-900 dark:prose-headings:text-white prose-a:text-[#56548c] dark:prose-a:text-[#6fb7e6] pt-6 border-t border-slate-200 dark:border-[#3e3c66]">
+    <section class="prose-event pt-8 border-t border-slate-200 dark:border-[#3e3c66]">
       <Content />
     </section>
 

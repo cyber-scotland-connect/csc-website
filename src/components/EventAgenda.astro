@@ -1,0 +1,135 @@
+---
+export interface AgendaItem {
+  time: string;
+  title: string;
+  speaker?: string;
+  speakerUrl?: string;
+  description?: string;
+  type?: 'networking' | 'talk' | 'break' | 'social' | 'intro' | 'panel' | 'other';
+}
+
+interface Props {
+  agenda: AgendaItem[];
+}
+
+const { agenda } = Astro.props;
+
+const typeConfig: Record<string, { label: string; badgeClass: string; icon: string }> = {
+  networking: {
+    label: 'Networking',
+    badgeClass: 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800',
+    icon: '🤝',
+  },
+  intro: {
+    label: 'Welcome & News',
+    badgeClass: 'bg-sky-50 dark:bg-[#6fb7e6]/10 text-sky-800 dark:text-[#6fb7e6] border-sky-200 dark:border-[#6fb7e6]/30',
+    icon: '📣',
+  },
+  talk: {
+    label: 'Talk / Session',
+    badgeClass: 'bg-purple-50 dark:bg-[#382b5c] text-[#895294] dark:text-[#bdaccf] border-purple-200 dark:border-[#56548c]',
+    icon: '🎙️',
+  },
+  panel: {
+    label: 'Panel Session',
+    badgeClass: 'bg-indigo-50 dark:bg-[#382b5c] text-[#56548c] dark:text-[#6fb7e6] border-indigo-200 dark:border-[#56548c]',
+    icon: '👥',
+  },
+  social: {
+    label: 'Community Social',
+    badgeClass: 'bg-pink-50 dark:bg-[#895294]/20 text-[#895294] dark:text-pink-300 border-pink-200 dark:border-[#895294]/40',
+    icon: '🍻',
+  },
+  break: {
+    label: 'Break & Refreshments',
+    badgeClass: 'bg-amber-50 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 border-amber-200 dark:border-amber-800',
+    icon: '☕',
+  },
+  other: {
+    label: 'Event Item',
+    badgeClass: 'bg-slate-100 dark:bg-[#1b1a30] text-slate-700 dark:text-slate-300 border-slate-200 dark:border-[#3e3c66]',
+    icon: '⏱️',
+  },
+};
+---
+
+{agenda && agenda.length > 0 && (
+  <section class="mb-12" aria-labelledby="agenda-heading">
+    <div class="flex items-center justify-between gap-4 mb-6">
+      <h2 
+        id="agenda-heading" 
+        class="text-2xl font-heading font-bold text-slate-900 dark:text-white uppercase tracking-wide flex items-center gap-2.5"
+      >
+        <span class="text-xl" aria-hidden="true">⏱️</span>
+        <span>Evening Agenda & Schedule</span>
+      </h2>
+      <span class="text-xs font-semibold px-2.5 py-1 rounded-full bg-slate-100 dark:bg-[#1b1a30] text-slate-600 dark:text-[#bdaccf] border border-slate-200 dark:border-[#3e3c66]">
+        {agenda.length} items
+      </span>
+    </div>
+
+    <div class="relative pl-6 sm:pl-8 border-l-2 border-slate-200 dark:border-[#3e3c66] ml-3 sm:ml-4 space-y-6">
+      {agenda.map((item) => {
+        const itemType = item.type || 'other';
+        const config = typeConfig[itemType] || typeConfig.other;
+
+        return (
+          <div class="relative group">
+            {/* Timeline node icon / dot */}
+            <div 
+              class="absolute -left-[31px] sm:-left-[39px] top-1.5 w-6 h-6 rounded-full bg-white dark:bg-[#2a2948] border-2 border-[#56548c] dark:border-[#6fb7e6] flex items-center justify-center text-xs shadow-xs transition-transform group-hover:scale-110"
+              aria-hidden="true"
+            >
+              <span class="text-[10px] leading-none">{config.icon}</span>
+            </div>
+
+            {/* Agenda Item Card */}
+            <div class="bg-white dark:bg-[#2a2948] rounded-xl border border-slate-200 dark:border-[#3e3c66] p-4 sm:p-5 shadow-xs hover:border-[#56548c] dark:hover:border-[#6fb7e6]/50 transition-all">
+              <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                <div class="flex items-center gap-2">
+                  <span class="font-mono text-xs sm:text-sm font-bold text-[#895294] dark:text-[#6fb7e6] bg-purple-50/80 dark:bg-[#1b1a30] px-2.5 py-1 rounded-md border border-purple-100 dark:border-[#3e3c66]">
+                    {item.time}
+                  </span>
+                  {config.label && itemType !== 'other' && (
+                    <span class={`text-[11px] font-semibold px-2 py-0.5 rounded-full border ${config.badgeClass}`}>
+                      {config.label}
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              <h3 class="text-base sm:text-lg font-heading font-bold text-slate-900 dark:text-white leading-snug">
+                {item.title}
+              </h3>
+
+              {item.speaker && (
+                <div class="mt-2 text-xs sm:text-sm flex items-center gap-1.5 text-slate-600 dark:text-[#bdaccf]">
+                  <span class="text-slate-400 dark:text-slate-500 font-medium">Session Speaker:</span>
+                  {item.speakerUrl ? (
+                    <a
+                      href={item.speakerUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="font-semibold text-[#895294] dark:text-[#6fb7e6] hover:underline inline-flex items-center gap-0.5"
+                    >
+                      <span>{item.speaker}</span>
+                      <span aria-hidden="true">↗</span>
+                    </a>
+                  ) : (
+                    <span class="font-semibold text-slate-900 dark:text-white">{item.speaker}</span>
+                  )}
+                </div>
+              )}
+
+              {item.description && (
+                <p class="mt-2 text-xs sm:text-sm text-slate-600 dark:text-[#bdaccf] leading-relaxed">
+                  {item.description}
+                </p>
+              )}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  </section>
+)}

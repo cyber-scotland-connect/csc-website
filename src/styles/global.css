@@ -312,3 +312,249 @@
     scroll-behavior: auto !important;
   }
 }
+
+/* ==========================================================================
+   Event Detail Markdown Typography & Agenda (.prose-event)
+   ========================================================================== */
+.prose-event {
+  color: var(--text-secondary);
+  font-size: 1rem;
+  line-height: 1.75;
+}
+
+.prose-event h2 {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  line-height: 2rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+  color: var(--text-primary);
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.prose-event h3 {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+}
+
+.prose-event h4 {
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.prose-event p {
+  margin-bottom: 1.25rem;
+  color: var(--text-secondary);
+}
+
+html.light .prose-event p {
+  color: #334155;
+}
+
+html.dark .prose-event p {
+  color: #bdaccf;
+}
+
+.prose-event a {
+  font-weight: 600;
+  color: #895294;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.15s ease;
+}
+
+html.dark .prose-event a {
+  color: #6fb7e6;
+}
+
+.prose-event a:hover {
+  opacity: 0.85;
+}
+
+/* Callouts / Blockquotes (e.g. Capacity Notices, Announcements) */
+.prose-event blockquote {
+  position: relative;
+  margin: 1.5rem 0;
+  padding: 1.25rem 1.5rem;
+  background-color: rgba(137, 82, 148, 0.08);
+  border-left: 4px solid #895294;
+  border-radius: 0 0.75rem 0.75rem 0;
+  font-style: normal;
+}
+
+html.dark .prose-event blockquote {
+  background-color: rgba(42, 41, 72, 0.75);
+  border-left-color: #6fb7e6;
+}
+
+.prose-event blockquote p {
+  margin: 0;
+  font-size: 0.9375rem;
+  color: inherit;
+}
+
+.prose-event blockquote strong {
+  color: #895294;
+}
+
+html.dark .prose-event blockquote strong {
+  color: #6fb7e6;
+}
+
+/* Lists */
+.prose-event ul {
+  list-style: none;
+  padding-left: 0;
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.prose-event ol {
+  padding-left: 1.25rem;
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.prose-event ul > li {
+  position: relative;
+  padding-left: 1.5rem;
+  line-height: 1.6;
+}
+
+.prose-event ul > li::before {
+  content: "•";
+  position: absolute;
+  left: 0.25rem;
+  color: #895294;
+  font-weight: bold;
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+html.dark .prose-event ul > li::before {
+  color: #6fb7e6;
+}
+
+/* Markdown Agenda styling fallback: when li contains time bold prefix */
+.prose-event ul > li:has(> strong:first-child) {
+  padding: 0.75rem 1rem 0.75rem 2.25rem;
+  background-color: rgba(244, 244, 247, 0.7);
+  border: 1px solid var(--border-color);
+  border-radius: 0.75rem;
+  transition: all 0.2s ease;
+}
+
+html.dark .prose-event ul > li:has(> strong:first-child) {
+  background-color: rgba(42, 41, 72, 0.5);
+}
+
+.prose-event ul > li:has(> strong:first-child)::before {
+  content: "⏱️";
+  font-size: 0.75rem;
+  left: 0.75rem;
+  top: 0.85rem;
+}
+
+.prose-event ul > li > strong:first-child {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.875rem;
+  color: #895294;
+  margin-right: 0.25rem;
+}
+
+html.dark .prose-event ul > li > strong:first-child {
+  color: #6fb7e6;
+}
+
+/* Horizontal Rules */
+.prose-event hr {
+  border: 0;
+  border-top: 1px solid var(--border-color);
+  margin: 2.25rem 0;
+}
+
+/* Strong / Emphasis */
+.prose-event strong {
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+/* Code */
+.prose-event code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.875em;
+  padding: 0.2em 0.4em;
+  background-color: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: 0.375rem;
+}
+
+/* High Contrast Adjustments */
+html.high-contrast .prose-event h2,
+html.high-contrast .prose-event h3,
+html.high-contrast .prose-event h4,
+html.high-contrast .prose-event p,
+html.high-contrast .prose-event li,
+html.high-contrast .prose-event strong,
+html.high-contrast .prose-event blockquote p {
+  color: #ffffff !important;
+}
+
+html.high-contrast .prose-event blockquote {
+  background-color: #000000 !important;
+  border: 2px solid #ffffff !important;
+  border-left: 6px solid #ffff00 !important;
+}
+
+html.high-contrast .prose-event ul > li:has(> strong:first-child) {
+  background-color: #000000 !important;
+  border: 2px solid #ffffff !important;
+}
+
+html.high-contrast .prose-event a {
+  color: #ffff00 !important;
+  text-decoration: underline !important;
+}
+
+html.light.high-contrast .prose-event h2,
+html.light.high-contrast .prose-event h3,
+html.light.high-contrast .prose-event h4,
+html.light.high-contrast .prose-event p,
+html.light.high-contrast .prose-event li,
+html.light.high-contrast .prose-event strong,
+html.light.high-contrast .prose-event blockquote p {
+  color: #000000 !important;
+}
+
+html.light.high-contrast .prose-event blockquote {
+  background-color: #ffffff !important;
+  border: 2px solid #000000 !important;
+  border-left: 6px solid #0000ee !important;
+}
+
+html.light.high-contrast .prose-event ul > li:has(> strong:first-child) {
+  background-color: #ffffff !important;
+  border: 2px solid #000000 !important;
+}
+
+html.light.high-contrast .prose-event a {
+  color: #0000ee !important;
+  text-decoration: underline !important;
+}
+

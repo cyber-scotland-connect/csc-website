@@ -32,6 +32,16 @@ const eventsCollection = defineCollection({
         abstract: z.string().optional(),
       })
     ).optional(),
+    agenda: z.array(
+      z.object({
+        time: z.string(),
+        title: z.string(),
+        speaker: z.string().optional(),
+        speakerUrl: z.string().optional(),
+        description: z.string().optional(),
+        type: z.enum(['networking', 'talk', 'break', 'social', 'intro', 'panel', 'other']).default('other'),
+      })
+    ).optional(),
     featured: z.boolean().default(false),
   }),
 });

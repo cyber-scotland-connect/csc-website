@@ -22,27 +22,43 @@ speakers:
     role: "Security Specialist (Discord: andyg)"
     talkTitle: "UK Post-Quantum Cryptography (PQC) 2026 - State of the Nation Update"
     abstract: "State of the nation update on UK Post-Quantum Cryptography (PQC) in 2026, exploring implementation pathways, crypto-agility, transition deadlines, and practical engineering readiness."
+agenda:
+  - time: "17:30"
+    title: "Doors Open & Community Networking"
+    type: "networking"
+    description: "Arrive, grab a badge, and catch up with colleagues and peers from across Scotland's cybersecurity ecosystem."
+  - time: "17:55"
+    title: "Welcome & Community Updates"
+    speaker: "Harry McLaren"
+    type: "intro"
+    description: "Welcome from the Cyber Scotland Connect team, community news, and meetup briefing."
+  - time: "18:00"
+    title: "Refactoring the Enterprise"
+    speaker: "Ash Hunt"
+    speakerUrl: "https://www.linkedin.com/in/ashjhunt/"
+    type: "talk"
+    description: "Rethinking enterprise control architectures in the agentic era and automating data-centric defense."
+  - time: "18:45"
+    title: "UK Post-Quantum Cryptography (PQC) 2026: State of the Nation Update"
+    speaker: "Andrew Gravett"
+    speakerUrl: "https://www.linkedin.com/in/andrewgravett/"
+    type: "talk"
+    description: "Implementation pathways, crypto-agility, transition deadlines, and practical engineering readiness."
+  - time: "19:30"
+    title: "Community Social at BrewDog Lothian Road"
+    type: "social"
+    description: "Drinks, conversation, and networking supported by our event sponsor Cyera UK."
+  - time: "Late"
+    title: "Close"
+    type: "other"
 ---
 
-Cyber Scotland Connect is thrilled to announce our next event in Central Edinburgh at [CodeBase Edinburgh](https://maps.app.goo.gl/3Fk8TNPhqXYdSLkc9), supported by [Cyera UK](https://www.cyera.com/), who have kindly sponsored the event and are hosting our community social afterwards!
+Cyber Scotland Connect is thrilled to announce our next gathering in Central Edinburgh at [CodeBase Edinburgh](https://maps.app.goo.gl/3Fk8TNPhqXYdSLkc9), supported by [Cyera UK](https://www.cyera.com/), who have kindly sponsored the meetup and are hosting our community social afterwards!
 
 > **Capacity Notice:** We have a strict limit of **80 attendees** for this gathering. If you can no longer attend after RSVPing, please update your RSVP status on Meetup promptly so someone on the waitlist can join us.
 
----
-
-### ⏱️ Evening Agenda
-
-* **17:30** — Doors Open & Community Networking
-* **17:55** — Harry from CSC: Welcome & Community Updates
-* **18:00** — *Refactoring the Enterprise* — **[Ash Hunt](https://www.linkedin.com/in/ashjhunt/)**
-* **18:45** — *UK Post-Quantum Cryptography (PQC) 2026: State of the Nation Update* — **[Andrew Gravett](https://www.linkedin.com/in/andrewgravett/)**
-* **19:30** — On to the Social at [BrewDog Lothian Road](https://maps.app.goo.gl/n6oMvkrNkCR1veYAA) (hosted by Cyera UK)
-* **Late** — Close
-
----
-
 ### 🤝 Sponsored by Cyera UK & Social Afterwards
 
-A massive thank you to [Cyera UK](https://www.cyera.com/) for supporting this gathering and sponsoring the community social following the talks! We will be heading across to **BrewDog Lothian Road** right after the talks wrap at 19:30 for drinks, conversation, and networking.
+A massive thank you to [Cyera UK](https://www.cyera.com/) for supporting this gathering and sponsoring the community social following the talks! We will be heading across to [BrewDog Lothian Road](https://maps.app.goo.gl/n6oMvkrNkCR1veYAA) right after the talks wrap at 19:30 for drinks, conversation, and networking.
 
 
