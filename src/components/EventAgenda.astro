@@ -68,7 +68,7 @@ const typeConfig: Record<string, { label: string; badgeClass: string; icon: stri
       </span>
     </div>
 
-    <div class="relative pl-6 sm:pl-8 border-l-2 border-slate-200 dark:border-[#3e3c66] ml-3 sm:ml-4 space-y-6">
+    <div class="relative pl-6 sm:pl-8 border-l-2 border-[#895294]/40 dark:border-[#6fb7e6]/40 ml-3 sm:ml-4 space-y-6">
       {agenda.map((item) => {
         const itemType = item.type || 'other';
         const config = typeConfig[itemType] || typeConfig.other;
@@ -77,14 +77,14 @@ const typeConfig: Record<string, { label: string; badgeClass: string; icon: stri
           <div class="relative group">
             {/* Timeline node icon / dot */}
             <div 
-              class="absolute -left-[31px] sm:-left-[39px] top-1.5 w-6 h-6 rounded-full bg-white dark:bg-[#2a2948] border-2 border-[#56548c] dark:border-[#6fb7e6] flex items-center justify-center text-xs shadow-xs transition-transform group-hover:scale-110"
+              class="absolute -left-[31px] sm:-left-[39px] top-1.5 w-6 h-6 rounded-full bg-white dark:bg-[#21203a] border-2 border-[#895294] dark:border-[#6fb7e6] flex items-center justify-center text-xs shadow-md group-hover:shadow-[0_0_12px_rgba(111,183,230,0.5)] transition-all group-hover:scale-110"
               aria-hidden="true"
             >
               <span class="text-[10px] leading-none">{config.icon}</span>
             </div>
 
             {/* Agenda Item Card */}
-            <div class="bg-white dark:bg-[#2a2948] rounded-xl border border-slate-200 dark:border-[#3e3c66] p-4 sm:p-5 shadow-xs hover:border-[#56548c] dark:hover:border-[#6fb7e6]/50 transition-all">
+            <div class="card-tactile bg-white dark:bg-[#2a2948] rounded-xl border border-slate-200 dark:border-[#3e3c66] p-4 sm:p-5 hover:border-[#56548c] dark:hover:border-[#6fb7e6]/50">
               <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
                 <div class="flex items-center gap-2">
                   <span class="font-mono text-xs sm:text-sm font-bold text-[#895294] dark:text-[#6fb7e6] bg-purple-50/80 dark:bg-[#1b1a30] px-2.5 py-1 rounded-md border border-purple-100 dark:border-[#3e3c66]">

@@ -49,53 +49,126 @@ const partnerEvents = sortedEvents.filter(e => e.data.isPartnerEvent);
         </div>
       </div>
 
-      <!-- Filter Controls -->
-      <div class="flex flex-wrap gap-2 mt-8" role="tablist" aria-label="Event category filters">
-        <button
-          type="button"
-          data-filter="all"
-          class="filter-btn active px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold bg-[#895294] text-white transition-colors"
-          role="tab"
-          aria-selected="true"
-        >
-          All Events ({sortedEvents.length})
-        </button>
-        <button
-          type="button"
-          data-filter="upcoming"
-          class="filter-btn px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold bg-white dark:bg-[#2a2948] text-slate-700 dark:text-[#bdaccf] hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-[#3e3c66] transition-colors"
-          role="tab"
-          aria-selected="false"
-        >
-          Upcoming ({upcomingEvents.length})
-        </button>
-        <button
-          type="button"
-          data-filter="csc"
-          class="filter-btn px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold bg-white dark:bg-[#2a2948] text-slate-700 dark:text-[#bdaccf] hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-[#3e3c66] transition-colors"
-          role="tab"
-          aria-selected="false"
-        >
-          CSC Gatherings ({sortedEvents.filter(e => !e.data.isPartnerEvent).length})
-        </button>
-        <button
-          type="button"
-          data-filter="partner"
-          class="filter-btn px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold bg-white dark:bg-[#2a2948] text-slate-700 dark:text-[#bdaccf] hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-[#3e3c66] transition-colors"
-          role="tab"
-          aria-selected="false"
-        >
-          Partner Events ({partnerEvents.length})
-        </button>
-        <button
-          type="button"
-          data-filter="past"
-          class="filter-btn px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold bg-white dark:bg-[#2a2948] text-slate-700 dark:text-[#bdaccf] hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-[#3e3c66] transition-colors"
-          role="tab"
-          aria-selected="false"
-        >
-          Archive ({pastEvents.length})
-        </button>
+      <!-- Filter Controls: Category & Regional Chapter -->
+      <div class="space-y-3 mt-8">
+        <div class="flex flex-wrap items-center gap-2" role="tablist" aria-label="Event category filters">
+          <span class="text-xs font-mono font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mr-1 hidden sm:inline">Type:</span>
+          <button
+            type="button"
+            data-filter-type="category"
+            data-value="all"
+            class="filter-cat-btn active px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold bg-[#895294] text-white transition-colors"
+            role="tab"
+            aria-selected="true"
+          >
+            All Events ({sortedEvents.length})
+          </button>
+          <button
+            type="button"
+            data-filter-type="category"
+            data-value="upcoming"
+            class="filter-cat-btn px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold bg-white dark:bg-[#2a2948] text-slate-700 dark:text-[#bdaccf] hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-[#3e3c66] transition-colors"
+            role="tab"
+            aria-selected="false"
+          >
+            Upcoming ({upcomingEvents.length})
+          </button>
+          <button
+            type="button"
+            data-filter-type="category"
+            data-value="csc"
+            class="filter-cat-btn px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold bg-white dark:bg-[#2a2948] text-slate-700 dark:text-[#bdaccf] hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-[#3e3c66] transition-colors"
+            role="tab"
+            aria-selected="false"
+          >
+            CSC Gatherings ({sortedEvents.filter(e => !e.data.isPartnerEvent).length})
+          </button>
+          <button
+            type="button"
+            data-filter-type="category"
+            data-value="partner"
+            class="filter-cat-btn px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold bg-white dark:bg-[#2a2948] text-slate-700 dark:text-[#bdaccf] hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-[#3e3c66] transition-colors"
+            role="tab"
+            aria-selected="false"
+          >
+            Partner Events ({partnerEvents.length})
+          </button>
+          <button
+            type="button"
+            data-filter-type="category"
+            data-value="past"
+            class="filter-cat-btn px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold bg-white dark:bg-[#2a2948] text-slate-700 dark:text-[#bdaccf] hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-[#3e3c66] transition-colors"
+            role="tab"
+            aria-selected="false"
+          >
+            Archive ({pastEvents.length})
+          </button>
+        </div>
+
+        <!-- Regional Chapter Chips -->
+        <div class="flex flex-wrap items-center gap-1.5 pt-1" role="tablist" aria-label="Regional chapter filters">
+          <span class="text-xs font-mono font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mr-1 hidden sm:inline">Chapter:</span>
+          <button
+            type="button"
+            data-filter-type="city"
+            data-value="all"
+            class="filter-city-btn active px-2.5 py-1 rounded-md text-xs font-medium bg-[#56548c] text-white transition-colors"
+            role="tab"
+            aria-selected="true"
+          >
+            All Chapters
+          </button>
+          <button
+            type="button"
+            data-filter-type="city"
+            data-value="edinburgh"
+            class="filter-city-btn px-2.5 py-1 rounded-md text-xs font-medium bg-slate-100 dark:bg-[#1b1a30] text-slate-700 dark:text-[#bdaccf] hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-[#3e3c66] transition-colors flex items-center gap-1"
+            role="tab"
+            aria-selected="false"
+          >
+            <span>🏰</span> <span>Edinburgh</span>
+          </button>
+          <button
+            type="button"
+            data-filter-type="city"
+            data-value="glasgow"
+            class="filter-city-btn px-2.5 py-1 rounded-md text-xs font-medium bg-slate-100 dark:bg-[#1b1a30] text-slate-700 dark:text-[#bdaccf] hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-[#3e3c66] transition-colors flex items-center gap-1"
+            role="tab"
+            aria-selected="false"
+          >
+            <span>🚢</span> <span>Glasgow</span>
+          </button>
+          <button
+            type="button"
+            data-filter-type="city"
+            data-value="dundee"
+            class="filter-city-btn px-2.5 py-1 rounded-md text-xs font-medium bg-slate-100 dark:bg-[#1b1a30] text-slate-700 dark:text-[#bdaccf] hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-[#3e3c66] transition-colors flex items-center gap-1"
+            role="tab"
+            aria-selected="false"
+          >
+            <span>🎮</span> <span>Dundee</span>
+          </button>
+          <button
+            type="button"
+            data-filter-type="city"
+            data-value="aberdeen"
+            class="filter-city-btn px-2.5 py-1 rounded-md text-xs font-medium bg-slate-100 dark:bg-[#1b1a30] text-slate-700 dark:text-[#bdaccf] hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-[#3e3c66] transition-colors flex items-center gap-1"
+            role="tab"
+            aria-selected="false"
+          >
+            <span>⚡</span> <span>Aberdeen</span>
+          </button>
+          <button
+            type="button"
+            data-filter-type="city"
+            data-value="virtual"
+            class="filter-city-btn px-2.5 py-1 rounded-md text-xs font-medium bg-slate-100 dark:bg-[#1b1a30] text-slate-700 dark:text-[#bdaccf] hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-[#3e3c66] transition-colors flex items-center gap-1"
+            role="tab"
+            aria-selected="false"
+          >
+            <span>🌐</span> <span>Virtual</span>
+          </button>
+        </div>
       </div>
     </div>
 
@@ -109,6 +182,7 @@ const partnerEvents = sortedEvents.filter(e => e.data.isPartnerEvent);
             class="event-item"
             data-is-upcoming={isUp ? 'true' : 'false'}
             data-is-partner={isPartner ? 'true' : 'false'}
+            data-city={event.data.city.toLowerCase()}
           >
             <EventCard event={event} />
           </div>
@@ -160,13 +234,50 @@ const partnerEvents = sortedEvents.filter(e => e.data.isPartnerEvent);
 </BaseLayout>
 
 <script is:inline>
-  const filterBtns = document.querySelectorAll('.filter-btn');
+  const catBtns = document.querySelectorAll('.filter-cat-btn');
+  const cityBtns = document.querySelectorAll('.filter-city-btn');
   const eventItems = document.querySelectorAll('.event-item');
   const noEventsMsg = document.getElementById('no-events-msg');
 
-  filterBtns.forEach(btn => {
+  let activeCategory = 'all';
+  let activeCity = 'all';
+
+  function applyCombinedFilters() {
+    let visibleCount = 0;
+
+    eventItems.forEach(item => {
+      const isUp = item.getAttribute('data-is-upcoming') === 'true';
+      const isPartner = item.getAttribute('data-is-partner') === 'true';
+      const itemCity = item.getAttribute('data-city') || '';
+
+      let matchCat = true;
+      if (activeCategory === 'upcoming') matchCat = isUp;
+      else if (activeCategory === 'past') matchCat = !isUp;
+      else if (activeCategory === 'partner') matchCat = isPartner;
+      else if (activeCategory === 'csc') matchCat = !isPartner;
+
+      let matchCity = true;
+      if (activeCity !== 'all') {
+        matchCity = itemCity === activeCity;
+      }
+
+      const show = matchCat && matchCity;
+      item.style.display = show ? 'block' : 'none';
+      if (show) visibleCount++;
+    });
+
+    if (noEventsMsg) {
+      if (visibleCount === 0) {
+        noEventsMsg.classList.remove('hidden');
+      } else {
+        noEventsMsg.classList.add('hidden');
+      }
+    }
+  }
+
+  catBtns.forEach(btn => {
     btn.addEventListener('click', () => {
-      filterBtns.forEach(b => {
+      catBtns.forEach(b => {
         b.classList.remove('active', 'bg-[#895294]', 'text-white');
         b.classList.add('bg-white', 'dark:bg-[#2a2948]', 'text-slate-700', 'dark:text-[#bdaccf]');
         b.setAttribute('aria-selected', 'false');
@@ -176,30 +287,25 @@ const partnerEvents = sortedEvents.filter(e => e.data.isPartnerEvent);
       btn.classList.remove('bg-white', 'dark:bg-[#2a2948]', 'text-slate-700', 'dark:text-[#bdaccf]');
       btn.setAttribute('aria-selected', 'true');
 
-      const filter = btn.getAttribute('data-filter');
-      let visibleCount = 0;
+      activeCategory = btn.getAttribute('data-value') || 'all';
+      applyCombinedFilters();
+    });
+  });
 
-      eventItems.forEach(item => {
-        const isUp = item.getAttribute('data-is-upcoming') === 'true';
-        const isPartner = item.getAttribute('data-is-partner') === 'true';
-
-        let show = true;
-        if (filter === 'upcoming') show = isUp;
-        else if (filter === 'past') show = !isUp;
-        else if (filter === 'partner') show = isPartner;
-        else if (filter === 'csc') show = !isPartner;
-
-        item.style.display = show ? 'block' : 'none';
-        if (show) visibleCount++;
+  cityBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      cityBtns.forEach(b => {
+        b.classList.remove('active', 'bg-[#56548c]', 'text-white');
+        b.classList.add('bg-slate-100', 'dark:bg-[#1b1a30]', 'text-slate-700', 'dark:text-[#bdaccf]');
+        b.setAttribute('aria-selected', 'false');
       });
 
-      if (noEventsMsg) {
-        if (visibleCount === 0) {
-          noEventsMsg.classList.remove('hidden');
-        } else {
-          noEventsMsg.classList.add('hidden');
-        }
-      }
+      btn.classList.add('active', 'bg-[#56548c]', 'text-white');
+      btn.classList.remove('bg-slate-100', 'dark:bg-[#1b1a30]', 'text-slate-700', 'dark:text-[#bdaccf]');
+      btn.setAttribute('aria-selected', 'true');
+
+      activeCity = btn.getAttribute('data-value') || 'all';
+      applyCombinedFilters();
     });
   });
 </script>

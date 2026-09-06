@@ -19,6 +19,7 @@
 
   --font-sans: 'Roboto', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-heading: 'Roboto Condensed', 'Roboto', sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   --font-dyslexic: 'OpenDyslexic', 'Atkinson Hyperlegible', sans-serif;
 }
 
@@ -556,5 +557,31 @@ html.light.high-contrast .prose-event ul > li:has(> strong:first-child) {
 html.light.high-contrast .prose-event a {
   color: #0000ee !important;
   text-decoration: underline !important;
+}
+
+/* ==========================================================================
+   Tactile Surface Elevation & Micro-Interactions
+   ========================================================================== */
+.card-tactile {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease;
+}
+
+html.dark .card-tactile {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.card-tactile:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px -4px rgba(137, 82, 148, 0.15), 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+html.dark .card-tactile:hover {
+  box-shadow: 0 12px 32px -4px rgba(111, 183, 230, 0.18), 0 4px 16px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+html.high-contrast .card-tactile {
+  box-shadow: none !important;
+  transform: none !important;
 }
 

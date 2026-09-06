@@ -22,31 +22,60 @@ const formattedFullDate = eventDate.toLocaleDateString('en-GB', {
   year: 'numeric',
 });
 
-const chapterColors: Record<string, string> = {
-  Edinburgh: 'bg-[#56548c] text-white',
-  Glasgow: 'bg-[#382b5c] text-purple-100 border border-[#56548c]',
-  Dundee: 'bg-[#895294] text-white',
-  Virtual: 'bg-sky-50 dark:bg-[#21203a] text-sky-800 dark:text-sky-200 border border-sky-300 dark:border-[#6fb7e6]',
-  'Scotland-wide': 'bg-slate-100 dark:bg-[#1b1a30] text-slate-800 dark:text-white border border-slate-300 dark:border-[#3e3c66]',
-  Aberdeen: 'bg-slate-700 text-white',
+const chapterConfig: Record<string, { badge: string; icon: string }> = {
+  Edinburgh: {
+    badge: 'bg-[#56548c] text-white border border-[#6fb7e6]/30',
+    icon: '🏰',
+  },
+  Glasgow: {
+    badge: 'bg-[#382b5c] text-purple-100 border border-[#895294]/50',
+    icon: '🚢',
+  },
+  Dundee: {
+    badge: 'bg-[#895294] text-white border border-pink-300/40',
+    icon: '🎮',
+  },
+  Aberdeen: {
+    badge: 'bg-slate-800 text-sky-200 border border-sky-400/40',
+    icon: '⚡',
+  },
+  Virtual: {
+    badge: 'bg-sky-50 dark:bg-[#1b1a30] text-sky-800 dark:text-[#6fb7e6] border border-sky-300 dark:border-[#6fb7e6]/40',
+    icon: '🌐',
+  },
+  'Scotland-wide': {
+    badge: 'bg-slate-100 dark:bg-[#1b1a30] text-slate-800 dark:text-white border border-slate-300 dark:border-[#3e3c66]',
+    icon: '🏴󠁧󠁢󠁳󠁣󠁴󠁿',
+  },
+};
+
+const cityConfig = chapterConfig[data.city] || {
+  badge: 'bg-[#56548c] text-white border border-[#6fb7e6]/30',
+  icon: '📍',
 };
 
 const mapsUrl = data.locationUrl || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(data.location)}`;
 ---
 
-<article class="bg-white dark:bg-[#2a2948] rounded-2xl border border-slate-200 dark:border-[#3e3c66] p-6 hover:border-[#895294] shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-200 flex flex-col justify-between group">
+<article 
+  class="card-tactile bg-white dark:bg-[#2a2948] rounded-2xl border border-slate-200 dark:border-[#3e3c66] p-6 hover:border-[#895294] flex flex-col justify-between group event-card"
+  data-category={isUpcoming ? 'upcoming' : 'past'}
+  data-type={data.isPartnerEvent ? 'partner' : 'csc'}
+  data-city={data.city.toLowerCase()}
+>
   <div>
     <!-- Top Row: Date badge + Metadata -->
     <div class="flex items-start gap-3.5 mb-4">
       <div class="flex flex-col items-center justify-center w-14 h-14 rounded-xl bg-slate-100 dark:bg-[#21203a] border border-slate-200 dark:border-[#3e3c66] shrink-0 text-center shadow-inner group-hover:border-[#895294] transition-colors">
-        <span class="text-[11px] uppercase font-bold tracking-widest text-[#895294] dark:text-[#6fb7e6] leading-none">{monthAbbr}</span>
+        <span class="text-[11px] font-mono uppercase font-bold tracking-widest text-[#895294] dark:text-[#6fb7e6] leading-none">{monthAbbr}</span>
         <span class="text-xl font-heading font-bold text-slate-900 dark:text-white leading-none mt-1">{dayNumber}</span>
       </div>
 
       <div class="flex-1 min-w-0">
         <div class="flex flex-wrap items-center gap-1.5 mb-1.5">
-          <span class={`text-xs px-2.5 py-0.5 rounded-full font-bold ${chapterColors[data.city] || 'bg-[#56548c] text-white'}`}>
-            {data.city}
+          <span class={`text-xs px-2.5 py-0.5 rounded-full font-bold inline-flex items-center gap-1 ${cityConfig.badge}`}>
+            <span>{cityConfig.icon}</span>
+            <span>{data.city}</span>
           </span>
           {data.isPartnerEvent ? (
             <span class="text-xs px-2 py-0.5 rounded-full font-semibold bg-pink-100 dark:bg-[#895294]/30 text-pink-800 dark:text-pink-300 border border-pink-200 dark:border-[#895294]">
@@ -78,7 +107,7 @@ const mapsUrl = data.locationUrl || `https://www.google.com/maps/search/?api=1&q
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
         <span class="font-medium text-slate-900 dark:text-white">{formattedFullDate}</span>
-        {data.time && <span class="text-slate-500 dark:text-slate-400">({data.time})</span>}
+        {data.time && <span class="font-mono text-xs text-slate-500 dark:text-slate-400">({data.time})</span>}
       </div>
       <div class="flex items-center gap-2">
         <svg class="w-4 h-4 text-[#56548c] dark:text-[#6fb7e6] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
