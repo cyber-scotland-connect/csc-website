@@ -1,6 +1,26 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-csc-purple: #21203a;
+  --color-csc-lilac: #56548c;
+  --color-csc-pink: #895294;
+  --color-csc-indigo: #382b5c;
+  --color-csc-lavender: #bdaccf;
+  --color-csc-cyan: #6fb7e6;
+  --color-csc-grey: #f4f4f7;
+  --color-csc-surface-dark: #2a2948;
+  --color-csc-surface-darker: #1a192e;
+  --color-csc-surface-light: #ffffff;
+  --color-csc-surface-card: #f4f4f7;
+  --color-csc-border-dark: #3e3c66;
+  --color-csc-border-light: #e2e2ea;
+
+  --font-sans: 'Roboto', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-heading: 'Roboto Condensed', 'Roboto', sans-serif;
+  --font-dyslexic: 'OpenDyslexic', 'Atkinson Hyperlegible', sans-serif;
+}
 
 @layer base {
   :root {
