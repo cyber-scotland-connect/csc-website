@@ -89,13 +89,8 @@ speakerMap.forEach(speaker => {
   speaker.talks.sort((a, b) => b.eventDate.getTime() - a.eventDate.getTime());
 });
 
-// Sort speakers: most talks first, then alphabetically
-const speakersList = Array.from(speakerMap.values()).sort((a, b) => {
-  if (b.talkCount !== a.talkCount) {
-    return b.talkCount - a.talkCount;
-  }
-  return a.name.localeCompare(b.name);
-});
+// Shuffle speakers at build time so static HTML doesn't favor any speaker
+const speakersList = Array.from(speakerMap.values()).sort(() => Math.random() - 0.5);
 
 const totalTalks = speakersList.reduce((acc, s) => acc + s.talkCount, 0);
 ---
@@ -153,7 +148,7 @@ const totalTalks = speakersList.reduce((acc, s) => acc + s.talkCount, 0);
 
     <!-- Speakers Grid -->
     {speakersList.length > 0 ? (
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
+      <div id="speakers-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
         {speakersList.map(speaker => (
           <div class="bg-white dark:bg-[#2a2948] rounded-2xl border border-slate-200 dark:border-[#3e3c66] p-6 shadow-sm hover:border-[#895294] transition-all flex flex-col justify-between">
             <div>
@@ -234,6 +229,20 @@ const totalTalks = speakersList.reduce((acc, s) => acc + s.talkCount, 0);
         </p>
       </div>
     )}
+
+    <!-- Client-side shuffle to randomize speaker order on every page visit -->
+    <script is:inline>
+      (function() {
+        const grid = document.getElementById('speakers-grid');
+        if (!grid) return;
+        const cards = Array.from(grid.children);
+        for (let i = cards.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [cards[i], cards[j]] = [cards[j], cards[i]];
+        }
+        cards.forEach(card => grid.appendChild(card));
+      })();
+    </script>
 
     <!-- Speaker Call for Presentations (CFP) CTA Box -->
     <div class="bg-gradient-to-r from-purple-50 via-white to-sky-50 dark:from-[#252342] dark:via-[#1e1d35] dark:to-[#22273d] rounded-2xl border-2 border-[#895294]/30 dark:border-[#56548c]/60 p-8 sm:p-10 shadow-lg text-slate-700 dark:text-[#bdaccf]">
