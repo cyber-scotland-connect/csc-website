@@ -44,9 +44,57 @@ const leadershipRoles: Record<string, string> = {
   'jamie ohare': 'Community Moderator (Alumni)',
   'miguel marques': 'Community Moderator (Alumni)',
 };
+const eventCanonicalUrl = new URL(Astro.url.pathname, Astro.site || 'https://cyber-scotland-connect.github.io').href;
+
+const eventSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Event',
+  name: data.title,
+  description: `Cyber Scotland Connect gathering in ${data.city} on ${formattedDate}. High-signal, zero-sales cyber security community event.`,
+  startDate: eventDate.toISOString(),
+  eventStatus: 'https://schema.org/EventScheduled',
+  eventAttendanceMode: data.city === 'Virtual'
+    ? 'https://schema.org/OnlineEventAttendanceMode'
+    : 'https://schema.org/OfflineEventAttendanceMode',
+  location: data.city === 'Virtual' ? {
+    '@type': 'VirtualLocation',
+    url: data.streamUrl || 'https://cyber-scotland-connect.github.io/csc-website',
+  } : {
+    '@type': 'Place',
+    name: data.location,
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: data.city,
+      addressRegion: 'Scotland',
+      addressCountry: 'GB',
+    },
+  },
+  organizer: {
+    '@type': 'Organization',
+    name: 'Cyber Scotland Connect',
+    url: 'https://cyber-scotland-connect.github.io/csc-website',
+  },
+  offers: {
+    '@type': 'Offer',
+    price: '0',
+    priceCurrency: 'GBP',
+    availability: 'https://schema.org/InStock',
+    url: data.registrationUrl || data.meetupUrl || eventCanonicalUrl,
+  },
+  performer: data.speakers && data.speakers.length > 0 ? data.speakers.map(s => ({
+    '@type': 'Person',
+    name: s.name,
+    jobTitle: s.role,
+    worksFor: s.company ? { '@type': 'Organization', name: s.company } : undefined,
+  })) : undefined,
+};
 ---
 
-<BaseLayout title={data.title} description={`Cyber Scotland Connect gathering in ${data.city} on ${formattedDate}`}>
+<BaseLayout 
+  title={data.title} 
+  description={`Cyber Scotland Connect gathering in ${data.city} on ${formattedDate}.`}
+  structuredData={eventSchema}
+>
   <article class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
     <!-- Back link -->
     <div class="mb-8">

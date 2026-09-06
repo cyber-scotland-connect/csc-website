@@ -1,5 +1,6 @@
 import { defineConfig } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
+import sitemap from '@astrojs/sitemap';
 
 const isGithubPages = process.env.GITHUB_ACTIONS === 'true';
 
@@ -7,6 +8,7 @@ const isGithubPages = process.env.GITHUB_ACTIONS === 'true';
 export default defineConfig({
   site: 'https://cyber-scotland-connect.github.io',
   base: isGithubPages ? '/csc-website' : '/',
+  integrations: [sitemap()],
   vite: {
     plugins: [tailwindcss()],
   },

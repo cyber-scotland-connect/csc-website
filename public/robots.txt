@@ -1,0 +1,8 @@
+# Robots.txt for Cyber Scotland Connect
+# https://cyber-scotland-connect.github.io/csc-website/
+
+User-agent: *
+Allow: /
+
+# Sitemap Index
+Sitemap: https://cyber-scotland-connect.github.io/csc-website/sitemap-index.xml

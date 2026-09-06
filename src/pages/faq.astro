@@ -111,11 +111,27 @@ const faqCategories = [
     ],
   },
 ];
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqCategories.flatMap(cat =>
+    cat.items.map(item => ({
+      '@type': 'Question',
+      name: item.q,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: item.a,
+      },
+    }))
+  ),
+};
 ---
 
 <BaseLayout 
   title="FAQ & Get Involved" 
   description="Everything you need to know about speaking at Cyber Scotland Connect, hosting a gathering, ethical sponsorship, and community guidelines."
+  structuredData={faqSchema}
 >
   <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
     <!-- Page Header -->

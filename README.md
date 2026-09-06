@@ -35,10 +35,16 @@ CSC is dedicated to radical inclusivity and accessibility (WCAG 2.1 AA/AAA compl
 ## 🛠️ Architecture & Tech Stack
 
 - **Static Site Generator:** [Astro 5](https://astro.build) (Pure SSG, zero runtime vulnerabilities)
-- **Styling:** [Tailwind CSS](https://tailwindcss.com) configured with the CSC Brand System (`#21203a` Deep Purple, `#56548c` Lilac, `#895294` Pink)
-- **Type Safety & Schemas:** TypeScript + Zod content schemas
+- **Styling:** [Tailwind CSS v4](https://tailwindcss.com) via `@tailwindcss/vite` with the CSC Brand System (`#21203a` Deep Purple, `#56548c` Lilac, `#895294` Pink)
+- **Type Safety & Schemas:** TypeScript + Zod content schemas (`src/content.config.ts`)
+- **SEO & AI Discovery:**
+  - Automated XML sitemaps via `@astrojs/sitemap` (`sitemap-index.xml`)
+  - Crawler directives via `public/robots.txt`
+  - Generative Engine Optimization (GEO) & LLM discovery standard via `public/llms.txt`
+  - Rich JSON-LD Structured Data: `schema.org/Organization`, `schema.org/Event`, and `schema.org/FAQPage`
+  - Open Graph & Twitter / X card metadata with absolute URL resolution
 - **Hosting:** GitHub Pages via automated GitHub Actions workflow (`.github/workflows/deploy.yml`)
-- **Supported Runtimes:** [Bun](https://bun.sh) (recommended) or [Node.js](https://nodejs.org) (v20+)
+- **Supported Runtimes:** [Bun](https://bun.sh) (preferred) or [Node.js](https://nodejs.org) (v20+)
 
 ---
 
@@ -102,33 +108,39 @@ csc-website/
 │   └── content-templates/         # Markdown templates for events, leaders & partners
 ├── public/
 │   ├── branding/                  # High-res logos, icons, badges
+│   ├── robots.txt                 # Search engine & AI crawler directives
+│   ├── llms.txt                   # LLM & AI agent discovery manifest
 │   └── favicon.svg
 ├── src/
 │   ├── content/                   # Type-safe Content Collections
-│   │   ├── config.ts              # Zod schemas (events, leaders, partners)
 │   │   ├── events/                # Event Markdown files
 │   │   ├── leaders/               # Organizer & moderator Markdown files
 │   │   └── partners/              # Sponsor & partner Markdown files
+│   ├── content.config.ts          # Zod collection schemas (Astro 5)
 │   ├── components/
 │   │   ├── AccessibilityBar.astro # Theme, dyslexia font & text-size toolbar
 │   │   ├── Header.astro           # Sticky navigation header
 │   │   ├── Footer.astro           # Footer links & copyright
 │   │   ├── EventCard.astro        # Event preview card
+│   │   ├── EventAgenda.astro      # Interactive schedule & timeline
 │   │   ├── LeaderCard.astro       # Organizer / Moderator card
 │   │   └── PartnerCard.astro      # Sponsor / Partner card
 │   ├── layouts/
-│   │   └── BaseLayout.astro       # Master HTML scaffold with SEO & JSON-LD
+│   │   └── BaseLayout.astro       # Master HTML scaffold with SEO, JSON-LD & X cards
 │   ├── pages/
-│   │   ├── index.astro            # Homepage & About Us
-│   │   ├── events/                # Events calendar & detail views
-│   │   ├── leaders.astro          # Leadership directory
+│   │   ├── index.astro            # Homepage & community metrics
+│   │   ├── events/                # Events calendar & dynamic slug views
+│   │   ├── speakers.astro         # Speaker directory with randomized rotation
+│   │   ├── leaders.astro          # Leadership team with randomized rotation
 │   │   ├── partners.astro         # Sponsors & partner directory
+│   │   ├── faq.astro              # Community FAQ with schema.org/FAQPage
+│   │   ├── resources.astro        # Cyber security ecosystem resources
+│   │   ├── brand.astro            # Brand assets & guidelines
 │   │   ├── code-of-conduct.astro  # Community safety charter
 │   │   └── security.astro         # Security policy & disclosure
 │   └── styles/
-│       └── global.css             # CSS variables, a11y classes & brand tokens
-├── astro.config.mjs               # Astro configuration
-├── tailwind.config.mjs            # Tailwind CSS configuration
+│       └── global.css             # Tailwind CSS v4 brand tokens & a11y styling
+├── astro.config.mjs               # Astro configuration with @astrojs/sitemap
 └── tsconfig.json                  # Strict TypeScript configuration
 ```
 

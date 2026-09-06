@@ -7,6 +7,7 @@ interface Props {
   title: string;
   description?: string;
   ogImage?: string;
+  structuredData?: Record<string, any> | Record<string, any>[];
 }
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
@@ -15,10 +16,12 @@ const {
   title,
   description = "Cyber Scotland Connect (CSC) — Grassroots community connecting cyber security practitioners, students, and enthusiasts across Scotland.",
   ogImage = `${base}/branding/icon-linkedin.png`,
+  structuredData,
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://cyber-scotland-connect.github.io');
 const fullTitle = `${title} | Cyber Scotland Connect`;
+const resolvedOgImage = ogImage.startsWith('http') ? ogImage : new URL(ogImage, canonicalURL.origin).href;
 
 const schemaData = {
   "@context": "https://schema.org",
@@ -63,8 +66,15 @@ const schemaData = {
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={ogImage} />
+    <meta property="og:image" content={resolvedOgImage} />
     <meta property="og:site_name" content="Cyber Scotland Connect" />
+
+    <!-- Twitter / X Cards -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content={canonicalURL} />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={resolvedOgImage} />
 
     <!-- Typography Fonts: Roboto, Roboto Condensed, and Atkinson Hyperlegible (for A11y & Dyslexia) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -89,6 +99,9 @@ const schemaData = {
 
     <!-- JSON-LD Structured Data -->
     <script is:inline type="application/ld+json" set:html={JSON.stringify(schemaData)} />
+    {structuredData && (
+      <script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+    )}
 
     <!-- Inline script to prevent FOUC for dark/light mode and accessibility prefs -->
     <script is:inline>

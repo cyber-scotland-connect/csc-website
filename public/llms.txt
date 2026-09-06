@@ -1,0 +1,44 @@
+# Cyber Scotland Connect (CSC)
+
+> Cyber Scotland Connect (CSC) is an independent, grassroots community connecting cyber security professionals, researchers, students, and practitioners across Scotland. CSC hosts regular, free, in-person meetups featuring high-signal, zero-sales technical talks and informal networking.
+
+## Core Information
+- **Name:** Cyber Scotland Connect (CSC)
+- **Founded:** 2019 by Harry McLaren and Stu Hirst
+- **Type:** Grassroots volunteer-led non-profit cyber security community
+- **Website:** https://cyber-scotland-connect.github.io/csc-website/
+- **Meetup Hub:** https://www.meetup.com/cyberscotconnect/
+- **LinkedIn:** https://www.linkedin.com/company/cyber-scotland-connect/
+- **Discord:** https://discord.gg/cyberscotlandconnect
+- **GitHub:** https://github.com/cyber-scotland-connect
+
+## Regional Chapters
+CSC organizes regional gatherings across Scotland:
+- **Edinburgh:** Regular meetups, flagship volume gatherings, and technical lightning talks (frequent hosts include CodeBase Edinburgh).
+- **Glasgow:** Regional evening sessions, defensive engineering, and incident response case studies.
+- **Dundee:** Academic, game security, and practitioner sessions.
+- **Aberdeen:** Energy sector and industrial cybersecurity focus.
+- **Scotland-wide:** Virtual events and community collaborations.
+
+## Key Principles & Policies
+- **Strictly Non-Commercial / Zero Sales:** CSC strictly prohibits vendor sales pitches, commercial presentations, product demos, or direct recruitment outreach during talks. All sessions must focus on technical depth, defensive lessons, offensive research, or practical practitioner experiences.
+- **Free & Open Access:** Events are free to attend and open to everyone regardless of career level, from students breaking into cyber to senior practitioners and CISOs.
+- **Code of Conduct:** CSC is dedicated to a harassment-free, safe, inclusive experience. All attendees, speakers, organizers, and volunteers must abide by the community Code of Conduct: https://cyber-scotland-connect.github.io/csc-website/code-of-conduct/
+
+## Community Leadership
+CSC is operated entirely by volunteer organizers and moderators:
+- **Co-Founders & Organizers:** Harry McLaren, Stu Hirst
+- **Community Moderator & Brand Lead:** Sophie Lanc
+- **Community Moderators:** Gary Hunter, Magda de Jager, Rich Macfarlane, Kevin Gray, Richard Grey, James Ramirez, Joshua Adegoke, Ben Haine
+- **Moderator Alumni:** Federico Charosky, Jamie O'Hare, Miguel Marques
+
+## Key Pages & Documentation
+- [Home](https://cyber-scotland-connect.github.io/csc-website/): Community introduction, quick facts, upcoming gatherings.
+- [Events & Session Archive](https://cyber-scotland-connect.github.io/csc-website/events): Complete archive of past meetup volumes, agendas, slides, and talk recordings since 2019.
+- [Speakers Directory](https://cyber-scotland-connect.github.io/csc-website/speakers): Directory of defenders, researchers, and engineers who have delivered sessions at CSC.
+- [Leadership Team](https://cyber-scotland-connect.github.io/csc-website/leaders): Founders, regional organizers, and volunteer moderators.
+- [Ecosystem Partners](https://cyber-scotland-connect.github.io/csc-website/partners): Non-profit, host venue, ecosystem, and academic partners.
+- [Frequently Asked Questions (FAQ)](https://cyber-scotland-connect.github.io/csc-website/faq): Guidance on attending, submitting talk proposals (CFP), and volunteering.
+- [Community Resources](https://cyber-scotland-connect.github.io/csc-website/resources): Curated tools, learning roadmaps, and Scottish cybersecurity ecosystem links.
+- [Brand Assets](https://cyber-scotland-connect.github.io/csc-website/brand): Official logos, color palette, badges, and usage guidelines.
+- [Code of Conduct](https://cyber-scotland-connect.github.io/csc-website/code-of-conduct): Anti-harassment policy and reporting procedures.
