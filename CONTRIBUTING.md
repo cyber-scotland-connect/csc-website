@@ -59,6 +59,32 @@ Before opening a pull request, verify that:
 
 ---
 
+## 📚 Contributing Community Resources & Tools
+
+We encourage community members to propose high-value cybersecurity resources, open-source projects, and regional initiatives for the [Community Resources & Reading Room](https://cyberscotlandconnect.com/resources):
+
+1. **Copy the Template:**
+   ```bash
+   cp .github/content-templates/resource.md src/content/resources/my-resource-name.md
+   ```
+2. **Fill in Frontmatter:**
+   - `title`: Name of the project, standard, or platform.
+   - `url`: Official website or project repository.
+   - `category`: Must match one of the defined domains:
+     - `Scottish & UK Ecosystem`
+     - `Defensive & Detection Engineering`
+     - `Offensive & AppSec`
+     - `DFIR & Incident Response`
+     - `Cloud, DevSecOps & Supply Chain`
+     - `Interactive Labs & Tooling`
+   - `type`: `Community Project`, `Living Standard`, `Open Source Tool`, `Interactive Lab`, or `Public Body / Advisory`.
+   - `description`: 1–2 crisp sentences highlighting why the resource is essential.
+   - `isScottishOrUK`: Set `true` for Scottish or UK domestic initiatives.
+3. **Guiding Philosophy:** We strictly prioritize open-source, vendor-neutral, community-maintained, and educational resources over commercial sales funnels, paid courses, or proprietary marketing pages.
+4. **Test & Open PR:** Run `bun run build` to confirm Zod schema validation passes, then open a Pull Request!
+
+---
+
 ## 🤖 Working with AI Agents
 
 If you are using AI pair programming assistants (Antigravity, Claude Code, Cursor, Copilot, etc.), please follow the guidelines in [`AGENT.md`](AGENT.md), including the `/grill-me` protocol for any ambiguous or high-impact architectural decisions.

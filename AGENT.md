@@ -1,7 +1,7 @@
 # AGENT.md — Engineering & Collaboration Guidelines for AI Agents
 
 > **Operational Contract & Due Diligence Specification**
-> 
+>
 > This document defines the engineering standards, verification gates, security constraints, and collaboration protocols for all AI coding agents (Antigravity, Claude Code, Cursor, Copilot, Aider, etc.) and automated tools working on the **Cyber Scotland Connect (CSC)** website.
 
 ---
@@ -21,12 +21,14 @@ Your task is to maintain exceptional code quality, preserve security boundaries,
 When a user request involves architectural shifts, new site features, design system updates, content structure reorganizations, or ambiguous specifications, you MUST initiate or recommend a `/grill-me` session before writing implementation code.
 
 ### When to Trigger `/grill-me`
+
 1. **Underspecified Requirements:** The user asks for a feature (e.g. "Add a sponsor banner", "Build an events filter") without specifying UX states, data sources, or constraints.
 2. **Architectural & Framework Decisions:** Choosing or switching frameworks (Astro, Next.js, Hugo, Tailwind, vanilla TS), state management, or headless CMS integrations.
 3. **Multi-Contributor Impact:** Changes that alter file structures, build pipelines, or contribution workflows used by others.
 4. **Breaking Changes:** Modifying URL routes, metadata structures, or public asset locations.
 
 ### How to Run `/grill-me`
+
 - Formulate **3–5 high-leverage, direct questions** addressing:
   - Exact user personas and target outcomes.
   - Data sources, schema structures, and update frequency.
@@ -60,6 +62,7 @@ This is a cybersecurity community repository. Security is not an afterthought; i
 The `main` branch is protected. Direct pushes by automated systems or external contributors without review are restricted.
 
 ### Working Rules
+
 - **Always Branch:** Never work directly on `main`. Create semantic branches:
   - `feat/<feature-name>`: New features, pages, or components
   - `fix/<bug-name>`: Bug fixes and layout corrections
@@ -96,7 +99,7 @@ Before declaring any task or PR complete, execute and document the following:
 ## 👥 Multi-Contributor Care & Cleanliness
 
 - **No Junk Files:** Ensure `.gitignore` prevents `.DS_Store`, local `.env`, temporary logs, or editor configs from entering git.
-- **Maintain Scannability:** Keep components modular, file names predictable, and inline comments focused on *why* (non-obvious rationale), not *what*.
+- **Maintain Scannability:** Keep components modular, file names predictable, and inline comments focused on _why_ (non-obvious rationale), not _what_.
 - **Documentation Parity:** Whenever modifying build commands, directory conventions, or dependencies, immediately update [`README.md`](README.md) and [`AGENT.md`](AGENT.md).
 
 ---
@@ -111,10 +114,15 @@ When creating or modifying content, AI agents must strictly conform to the Zod s
    - Fields: `name` (string), `role` (string), `chapter` (string), `bio` (string), `avatar` (url/path), `linkedin` (url), `github` (url), `website` (url), `order` (number).
 3. **Partners & Sponsors (`src/content/partners/*.md`):**
    - Fields: `name` (string), `tier` (Host Venue | Ecosystem Partner | Sponsor | Academic Partner), `websiteUrl` (url), `description` (string), `logo` (path), `active` (boolean), `order` (number).
+4. **Community Resources (`src/content/resources/*.md`):**
+   - Fields: `title` (string), `url` (url), `category` (Scottish & UK Ecosystem | Defensive & Detection Engineering | Offensive & AppSec | DFIR & Incident Response | Cloud, DevSecOps & Supply Chain | Interactive Labs & Tooling), `type` (Community Project | Living Standard | Open Source Tool | Interactive Lab | Public Body / Advisory), `description` (string), `isScottishOrUK` (boolean), `order` (number).
 
 ### Verification Gate for Agents
+
 Every AI agent must run the production build before submitting a PR:
+
 ```bash
 bun run build # or: npm run build
 ```
+
 Verify exit code 0, 0 errors, and 0 warnings.

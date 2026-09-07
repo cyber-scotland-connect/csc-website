@@ -97,14 +97,15 @@ The website should be designed around structured, typed content models:
 2. **Events Calendar (`/events`):** Filterable by chapter (Edinburgh, Glasgow, Dundee, Virtual), past archive with recordings and slide links, explicit accessibility tags.
 3. **Speakers & Call for Papers (`/speakers`):** Speaker guidelines, "Zero-Sales" policy, CFP submission guide, past speaker roster.
 4. **Community & Chapters (`/community`):** Chapter info, Discord join link, volunteer/organizer info.
-5. **Resources & Careers (`/resources`):** Learning paths, slide repositories, job board / career switch guides.
+5. **Resources & Reading Room (`/resources`):** Hand-curated directory of 30 premier open-source tools, living standards, Scottish/UK initiatives, and mental health support.
 6. **Partners & Transparency (`/partners`):** Supporter tiers, venue hosting criteria, financial transparency / donation links.
 7. **Governance & Safety (`/about`, `/code-of-conduct`, `/security`):** Contributor Covenant 2.1, security disclosure policy, organizing team info.
 
 ### 6.2 Data Schemas (Markdown / Content Collections)
 - **Event Schema:** `title`, `date`, `time`, `location` (venue name, address, chapter), `format` (in-person/virtual/hybrid), `meetupUrl`, `streamUrl`, `slidoUrl`, `accessibility` (stepFree, hearingLoop, notes), `speakers` (refs), `slidesUrl`, `recordingUrl`.
-- **Speaker Schema:** `name`, `role`, `company`, `bio`, `avatar`, `socialLinks`, `talks` (refs).
-- **Partner Schema:** `name`, `tier` (Host, Community Partner, Sponsor), `logoUrl`, `websiteUrl`, `active`.
+- **Leader / Organizer Schema:** `name`, `role`, `chapter`, `bio`, `avatar`, `linkedin`, `github`, `website`, `status`, `order`.
+- **Partner Schema:** `name`, `tier` (Host Venue, Ecosystem Partner, Sponsor, Academic Partner), `logo`, `websiteUrl`, `active`, `order`.
+- **Resource Schema:** `title`, `url`, `category` (6 domains), `type` (5 types), `description`, `isScottishOrUK`, `order`.
 
 ---
 
