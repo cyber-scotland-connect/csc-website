@@ -1,0 +1,242 @@
+{
+  "https://www.samh.org.uk": {
+    "status": 200,
+    "lastChecked": "2026-09-07T08:24:09.505Z"
+  },
+  "https://breathingspace.scot/": {
+    "status": 200,
+    "lastChecked": "2026-09-07T08:24:09.733Z"
+  },
+  "https://ednightline.com/": {
+    "status": 200,
+    "lastChecked": "2026-09-07T08:24:13.649Z"
+  },
+  "https://discord.gg/cyberscotlandconnect": {
+    "status": 200,
+    "lastChecked": "2026-09-07T08:24:14.179Z"
+  },
+  "https://www.cyberscotland.com/": {
+    "status": 200,
+    "lastChecked": "2026-09-07T08:24:14.316Z"
+  },
+  "https://portswigger.net/web-security": {
+    "status": 200,
+    "lastChecked": "2026-09-07T08:24:14.413Z"
+  },
+  "https://scorecard.dev/": {
+    "status": 200,
+    "lastChecked": "2026-09-07T08:24:14.659Z"
+  },
+  "https://www.sans.org/posters/": {
+    "status": 200,
+    "lastChecked": "2026-09-07T08:24:15.206Z"
+  },
+  "https://www.opencti.io/": {
+    "status": 200,
+    "lastChecked": "2026-09-07T08:24:15.513Z"
+  },
+  "https://github.com/SigmaHQ/sigma": {
+    "status": 200,
+    "lastChecked": "2026-09-07T08:24:16.035Z"
+  },
+  "https://www.ukcybersecuritycouncil.org.uk/": {
+    "status": 200,
+    "lastChecked": "2026-09-07T08:24:16.332Z"
+  },
+  "https://overthewire.org/wargames/bandit/": {
+    "status": 200,
+    "lastChecked": "2026-09-07T08:24:16.458Z"
+  },
+  "https://cryptopals.com/": {
+    "status": 200,
+    "lastChecked": "2026-09-07T08:24:16.595Z"
+  },
+  "https://owasp.org/www-project-web-security-testing-guide/": {
+    "status": 200,
+    "lastChecked": "2026-09-07T08:24:16.718Z"
+  },
+  "https://github.com/sbilly/awesome-security": {
+    "status": 200,
+    "lastChecked": "2026-09-07T08:24:17.259Z"
+  },
+  "https://cyberfraudcentre.com/": {
+    "status": 200,
+    "lastChecked": "2026-09-07T08:24:18.039Z"
+  },
+  "https://cloudsecurityalliance.org/research/cloud-controls-matrix/": {
+    "status": 200,
+    "lastChecked": "2026-09-07T08:24:18.444Z"
+  },
+  "https://wiki.wireshark.org/SampleCaptures": {
+    "status": 200,
+    "lastChecked": "2026-09-07T08:24:18.677Z"
+  },
+  "https://github.com/meirwah/awesome-incident-response": {
+    "status": 200,
+    "lastChecked": "2026-09-07T08:24:19.338Z"
+  },
+  "https://attack.mitre.org/": {
+    "status": 200,
+    "lastChecked": "2026-09-07T08:24:19.493Z"
+  },
+  "https://docs.velociraptor.app/": {
+    "status": 200,
+    "lastChecked": "2026-09-07T08:24:19.634Z"
+  },
+  "https://dependencytrack.org/": {
+    "status": 200,
+    "lastChecked": "2026-09-07T08:24:19.834Z"
+  },
+  "https://www.scotlandis.com/": {
+    "status": 200,
+    "lastChecked": "2026-09-07T08:24:24.714Z"
+  },
+  "https://github.com/swisskyrepo/PayloadsAllTheThings": {
+    "status": 200,
+    "lastChecked": "2026-09-07T08:24:25.206Z"
+  },
+  "https://book.hacktricks.xyz/": {
+    "status": 200,
+    "lastChecked": "2026-09-07T08:24:25.657Z"
+  },
+  "https://owasp.org/www-project-top-ten/": {
+    "status": 200,
+    "lastChecked": "2026-09-07T08:24:25.704Z"
+  },
+  "https://kubernetes.io/docs/concepts/security/": {
+    "status": 200,
+    "lastChecked": "2026-09-07T08:24:25.828Z"
+  },
+  "https://cyberdefensematrix.com/": {
+    "status": 200,
+    "lastChecked": "2026-09-07T08:24:25.988Z"
+  },
+  "https://gchq.github.io/CyberChef/": {
+    "status": 200,
+    "lastChecked": "2026-09-07T08:24:26.054Z"
+  },
+  "https://slsa.dev/": {
+    "status": 200,
+    "lastChecked": "2026-09-07T08:24:26.194Z"
+  },
+  "https://picoctf.org/": {
+    "status": 200,
+    "lastChecked": "2026-09-07T08:24:26.288Z"
+  },
+  "https://ericzimmerman.github.io/": {
+    "status": 200,
+    "lastChecked": "2026-09-07T08:24:26.349Z"
+  },
+  "https://d3fend.mitre.org/": {
+    "status": 200,
+    "lastChecked": "2026-09-07T08:24:26.415Z"
+  },
+  "https://gtfobins.github.io/": {
+    "status": 200,
+    "lastChecked": "2026-09-07T08:24:26.557Z"
+  },
+  "https://thedfirreport.com/": {
+    "status": 200,
+    "lastChecked": "2026-09-07T08:24:26.658Z"
+  },
+  "https://www.gov.scot/policies/cyber-resilience/": {
+    "status": 200,
+    "lastChecked": "2026-09-07T08:24:26.890Z"
+  },
+  "https://detectionengineering.net/": {
+    "status": 200,
+    "lastChecked": "2026-09-07T08:24:27.102Z"
+  },
+  "https://atomicredteam.io/": {
+    "status": 200,
+    "lastChecked": "2026-09-07T08:24:27.585Z"
+  },
+  "https://www.ncsc.gov.uk/section/keep-up-to-date/reports-advisories": {
+    "status": 200,
+    "lastChecked": "2026-09-07T08:24:27.697Z"
+  },
+  "https://www.cisecurity.org/cis-benchmarks": {
+    "status": 200,
+    "lastChecked": "2026-09-07T08:24:27.838Z"
+  },
+  "https://www.napier.ac.uk/": {
+    "status": 200,
+    "lastChecked": "2026-09-07T08:24:28.161Z"
+  },
+  "https://www.strath.ac.uk/": {
+    "status": 200,
+    "lastChecked": "2026-09-07T08:24:28.572Z"
+  },
+  "https://www.scottishtecharmy.org/": {
+    "status": 200,
+    "lastChecked": "2026-09-07T08:24:28.720Z"
+  },
+  "https://www.cyera.com/": {
+    "status": 200,
+    "lastChecked": "2026-09-07T08:24:31.365Z"
+  },
+  "https://www.osint.uk/": {
+    "status": 200,
+    "lastChecked": "2026-09-07T08:24:31.507Z"
+  },
+  "https://twitter.com/turingtesters2": {
+    "status": 200,
+    "lastChecked": "2026-09-07T08:24:32.243Z"
+  },
+  "https://www.scotwomenintech.com/": {
+    "status": 200,
+    "lastChecked": "2026-09-07T08:24:32.354Z"
+  },
+  "https://www.adarma.com/": {
+    "status": 200,
+    "lastChecked": "2026-09-07T08:24:32.598Z"
+  },
+  "https://enusec.org": {
+    "status": 200,
+    "lastChecked": "2026-09-07T08:24:32.805Z"
+  },
+  "https://www.abertay.ac.uk/business/cyberquarter/": {
+    "status": 200,
+    "lastChecked": "2026-09-07T08:24:33.307Z"
+  },
+  "https://www.skyscanner.net/": {
+    "status": 200,
+    "lastChecked": "2026-09-07T08:24:33.556Z"
+  },
+  "https://www.linkedin.com/groups/7452327": {
+    "status": 200,
+    "lastChecked": "2026-09-07T08:24:46.082Z"
+  },
+  "https://thedatalab.com/": {
+    "status": 200,
+    "lastChecked": "2026-09-07T08:24:47.358Z"
+  },
+  "https://www.extrahop.com": {
+    "status": 200,
+    "lastChecked": "2026-09-07T08:24:47.659Z"
+  },
+  "https://www.freeagent.com/": {
+    "status": 200,
+    "lastChecked": "2026-09-07T08:24:47.803Z"
+  },
+  "https://www.thisiscodebase.com/": {
+    "status": 200,
+    "lastChecked": "2026-09-07T08:24:48.434Z"
+  },
+  "https://twitter.com/WiCS_Scot": {
+    "status": 200,
+    "lastChecked": "2026-09-07T08:25:00.805Z"
+  },
+  "https://www.harveynash.com/": {
+    "status": 200,
+    "lastChecked": "2026-09-07T08:25:00.952Z"
+  },
+  "https://www.woodmac.com/": {
+    "status": 200,
+    "lastChecked": "2026-09-07T08:25:01.171Z"
+  },
+  "https://digit.fyi/": {
+    "status": 200,
+    "lastChecked": "2026-09-07T08:25:03.384Z"
+  }
+}

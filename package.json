@@ -13,7 +13,8 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --check .",
-    "format:write": "prettier --write ."
+    "format:write": "prettier --write .",
+    "check:links": "bun run scripts/check-links.ts"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.10",
