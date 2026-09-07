@@ -16,7 +16,7 @@ This repository contains the complete static website and content collections for
 - **Community Hub:** Meetups, conference updates, local chapter details across Edinburgh, Glasgow, Dundee, Aberdeen, and virtual streams.
 - **High-Signal, Zero-Sales:** Strict community charter prohibiting vendor sales pitches.
 - **Fast, Accessible & Lean:** Built with [Astro](https://astro.build), [TypeScript](https://www.typescriptlang.org/), and [Tailwind CSS](https://tailwindcss.com/) with zero client-side JavaScript overhead by default.
-- **Multi-Contributor & AI-Friendly:** All events, leaders, and partners are managed via type-safe Markdown files in `src/content/`. Anyone (or any AI agent) can add or update entries via standard Pull Requests.
+- **Multi-Contributor & AI-Friendly:** All events, leaders, partners, and community resources are managed via type-safe Markdown files in `src/content/`. Anyone (or any AI agent) can add or update entries via standard Pull Requests.
 
 ---
 
@@ -105,7 +105,7 @@ The compiled, optimized static website will be output to `dist/`.
 csc-website/
 ├── .github/
 │   ├── workflows/deploy.yml       # Automated GitHub Pages CI/CD
-│   └── content-templates/         # Markdown templates for events, leaders & partners
+│   └── content-templates/         # Markdown templates for events, leaders, partners & resources
 ├── public/
 │   ├── branding/                  # High-res logos, icons, badges
 │   ├── robots.txt                 # Search engine & AI crawler directives
@@ -115,7 +115,8 @@ csc-website/
 │   ├── content/                   # Type-safe Content Collections
 │   │   ├── events/                # Event Markdown files
 │   │   ├── leaders/               # Organizer & moderator Markdown files
-│   │   └── partners/              # Sponsor & partner Markdown files
+│   │   ├── partners/              # Sponsor & partner Markdown files
+│   │   └── resources/             # Curated community resources & tools Markdown files
 │   ├── content.config.ts          # Zod collection schemas (Astro 5)
 │   ├── components/
 │   │   ├── AccessibilityBar.astro # Theme, dyslexia font & text-size toolbar
@@ -124,7 +125,8 @@ csc-website/
 │   │   ├── EventCard.astro        # Event preview card
 │   │   ├── EventAgenda.astro      # Interactive schedule & timeline
 │   │   ├── LeaderCard.astro       # Organizer / Moderator card
-│   │   └── PartnerCard.astro      # Sponsor / Partner card
+│   │   ├── PartnerCard.astro      # Sponsor / Partner card
+│   │   └── ResourceCard.astro     # Curated community resource / tool card
 │   ├── layouts/
 │   │   └── BaseLayout.astro       # Master HTML scaffold with SEO, JSON-LD & X cards
 │   ├── pages/
@@ -134,7 +136,7 @@ csc-website/
 │   │   ├── leaders.astro          # Leadership team with randomized rotation
 │   │   ├── partners.astro         # Sponsors & partner directory
 │   │   ├── faq.astro              # Community FAQ with schema.org/FAQPage
-│   │   ├── resources.astro        # Cyber security ecosystem resources
+│   │   ├── resources.astro        # Cyber security ecosystem resources & reading room
 │   │   ├── brand.astro            # Brand assets & guidelines
 │   │   ├── code-of-conduct.astro  # Community safety charter
 │   │   └── security.astro         # Security policy & disclosure
@@ -148,13 +150,14 @@ csc-website/
 
 ## ✍️ How to Contribute Content
 
-Adding an upcoming meetup, partner event, new organizer bio, or sponsor takes just a couple of minutes:
+Adding an upcoming meetup, partner event, new organizer bio, sponsor, or community resource takes just a couple of minutes:
 
 1. **Create a new Markdown file** in the appropriate directory:
    - Events: `src/content/events/YYYY-MM-DD-event-slug.md`
    - Leaders / Mods: `src/content/leaders/firstname-lastname.md`
    - Partners / Sponsors: `src/content/partners/organization-name.md`
-2. **Copy the schema from `.github/content-templates/`** and fill in the frontmatter fields.
+   - Resources: `src/content/resources/resource-slug.md`
+2. **Copy the schema from `.github/content-templates/`** (`event.md`, `leader.md`, `partner.md`, or `resource.md`) and fill in the frontmatter fields.
 3. **Verify locally:** Run `bun run build` (or `npm run build`) to ensure Zod validation passes.
 4. **Submit a Pull Request!**
 

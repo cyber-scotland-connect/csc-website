@@ -10,7 +10,14 @@ const eventsCollection = defineCollection({
     time: z.string().optional(),
     location: z.string(),
     locationUrl: z.string().url().optional(),
-    city: z.enum(['Edinburgh', 'Glasgow', 'Dundee', 'Virtual', 'Aberdeen', 'Scotland-wide']),
+    city: z.enum([
+      'Edinburgh',
+      'Glasgow',
+      'Dundee',
+      'Virtual',
+      'Aberdeen',
+      'Scotland-wide',
+    ]),
     isPartnerEvent: z.boolean().default(false),
     partnerName: z.string().optional(),
     meetupUrl: z.string().url().optional(),
@@ -18,30 +25,46 @@ const eventsCollection = defineCollection({
     streamUrl: z.string().url().optional(),
     slidesUrl: z.string().url().optional(),
     recordingUrl: z.string().url().optional(),
-    accessibility: z.object({
-      stepFree: z.boolean().default(true),
-      hearingLoop: z.boolean().default(false),
-      notes: z.string().optional(),
-    }).default({ stepFree: true, hearingLoop: false }),
-    speakers: z.array(
-      z.object({
-        name: z.string(),
-        role: z.string().optional(),
-        company: z.string().optional(),
-        talkTitle: z.string(),
-        abstract: z.string().optional(),
+    accessibility: z
+      .object({
+        stepFree: z.boolean().default(true),
+        hearingLoop: z.boolean().default(false),
+        notes: z.string().optional(),
       })
-    ).optional(),
-    agenda: z.array(
-      z.object({
-        time: z.string(),
-        title: z.string(),
-        speaker: z.string().optional(),
-        speakerUrl: z.string().optional(),
-        description: z.string().optional(),
-        type: z.enum(['networking', 'talk', 'break', 'social', 'intro', 'panel', 'other']).default('other'),
-      })
-    ).optional(),
+      .default({ stepFree: true, hearingLoop: false }),
+    speakers: z
+      .array(
+        z.object({
+          name: z.string(),
+          role: z.string().optional(),
+          company: z.string().optional(),
+          talkTitle: z.string(),
+          abstract: z.string().optional(),
+        })
+      )
+      .optional(),
+    agenda: z
+      .array(
+        z.object({
+          time: z.string(),
+          title: z.string(),
+          speaker: z.string().optional(),
+          speakerUrl: z.string().optional(),
+          description: z.string().optional(),
+          type: z
+            .enum([
+              'networking',
+              'talk',
+              'break',
+              'social',
+              'intro',
+              'panel',
+              'other',
+            ])
+            .default('other'),
+        })
+      )
+      .optional(),
     featured: z.boolean().default(false),
   }),
 });
@@ -63,10 +86,18 @@ const leadersCollection = defineCollection({
 });
 
 const partnersCollection = defineCollection({
-  loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: './src/content/partners' }),
+  loader: glob({
+    pattern: '**/[^_]*.{md,mdx}',
+    base: './src/content/partners',
+  }),
   schema: z.object({
     name: z.string(),
-    tier: z.enum(['Host Venue', 'Ecosystem Partner', 'Sponsor', 'Academic Partner']),
+    tier: z.enum([
+      'Host Venue',
+      'Ecosystem Partner',
+      'Sponsor',
+      'Academic Partner',
+    ]),
     websiteUrl: z.string().url(),
     description: z.string(),
     logo: z.string().optional(),
@@ -75,8 +106,40 @@ const partnersCollection = defineCollection({
   }),
 });
 
+const resourcesCollection = defineCollection({
+  loader: glob({
+    pattern: '**/[^_]*.{md,mdx}',
+    base: './src/content/resources',
+  }),
+  schema: z.object({
+    title: z.string(),
+    url: z.string().url(),
+    category: z.enum([
+      'Scottish & UK Ecosystem',
+      'Defensive & Detection Engineering',
+      'Offensive & AppSec',
+      'DFIR & Incident Response',
+      'Cloud, DevSecOps & Supply Chain',
+      'Interactive Labs & Tooling',
+    ]),
+    type: z
+      .enum([
+        'Community Project',
+        'Living Standard',
+        'Open Source Tool',
+        'Interactive Lab',
+        'Public Body / Advisory',
+      ])
+      .default('Community Project'),
+    description: z.string(),
+    isScottishOrUK: z.boolean().default(false),
+    order: z.number().default(99),
+  }),
+});
+
 export const collections = {
   events: eventsCollection,
   leaders: leadersCollection,
   partners: partnersCollection,
+  resources: resourcesCollection,
 };
