@@ -66,6 +66,17 @@ const eventsCollection = defineCollection({
       )
       .optional(),
     featured: z.boolean().default(false),
+    photos: z
+      .array(
+        z.object({
+          src: z.string(),
+          alt: z.string(),
+          caption: z.string().optional(),
+        })
+      )
+      .max(6)
+      .optional(),
+    albumUrl: z.string().url().optional(),
   }),
 });
 

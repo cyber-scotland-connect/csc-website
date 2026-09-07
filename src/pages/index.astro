@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import EventCard from '../components/EventCard.astro';
 import PartnerCard from '../components/PartnerCard.astro';
 import LeaderCard from '../components/LeaderCard.astro';
+import CommunityPhotoStrip from '../components/CommunityPhotoStrip.astro';
 import { getCollection } from 'astro:content';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
@@ -16,7 +17,7 @@ const sortedEvents = allEvents.sort(
 );
 
 const upcomingEvents = sortedEvents
-  .filter(e => new Date(e.data.date).getTime() >= nowTime)
+  .filter((e) => new Date(e.data.date).getTime() >= nowTime)
   .reverse();
 
 const nextMeetup = upcomingEvents[0] || sortedEvents[0];
@@ -24,40 +25,59 @@ const featuredEvents = upcomingEvents.slice(0, 2);
 
 // Fetch leaders
 const allLeaders = await getCollection('leaders');
-const activeLeaders = allLeaders.filter(l => l.data.status !== 'alumni').sort(() => Math.random() - 0.5);
+const activeLeaders = allLeaders
+  .filter((l) => l.data.status !== 'alumni')
+  .sort(() => Math.random() - 0.5);
 
 // Fetch partners and randomize top supporters
 const partners = await getCollection('partners');
 const topPartners = partners
-  .filter(p => p.data.active)
+  .filter((p) => p.data.active)
   .sort(() => Math.random() - 0.5)
   .slice(0, 4);
 ---
 
 <BaseLayout title="Home — Scotland's Grassroots Cyber Security Community">
   <!-- Hero Section with Dual Column on Desktop -->
-  <section class="relative overflow-hidden bg-gradient-to-b from-slate-50 via-white to-slate-50 dark:from-[#21203a] dark:via-[#2a2948] dark:to-[#21203a] py-16 sm:py-24 border-b border-slate-200 dark:border-[#3e3c66] transition-colors">
-    <div class="absolute inset-0 opacity-20 dark:opacity-15 pointer-events-none bg-[radial-gradient(#56548c_1px,transparent_1px)] dark:bg-[radial-gradient(#6fb7e6_1px,transparent_1px)] [background-size:24px_24px]"></div>
+  <section
+    class="relative overflow-hidden bg-gradient-to-b from-slate-50 via-white to-slate-50 dark:from-[#21203a] dark:via-[#2a2948] dark:to-[#21203a] py-16 sm:py-24 border-b border-slate-200 dark:border-[#3e3c66] transition-colors"
+  >
+    <div
+      class="absolute inset-0 opacity-20 dark:opacity-15 pointer-events-none bg-[radial-gradient(#56548c_1px,transparent_1px)] dark:bg-[radial-gradient(#6fb7e6_1px,transparent_1px)] [background-size:24px_24px]"
+    >
+    </div>
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
         <!-- Left Column: Value Proposition -->
         <div class="lg:col-span-7">
           <!-- Announcement Pill -->
-          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-purple-50 dark:bg-[#382b5c] border border-purple-200 dark:border-[#56548c] text-xs font-semibold text-[#895294] dark:text-[#bdaccf] mb-6 shadow-sm">
-            <span class="w-2 h-2 rounded-full bg-[#895294] dark:bg-[#6fb7e6] animate-ping"></span>
+          <div
+            class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-purple-50 dark:bg-[#382b5c] border border-purple-200 dark:border-[#56548c] text-xs font-semibold text-[#895294] dark:text-[#bdaccf] mb-6 shadow-sm"
+          >
+            <span
+              class="w-2 h-2 rounded-full bg-[#895294] dark:bg-[#6fb7e6] animate-ping"
+            ></span>
             <span>🏴󠁧󠁢󠁳󠁣󠁴󠁿 Grassroots • Inclusive • High-Signal</span>
           </div>
 
-          <h1 class="text-4xl sm:text-6xl font-heading font-bold text-slate-900 dark:text-white tracking-tight uppercase leading-tight mb-6 transition-colors">
+          <h1
+            class="text-4xl sm:text-6xl font-heading font-bold text-slate-900 dark:text-white tracking-tight uppercase leading-tight mb-6 transition-colors"
+          >
             Connecting Scotland's <br />
-            <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#56548c] via-[#895294] to-[#382b5c] dark:from-[#6fb7e6] dark:via-[#bdaccf] dark:to-[#e08be9]">
+            <span
+              class="text-transparent bg-clip-text bg-gradient-to-r from-[#56548c] via-[#895294] to-[#382b5c] dark:from-[#6fb7e6] dark:via-[#bdaccf] dark:to-[#e08be9]"
+            >
               Cyber Security
             </span> Community
           </h1>
 
-          <p class="text-lg sm:text-xl text-slate-600 dark:text-[#bdaccf] leading-relaxed mb-8 max-w-2xl transition-colors">
-            Cyber Scotland Connect (CSC) unites security practitioners, students, researchers, career switchers, and enthusiasts across Scotland. Free, volunteer-run, and grounded in practical defense.
+          <p
+            class="text-lg sm:text-xl text-slate-600 dark:text-[#bdaccf] leading-relaxed mb-8 max-w-2xl transition-colors"
+          >
+            Cyber Scotland Connect (CSC) unites security practitioners,
+            students, researchers, career switchers, and enthusiasts across
+            Scotland. Free, volunteer-run, and grounded in practical defense.
           </p>
 
           <!-- Action Buttons -->
@@ -67,8 +87,17 @@ const topPartners = partners
               class="px-6 py-3.5 rounded-xl text-base font-bold text-white bg-[#895294] hover:bg-[#9d5fa8] shadow-lg shadow-[#895294]/25 hover:shadow-xl hover:-translate-y-0.5 transition-all flex items-center gap-2 focus:ring-2 focus:ring-[#6fb7e6]"
             >
               <span>Explore Meetups</span>
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              <svg
+                class="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
               </svg>
             </a>
 
@@ -83,119 +112,202 @@ const topPartners = partners
           </div>
 
           <!-- Social Proof / Meetup Rating Badge -->
-          <div class="mt-4 flex items-center gap-2.5 text-xs text-slate-600 dark:text-[#bdaccf]">
-            <div class="flex items-center text-amber-500 dark:text-amber-400 tracking-tighter text-sm">
+          <div
+            class="mt-4 flex items-center gap-2.5 text-xs text-slate-600 dark:text-[#bdaccf]"
+          >
+            <div
+              class="flex items-center text-amber-500 dark:text-amber-400 tracking-tighter text-sm"
+            >
               ★★★★★
             </div>
-            <span class="font-bold text-slate-900 dark:text-white">4.8 / 5.0</span>
+            <span class="font-bold text-slate-900 dark:text-white"
+              >4.8 / 5.0</span
+            >
             <span class="text-slate-400 dark:text-slate-500">•</span>
             <span>300+ community ratings on Meetup</span>
           </div>
         </div>
 
         <!-- Right Column: Next Gathering Spotlight Card -->
-        {nextMeetup && (
-          <div class="lg:col-span-5">
-            <div class="bg-white dark:bg-[#2a2948] p-7 rounded-2xl border-2 border-[#895294] dark:border-[#56548c] shadow-xl relative">
-              <div class="absolute -top-3.5 right-6 bg-[#895294] text-white text-[11px] uppercase font-bold tracking-wider px-3 py-1 rounded-full shadow">
-                Next Upcoming Gathering
-              </div>
-
-              <div class="flex items-center gap-2 text-xs font-semibold text-[#895294] dark:text-[#6fb7e6] mb-3">
-                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                <span>{nextMeetup.data.city} Chapter · In-Person</span>
-              </div>
-
-              <h2 class="text-2xl font-heading font-bold text-slate-900 dark:text-white mb-3">
-                <a href={`${base}/events/${nextMeetup.id}`} class="hover:underline">
-                  {nextMeetup.data.title}
-                </a>
-              </h2>
-
-              <div class="space-y-2 text-xs sm:text-sm text-slate-600 dark:text-[#bdaccf] mb-6">
-                <div class="flex items-center gap-2">
-                  <svg class="w-4 h-4 text-[#895294]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                  </svg>
-                  <span class="font-medium text-slate-900 dark:text-white">
-                    {new Date(nextMeetup.data.date).toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' })}
-                  </span>
-                  {nextMeetup.data.time && <span>({nextMeetup.data.time})</span>}
+        {
+          nextMeetup && (
+            <div class="lg:col-span-5">
+              <div class="bg-white dark:bg-[#2a2948] p-7 rounded-2xl border-2 border-[#895294] dark:border-[#56548c] shadow-xl relative">
+                <div class="absolute -top-3.5 right-6 bg-[#895294] text-white text-[11px] uppercase font-bold tracking-wider px-3 py-1 rounded-full shadow">
+                  Next Upcoming Gathering
                 </div>
-                <div class="flex items-center gap-2">
-                  <svg class="w-4 h-4 text-[#56548c] dark:text-[#6fb7e6] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                  </svg>
+
+                <div class="flex items-center gap-2 text-xs font-semibold text-[#895294] dark:text-[#6fb7e6] mb-3">
+                  <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                  <span>{nextMeetup.data.city} Chapter · In-Person</span>
+                </div>
+
+                <h2 class="text-2xl font-heading font-bold text-slate-900 dark:text-white mb-3">
                   <a
-                    href={nextMeetup.data.locationUrl || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(nextMeetup.data.location)}`}
+                    href={`${base}/events/${nextMeetup.id}`}
+                    class="hover:underline"
+                  >
+                    {nextMeetup.data.title}
+                  </a>
+                </h2>
+
+                <div class="space-y-2 text-xs sm:text-sm text-slate-600 dark:text-[#bdaccf] mb-6">
+                  <div class="flex items-center gap-2">
+                    <svg
+                      class="w-4 h-4 text-[#895294]"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                      />
+                    </svg>
+                    <span class="font-medium text-slate-900 dark:text-white">
+                      {new Date(nextMeetup.data.date).toLocaleDateString(
+                        'en-GB',
+                        {
+                          weekday: 'short',
+                          day: 'numeric',
+                          month: 'short',
+                          year: 'numeric',
+                        }
+                      )}
+                    </span>
+                    {nextMeetup.data.time && (
+                      <span>({nextMeetup.data.time})</span>
+                    )}
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <svg
+                      class="w-4 h-4 text-[#56548c] dark:text-[#6fb7e6] shrink-0"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                      />
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                      />
+                    </svg>
+                    <a
+                      href={
+                        nextMeetup.data.locationUrl ||
+                        `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(nextMeetup.data.location)}`
+                      }
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="truncate hover:underline hover:text-[#895294] dark:hover:text-[#6fb7e6] transition-colors"
+                      title={`View ${nextMeetup.data.location} on Google Maps`}
+                    >
+                      {nextMeetup.data.location} 📍
+                    </a>
+                  </div>
+                </div>
+
+                <div class="pt-4 border-t border-slate-100 dark:border-[#3e3c66] flex items-center justify-between">
+                  <a
+                    href={`${base}/events/${nextMeetup.id}`}
+                    class="text-xs font-bold text-[#895294] dark:text-[#6fb7e6] hover:underline"
+                  >
+                    View Talk Abstracts →
+                  </a>
+                  <a
+                    href={
+                      nextMeetup.data.meetupUrl ||
+                      'https://www.meetup.com/cyberscotconnect/'
+                    }
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="truncate hover:underline hover:text-[#895294] dark:hover:text-[#6fb7e6] transition-colors"
-                    title={`View ${nextMeetup.data.location} on Google Maps`}
+                    class="px-4 py-2 bg-[#895294] hover:bg-[#9d5fa8] text-white text-xs font-bold rounded-lg shadow transition-all"
                   >
-                    {nextMeetup.data.location} 📍
+                    RSVP on Meetup ↗
                   </a>
                 </div>
               </div>
-
-              <div class="pt-4 border-t border-slate-100 dark:border-[#3e3c66] flex items-center justify-between">
-                <a
-                  href={`${base}/events/${nextMeetup.id}`}
-                  class="text-xs font-bold text-[#895294] dark:text-[#6fb7e6] hover:underline"
-                >
-                  View Talk Abstracts →
-                </a>
-                <a
-                  href={nextMeetup.data.meetupUrl || 'https://www.meetup.com/cyberscotconnect/'}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="px-4 py-2 bg-[#895294] hover:bg-[#9d5fa8] text-white text-xs font-bold rounded-lg shadow transition-all"
-                >
-                  RSVP on Meetup ↗
-                </a>
-              </div>
             </div>
-          </div>
-        )}
+          )
+        }
       </div>
     </div>
   </section>
 
   <!-- Core Ethos: The 3 Pillars -->
-  <section class="py-14 bg-slate-50 dark:bg-[#1b1a30] border-b border-slate-200 dark:border-[#3e3c66] transition-colors">
+  <section
+    class="py-14 bg-slate-50 dark:bg-[#1b1a30] border-b border-slate-200 dark:border-[#3e3c66] transition-colors"
+  >
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <!-- Pillar 1 -->
-        <div class="p-7 rounded-2xl bg-white dark:bg-[#2a2948]/80 border border-slate-200 dark:border-[#3e3c66] border-t-4 border-t-[#895294] shadow-sm hover:shadow-md transition-shadow">
-          <div class="w-12 h-12 rounded-xl bg-purple-100 dark:bg-[#895294]/20 text-[#895294] flex items-center justify-center font-bold text-xl mb-4">
+        <div
+          class="p-7 rounded-2xl bg-white dark:bg-[#2a2948]/80 border border-slate-200 dark:border-[#3e3c66] border-t-4 border-t-[#895294] shadow-sm hover:shadow-md transition-shadow"
+        >
+          <div
+            class="w-12 h-12 rounded-xl bg-purple-100 dark:bg-[#895294]/20 text-[#895294] flex items-center justify-center font-bold text-xl mb-4"
+          >
             🎯
           </div>
-          <h2 class="text-xl font-heading font-bold text-slate-900 dark:text-white mb-2.5">High-Signal, Zero-Sales</h2>
+          <h2
+            class="text-xl font-heading font-bold text-slate-900 dark:text-white mb-2.5"
+          >
+            High-Signal, Zero-Sales
+          </h2>
           <p class="text-sm text-slate-600 dark:text-[#bdaccf] leading-relaxed">
-            Strict anti-pitch ban. Talks focus entirely on defensive architectures, operational detection engineering, threat intelligence, and hard lessons from real failures.
+            Strict anti-pitch ban. Talks focus entirely on defensive
+            architectures, operational detection engineering, threat
+            intelligence, and hard lessons from real failures.
           </p>
         </div>
 
         <!-- Pillar 2 -->
-        <div class="p-7 rounded-2xl bg-white dark:bg-[#2a2948]/80 border border-slate-200 dark:border-[#3e3c66] border-t-4 border-t-[#56548c] shadow-sm hover:shadow-md transition-shadow">
-          <div class="w-12 h-12 rounded-xl bg-indigo-100 dark:bg-[#56548c]/20 text-[#56548c] dark:text-[#6fb7e6] flex items-center justify-center font-bold text-xl mb-4">
+        <div
+          class="p-7 rounded-2xl bg-white dark:bg-[#2a2948]/80 border border-slate-200 dark:border-[#3e3c66] border-t-4 border-t-[#56548c] shadow-sm hover:shadow-md transition-shadow"
+        >
+          <div
+            class="w-12 h-12 rounded-xl bg-indigo-100 dark:bg-[#56548c]/20 text-[#56548c] dark:text-[#6fb7e6] flex items-center justify-center font-bold text-xl mb-4"
+          >
             🤝
           </div>
-          <h2 class="text-xl font-heading font-bold text-slate-900 dark:text-white mb-2.5">Radically Welcoming</h2>
+          <h2
+            class="text-xl font-heading font-bold text-slate-900 dark:text-white mb-2.5"
+          >
+            Radically Welcoming
+          </h2>
           <p class="text-sm text-slate-600 dark:text-[#bdaccf] leading-relaxed">
-            Welcoming students, career-switchers, and seasoned leaders alike. Every venue audited for step-free mobility, induction hearing loops, and psychological safety.
+            Welcoming students, career-switchers, and seasoned leaders alike.
+            Every venue audited for step-free mobility, induction hearing loops,
+            and psychological safety.
           </p>
         </div>
 
         <!-- Pillar 3 -->
-        <div class="p-7 rounded-2xl bg-white dark:bg-[#2a2948]/80 border border-slate-200 dark:border-[#3e3c66] border-t-4 border-t-[#6fb7e6] shadow-sm hover:shadow-md transition-shadow">
-          <div class="w-12 h-12 rounded-xl bg-sky-100 dark:bg-[#6fb7e6]/20 text-[#56548c] dark:text-[#6fb7e6] flex items-center justify-center font-bold text-xl mb-4">
+        <div
+          class="p-7 rounded-2xl bg-white dark:bg-[#2a2948]/80 border border-slate-200 dark:border-[#3e3c66] border-t-4 border-t-[#6fb7e6] shadow-sm hover:shadow-md transition-shadow"
+        >
+          <div
+            class="w-12 h-12 rounded-xl bg-sky-100 dark:bg-[#6fb7e6]/20 text-[#56548c] dark:text-[#6fb7e6] flex items-center justify-center font-bold text-xl mb-4"
+          >
             🏴󠁧󠁢󠁳󠁣󠁴󠁿
           </div>
-          <h2 class="text-xl font-heading font-bold text-slate-900 dark:text-white mb-2.5">Scotland-Wide Network</h2>
+          <h2
+            class="text-xl font-heading font-bold text-slate-900 dark:text-white mb-2.5"
+          >
+            Scotland-Wide Network
+          </h2>
           <p class="text-sm text-slate-600 dark:text-[#bdaccf] leading-relaxed">
-            Coordinating quarterly gatherings in Edinburgh, Glasgow, Dundee, and virtual livestreams to connect Scotland's regional cyber ecosystem.
+            Coordinating quarterly gatherings in Edinburgh, Glasgow, Dundee, and
+            virtual livestreams to connect Scotland's regional cyber ecosystem.
           </p>
         </div>
       </div>
@@ -206,11 +318,16 @@ const topPartners = partners
   <section class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex flex-wrap items-center justify-between gap-4 mb-8">
       <div>
-        <h2 class="text-3xl font-heading font-bold text-slate-900 dark:text-white uppercase tracking-wide transition-colors">
+        <h2
+          class="text-3xl font-heading font-bold text-slate-900 dark:text-white uppercase tracking-wide transition-colors"
+        >
           Featured & Upcoming Events
         </h2>
-        <p class="text-slate-600 dark:text-[#bdaccf] text-sm mt-1 transition-colors">
-          Join our regular in-person meetups, virtual workshops, and collaborative partner summits.
+        <p
+          class="text-slate-600 dark:text-[#bdaccf] text-sm mt-1 transition-colors"
+        >
+          Join our regular in-person meetups, virtual workshops, and
+          collaborative partner summits.
         </p>
       </div>
 
@@ -223,26 +340,41 @@ const topPartners = partners
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      {featuredEvents.map(event => <EventCard event={event} />)}
+      {featuredEvents.map((event) => <EventCard event={event} />)}
     </div>
   </section>
 
   <!-- About CSC / Fragmented Shield Story (FEATURING FULL ORIGINAL EMBLEM) -->
-  <section class="py-16 bg-slate-50 dark:bg-[#1b1a30] border-y border-slate-200 dark:border-[#3e3c66] transition-colors">
+  <section
+    class="py-16 bg-slate-50 dark:bg-[#1b1a30] border-y border-slate-200 dark:border-[#3e3c66] transition-colors"
+  >
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
         <div class="lg:col-span-7 space-y-5">
-          <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-purple-50 dark:bg-[#382b5c] border border-purple-200 dark:border-[#56548c] text-xs font-bold text-[#895294] dark:text-[#6fb7e6]">
+          <div
+            class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-purple-50 dark:bg-[#382b5c] border border-purple-200 dark:border-[#56548c] text-xs font-bold text-[#895294] dark:text-[#6fb7e6]"
+          >
             Our Story & Origins
           </div>
-          <h2 class="text-3xl sm:text-4xl font-heading font-bold text-slate-900 dark:text-white uppercase tracking-tight transition-colors">
+          <h2
+            class="text-3xl sm:text-4xl font-heading font-bold text-slate-900 dark:text-white uppercase tracking-tight transition-colors"
+          >
             Forged by the Community, for the Community
           </h2>
-          <p class="text-slate-600 dark:text-[#bdaccf] leading-relaxed transition-colors">
-            Cyber Scotland Connect was formed through the merger of regional Scottish cyber meetups, co-founded by Harry McLaren and Stu Hirst, and announced on the keynote stage at DIGIT Expo.
+          <p
+            class="text-slate-600 dark:text-[#bdaccf] leading-relaxed transition-colors"
+          >
+            Cyber Scotland Connect was formed through the merger of regional
+            Scottish cyber meetups, co-founded by Harry McLaren and Stu Hirst,
+            and announced on the keynote stage at DIGIT Expo.
           </p>
-          <p class="text-slate-600 dark:text-[#bdaccf] leading-relaxed transition-colors">
-            Our emblem — <strong>The Fragmented Shield</strong>, designed by Sophie Lanc — represents individuals from across different disciplines, companies, academic universities, and regional towns assembling together to form a resilient collective shield.
+          <p
+            class="text-slate-600 dark:text-[#bdaccf] leading-relaxed transition-colors"
+          >
+            Our emblem — <strong>The Fragmented Shield</strong>, designed by
+            Sophie Lanc — represents individuals from across different
+            disciplines, companies, academic universities, and regional towns
+            assembling together to form a resilient collective shield.
           </p>
           <div class="pt-2">
             <a
@@ -255,26 +387,36 @@ const topPartners = partners
         </div>
 
         <!-- Full Stacked Emblem Showcase Box -->
-        <div class="lg:col-span-5 bg-white dark:bg-[#2a2948] p-8 sm:p-10 rounded-3xl border border-slate-200 dark:border-[#3e3c66] shadow-xl text-center transition-colors">
+        <div
+          class="lg:col-span-5 bg-white dark:bg-[#2a2948] p-8 sm:p-10 rounded-3xl border border-slate-200 dark:border-[#3e3c66] shadow-xl text-center transition-colors"
+        >
           <div class="mb-6 flex items-center justify-center">
-            <img 
-              src={`${base}/branding/logo-white-stacked.png`} 
-              alt="Cyber Scotland Connect Full Stacked Brand Logo" 
+            <img
+              src={`${base}/branding/logo-white-stacked.png`}
+              alt="Cyber Scotland Connect Full Stacked Brand Logo"
               class="w-52 sm:w-60 h-auto hidden dark:block drop-shadow-2xl transition-transform hover:scale-105"
               width="240"
               height="240"
             />
-            <img 
-              src={`${base}/branding/logo-fullcolor-stacked.png`} 
-              alt="Cyber Scotland Connect Full Stacked Brand Logo" 
+            <img
+              src={`${base}/branding/logo-fullcolor-stacked.png`}
+              alt="Cyber Scotland Connect Full Stacked Brand Logo"
               class="w-52 sm:w-60 h-auto block dark:hidden drop-shadow-lg transition-transform hover:scale-105"
               width="240"
               height="240"
             />
           </div>
-          <h3 class="text-xl font-heading font-bold text-slate-900 dark:text-white uppercase mb-2 transition-colors">Join 2,000+ Scottish Defenders</h3>
-          <p class="text-xs text-slate-600 dark:text-[#bdaccf] mb-6 transition-colors">
-            ⭐ 4.8 rated community across 300+ reviews. Meetups take place quarterly in Edinburgh, Glasgow, and Dundee, complemented by livestreams and open Discord discussions.
+          <h3
+            class="text-xl font-heading font-bold text-slate-900 dark:text-white uppercase mb-2 transition-colors"
+          >
+            Join 2,000+ Scottish Defenders
+          </h3>
+          <p
+            class="text-xs text-slate-600 dark:text-[#bdaccf] mb-6 transition-colors"
+          >
+            ⭐ 4.8 rated community across 300+ reviews. Meetups take place
+            quarterly in Edinburgh, Glasgow, and Dundee, complemented by
+            livestreams and open Discord discussions.
           </p>
           <a
             href="https://www.meetup.com/cyberscotconnect/"
@@ -290,18 +432,29 @@ const topPartners = partners
   </section>
 
   <!-- Volunteer Leadership & Organizers Section -->
-  <section id="leadership" class="py-16 border-b border-slate-200 dark:border-[#3e3c66] transition-colors scroll-mt-12">
+  <section
+    id="leadership"
+    class="py-16 border-b border-slate-200 dark:border-[#3e3c66] transition-colors scroll-mt-12"
+  >
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="border-b border-slate-200 dark:border-[#3e3c66] pb-6 mb-10 flex flex-wrap items-end justify-between gap-4">
+      <div
+        class="border-b border-slate-200 dark:border-[#3e3c66] pb-6 mb-10 flex flex-wrap items-end justify-between gap-4"
+      >
         <div>
-          <span class="text-xs font-semibold uppercase tracking-wider text-[#56548c] dark:text-[#6fb7e6] block mb-1">
+          <span
+            class="text-xs font-semibold uppercase tracking-wider text-[#56548c] dark:text-[#6fb7e6] block mb-1"
+          >
             Grassroots Stewards
           </span>
-          <h2 class="text-3xl font-heading font-bold text-slate-900 dark:text-white uppercase tracking-tight">
+          <h2
+            class="text-3xl font-heading font-bold text-slate-900 dark:text-white uppercase tracking-tight"
+          >
             Community Leadership & Organizers
           </h2>
           <p class="text-slate-600 dark:text-[#bdaccf] text-sm mt-1 max-w-2xl">
-            Cyber Scotland Connect is steered entirely by passionate volunteer practitioners dedicated to open, accessible, and high-integrity knowledge exchange.
+            Cyber Scotland Connect is steered entirely by passionate volunteer
+            practitioners dedicated to open, accessible, and high-integrity
+            knowledge exchange.
           </p>
         </div>
 
@@ -314,13 +467,16 @@ const topPartners = partners
         </a>
       </div>
 
-      <div id="homepage-leaders-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-        {activeLeaders.map(leader => <LeaderCard leader={leader} />)}
+      <div
+        id="homepage-leaders-grid"
+        class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8"
+      >
+        {activeLeaders.map((leader) => <LeaderCard leader={leader} />)}
       </div>
 
       <!-- Client-side shuffle to randomize order on every page visit -->
       <script is:inline>
-        (function() {
+        (function () {
           const grid = document.getElementById('homepage-leaders-grid');
           if (!grid) return;
           const cards = Array.from(grid.children);
@@ -328,44 +484,78 @@ const topPartners = partners
             const j = Math.floor(Math.random() * (i + 1));
             [cards[i], cards[j]] = [cards[j], cards[i]];
           }
-          cards.forEach(card => grid.appendChild(card));
+          cards.forEach((card) => grid.appendChild(card));
         })();
       </script>
     </div>
   </section>
 
   <!-- Pay It Forward / Keeping CSC Accessible for All -->
-  <section class="py-16 bg-gradient-to-br from-purple-50 via-white to-amber-50/40 dark:from-[#252342] dark:via-[#1e1d35] dark:to-[#2b2738] border-b border-slate-200 dark:border-[#3e3c66] transition-colors">
+  <section
+    class="py-16 bg-gradient-to-br from-purple-50 via-white to-amber-50/40 dark:from-[#252342] dark:via-[#1e1d35] dark:to-[#2b2738] border-b border-slate-200 dark:border-[#3e3c66] transition-colors"
+  >
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="bg-white dark:bg-[#2a2948] rounded-3xl border-2 border-[#895294]/30 dark:border-[#56548c]/60 p-8 sm:p-12 shadow-xl relative overflow-hidden">
-        <div class="absolute -right-12 -bottom-12 w-64 h-64 bg-amber-400/10 rounded-full blur-3xl pointer-events-none"></div>
+      <div
+        class="bg-white dark:bg-[#2a2948] rounded-3xl border-2 border-[#895294]/30 dark:border-[#56548c]/60 p-8 sm:p-12 shadow-xl relative overflow-hidden"
+      >
+        <div
+          class="absolute -right-12 -bottom-12 w-64 h-64 bg-amber-400/10 rounded-full blur-3xl pointer-events-none"
+        >
+        </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
+        <div
+          class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10"
+        >
           <div class="lg:col-span-8 space-y-4">
-            <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-amber-100 dark:bg-amber-950/60 border border-amber-300 dark:border-amber-700 text-xs font-bold text-amber-900 dark:text-amber-300">
+            <div
+              class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-amber-100 dark:bg-amber-950/60 border border-amber-300 dark:border-amber-700 text-xs font-bold text-amber-900 dark:text-amber-300"
+            >
               <span>☕ Pay It Forward</span>
               <span>•</span>
               <span>Tickets: Always £0</span>
             </div>
 
-            <h2 class="text-2xl sm:text-3xl font-heading font-bold text-slate-900 dark:text-white uppercase tracking-tight">
+            <h2
+              class="text-2xl sm:text-3xl font-heading font-bold text-slate-900 dark:text-white uppercase tracking-tight"
+            >
               Keeping Cyber Scotland Connect Accessible for Everyone
             </h2>
 
-            <p class="text-slate-600 dark:text-[#bdaccf] leading-relaxed text-sm sm:text-base">
-              Cyber Scotland Connect has always been, and will always be, <strong>100% free to attend</strong>. We believe that financial barriers to entry—especially for students, career switchers, and those currently seeking new opportunities—should be nonexistent.
+            <p
+              class="text-slate-600 dark:text-[#bdaccf] leading-relaxed text-sm sm:text-base"
+            >
+              Cyber Scotland Connect has always been, and will always be, <strong
+                >100% free to attend</strong
+              >. We believe that financial barriers to entry—especially for
+              students, career switchers, and those currently seeking new
+              opportunities—should be nonexistent.
             </p>
 
-            <p class="text-slate-600 dark:text-[#bdaccf] leading-relaxed text-sm">
-              If you are established in your career and find value in our gatherings, we invite you to <strong>Pay It Forward</strong>. While there is zero obligation, contributions to our Buy Me a Coffee page help cover essential running costs—refreshments and minor community infrastructure—ensuring that everyone in Scotland's cyber community can continue to participate at no cost.
+            <p
+              class="text-slate-600 dark:text-[#bdaccf] leading-relaxed text-sm"
+            >
+              If you are established in your career and find value in our
+              gatherings, we invite you to <strong>Pay It Forward</strong>.
+              While there is zero obligation, contributions to our Buy Me a
+              Coffee page help cover essential running costs—refreshments and
+              minor community infrastructure—ensuring that everyone in
+              Scotland's cyber community can continue to participate at no cost.
             </p>
           </div>
 
-          <div class="lg:col-span-4 flex flex-col items-center justify-center text-center p-6 rounded-2xl bg-amber-50/50 dark:bg-[#21203a] border border-amber-200/60 dark:border-[#3e3c66]">
+          <div
+            class="lg:col-span-4 flex flex-col items-center justify-center text-center p-6 rounded-2xl bg-amber-50/50 dark:bg-[#21203a] border border-amber-200/60 dark:border-[#3e3c66]"
+          >
             <span class="text-4xl mb-3" aria-hidden="true">☕</span>
-            <span class="text-base font-heading font-bold text-slate-900 dark:text-white mb-1">Pay It Forward</span>
-            <p class="text-xs text-slate-500 dark:text-[#bdaccf] mb-5 leading-relaxed">
-              Support CSC refreshments and accessibility with a community coffee.
+            <span
+              class="text-base font-heading font-bold text-slate-900 dark:text-white mb-1"
+              >Pay It Forward</span
+            >
+            <p
+              class="text-xs text-slate-500 dark:text-[#bdaccf] mb-5 leading-relaxed"
+            >
+              Support CSC refreshments and accessibility with a community
+              coffee.
             </p>
             <a
               href="https://buymeacoffee.com/cyberscotlandconnect"
@@ -382,15 +572,23 @@ const topPartners = partners
     </div>
   </section>
 
+  <!-- Community Photos Highlight (Conditional) -->
+  <CommunityPhotoStrip />
+
   <!-- Partners & Supporters Grid -->
   <section class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex flex-wrap items-center justify-between gap-4 mb-8">
       <div>
-        <h2 class="text-2xl font-heading font-bold text-slate-900 dark:text-white uppercase tracking-wide transition-colors">
+        <h2
+          class="text-2xl font-heading font-bold text-slate-900 dark:text-white uppercase tracking-wide transition-colors"
+        >
           Our Partners & Supporters
         </h2>
-        <p class="text-slate-600 dark:text-[#bdaccf] text-sm mt-1 transition-colors">
-          Generous venues, academic clusters, and community organizations that make CSC free for everyone.
+        <p
+          class="text-slate-600 dark:text-[#bdaccf] text-sm mt-1 transition-colors"
+        >
+          Generous venues, academic clusters, and community organizations that
+          make CSC free for everyone.
         </p>
       </div>
 
@@ -402,13 +600,16 @@ const topPartners = partners
       </a>
     </div>
 
-    <div id="homepage-partners-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-      {topPartners.map(partner => <PartnerCard partner={partner} />)}
+    <div
+      id="homepage-partners-grid"
+      class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+    >
+      {topPartners.map((partner) => <PartnerCard partner={partner} />)}
     </div>
 
     <!-- Client-side shuffle to randomize homepage supporters on every visit -->
     <script is:inline>
-      (function() {
+      (function () {
         const grid = document.getElementById('homepage-partners-grid');
         if (!grid) return;
         const cards = Array.from(grid.children);
@@ -416,7 +617,7 @@ const topPartners = partners
           const j = Math.floor(Math.random() * (i + 1));
           [cards[i], cards[j]] = [cards[j], cards[i]];
         }
-        cards.forEach(card => grid.appendChild(card));
+        cards.forEach((card) => grid.appendChild(card));
       })();
     </script>
   </section>
