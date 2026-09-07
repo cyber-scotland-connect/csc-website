@@ -97,7 +97,7 @@ The website should be designed around structured, typed content models:
 2. **Events Calendar (`/events`):** Filterable by chapter (Edinburgh, Glasgow, Dundee, Virtual), past archive with recordings and slide links, explicit accessibility tags.
 3. **Speakers & Call for Papers (`/speakers`):** Speaker guidelines, "Zero-Sales" policy, CFP submission guide, past speaker roster.
 4. **Community & Chapters (`/community`):** Chapter info, Discord join link, volunteer/organizer info.
-5. **Resources & Reading Room (`/resources`):** Hand-curated directory of 30 premier open-source tools, living standards, Scottish/UK initiatives, and mental health support.
+5. **Resources & Reading Room (`/resources`):** Hand-curated directory of 36 premier open-source tools, living standards, Scottish/UK initiatives, and mental health support.
 6. **Partners & Transparency (`/partners`):** Supporter tiers, venue hosting criteria, financial transparency / donation links.
 7. **Governance & Safety (`/about`, `/code-of-conduct`, `/security`):** Contributor Covenant 2.1, security disclosure policy, organizing team info.
 
