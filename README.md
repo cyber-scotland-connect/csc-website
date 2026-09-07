@@ -105,7 +105,7 @@ The compiled, optimized static website will be output to `dist/`.
 csc-website/
 ├── .github/
 │   ├── workflows/deploy.yml       # Automated GitHub Pages CI/CD
-│   └── content-templates/         # Markdown templates for events, leaders, partners & resources
+│   └── content-templates/         # Markdown templates for events, leaders, partners, resources & community
 ├── public/
 │   ├── branding/                  # High-res logos, icons, badges
 │   ├── robots.txt                 # Search engine & AI crawler directives
@@ -116,7 +116,8 @@ csc-website/
 │   │   ├── events/                # Event Markdown files
 │   │   ├── leaders/               # Organizer & moderator Markdown files
 │   │   ├── partners/              # Sponsor & partner Markdown files
-│   │   └── resources/             # Curated community resources & tools Markdown files
+│   │   ├── resources/             # Curated community resources & tools Markdown files
+│   │   └── community/             # Scottish grassroots meetups, student societies & diversity groups
 │   ├── content.config.ts          # Zod collection schemas (Astro 5)
 │   ├── components/
 │   │   ├── AccessibilityBar.astro # Theme, dyslexia font & text-size toolbar
@@ -126,12 +127,14 @@ csc-website/
 │   │   ├── EventAgenda.astro      # Interactive schedule & timeline
 │   │   ├── LeaderCard.astro       # Organizer / Moderator card
 │   │   ├── PartnerCard.astro      # Sponsor / Partner card
-│   │   └── ResourceCard.astro     # Curated community resource / tool card
+│   │   ├── ResourceCard.astro     # Curated community resource / tool card
+│   │   └── CommunityCard.astro    # Grassroots meetup & student cyber society card
 │   ├── layouts/
 │   │   └── BaseLayout.astro       # Master HTML scaffold with SEO, JSON-LD & X cards
 │   ├── pages/
-│   │   ├── index.astro            # Homepage & community metrics
+│   │   ├── index.astro            # Homepage, leadership section & community metrics
 │   │   ├── events/                # Events calendar & dynamic slug views
+│   │   ├── community.astro        # Scottish cyber community hub, Discord & peer directory
 │   │   ├── speakers.astro         # Speaker directory with randomized rotation
 │   │   ├── leaders.astro          # Leadership team with randomized rotation
 │   │   ├── partners.astro         # Sponsors & partner directory
@@ -150,14 +153,15 @@ csc-website/
 
 ## ✍️ How to Contribute Content
 
-Adding an upcoming meetup, partner event, new organizer bio, sponsor, or community resource takes just a couple of minutes:
+Adding an upcoming meetup, partner event, new organizer bio, sponsor, community resource, or grassroots community group takes just a couple of minutes:
 
 1. **Create a new Markdown file** in the appropriate directory:
    - Events: `src/content/events/YYYY-MM-DD-event-slug.md`
    - Leaders / Mods: `src/content/leaders/firstname-lastname.md`
    - Partners / Sponsors: `src/content/partners/organization-name.md`
    - Resources: `src/content/resources/resource-slug.md`
-2. **Copy the schema from `.github/content-templates/`** (`event.md`, `leader.md`, `partner.md`, or `resource.md`) and fill in the frontmatter fields.
+   - Community Groups: `src/content/community/group-slug.md`
+2. **Copy the schema from `.github/content-templates/`** (`event.md`, `leader.md`, `partner.md`, `resource.md`, or `community.md`) and fill in the frontmatter fields.
 3. **Verify locally:** Run `bun run build` (or `npm run build`) to ensure Zod validation passes.
 4. **Submit a Pull Request!**
 

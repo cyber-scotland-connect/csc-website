@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import EventCard from '../components/EventCard.astro';
 import PartnerCard from '../components/PartnerCard.astro';
+import LeaderCard from '../components/LeaderCard.astro';
 import { getCollection } from 'astro:content';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
@@ -20,6 +21,10 @@ const upcomingEvents = sortedEvents
 
 const nextMeetup = upcomingEvents[0] || sortedEvents[0];
 const featuredEvents = upcomingEvents.slice(0, 2);
+
+// Fetch leaders
+const allLeaders = await getCollection('leaders');
+const activeLeaders = allLeaders.filter(l => l.data.status !== 'alumni').sort(() => Math.random() - 0.5);
 
 // Fetch partners and randomize top supporters
 const partners = await getCollection('partners');
@@ -231,10 +236,10 @@ const topPartners = partners
           </p>
           <div class="pt-2">
             <a
-              href={`${base}/leaders`}
+              href="#leadership"
               class="text-sm font-bold text-[#895294] dark:text-[#6fb7e6] hover:underline inline-flex items-center gap-1 transition-colors"
             >
-              <span>Meet our volunteer moderators and founders</span> →
+              <span>Meet our volunteer organizers and leaders</span> ↓
             </a>
           </div>
         </div>
@@ -271,6 +276,51 @@ const topPartners = partners
           </a>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- Volunteer Leadership & Organizers Section -->
+  <section id="leadership" class="py-16 border-b border-slate-200 dark:border-[#3e3c66] transition-colors scroll-mt-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="border-b border-slate-200 dark:border-[#3e3c66] pb-6 mb-10 flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <span class="text-xs font-semibold uppercase tracking-wider text-[#56548c] dark:text-[#6fb7e6] block mb-1">
+            Grassroots Stewards
+          </span>
+          <h2 class="text-3xl font-heading font-bold text-slate-900 dark:text-white uppercase tracking-tight">
+            Community Leadership & Organizers
+          </h2>
+          <p class="text-slate-600 dark:text-[#bdaccf] text-sm mt-1 max-w-2xl">
+            Cyber Scotland Connect is steered entirely by passionate volunteer practitioners dedicated to open, accessible, and high-integrity knowledge exchange.
+          </p>
+        </div>
+
+        <a
+          href="mailto:hello@cyberscotlandconnect.com"
+          class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold bg-[#895294] text-white hover:bg-[#9d5fa8] transition-all shadow-sm"
+        >
+          <span>Volunteer with CSC</span>
+          <span aria-hidden="true">→</span>
+        </a>
+      </div>
+
+      <div id="homepage-leaders-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        {activeLeaders.map(leader => <LeaderCard leader={leader} />)}
+      </div>
+
+      <!-- Client-side shuffle to randomize order on every page visit -->
+      <script is:inline>
+        (function() {
+          const grid = document.getElementById('homepage-leaders-grid');
+          if (!grid) return;
+          const cards = Array.from(grid.children);
+          for (let i = cards.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [cards[i], cards[j]] = [cards[j], cards[i]];
+          }
+          cards.forEach(card => grid.appendChild(card));
+        })();
+      </script>
     </div>
   </section>
 

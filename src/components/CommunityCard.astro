@@ -1,0 +1,108 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  community: CollectionEntry<'community'>;
+}
+
+const { community } = Astro.props;
+const { data } = community;
+
+const categoryBadges: Record<string, { bg: string; text: string; border: string }> = {
+  'Hacker Society & Meetup': {
+    bg: 'bg-emerald-50 dark:bg-emerald-950/40',
+    text: 'text-emerald-800 dark:text-emerald-300',
+    border: 'border-emerald-200 dark:border-emerald-700/50',
+  },
+  'Student Cyber Society': {
+    bg: 'bg-sky-50 dark:bg-[#6fb7e6]/20',
+    text: 'text-sky-800 dark:text-sky-200',
+    border: 'border-sky-200 dark:border-[#6fb7e6]/50',
+  },
+  'Diversity & Inclusion': {
+    bg: 'bg-pink-50 dark:bg-[#895294]/30',
+    text: 'text-pink-800 dark:text-pink-300',
+    border: 'border-pink-200 dark:border-[#895294]/60',
+  },
+  'Professional Association': {
+    bg: 'bg-indigo-50 dark:bg-[#56548c]/30',
+    text: 'text-indigo-800 dark:text-[#bdaccf]',
+    border: 'border-indigo-200 dark:border-[#56548c]/60',
+  },
+  'Support & Veteran Network': {
+    bg: 'bg-amber-50 dark:bg-amber-950/40',
+    text: 'text-amber-800 dark:text-amber-300',
+    border: 'border-amber-200 dark:border-amber-700/50',
+  },
+};
+
+const badgeStyle = categoryBadges[data.category] || {
+  bg: 'bg-slate-100 dark:bg-slate-800',
+  text: 'text-slate-700 dark:text-slate-300',
+  border: 'border-slate-200 dark:border-slate-700',
+};
+---
+
+<div
+  class="card-tactile bg-white dark:bg-[#2a2948] rounded-2xl border border-slate-200 dark:border-[#3e3c66] p-6 hover:border-[#56548c] dark:hover:border-[#6fb7e6] flex flex-col justify-between group transition-all"
+  data-category={data.category}
+  data-city={data.city}
+>
+  <div>
+    <!-- Badges Row -->
+    <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+      <span class={`text-xs px-2.5 py-0.5 rounded-full font-semibold border ${badgeStyle.bg} ${badgeStyle.text} ${badgeStyle.border}`}>
+        {data.category}
+      </span>
+      <div class="flex items-center gap-1.5 text-xs text-slate-500 dark:text-[#bdaccf]">
+        <span>📍</span>
+        <span class="font-medium">{data.city}</span>
+      </div>
+    </div>
+
+    <!-- Title -->
+    <h3 class="text-xl font-heading font-bold text-slate-900 dark:text-white group-hover:text-[#56548c] dark:group-hover:text-[#6fb7e6] transition-colors mb-2">
+      {data.name}
+    </h3>
+
+    <!-- Description -->
+    <p class="text-sm text-slate-600 dark:text-[#bdaccf] leading-relaxed mb-4">
+      {data.description}
+    </p>
+
+    <!-- Meeting Frequency Pill (if available) -->
+    {data.meetingFrequency && (
+      <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-slate-50 dark:bg-[#1f1e38] border border-slate-200 dark:border-[#3e3c66] text-xs text-slate-600 dark:text-[#bdaccf] mb-4">
+        <span aria-hidden="true">🗓️</span>
+        <span>{data.meetingFrequency}</span>
+      </div>
+    )}
+  </div>
+
+  <!-- Links / Actions -->
+  <div class="pt-4 border-t border-slate-100 dark:border-[#3e3c66] flex flex-wrap items-center justify-between gap-3">
+    <a
+      href={data.websiteUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="text-xs font-semibold text-[#56548c] dark:text-[#6fb7e6] hover:underline flex items-center gap-1 transition-colors"
+      aria-label={`Visit ${data.name} website`}
+    >
+      <span>Website</span>
+      <span aria-hidden="true">↗</span>
+    </a>
+
+    {data.chatUrl && (
+      <a
+        href={data.chatUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex items-center gap-1 px-3 py-1 rounded-lg text-xs font-semibold bg-[#56548c]/10 dark:bg-[#56548c]/30 text-[#56548c] dark:text-[#6fb7e6] hover:bg-[#56548c]/20 transition-colors"
+        aria-label={`Join ${data.name} chat or Discord`}
+      >
+        <span>💬 Community Chat</span>
+        <span aria-hidden="true">↗</span>
+      </a>
+    )}
+  </div>
+</div>

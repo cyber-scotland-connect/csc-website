@@ -93,12 +93,12 @@ Organizers execute a 4-week cadence for all events:
 The website should be designed around structured, typed content models:
 
 ### 6.1 Recommended Page Structure
-1. **Home / Landing:** Mission, upcoming featured events, quick links to Discord/Meetup, supporter showcase.
+1. **Home / Landing:** Mission, upcoming featured events, volunteer leadership section (`#leadership`), quick links to Discord/Meetup, supporter showcase.
 2. **Events Calendar (`/events`):** Filterable by chapter (Edinburgh, Glasgow, Dundee, Virtual), past archive with recordings and slide links, explicit accessibility tags.
 3. **Speakers & Call for Papers (`/speakers`):** Speaker guidelines, "Zero-Sales" policy, CFP submission guide, past speaker roster.
-4. **Community & Chapters (`/community`):** Chapter info, Discord join link, volunteer/organizer info.
+4. **Community Hub (`/community`):** Dedicated Scottish cyber ecosystem directory, Discord showcase, DEF CON meetups, university cyber societies, diversity networks, and veteran pathways.
 5. **Resources & Reading Room (`/resources`):** Hand-curated directory of 36 premier open-source tools, living standards, Scottish/UK initiatives, and mental health support.
-6. **Partners & Transparency (`/partners`):** Supporter tiers, venue hosting criteria, financial transparency / donation links.
+6. **Partners & Transparency (`/partners`):** Host venues, academic clusters, and community sponsors; venue hosting criteria, financial transparency / donation links.
 7. **Governance & Safety (`/about`, `/code-of-conduct`, `/security`):** Contributor Covenant 2.1, security disclosure policy, organizing team info.
 
 ### 6.2 Data Schemas (Markdown / Content Collections)
@@ -106,6 +106,7 @@ The website should be designed around structured, typed content models:
 - **Leader / Organizer Schema:** `name`, `role`, `chapter`, `bio`, `avatar`, `linkedin`, `github`, `website`, `status`, `order`.
 - **Partner Schema:** `name`, `tier` (Host Venue, Ecosystem Partner, Sponsor, Academic Partner), `logo`, `websiteUrl`, `active`, `order`.
 - **Resource Schema:** `title`, `url`, `category` (6 domains), `type` (5 types), `description`, `isScottishOrUK`, `order`.
+- **Community Schema:** `name`, `category` (5 categories), `city` (6 regions), `websiteUrl`, `chatUrl`, `meetingFrequency`, `description`, `active`, `order`.
 
 ---
 

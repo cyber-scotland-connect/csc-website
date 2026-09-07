@@ -116,6 +116,8 @@ When creating or modifying content, AI agents must strictly conform to the Zod s
    - Fields: `name` (string), `tier` (Host Venue | Ecosystem Partner | Sponsor | Academic Partner), `websiteUrl` (url), `description` (string), `logo` (path), `active` (boolean), `order` (number).
 4. **Community Resources (`src/content/resources/*.md`):**
    - Fields: `title` (string), `url` (url), `category` (Scottish & UK Ecosystem | Defensive & Detection Engineering | Offensive & AppSec | DFIR & Incident Response | Cloud, DevSecOps & Supply Chain | Interactive Labs & Tooling), `type` (Community Project | Living Standard | Open Source Tool | Interactive Lab | Public Body / Advisory), `description` (string), `isScottishOrUK` (boolean), `order` (number).
+5. **Scottish Community Groups (`src/content/community/*.md`):**
+   - Fields: `name` (string), `category` (Hacker Society & Meetup | Student Cyber Society | Diversity & Inclusion | Professional Association | Support & Veteran Network), `city` (Edinburgh | Glasgow | Dundee | Aberdeen | St Andrews | Scotland-wide), `websiteUrl` (url), `chatUrl` (optional url), `description` (string), `meetingFrequency` (optional string), `active` (boolean), `order` (number).
 
 ### Verification Gate for Agents
 

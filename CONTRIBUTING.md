@@ -85,6 +85,31 @@ We encourage community members to propose high-value cybersecurity resources, op
 
 ---
 
+## 🤝 Contributing Scottish Community Groups & Peer Meetups
+
+We actively elevate peer grassroots communities across Scotland on our [Scottish Cyber Community Hub](https://cyberscotlandconnect.com/community):
+
+1. **Copy the Template:**
+   ```bash
+   cp .github/content-templates/community.md src/content/community/my-group-name.md
+   ```
+2. **Fill in Frontmatter:**
+   - `name`: Name of the meetup, hacker society, or organization.
+   - `category`:
+     - `Hacker Society & Meetup`
+     - `Student Cyber Society`
+     - `Diversity & Inclusion`
+     - `Professional Association`
+     - `Support & Veteran Network`
+   - `city`: `Edinburgh`, `Glasgow`, `Dundee`, `Aberdeen`, `St Andrews`, or `Scotland-wide`.
+   - `websiteUrl`: Official group website, Meetup page, or primary link.
+   - `chatUrl`: (Optional) Public Discord, Slack, or forum invite link.
+   - `meetingFrequency`: (Optional) e.g., `Monthly`, `Fortnightly`, `Quarterly`.
+   - `description`: 1–2 crisp sentences detailing the group's focus and vibe.
+3. **Test & Open PR:** Run `bun run check:links && bun run build` to confirm URL validity and Zod schema compliance, then submit your PR!
+
+---
+
 ## 🤖 Working with AI Agents
 
 If you are using AI pair programming assistants (Antigravity, Claude Code, Cursor, Copilot, etc.), please follow the guidelines in [`AGENT.md`](AGENT.md), including the `/grill-me` protocol for any ambiguous or high-impact architectural decisions.
