@@ -4,12 +4,13 @@ import PartnerCard from '../components/PartnerCard.astro';
 import { getCollection } from 'astro:content';
 
 const allPartners = await getCollection('partners');
-const activePartners = allPartners.filter(p => p.data.active).sort((a, b) => a.data.order - b.data.order);
+const activePartners = allPartners.filter(p => p.data.active);
 
-const venuePartners = activePartners.filter(p => p.data.tier === 'Host Venue');
-const ecosystemPartners = activePartners.filter(p => p.data.tier === 'Ecosystem Partner');
-const academicPartners = activePartners.filter(p => p.data.tier === 'Academic Partner');
-const sponsors = activePartners.filter(p => p.data.tier === 'Sponsor');
+// Shuffle within tiers at build time so static HTML doesn't favor any partner
+const venuePartners = activePartners.filter(p => p.data.tier === 'Host Venue').sort(() => Math.random() - 0.5);
+const ecosystemPartners = activePartners.filter(p => p.data.tier === 'Ecosystem Partner').sort(() => Math.random() - 0.5);
+const academicPartners = activePartners.filter(p => p.data.tier === 'Academic Partner').sort(() => Math.random() - 0.5);
+const sponsors = activePartners.filter(p => p.data.tier === 'Sponsor').sort(() => Math.random() - 0.5);
 ---
 
 <BaseLayout 
@@ -38,7 +39,7 @@ const sponsors = activePartners.filter(p => p.data.tier === 'Sponsor');
           Host Venues
         </h2>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div id="venue-partners-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {venuePartners.map(partner => <PartnerCard partner={partner} />)}
       </div>
     </section>
@@ -51,7 +52,7 @@ const sponsors = activePartners.filter(p => p.data.tier === 'Sponsor');
           Ecosystem & Academic Partners
         </h2>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div id="ecosystem-partners-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {[...ecosystemPartners, ...academicPartners].map(partner => <PartnerCard partner={partner} />)}
       </div>
     </section>
@@ -65,11 +66,27 @@ const sponsors = activePartners.filter(p => p.data.tier === 'Sponsor');
             Sponsors & Supporters
           </h2>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div id="sponsors-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {sponsors.map(partner => <PartnerCard partner={partner} />)}
         </div>
       </section>
     )}
+
+    <!-- Client-side shuffle to randomize partner order on every page visit -->
+    <script is:inline>
+      (function() {
+        ['venue-partners-grid', 'ecosystem-partners-grid', 'sponsors-grid'].forEach(id => {
+          const grid = document.getElementById(id);
+          if (!grid) return;
+          const cards = Array.from(grid.children);
+          for (let i = cards.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [cards[i], cards[j]] = [cards[j], cards[i]];
+          }
+          cards.forEach(card => grid.appendChild(card));
+        });
+      })();
+    </script>
 
     <!-- Individual Supporters: Pay It Forward -->
     <section class="mb-16 bg-gradient-to-r from-purple-50 via-white to-amber-50/50 dark:from-[#252342] dark:via-[#1e1d35] dark:to-[#2b2738] rounded-2xl border-2 border-[#895294]/30 dark:border-[#56548c]/60 p-8 sm:p-10 shadow-lg">

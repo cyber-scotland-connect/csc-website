@@ -21,9 +21,12 @@ const upcomingEvents = sortedEvents
 const nextMeetup = upcomingEvents[0] || sortedEvents[0];
 const featuredEvents = upcomingEvents.slice(0, 2);
 
-// Fetch partners
+// Fetch partners and randomize top supporters
 const partners = await getCollection('partners');
-const topPartners = partners.sort((a, b) => a.data.order - b.data.order).slice(0, 4);
+const topPartners = partners
+  .filter(p => p.data.active)
+  .sort(() => Math.random() - 0.5)
+  .slice(0, 4);
 ---
 
 <BaseLayout title="Home — Scotland's Grassroots Cyber Security Community">
@@ -339,8 +342,22 @@ const topPartners = partners.sort((a, b) => a.data.order - b.data.order).slice(0
       </a>
     </div>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div id="homepage-partners-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
       {topPartners.map(partner => <PartnerCard partner={partner} />)}
     </div>
+
+    <!-- Client-side shuffle to randomize homepage supporters on every visit -->
+    <script is:inline>
+      (function() {
+        const grid = document.getElementById('homepage-partners-grid');
+        if (!grid) return;
+        const cards = Array.from(grid.children);
+        for (let i = cards.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [cards[i], cards[j]] = [cards[j], cards[i]];
+        }
+        cards.forEach(card => grid.appendChild(card));
+      })();
+    </script>
   </section>
 </BaseLayout>
