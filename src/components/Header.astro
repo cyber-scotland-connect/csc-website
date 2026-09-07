@@ -8,9 +8,9 @@ const navLinks = [
   { href: `${base}/`, label: 'Home', active: pathname === `${base}` || pathname === '/' },
   { href: `${base}/events`, label: 'Events', active: pathname.startsWith(`${base}/events`) },
   { href: `${base}/speakers`, label: 'Speakers', active: pathname.startsWith(`${base}/speakers`) },
-  { href: `${base}/leaders`, label: 'Leadership', active: pathname === `${base}/leaders` },
+  { href: `${base}/community`, label: 'Community', active: pathname.startsWith(`${base}/community`) },
+  { href: `${base}/resources`, label: 'Resources', active: pathname.startsWith(`${base}/resources`) },
   { href: `${base}/partners`, label: 'Partners', active: pathname === `${base}/partners` },
-  { href: `${base}/resources`, label: 'Resources', active: pathname === `${base}/resources` },
   { href: `${base}/faq`, label: 'FAQ', active: pathname === `${base}/faq` },
 ];
 ---

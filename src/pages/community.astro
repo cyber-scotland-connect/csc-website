@@ -1,0 +1,209 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CommunityCard from '../components/CommunityCard.astro';
+import { getCollection } from 'astro:content';
+
+const allCommunity = await getCollection('community');
+const activeCommunity = allCommunity.filter((c) => c.data.active);
+
+const categories = [
+  {
+    name: 'Hacker Society & Meetup',
+    icon: '💻',
+    description:
+      'Grassroots technical meetups, CTF crews, DEF CON groups, and open hardware hacking clubs meeting regularly across Scottish cities.',
+  },
+  {
+    name: 'Student Cyber Society',
+    icon: '🎓',
+    description:
+      'University and college ethical hacking clubs, academic CTF teams, and student-run infosec conferences developing Scotland’s next generation.',
+  },
+  {
+    name: 'Diversity & Inclusion',
+    icon: '🌈',
+    description:
+      'Initiatives breaking barriers, championing underrepresented technologists, and fostering welcoming spaces in Scottish cybersecurity and tech.',
+  },
+  {
+    name: 'Professional Association',
+    icon: '🏛️',
+    description:
+      'Chartered bodies, regional security chapters, and formal networking forums offering mentorship, CPE credits, and industry standards.',
+  },
+  {
+    name: 'Support & Veteran Network',
+    icon: '🤝',
+    description:
+      'Community care organisations, military veteran cyber pathways, and civic tech volunteering collectives.',
+  },
+] as const;
+
+// Sort by order ascending
+const sortedCommunity = activeCommunity.sort(
+  (a, b) => (a.data.order ?? 99) - (b.data.order ?? 99)
+);
+
+const communityByCategory = categories.map((cat) => ({
+  ...cat,
+  items: sortedCommunity.filter((item) => item.data.category === cat.name),
+}));
+
+const totalCount = sortedCommunity.length;
+---
+
+<BaseLayout
+  title="Scottish Cyber Community Hub"
+  description="Elevating and connecting Scotland's grassroots cybersecurity meetups, student societies, diversity groups, and professional networks alongside the Cyber Scotland Connect Discord."
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <!-- Header -->
+    <header class="border-b border-slate-200 dark:border-[#3e3c66] pb-8 mb-12 transition-colors">
+      <span class="text-xs font-semibold uppercase tracking-wider text-[#56548c] dark:text-[#6fb7e6] block mb-1">
+        Grassroots & Peer Networks
+      </span>
+      <h1 class="text-3xl sm:text-5xl font-heading font-bold text-slate-900 dark:text-white uppercase tracking-tight transition-colors">
+        Scottish Cyber Community
+      </h1>
+      <p class="text-slate-600 dark:text-[#bdaccf] text-base mt-2 max-w-3xl leading-relaxed transition-colors">
+        A curated directory of {totalCount} grassroots tech meetups, student societies, diversity groups, and professional networks across Scotland—connecting alongside the Cyber Scotland Connect community.
+      </p>
+
+      <!-- Category Quick Jump Bar -->
+      <nav aria-label="Community Categories" class="mt-6 flex flex-wrap gap-2 pt-4">
+        {
+          categories.map((cat) => (
+            <a
+              href={`#${cat.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`}
+              class="inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-[#21203a] text-slate-700 dark:text-[#bdaccf] hover:bg-[#895294] hover:text-white dark:hover:bg-[#56548c] dark:hover:text-white border border-slate-200 dark:border-[#3e3c66] transition-all"
+            >
+              <span>{cat.icon}</span>
+              <span>{cat.name}</span>
+            </a>
+          ))
+        }
+      </nav>
+    </header>
+
+    <!-- CSC Discord Community Hub Showcase -->
+    <section
+      aria-labelledby="discord-hub-heading"
+      class="mb-16 bg-gradient-to-br from-[#5865F2]/10 via-purple-50 to-slate-50 dark:from-[#5865F2]/20 dark:via-[#211f3d] dark:to-[#1b1a30] rounded-2xl border-2 border-[#5865F2]/30 dark:border-[#5865F2]/50 p-8 sm:p-10 shadow-sm transition-colors"
+    >
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
+        <div class="lg:col-span-2 space-y-4">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#5865F2]/15 text-[#5865F2] dark:text-indigo-300 text-xs font-bold border border-[#5865F2]/30">
+            <span>💬 Live Digital Gathering</span>
+            <span>•</span>
+            <span>Always Open</span>
+          </div>
+          <h2
+            id="discord-hub-heading"
+            class="text-2xl sm:text-3xl font-heading font-bold text-slate-900 dark:text-white uppercase tracking-tight"
+          >
+            Join the Cyber Scotland Connect Discord
+          </h2>
+          <p class="text-sm text-slate-600 dark:text-[#bdaccf] leading-relaxed">
+            Our Discord server is the daily digital town square for hundreds of infosec professionals, ethical hackers, students, and career changers across Scotland. Whether you are looking for advice on certifications, discussing current adversary campaigns, sharing job openings, or seeking peer support, there is a dedicated space for you.
+          </p>
+
+          <!-- Key Channels -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
+            <div class="p-3 rounded-xl bg-white/80 dark:bg-[#252342] border border-slate-200 dark:border-[#3e3c66] text-xs">
+              <span class="font-bold text-slate-900 dark:text-white block mb-0.5">#general</span>
+              <span class="text-slate-500 dark:text-[#bdaccf]">Community banter & introductions</span>
+            </div>
+            <div class="p-3 rounded-xl bg-white/80 dark:bg-[#252342] border border-slate-200 dark:border-[#3e3c66] text-xs">
+              <span class="font-bold text-slate-900 dark:text-white block mb-0.5">#careers-and-jobs</span>
+              <span class="text-slate-500 dark:text-[#bdaccf]">Verified roles & CV feedback</span>
+            </div>
+            <div class="p-3 rounded-xl bg-white/80 dark:bg-[#252342] border border-slate-200 dark:border-[#3e3c66] text-xs">
+              <span class="font-bold text-slate-900 dark:text-white block mb-0.5">#technical-q-and-a</span>
+              <span class="text-slate-500 dark:text-[#bdaccf]">DFIR, AppSec, & Cloud help</span>
+            </div>
+            <div class="p-3 rounded-xl bg-white/80 dark:bg-[#252342] border border-slate-200 dark:border-[#3e3c66] text-xs">
+              <span class="font-bold text-slate-900 dark:text-white block mb-0.5">#well-being</span>
+              <span class="text-slate-500 dark:text-[#bdaccf]">Support, burnout & listening</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Join CTA Box -->
+        <div class="flex flex-col items-center justify-center text-center p-6 rounded-xl bg-white dark:bg-[#21203a] border border-slate-200 dark:border-[#3e3c66] shadow-md">
+          <div class="w-14 h-14 rounded-2xl bg-[#5865F2] flex items-center justify-center text-white text-2xl font-bold mb-3 shadow-md">
+            💬
+          </div>
+          <span class="text-base font-bold text-slate-900 dark:text-white mb-1">CSC Discord Server</span>
+          <p class="text-xs text-slate-500 dark:text-[#bdaccf] mb-5">
+            Free, moderated, and open to anyone with an interest in cybersecurity.
+          </p>
+          <a
+            href="https://discord.gg/cyberscotlandconnect"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="w-full py-3 px-5 rounded-xl font-bold text-xs uppercase tracking-wider bg-[#5865F2] hover:bg-[#4752c4] text-white shadow transition-all flex items-center justify-center gap-2 focus:ring-2 focus:ring-[#5865F2]"
+          >
+            <span>Join Our Discord</span>
+            <span aria-hidden="true">↗</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Community Directory Sections -->
+    <main>
+      {
+        communityByCategory.map((category) => (
+          <section
+            id={category.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}
+            class="mb-16 scroll-mt-20"
+          >
+            <div class="flex items-center gap-3 mb-2">
+              <span class="text-2xl" aria-hidden="true">
+                {category.icon}
+              </span>
+              <h2 class="text-2xl font-heading font-bold text-slate-900 dark:text-white uppercase tracking-wide">
+                {category.name}
+              </h2>
+            </div>
+            <p class="text-sm text-slate-600 dark:text-[#bdaccf] mb-6 max-w-2xl">
+              {category.description}
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {category.items.map((item) => (
+                <CommunityCard community={item} />
+              ))}
+            </div>
+          </section>
+        ))
+      }
+
+      <!-- Elevate Your Group Callout -->
+      <section class="mt-20 bg-slate-50 dark:bg-[#21203a] rounded-2xl border border-slate-200 dark:border-[#3e3c66] p-8 text-center sm:text-left sm:flex sm:items-center sm:justify-between gap-6 transition-colors">
+        <div class="max-w-2xl">
+          <div class="flex items-center justify-center sm:justify-start gap-2 mb-2">
+            <span class="text-xl" aria-hidden="true">🤝</span>
+            <h2 class="text-xl font-heading font-bold text-slate-900 dark:text-white uppercase tracking-tight">
+              Lead or know a grassroots Scottish community group?
+            </h2>
+          </div>
+          <p class="text-sm text-slate-600 dark:text-[#bdaccf] leading-relaxed">
+            We actively promote peer groups across Scotland. Whether you run a local DEF CON meetup, university cyber society, or diversity network, submit a quick PR to add your group card to this directory.
+          </p>
+        </div>
+        <div class="mt-6 sm:mt-0 flex-shrink-0">
+          <a
+            href="https://github.com/cyber-scotland-connect/csc-website/blob/main/.github/content-templates/community.md"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider bg-[#895294] text-white hover:bg-[#6e3e78] dark:bg-[#6fb7e6] dark:text-slate-900 dark:hover:bg-[#5aa3cf] transition-colors shadow-sm"
+          >
+            <span>Add Your Group</span>
+            <span>↗</span>
+          </a>
+        </div>
+      </section>
+    </main>
+  </div>
+</BaseLayout>

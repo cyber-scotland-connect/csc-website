@@ -137,9 +137,42 @@ const resourcesCollection = defineCollection({
   }),
 });
 
+const communityCollection = defineCollection({
+  loader: glob({
+    pattern: '**/[^_]*.{md,mdx}',
+    base: './src/content/community',
+  }),
+  schema: z.object({
+    name: z.string(),
+    category: z.enum([
+      'Hacker Society & Meetup',
+      'Student Cyber Society',
+      'Diversity & Inclusion',
+      'Professional Association',
+      'Support & Veteran Network',
+    ]),
+    city: z.enum([
+      'Edinburgh',
+      'Glasgow',
+      'Dundee',
+      'Aberdeen',
+      'St Andrews',
+      'Scotland-wide',
+    ]),
+    websiteUrl: z.string().url(),
+    chatUrl: z.string().url().optional(),
+    description: z.string(),
+    logo: z.string().optional(),
+    meetingFrequency: z.string().optional(),
+    active: z.boolean().default(true),
+    order: z.number().default(99),
+  }),
+});
+
 export const collections = {
   events: eventsCollection,
   leaders: leadersCollection,
   partners: partnersCollection,
   resources: resourcesCollection,
+  community: communityCollection,
 };

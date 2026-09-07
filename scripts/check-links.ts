@@ -61,9 +61,11 @@ function extractUrlsFromDir(dirPath: string): { source: string; url: string }[] 
   for (const file of files) {
     const fullPath = path.join(dirPath, file);
     const content = fs.readFileSync(fullPath, 'utf-8');
-    const match = content.match(/(?:url|websiteUrl):\s*['"]([^'"]+)['"]/);
-    if (match && match[1]) {
-      results.push({ source: file, url: match[1] });
+    const matches = content.matchAll(/(?:url|websiteUrl|chatUrl):\s*['"]([^'"]+)['"]/g);
+    for (const match of matches) {
+      if (match[1]) {
+        results.push({ source: file, url: match[1] });
+      }
     }
   }
   return results;
@@ -88,11 +90,13 @@ async function main() {
   const now = Date.now();
 
   const resourcesDir = path.resolve(process.cwd(), 'src/content/resources');
+  const communityDir = path.resolve(process.cwd(), 'src/content/community');
   const partnersDir = path.resolve(process.cwd(), 'src/content/partners');
 
   const targets = [
     ...extractStaticUrls(),
     ...extractUrlsFromDir(resourcesDir),
+    ...extractUrlsFromDir(communityDir),
     ...(checkAllCollections ? extractUrlsFromDir(partnersDir) : []),
   ];
 

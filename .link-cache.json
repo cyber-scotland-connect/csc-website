@@ -238,5 +238,17 @@
   "https://digit.fyi/": {
     "status": 200,
     "lastChecked": "2026-09-07T08:25:03.384Z"
+  },
+  "https://twitter.com/dc44141": {
+    "status": 200,
+    "lastChecked": "2026-09-07T08:35:37.890Z"
+  },
+  "https://twitter.com/dc44131": {
+    "status": 200,
+    "lastChecked": "2026-09-07T08:35:38.402Z"
+  },
+  "https://www.techvets.co/": {
+    "status": 403,
+    "lastChecked": "2026-09-07T08:35:38.522Z"
   }
 }
