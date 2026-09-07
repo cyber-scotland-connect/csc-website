@@ -10,6 +10,9 @@ concurrency:
   group: link-audit
   cancel-in-progress: true
 
+permissions:
+  contents: read
+
 jobs:
   link-audit:
     name: Full Live Link Health Check
