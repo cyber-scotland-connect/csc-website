@@ -1,20 +1,14 @@
 ---
-title: "CSC September Gathering: West Coast Meetup"
+title: "CSC September Meetup: Microsoft WaverleyGate"
 date: 2023-09-26
 time: "18:00 – 21:00 BST"
-location: "The Rhoderick Dhu (Function Suite), 21-23 Waterloo St, Glasgow G2 6BZ"
-city: "Glasgow"
+location: "Microsoft, WaverleyGate, 2-4 Waterloo Place, Edinburgh EH1 3EG"
+city: "Edinburgh"
 isPartnerEvent: false
 accessibility:
   stepFree: true
-  hearingLoop: false
-  notes: "Private function suite with step-free street level access."
-speakers:
-  - name: "Gary Hunter"
-    role: "Co-Organiser & Security Leader"
-    company: "Cyber Scotland Connect"
-    talkTitle: "Glasgow Infosec Insights & Community Catch-up"
-    abstract: "Informal discussion on security engineering trends, talent recruitment across Glasgow, and West Coast community initiatives."
+  hearingLoop: true
+  notes: "Full step-free lift access to Microsoft event suites."
 ---
 
-An informal community gathering in the heart of Glasgow beside Central Station, providing an open floor for networking, peer sparring, and welcoming new members to CSC.
+Cyber Scotland Connect was proud to host an in-person gathering at Microsoft's WaverleyGate office in central Edinburgh. 70 community attendees joined for an evening of three technical talks, pizza, refreshments, and open discussions.
