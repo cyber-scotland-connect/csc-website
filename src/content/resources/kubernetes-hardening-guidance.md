@@ -1,9 +1,9 @@
 ---
-title: 'NSA/CISA Kubernetes Hardening Guidance'
-url: 'https://www.cisa.gov/resources-tools/resources/kubernetes-hardening-guide'
-category: 'Cloud, DevSecOps & Supply Chain'
-type: 'Living Standard'
-description: 'Technical guidance detailing threat vectors and practical configurations for securing container pods, cluster networks, authentication, and logging.'
+title: "Kubernetes Security & Hardening Documentation"
+url: "https://kubernetes.io/docs/concepts/security/"
+category: "Cloud, DevSecOps & Supply Chain"
+type: "Living Standard"
+description: "Official open-source Kubernetes guidance covering cluster architecture, pod security standards, network segmentation, and hardening best practices."
 isScottishOrUK: false
 order: 440
 ---

@@ -1,9 +1,9 @@
 ---
-title: 'Awesome Detection Engineering'
-url: 'https://github.com/infosecn1nja/Awesome-Detection-Engineering'
-category: 'Defensive & Detection Engineering'
-type: 'Community Project'
-description: 'A community-curated collection of detection frameworks, threat hunting methodology, query languages, and telemetry pipeline guides for modern SOC practitioners.'
+title: "Detection Engineering & Telemetry Guides"
+url: "https://detectionengineering.net/"
+category: "Defensive & Detection Engineering"
+type: "Community Project"
+description: "Open-source reference frameworks, continuous detection lifecycle guides, and telemetry architecture standards for modern SOC defenders."
 isScottishOrUK: false
 order: 150
 ---
