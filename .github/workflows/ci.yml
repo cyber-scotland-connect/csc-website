@@ -61,6 +61,9 @@ jobs:
       - name: Lint Code
         run: bun run lint
 
+      - name: Validate External Links
+        run: bun run check:links
+
       - name: Build Static Site & Typecheck
         run: bun run build
         env:

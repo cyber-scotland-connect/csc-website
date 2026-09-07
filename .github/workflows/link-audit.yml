@@ -1,0 +1,30 @@
+name: Monthly External Link Health Audit
+
+on:
+  schedule:
+    # Runs at 08:00 UTC on the 1st day of every month
+    - cron: '0 8 1 * *'
+  workflow_dispatch:
+
+concurrency:
+  group: link-audit
+  cancel-in-progress: true
+
+jobs:
+  link-audit:
+    name: Full Live Link Health Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Verify All Links (Bypassing 30-Day Cache)
+        run: bun run check:links --force

@@ -119,10 +119,11 @@ When creating or modifying content, AI agents must strictly conform to the Zod s
 
 ### Verification Gate for Agents
 
-Every AI agent must run the production build before submitting a PR:
+Every AI agent must run the production build and link validator before submitting a PR:
 
 ```bash
-bun run build # or: npm run build
+bun run check:links # Validates external links (cached for 30 days)
+bun run build       # or: npm run build
 ```
 
 Verify exit code 0, 0 errors, and 0 warnings.
