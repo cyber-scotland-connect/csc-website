@@ -110,6 +110,54 @@ const faqCategories = [
       },
     ],
   },
+  {
+    id: 'moderation',
+    title: 'Community Moderation & Stewardship',
+    icon: '🛡️',
+    subtitle: 'Servant leadership, ethical stewardship, psychological safety, and contributing with zero ego.',
+    items: [
+      {
+        q: 'What does it take to become a Cyber Scotland Connect moderator?',
+        a: 'Cyber Scotland Connect is built on servant leadership and zero ego. Our volunteer stewards are not here to build personal brands or push commercial agendas; we exist to create welcoming, psychologically safe spaces where others can learn, share, and connect. We look for individuals with high ethical integrity, empathy, and the courage to quietly stand up for the community when standards or boundaries are tested.',
+      },
+      {
+        q: 'What are the core responsibilities of a community moderator?',
+        a: 'Moderators act as cultural anchors across Edinburgh, Glasgow, and Dundee. Responsibilities include welcoming newcomers and first-time attendees, auditing venue accessibility, facilitating inclusive discussions, mentoring first-time speakers with slide preparation and reassurance, and keeping interactions respectful and vendor-agnostic both in person and on Discord.',
+      },
+      {
+        q: 'How do moderators handle commercial pitches or code of conduct violations?',
+        a: 'Firmly, constructively, and without public drama. We strictly protect our "High-Signal, Zero-Sales" charter and our Contributor Covenant code of conduct. When someone steps over the line, moderators address it privately, empathetically, and clearly, ensuring the collective safety and trust of the community always comes first.',
+      },
+      {
+        q: 'How can I express interest in volunteering or becoming a moderator?',
+        a: 'Start by showing up and getting involved—participate in discussions, welcome newcomers at meetups, or assist with event check-ins. When you are ready, reach out to any current moderator on our Discord server (discord.gg/cyberscotlandconnect) or email hello@cyberscotlandconnect.com for an informal conversation.',
+      },
+    ],
+  },
+  {
+    id: 'website-feeds',
+    title: 'The Website, Feeds & Open Source',
+    icon: '💻',
+    subtitle: 'Static architecture, automated calendar/RSS feeds, and contributing via GitHub.',
+    items: [
+      {
+        q: 'How is the Cyber Scotland Connect website built and hosted?',
+        a: '100% open source under the MIT license. The site is built with Astro and Tailwind CSS, hosted statically on GitHub Pages, and run with zero tracking cookies or invasive third-party telemetry.',
+      },
+      {
+        q: 'How do the Calendar (.ics) and RSS (.xml) feeds work?',
+        a: 'Generated statically at build time in two tiers: "All Scottish Cyber Community Events" and "CSC Gatherings Only". They allow live synchronization with Google Calendar, Apple Calendar, Outlook, or feed readers. Detailed setup instructions live on our Calendar page (/calendar).',
+      },
+      {
+        q: 'Can our university society or group hook the feeds into our Discord server?',
+        a: 'Yes! Community organizers, student societies, and company security teams can plug our RSS feed (/feeds/community.xml) into Discord channels via free webhook bots like MonitoRSS to automatically broadcast upcoming Scottish cyber events as rich embeds.',
+      },
+      {
+        q: 'How can I contribute content, fix a typo, or add our community group?',
+        a: 'Anyone can contribute via GitHub! Fork the repository (github.com/cyber-scotland-connect/csc-website), add or edit markdown files under src/content/, and open a Pull Request. Review our CONTRIBUTING.md and AGENT.md guidelines for detailed standards.',
+      },
+    ],
+  },
 ];
 
 const faqSchema = {
