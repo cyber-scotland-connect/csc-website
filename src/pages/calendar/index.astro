@@ -1,0 +1,295 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const siteDomain = 'https://cyber-scotland-connect.github.io';
+const sitePath = `${siteDomain}${base}`;
+
+const communityIcsUrl = `${sitePath}/calendar/community.ics`;
+const cscIcsUrl = `${sitePath}/calendar/csc.ics`;
+
+const communityWebcalUrl = communityIcsUrl.replace(/^https?:\/\//, 'webcal://');
+const cscWebcalUrl = cscIcsUrl.replace(/^https?:\/\//, 'webcal://');
+
+const communityGcalUrl = `https://calendar.google.com/calendar/render?cid=${encodeURIComponent(communityWebcalUrl)}`;
+const cscGcalUrl = `https://calendar.google.com/calendar/render?cid=${encodeURIComponent(cscWebcalUrl)}`;
+
+const communityRssUrl = `${sitePath}/feeds/community.xml`;
+const cscRssUrl = `${sitePath}/feeds/csc.xml`;
+---
+
+<BaseLayout
+  title="Live Calendar & RSS Feeds — Cyber Scotland Connect"
+  description="Subscribe to live Scottish cyber security community events on Google Calendar, Apple Calendar, Outlook, or via RSS for Discord and Slack feeds."
+>
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <!-- Breadcrumb -->
+    <nav class="mb-8" aria-label="Breadcrumb">
+      <ol class="flex items-center gap-2 text-xs text-slate-500 dark:text-[#bdaccf]">
+        <li>
+          <a href={`${base}/`} class="hover:text-[#895294] dark:hover:text-[#6fb7e6] transition-colors">Home</a>
+        </li>
+        <li><span>/</span></li>
+        <li>
+          <a href={`${base}/events`} class="hover:text-[#895294] dark:hover:text-[#6fb7e6] transition-colors">Events</a>
+        </li>
+        <li><span>/</span></li>
+        <li class="font-bold text-slate-900 dark:text-white" aria-current="page">Calendar &amp; RSS Feeds</li>
+      </ol>
+    </nav>
+
+    <!-- Header -->
+    <header class="border-b border-slate-200 dark:border-[#3e3c66] pb-8 mb-12 transition-colors">
+      <span class="text-xs font-semibold uppercase tracking-wider text-[#56548c] dark:text-[#6fb7e6] block mb-1">
+        Automation &amp; Feeds
+      </span>
+      <h1 class="text-3xl sm:text-5xl font-heading font-bold text-slate-900 dark:text-white uppercase tracking-tight transition-colors">
+        Live Event Feeds
+      </h1>
+      <p class="text-slate-600 dark:text-[#bdaccf] text-base sm:text-lg mt-3 max-w-3xl leading-relaxed transition-colors">
+        Keep your calendar or community Discord server automatically up to date. When a meetup, workshop, or partner summit is added to the website, it syncs directly to your workflow.
+      </p>
+    </header>
+
+    <!-- Two Feeds Showcase -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+      <!-- Card 1: All Community Events -->
+      <div class="bg-white dark:bg-[#2a2948] rounded-2xl border-2 border-purple-200 dark:border-[#56548c] p-6 sm:p-8 flex flex-col justify-between shadow-lg relative">
+        <div class="absolute -top-3 right-6 bg-[#56548c] text-white text-[11px] font-bold uppercase tracking-wider px-3 py-0.5 rounded-full shadow">
+          Full Ecosystem
+        </div>
+
+        <div>
+          <div class="text-3xl mb-3">🏴󠁧󠁢󠁳󠁣󠁴󠁿</div>
+          <h2 class="text-2xl font-heading font-bold text-slate-900 dark:text-white uppercase mb-2">
+            All Scottish Cyber Events
+          </h2>
+          <p class="text-xs sm:text-sm text-slate-600 dark:text-[#bdaccf] leading-relaxed mb-6">
+            Everything happening across Scotland: Cyber Scotland Connect gatherings, regional partner summits (Scot-Secure, DIGIT Expo), OWASP Scotland, ISSA-UK, and university society events.
+          </p>
+
+          <!-- 1-Click Buttons -->
+          <div class="space-y-2.5 mb-6">
+            <a
+              href={communityGcalUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-[#56548c] hover:bg-[#6764a8] text-white font-bold text-xs sm:text-sm shadow transition-all"
+            >
+              <span>📅</span>
+              <span>Add to Google Calendar</span>
+              <span class="text-xs opacity-75">↗</span>
+            </a>
+            <a
+              href={communityWebcalUrl}
+              class="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-slate-800 dark:bg-[#382b5c] hover:bg-slate-900 dark:hover:bg-[#483775] text-white font-bold text-xs sm:text-sm shadow transition-all"
+            >
+              <span>🍏</span>
+              <span>Subscribe on Apple / Outlook</span>
+              <span class="text-xs opacity-75">↗</span>
+            </a>
+          </div>
+
+          <!-- URL Inputs -->
+          <div class="space-y-3 pt-4 border-t border-slate-100 dark:border-[#3e3c66]">
+            <div>
+              <label class="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 block mb-1">
+                Direct iCal Feed (.ics)
+              </label>
+              <div class="flex items-center gap-2">
+                <input
+                  type="text"
+                  readonly
+                  value={communityIcsUrl}
+                  class="w-full text-xs font-mono bg-slate-50 dark:bg-[#1b1a30] border border-slate-200 dark:border-[#3e3c66] rounded-lg px-2.5 py-1.5 text-slate-700 dark:text-[#bdaccf] select-all focus:outline-none"
+                />
+                <button
+                  type="button"
+                  data-copy={communityIcsUrl}
+                  class="copy-btn shrink-0 px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-[#21203a] hover:bg-slate-200 dark:hover:bg-[#382b5c] text-xs font-bold text-slate-700 dark:text-white transition-colors"
+                >
+                  Copy
+                </button>
+              </div>
+            </div>
+
+            <div>
+              <label class="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 block mb-1">
+                RSS Feed (.xml) for Discord / Slack
+              </label>
+              <div class="flex items-center gap-2">
+                <input
+                  type="text"
+                  readonly
+                  value={communityRssUrl}
+                  class="w-full text-xs font-mono bg-slate-50 dark:bg-[#1b1a30] border border-slate-200 dark:border-[#3e3c66] rounded-lg px-2.5 py-1.5 text-slate-700 dark:text-[#bdaccf] select-all focus:outline-none"
+                />
+                <button
+                  type="button"
+                  data-copy={communityRssUrl}
+                  class="copy-btn shrink-0 px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-[#21203a] hover:bg-slate-200 dark:hover:bg-[#382b5c] text-xs font-bold text-slate-700 dark:text-white transition-colors"
+                >
+                  Copy
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2: CSC Gatherings Only -->
+      <div class="bg-white dark:bg-[#2a2948] rounded-2xl border-2 border-[#895294] dark:border-[#895294] p-6 sm:p-8 flex flex-col justify-between shadow-lg relative">
+        <div class="absolute -top-3 right-6 bg-[#895294] text-white text-[11px] font-bold uppercase tracking-wider px-3 py-0.5 rounded-full shadow">
+          CSC Exclusive
+        </div>
+
+        <div>
+          <div class="text-3xl mb-3">🛡️</div>
+          <h2 class="text-2xl font-heading font-bold text-slate-900 dark:text-white uppercase mb-2">
+            Cyber Scotland Connect Only
+          </h2>
+          <p class="text-xs sm:text-sm text-slate-600 dark:text-[#bdaccf] leading-relaxed mb-6">
+            Exclusively official CSC community meetups held across Edinburgh, Glasgow, and Dundee. Zero commercial summits, vendor promotions, or third-party conferences.
+          </p>
+
+          <!-- 1-Click Buttons -->
+          <div class="space-y-2.5 mb-6">
+            <a
+              href={cscGcalUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-[#895294] hover:bg-[#9d5fa8] text-white font-bold text-xs sm:text-sm shadow transition-all"
+            >
+              <span>📅</span>
+              <span>Add to Google Calendar</span>
+              <span class="text-xs opacity-75">↗</span>
+            </a>
+            <a
+              href={cscWebcalUrl}
+              class="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-slate-800 dark:bg-[#382b5c] hover:bg-slate-900 dark:hover:bg-[#483775] text-white font-bold text-xs sm:text-sm shadow transition-all"
+            >
+              <span>🍏</span>
+              <span>Subscribe on Apple / Outlook</span>
+              <span class="text-xs opacity-75">↗</span>
+            </a>
+          </div>
+
+          <!-- URL Inputs -->
+          <div class="space-y-3 pt-4 border-t border-slate-100 dark:border-[#3e3c66]">
+            <div>
+              <label class="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 block mb-1">
+                Direct iCal Feed (.ics)
+              </label>
+              <div class="flex items-center gap-2">
+                <input
+                  type="text"
+                  readonly
+                  value={cscIcsUrl}
+                  class="w-full text-xs font-mono bg-slate-50 dark:bg-[#1b1a30] border border-slate-200 dark:border-[#3e3c66] rounded-lg px-2.5 py-1.5 text-slate-700 dark:text-[#bdaccf] select-all focus:outline-none"
+                />
+                <button
+                  type="button"
+                  data-copy={cscIcsUrl}
+                  class="copy-btn shrink-0 px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-[#21203a] hover:bg-slate-200 dark:hover:bg-[#382b5c] text-xs font-bold text-slate-700 dark:text-white transition-colors"
+                >
+                  Copy
+                </button>
+              </div>
+            </div>
+
+            <div>
+              <label class="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 block mb-1">
+                RSS Feed (.xml) for Discord / Slack
+              </label>
+              <div class="flex items-center gap-2">
+                <input
+                  type="text"
+                  readonly
+                  value={cscRssUrl}
+                  class="w-full text-xs font-mono bg-slate-50 dark:bg-[#1b1a30] border border-slate-200 dark:border-[#3e3c66] rounded-lg px-2.5 py-1.5 text-slate-700 dark:text-[#bdaccf] select-all focus:outline-none"
+                />
+                <button
+                  type="button"
+                  data-copy={cscRssUrl}
+                  class="copy-btn shrink-0 px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-[#21203a] hover:bg-slate-200 dark:hover:bg-[#382b5c] text-xs font-bold text-slate-700 dark:text-white transition-colors"
+                >
+                  Copy
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Guides Section -->
+    <div class="space-y-8">
+      <h3 class="text-2xl font-heading font-bold text-slate-900 dark:text-white uppercase tracking-tight">
+        Setup &amp; Integration Guides
+      </h3>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Google Calendar Guide -->
+        <div class="p-6 rounded-2xl bg-slate-50 dark:bg-[#1b1a30] border border-slate-200 dark:border-[#3e3c66] transition-colors">
+          <div class="flex items-center gap-2.5 mb-3">
+            <span class="text-xl">📅</span>
+            <h4 class="font-heading font-bold text-slate-900 dark:text-white text-lg">
+              Manual Google Calendar Setup
+            </h4>
+          </div>
+          <ol class="space-y-2 text-xs sm:text-sm text-slate-600 dark:text-[#bdaccf] list-decimal list-inside leading-relaxed">
+            <li>Open <a href="https://calendar.google.com" target="_blank" rel="noopener noreferrer" class="text-[#895294] dark:text-[#6fb7e6] underline font-semibold">Google Calendar</a> in your desktop browser.</li>
+            <li>In the left sidebar, click the <strong>+</strong> next to <em>Other calendars</em>.</li>
+            <li>Select <strong>From URL</strong>.</li>
+            <li>Paste either of the <code>.ics</code> feed URLs above and click <em>Add calendar</em>.</li>
+          </ol>
+          <p class="mt-3 text-xs text-slate-500 dark:text-slate-400 italic">
+            Note: Google Calendar caches subscribed feeds and updates them automatically every 8–24 hours.
+          </p>
+        </div>
+
+        <!-- Discord Webhook / Bot Guide -->
+        <div class="p-6 rounded-2xl bg-slate-50 dark:bg-[#1b1a30] border border-slate-200 dark:border-[#3e3c66] transition-colors">
+          <div class="flex items-center gap-2.5 mb-3">
+            <span class="text-xl">🤖</span>
+            <h4 class="font-heading font-bold text-slate-900 dark:text-white text-lg">
+              Discord Server Integration
+            </h4>
+          </div>
+          <p class="text-xs sm:text-sm text-slate-600 dark:text-[#bdaccf] leading-relaxed mb-3">
+            If you run a cybersecurity Discord server (student society, regional group, company channel), you can auto-broadcast new events:
+          </p>
+          <ol class="space-y-2 text-xs sm:text-sm text-slate-600 dark:text-[#bdaccf] list-decimal list-inside leading-relaxed">
+            <li>Invite an RSS bot like <a href="https://monitorss.xyz/" target="_blank" rel="noopener noreferrer" class="text-[#895294] dark:text-[#6fb7e6] underline font-semibold">MonitoRSS</a> or use Zapier / Make webhooks.</li>
+            <li>Add our RSS feed URL (<code>{communityRssUrl}</code>).</li>
+            <li>Assign it to your <code>#announcements</code> or <code>#events</code> channel.</li>
+            <li>Whenever a new gathering is announced, a rich embed is automatically posted.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<script is:inline>
+  const copyBtns = document.querySelectorAll('.copy-btn');
+  copyBtns.forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      const textToCopy = btn.getAttribute('data-copy');
+      if (!textToCopy) return;
+
+      try {
+        await navigator.clipboard.writeText(textToCopy);
+        const originalText = btn.textContent;
+        btn.textContent = 'Copied! ✓';
+        btn.classList.add('bg-emerald-100', 'text-emerald-800', 'dark:bg-emerald-950', 'dark:text-emerald-300');
+        setTimeout(() => {
+          btn.textContent = originalText;
+          btn.classList.remove('bg-emerald-100', 'text-emerald-800', 'dark:bg-emerald-950', 'dark:text-emerald-300');
+        }, 2000);
+      } catch (err) {
+        console.error('Failed to copy', err);
+      }
+    });
+  });
+</script>
