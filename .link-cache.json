@@ -250,5 +250,49 @@
   "https://www.techvets.co/": {
     "status": 403,
     "lastChecked": "2026-09-07T08:35:38.522Z"
+  },
+  "https://sigint.mx/": {
+    "status": 200,
+    "lastChecked": "2026-09-08T14:12:10.654Z"
+  },
+  "https://www.meetup.com/glasgow-computer-security-meetup-group/": {
+    "status": 200,
+    "lastChecked": "2026-09-08T14:12:10.837Z"
+  },
+  "https://www.strath.ac.uk/science/computerinformationsciences/strathcyber/": {
+    "status": 200,
+    "lastChecked": "2026-09-08T14:12:11.003Z"
+  },
+  "https://www.gcustudents.co.uk/groups/ethical-hacking-society": {
+    "status": 200,
+    "lastChecked": "2026-09-08T14:12:11.430Z"
+  },
+  "https://www.yourunion.net/activities/societies/explore/stacs/": {
+    "status": 200,
+    "lastChecked": "2026-09-08T14:12:11.621Z"
+  },
+  "https://engage.isaca.org/scottishchapter/home": {
+    "status": 200,
+    "lastChecked": "2026-09-08T14:12:12.059Z"
+  },
+  "https://owasp.org/www-chapter-scotland/": {
+    "status": 200,
+    "lastChecked": "2026-09-08T14:12:12.299Z"
+  },
+  "https://hacksoc.co.uk": {
+    "status": 200,
+    "lastChecked": "2026-09-08T14:12:12.545Z"
+  },
+  "http://discord.hacksoc.co.uk": {
+    "status": 200,
+    "lastChecked": "2026-09-08T14:12:12.770Z"
+  },
+  "https://hackthurs.day/": {
+    "status": 200,
+    "lastChecked": "2026-09-08T14:12:13.025Z"
+  },
+  "https://www.glasgowunisrc.org/organisation/15324/": {
+    "status": 200,
+    "lastChecked": "2026-09-08T14:12:13.227Z"
   }
 }

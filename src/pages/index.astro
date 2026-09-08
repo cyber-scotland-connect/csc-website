@@ -20,8 +20,21 @@ const upcomingEvents = sortedEvents
   .filter((e) => new Date(e.data.date).getTime() >= nowTime)
   .reverse();
 
-const nextMeetup = upcomingEvents[0] || sortedEvents[0];
-const featuredEvents = upcomingEvents.slice(0, 2);
+// Next CSC-organised gathering exclusively for the Hero spotlight card:
+const cscUpcomingEvents = upcomingEvents.filter((e) => !e.data.isPartnerEvent);
+const cscPastEvents = sortedEvents.filter((e) => !e.data.isPartnerEvent);
+const nextMeetup = cscUpcomingEvents[0] || cscPastEvents[0];
+
+// Featured and upcoming events based on recency: the next upcoming events, regardless of who's hosting them:
+const featuredEvents =
+  upcomingEvents.length >= 2
+    ? upcomingEvents.slice(0, 2)
+    : [
+        ...upcomingEvents,
+        ...sortedEvents.filter(
+          (e) => !upcomingEvents.some((u) => u.id === e.id)
+        ),
+      ].slice(0, 2);
 
 // Fetch leaders
 const allLeaders = await getCollection('leaders');
