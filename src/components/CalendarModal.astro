@@ -1,0 +1,343 @@
+---
+interface Props {
+  id?: string;
+}
+
+const { id = 'calendar-modal' } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+// Absolute URLs for subscription
+const siteDomain = 'https://cyber-scotland-connect.github.io';
+const sitePath = `${siteDomain}${base}`;
+
+const communityIcsUrl = `${sitePath}/calendar/community.ics`;
+const cscIcsUrl = `${sitePath}/calendar/csc.ics`;
+
+const communityWebcalUrl = communityIcsUrl.replace(/^https?:\/\//, 'webcal://');
+const cscWebcalUrl = cscIcsUrl.replace(/^https?:\/\//, 'webcal://');
+
+const communityGcalUrl = `https://calendar.google.com/calendar/render?cid=${encodeURIComponent(communityWebcalUrl)}`;
+const cscGcalUrl = `https://calendar.google.com/calendar/render?cid=${encodeURIComponent(cscWebcalUrl)}`;
+
+const communityRssUrl = `${sitePath}/feeds/community.xml`;
+const cscRssUrl = `${sitePath}/feeds/csc.xml`;
+---
+
+<dialog
+  id={id}
+  class="backdrop:bg-slate-900/60 backdrop:backdrop-blur-sm bg-transparent p-4 sm:p-6 w-full max-w-2xl m-auto rounded-3xl z-50 text-slate-900 dark:text-white"
+  aria-labelledby="calendar-modal-title"
+>
+  <div class="bg-white dark:bg-[#21203a] border border-slate-200 dark:border-[#3e3c66] rounded-2xl shadow-2xl p-6 sm:p-8 max-h-[90vh] overflow-y-auto">
+    <!-- Header -->
+    <div class="flex items-start justify-between gap-4 pb-5 border-b border-slate-200 dark:border-[#3e3c66]">
+      <div>
+        <span class="text-xs font-mono font-bold uppercase tracking-wider text-[#895294] dark:text-[#6fb7e6] block mb-1">
+          Calendar &amp; RSS Subscriptions
+        </span>
+        <h2 id="calendar-modal-title" class="text-2xl sm:text-3xl font-heading font-bold uppercase tracking-tight text-slate-900 dark:text-white">
+          Sync Events to Your Workflow
+        </h2>
+        <p class="text-xs sm:text-sm text-slate-600 dark:text-[#bdaccf] mt-1.5 leading-relaxed">
+          Stay in sync automatically. Choose between the broader Scottish cyber ecosystem calendar or official Cyber Scotland Connect meetups only.
+        </p>
+      </div>
+
+      <button
+        type="button"
+        class="close-cal-modal p-2 rounded-xl text-slate-400 hover:text-slate-700 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#2a2948] transition-colors"
+        aria-label="Close modal"
+      >
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Feed Selector Tabs -->
+    <div class="mt-6">
+      <div class="flex rounded-xl bg-slate-100 dark:bg-[#1b1a30] p-1 border border-slate-200 dark:border-[#3e3c66]" role="tablist">
+        <button
+          type="button"
+          class="cal-tab-btn active flex-1 py-2.5 px-3 text-xs sm:text-sm font-bold rounded-lg transition-all text-center flex items-center justify-center gap-1.5 bg-white dark:bg-[#2a2948] text-[#895294] dark:text-[#6fb7e6] shadow-sm"
+          data-target="community-feed"
+          role="tab"
+          aria-selected="true"
+        >
+          <span>🏴󠁧󠁢󠁳󠁣󠁴󠁿</span>
+          <span>All Scottish Cyber Community</span>
+        </button>
+        <button
+          type="button"
+          class="cal-tab-btn flex-1 py-2.5 px-3 text-xs sm:text-sm font-bold rounded-lg transition-all text-center flex items-center justify-center gap-1.5 text-slate-600 dark:text-[#bdaccf] hover:text-slate-900 dark:hover:text-white"
+          data-target="csc-feed"
+          role="tab"
+          aria-selected="false"
+        >
+          <span>🛡️</span>
+          <span>CSC Gatherings Only</span>
+        </button>
+      </div>
+
+      <!-- Tab Content 1: All Community Events -->
+      <div id="community-feed" class="cal-tab-panel mt-6 space-y-6">
+        <div class="p-4 rounded-xl bg-purple-50/50 dark:bg-[#2a2948]/50 border border-purple-100 dark:border-[#3e3c66] text-xs sm:text-sm text-slate-600 dark:text-[#bdaccf]">
+          <strong class="text-slate-900 dark:text-white block mb-0.5">Includes Everything:</strong>
+          Official Cyber Scotland Connect meetups + Scottish partner summits (Scot-Secure, DIGIT Expo), OWASP Scotland, ISSA-UK, and student society hackathons across Edinburgh, Glasgow, Dundee, and Aberdeen.
+        </div>
+
+        <!-- 1-Click Calendar Subscription Buttons -->
+        <div class="space-y-3">
+          <span class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 block">
+            1-Click Calendar Subscription:
+          </span>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <a
+              href={communityGcalUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-[#56548c] hover:bg-[#6764a8] text-white font-bold text-xs sm:text-sm shadow transition-all"
+            >
+              <span>📅</span>
+              <span>Add to Google Calendar</span>
+              <span class="text-xs opacity-75">↗</span>
+            </a>
+            <a
+              href={communityWebcalUrl}
+              class="flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-slate-800 dark:bg-[#382b5c] hover:bg-slate-900 dark:hover:bg-[#483775] text-white font-bold text-xs sm:text-sm shadow transition-all"
+            >
+              <span>🍏</span>
+              <span>Apple / Outlook / Cal</span>
+              <span class="text-xs opacity-75">↗</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Manual .ics & RSS copy fields -->
+        <div class="space-y-4 pt-2">
+          <!-- .ics URL -->
+          <div>
+            <div class="flex items-center justify-between mb-1.5">
+              <label class="text-xs font-semibold text-slate-700 dark:text-slate-300">
+                Direct iCalendar URL (.ics)
+              </label>
+              <span class="text-[11px] text-slate-500 dark:text-slate-400">For any calendar client</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <input
+                type="text"
+                readonly
+                value={communityIcsUrl}
+                class="w-full text-xs font-mono bg-slate-50 dark:bg-[#1b1a30] border border-slate-200 dark:border-[#3e3c66] rounded-xl px-3 py-2 text-slate-700 dark:text-[#bdaccf] select-all focus:outline-none focus:ring-1 focus:ring-[#895294]"
+              />
+              <button
+                type="button"
+                data-copy={communityIcsUrl}
+                class="copy-btn shrink-0 px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-[#2a2948] hover:bg-slate-200 dark:hover:bg-[#382b5c] border border-slate-200 dark:border-[#3e3c66] text-xs font-bold text-slate-700 dark:text-white transition-colors"
+              >
+                Copy
+              </button>
+            </div>
+          </div>
+
+          <!-- RSS XML URL -->
+          <div>
+            <div class="flex items-center justify-between mb-1.5">
+              <label class="text-xs font-semibold text-slate-700 dark:text-slate-300">
+                RSS Feed URL (.xml)
+              </label>
+              <span class="text-[11px] text-slate-500 dark:text-slate-400">For Discord Webhooks, Slack &amp; RSS</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <input
+                type="text"
+                readonly
+                value={communityRssUrl}
+                class="w-full text-xs font-mono bg-slate-50 dark:bg-[#1b1a30] border border-slate-200 dark:border-[#3e3c66] rounded-xl px-3 py-2 text-slate-700 dark:text-[#bdaccf] select-all focus:outline-none focus:ring-1 focus:ring-[#895294]"
+              />
+              <button
+                type="button"
+                data-copy={communityRssUrl}
+                class="copy-btn shrink-0 px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-[#2a2948] hover:bg-slate-200 dark:hover:bg-[#382b5c] border border-slate-200 dark:border-[#3e3c66] text-xs font-bold text-slate-700 dark:text-white transition-colors"
+              >
+                Copy
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab Content 2: CSC Gatherings Only -->
+      <div id="csc-feed" class="cal-tab-panel mt-6 space-y-6 hidden">
+        <div class="p-4 rounded-xl bg-sky-50/50 dark:bg-[#2a2948]/50 border border-sky-100 dark:border-[#3e3c66] text-xs sm:text-sm text-slate-600 dark:text-[#bdaccf]">
+          <strong class="text-slate-900 dark:text-white block mb-0.5">CSC Events Only:</strong>
+          Exclusively official Cyber Scotland Connect gatherings in Edinburgh, Glasgow, and Dundee. Zero third-party conferences or commercial summits.
+        </div>
+
+        <!-- 1-Click Calendar Subscription Buttons -->
+        <div class="space-y-3">
+          <span class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 block">
+            1-Click Calendar Subscription:
+          </span>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <a
+              href={cscGcalUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-[#895294] hover:bg-[#9d5fa8] text-white font-bold text-xs sm:text-sm shadow transition-all"
+            >
+              <span>📅</span>
+              <span>Add to Google Calendar</span>
+              <span class="text-xs opacity-75">↗</span>
+            </a>
+            <a
+              href={cscWebcalUrl}
+              class="flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-slate-800 dark:bg-[#382b5c] hover:bg-slate-900 dark:hover:bg-[#483775] text-white font-bold text-xs sm:text-sm shadow transition-all"
+            >
+              <span>🍏</span>
+              <span>Apple / Outlook / Cal</span>
+              <span class="text-xs opacity-75">↗</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Manual .ics & RSS copy fields -->
+        <div class="space-y-4 pt-2">
+          <!-- .ics URL -->
+          <div>
+            <div class="flex items-center justify-between mb-1.5">
+              <label class="text-xs font-semibold text-slate-700 dark:text-slate-300">
+                Direct iCalendar URL (.ics)
+              </label>
+              <span class="text-[11px] text-slate-500 dark:text-slate-400">For any calendar client</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <input
+                type="text"
+                readonly
+                value={cscIcsUrl}
+                class="w-full text-xs font-mono bg-slate-50 dark:bg-[#1b1a30] border border-slate-200 dark:border-[#3e3c66] rounded-xl px-3 py-2 text-slate-700 dark:text-[#bdaccf] select-all focus:outline-none focus:ring-1 focus:ring-[#895294]"
+              />
+              <button
+                type="button"
+                data-copy={cscIcsUrl}
+                class="copy-btn shrink-0 px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-[#2a2948] hover:bg-slate-200 dark:hover:bg-[#382b5c] border border-slate-200 dark:border-[#3e3c66] text-xs font-bold text-slate-700 dark:text-white transition-colors"
+              >
+                Copy
+              </button>
+            </div>
+          </div>
+
+          <!-- RSS XML URL -->
+          <div>
+            <div class="flex items-center justify-between mb-1.5">
+              <label class="text-xs font-semibold text-slate-700 dark:text-slate-300">
+                RSS Feed URL (.xml)
+              </label>
+              <span class="text-[11px] text-slate-500 dark:text-slate-400">For Discord Webhooks, Slack &amp; RSS</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <input
+                type="text"
+                readonly
+                value={cscRssUrl}
+                class="w-full text-xs font-mono bg-slate-50 dark:bg-[#1b1a30] border border-slate-200 dark:border-[#3e3c66] rounded-xl px-3 py-2 text-slate-700 dark:text-[#bdaccf] select-all focus:outline-none focus:ring-1 focus:ring-[#895294]"
+              />
+              <button
+                type="button"
+                data-copy={cscRssUrl}
+                class="copy-btn shrink-0 px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-[#2a2948] hover:bg-slate-200 dark:hover:bg-[#382b5c] border border-slate-200 dark:border-[#3e3c66] text-xs font-bold text-slate-700 dark:text-white transition-colors"
+              >
+                Copy
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer Guide Callout -->
+    <div class="mt-8 pt-5 border-t border-slate-200 dark:border-[#3e3c66] flex flex-wrap items-center justify-between gap-3 text-xs text-slate-500 dark:text-[#bdaccf]">
+      <span>💡 Subscribing via URL automatically syncs changes as events are added.</span>
+      <a
+        href={`${base}/calendar`}
+        class="text-[#895294] dark:text-[#6fb7e6] hover:underline font-bold flex items-center gap-1"
+      >
+        <span>Detailed Setup &amp; Discord Bot Guide</span> →
+      </a>
+    </div>
+  </div>
+</dialog>
+
+<script is:inline>
+  // Tab switching
+  const modal = document.getElementById('calendar-modal');
+  if (modal) {
+    const tabBtns = modal.querySelectorAll('.cal-tab-btn');
+    const tabPanels = modal.querySelectorAll('.cal-tab-panel');
+
+    tabBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        tabBtns.forEach((b) => {
+          b.classList.remove('active', 'bg-white', 'dark:bg-[#2a2948]', 'text-[#895294]', 'dark:text-[#6fb7e6]', 'shadow-sm');
+          b.classList.add('text-slate-600', 'dark:text-[#bdaccf]');
+          b.setAttribute('aria-selected', 'false');
+        });
+
+        btn.classList.add('active', 'bg-white', 'dark:bg-[#2a2948]', 'text-[#895294]', 'dark:text-[#6fb7e6]', 'shadow-sm');
+        btn.classList.remove('text-slate-600', 'dark:text-[#bdaccf]');
+        btn.setAttribute('aria-selected', 'true');
+
+        const targetId = btn.getAttribute('data-target');
+        tabPanels.forEach((panel) => {
+          if (panel.id === targetId) {
+            panel.classList.remove('hidden');
+          } else {
+            panel.classList.add('hidden');
+          }
+        });
+      });
+    });
+
+    // Close button & backdrop click
+    const closeBtns = modal.querySelectorAll('.close-cal-modal');
+    closeBtns.forEach((btn) => {
+      btn.addEventListener('click', () => modal.close());
+    });
+
+    modal.addEventListener('click', (e) => {
+      const rect = modal.getBoundingClientRect();
+      const isInDialog = (
+        rect.top <= e.clientY &&
+        e.clientY <= rect.top + rect.height &&
+        rect.left <= e.clientX &&
+        e.clientX <= rect.left + rect.width
+      );
+      if (!isInDialog) {
+        modal.close();
+      }
+    });
+
+    // Copy button handlers
+    const copyBtns = modal.querySelectorAll('.copy-btn');
+    copyBtns.forEach((btn) => {
+      btn.addEventListener('click', async () => {
+        const textToCopy = btn.getAttribute('data-copy');
+        if (!textToCopy) return;
+
+        try {
+          await navigator.clipboard.writeText(textToCopy);
+          const originalText = btn.textContent;
+          btn.textContent = 'Copied! ✓';
+          btn.classList.add('bg-emerald-100', 'text-emerald-800', 'dark:bg-emerald-950', 'dark:text-emerald-300');
+          setTimeout(() => {
+            btn.textContent = originalText;
+            btn.classList.remove('bg-emerald-100', 'text-emerald-800', 'dark:bg-emerald-950', 'dark:text-emerald-300');
+          }, 2000);
+        } catch (err) {
+          console.error('Failed to copy', err);
+        }
+      });
+    });
+  }
+</script>

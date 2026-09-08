@@ -76,6 +76,20 @@ const schemaData = {
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={resolvedOgImage} />
 
+    <!-- Calendar & RSS Feeds Autodiscovery -->
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="Scottish Cyber Community Events RSS"
+      href={`${base}/feeds/community.xml`}
+    />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="Cyber Scotland Connect Gatherings RSS"
+      href={`${base}/feeds/csc.xml`}
+    />
+
     <!-- Typography Fonts: Roboto, Roboto Condensed, Atkinson Hyperlegible (for A11y), and JetBrains Mono (Technical) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
