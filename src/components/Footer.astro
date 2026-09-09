@@ -1,6 +1,12 @@
 ---
+declare var __COMMIT_SHA__: string;
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const currentYear = new Date().getFullYear();
+const commitSha = typeof __COMMIT_SHA__ !== 'undefined' ? __COMMIT_SHA__ : 'local';
+const shortSha = commitSha === 'local' ? 'local' : commitSha.slice(0, 7);
+const commitUrl = commitSha === 'local'
+  ? 'https://github.com/cyber-scotland-connect/csc-website/commits/main'
+  : `https://github.com/cyber-scotland-connect/csc-website/commit/${commitSha}`;
 ---
 
 <footer class="bg-slate-100 dark:bg-[#1b1a30] text-slate-600 dark:text-[#bdaccf] border-t border-slate-200 dark:border-[#3e3c66] mt-20 transition-colors">
@@ -122,10 +128,19 @@ const currentYear = new Date().getFullYear();
     </div>
 
     <!-- Bottom Bar -->
-    <div class="pt-8 border-t border-slate-200 dark:border-[#3e3c66] flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500 dark:text-[#8c89b0]">
-      <p>© {currentYear} Cyber Scotland Connect. Licensed under MIT. Proudly Scottish & Grassroots.</p>
+    <div class="pt-8 border-t border-slate-200 dark:border-[#3e3c66] flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500 dark:text-[#8c89b0]">
+      <p>© {currentYear} Cyber Scotland Connect. Licensed under MIT. Proudly Scottish &amp; Grassroots.</p>
+      <p class="text-center">Designed &amp; maintained by humans, in collaboration with AI.</p>
       <div class="flex items-center gap-3">
         <span>Edinburgh • Glasgow • Dundee • Virtual</span>
+        <span class="text-slate-300 dark:text-[#3e3c66]">|</span>
+        <a
+          href={commitUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="font-mono hover:text-slate-700 dark:hover:text-white transition-colors"
+          title="View deployed commit on GitHub"
+        >{shortSha}</a>
       </div>
     </div>
   </div>
