@@ -191,7 +191,7 @@ const partnerEvents = sortedEvents.filter(e => e.data.isPartnerEvent);
 
     <!-- Events Grid -->
     <div id="events-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
-      {sortedEvents.map(event => {
+      {[...upcomingEvents, ...pastEvents].map(event => {
         const isUp = new Date(event.data.date).getTime() >= nowTime;
         const isPartner = event.data.isPartnerEvent;
         return (
