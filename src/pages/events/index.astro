@@ -5,16 +5,24 @@ import CalendarModal from '../../components/CalendarModal.astro';
 import { getCollection } from 'astro:content';
 
 const allEvents = await getCollection('events');
-const sortedEvents = allEvents.sort(
+
+const nowTime = new Date().setHours(0, 0, 0, 0);
+
+// Upcoming: ascending (soonest first — 2026 before 2027)
+const upcomingEvents = allEvents
+  .filter(e => new Date(e.data.date).getTime() >= nowTime)
+  .sort((a, b) => new Date(a.data.date).getTime() - new Date(b.data.date).getTime());
+
+// Past: descending (most recent first)
+const pastEvents = allEvents
+  .filter(e => new Date(e.data.date).getTime() < nowTime)
+  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+
+// All events: descending for the combined/all tab
+const sortedEvents = [...allEvents].sort(
   (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
 );
 
-const nowTime = new Date().setHours(0, 0, 0, 0);
-const upcomingEvents = sortedEvents
-  .filter(e => new Date(e.data.date).getTime() >= nowTime)
-  .reverse();
-
-const pastEvents = sortedEvents.filter(e => new Date(e.data.date).getTime() < nowTime);
 const partnerEvents = sortedEvents.filter(e => e.data.isPartnerEvent);
 ---
 
