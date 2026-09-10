@@ -191,13 +191,41 @@ const partnerEvents = sortedEvents.filter(e => e.data.isPartnerEvent);
 
     <!-- Events Grid -->
     <div id="events-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
-      {[...upcomingEvents, ...pastEvents].map(event => {
-        const isUp = new Date(event.data.date).getTime() >= nowTime;
+      {upcomingEvents.map(event => {
         const isPartner = event.data.isPartnerEvent;
         return (
           <div 
             class="event-item"
-            data-is-upcoming={isUp ? 'true' : 'false'}
+            data-is-upcoming="true"
+            data-is-partner={isPartner ? 'true' : 'false'}
+            data-city={event.data.city.toLowerCase()}
+          >
+            <EventCard event={event} />
+          </div>
+        );
+      })}
+
+      <!-- Past / Upcoming divider — hidden when a single-group filter is active -->
+      <div
+        id="past-divider"
+        class="col-span-full flex items-center gap-4 py-4"
+      >
+        <div class="flex-1 border-t border-dashed border-slate-300 dark:border-[#3e3c66]"></div>
+        <span class="flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100 dark:bg-[#1b1a30] border border-slate-200 dark:border-[#3e3c66] text-xs font-mono font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 whitespace-nowrap select-none">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd" />
+          </svg>
+          Past Events
+        </span>
+        <div class="flex-1 border-t border-dashed border-slate-300 dark:border-[#3e3c66]"></div>
+      </div>
+
+      {pastEvents.map(event => {
+        const isPartner = event.data.isPartnerEvent;
+        return (
+          <div 
+            class="event-item opacity-60 hover:opacity-100 transition-opacity duration-200"
+            data-is-upcoming="false"
             data-is-partner={isPartner ? 'true' : 'false'}
             data-city={event.data.city.toLowerCase()}
           >
@@ -263,6 +291,8 @@ const partnerEvents = sortedEvents.filter(e => e.data.isPartnerEvent);
 
   function applyCombinedFilters() {
     let visibleCount = 0;
+    let visibleUpcoming = 0;
+    let visiblePast = 0;
 
     eventItems.forEach(item => {
       const isUp = item.getAttribute('data-is-upcoming') === 'true';
@@ -282,8 +312,18 @@ const partnerEvents = sortedEvents.filter(e => e.data.isPartnerEvent);
 
       const show = matchCat && matchCity;
       item.style.display = show ? 'block' : 'none';
-      if (show) visibleCount++;
+      if (show) {
+        visibleCount++;
+        if (isUp) visibleUpcoming++;
+        else visiblePast++;
+      }
     });
+
+    // Show the divider only when both groups have visible events
+    const divider = document.getElementById('past-divider');
+    if (divider) {
+      divider.style.display = (visibleUpcoming > 0 && visiblePast > 0) ? 'flex' : 'none';
+    }
 
     if (noEventsMsg) {
       if (visibleCount === 0) {
