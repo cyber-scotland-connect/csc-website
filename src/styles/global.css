@@ -18,7 +18,7 @@
   --color-csc-border-light: #e2e2ea;
 
   --font-sans: 'Roboto', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --font-heading: 'Roboto Condensed', 'Roboto', sans-serif;
+  --font-heading: 'Space Grotesk', 'Roboto Condensed', 'Roboto', sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   --font-dyslexic: 'OpenDyslexic', 'Atkinson Hyperlegible', sans-serif;
 }
@@ -583,5 +583,43 @@ html.dark .card-tactile:hover {
 html.high-contrast .card-tactile {
   box-shadow: none !important;
   transform: none !important;
+}
+
+/* Micro-Interactions & Tactile Button Feedback */
+.btn-tactile {
+  transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.15s ease, background-color 0.15s ease;
+}
+
+.btn-tactile:active {
+  transform: scale(0.97);
+}
+
+/* Horizontal Scroll Rail without ugly scrollbars */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Accessibility: Strict Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .card-tactile,
+  .card-tactile:hover,
+  .btn-tactile,
+  .btn-tactile:active {
+    transform: none !important;
+    transition: none !important;
+  }
 }
 

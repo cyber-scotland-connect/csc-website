@@ -3,6 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import EventCard from '../../components/EventCard.astro';
 import CalendarModal from '../../components/CalendarModal.astro';
 import { getCollection } from 'astro:content';
+import { Calendar, ExternalLink, Landmark, Ship, Gamepad2, Zap, Globe } from 'lucide-astro';
 
 const allEvents = await getCollection('events');
 
@@ -50,31 +51,32 @@ const partnerEvents = sortedEvents.filter(e => e.data.isPartnerEvent);
           <button
             type="button"
             id="open-cal-modal-btn"
-            class="px-4 py-2.5 rounded-lg bg-white dark:bg-[#2a2948] hover:bg-slate-50 dark:hover:bg-[#382b5c] border border-slate-300 dark:border-[#56548c] text-slate-800 dark:text-white font-semibold text-sm shadow-sm transition-all flex items-center gap-1.5 cursor-pointer"
+            class="btn-tactile px-4 py-2.5 rounded-lg bg-white dark:bg-[#2a2948] hover:bg-slate-50 dark:hover:bg-[#382b5c] border border-slate-300 dark:border-[#56548c] text-slate-800 dark:text-white font-semibold text-sm shadow-sm transition-all flex items-center gap-2 cursor-pointer"
           >
-            <span>📅</span>
+            <Calendar class="w-4 h-4 text-[#895294] dark:text-[#6fb7e6]" aria-hidden="true" />
             <span>Calendar &amp; RSS Feeds</span>
           </button>
           <a
             href="https://www.meetup.com/cyberscotconnect/"
             target="_blank"
             rel="noopener noreferrer"
-            class="px-5 py-2.5 rounded-lg bg-[#895294] hover:bg-[#9d5fa8] text-white font-bold text-sm shadow-md transition-all flex items-center gap-1.5"
+            class="btn-tactile px-5 py-2.5 rounded-lg bg-[#895294] hover:bg-[#9d5fa8] text-white font-bold text-sm shadow-md transition-all flex items-center gap-2"
           >
-            <span>Join on Meetup</span> ↗
+            <span>Join on Meetup</span>
+            <ExternalLink class="w-4 h-4" aria-hidden="true" />
           </a>
         </div>
       </div>
 
       <!-- Filter Controls: Category & Regional Chapter -->
       <div class="space-y-3 mt-8">
-        <div class="flex flex-wrap items-center gap-2" role="tablist" aria-label="Event category filters">
-          <span class="text-xs font-mono font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mr-1 hidden sm:inline">Type:</span>
+        <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1.5 sm:pb-0 sm:flex-wrap" role="tablist" aria-label="Event category filters">
+          <span class="text-xs font-mono font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mr-1 hidden sm:inline shrink-0">Type:</span>
           <button
             type="button"
             data-filter-type="category"
             data-value="all"
-            class="filter-cat-btn active px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold bg-[#895294] text-white transition-colors"
+            class="filter-cat-btn active px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold bg-[#895294] text-white transition-colors shrink-0"
             role="tab"
             aria-selected="true"
           >
@@ -84,7 +86,7 @@ const partnerEvents = sortedEvents.filter(e => e.data.isPartnerEvent);
             type="button"
             data-filter-type="category"
             data-value="upcoming"
-            class="filter-cat-btn px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold bg-white dark:bg-[#2a2948] text-slate-700 dark:text-[#bdaccf] hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-[#3e3c66] transition-colors"
+            class="filter-cat-btn px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold bg-white dark:bg-[#2a2948] text-slate-700 dark:text-[#bdaccf] hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-[#3e3c66] transition-colors shrink-0"
             role="tab"
             aria-selected="false"
           >
@@ -94,7 +96,7 @@ const partnerEvents = sortedEvents.filter(e => e.data.isPartnerEvent);
             type="button"
             data-filter-type="category"
             data-value="csc"
-            class="filter-cat-btn px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold bg-white dark:bg-[#2a2948] text-slate-700 dark:text-[#bdaccf] hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-[#3e3c66] transition-colors"
+            class="filter-cat-btn px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold bg-white dark:bg-[#2a2948] text-slate-700 dark:text-[#bdaccf] hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-[#3e3c66] transition-colors shrink-0"
             role="tab"
             aria-selected="false"
           >
@@ -104,7 +106,7 @@ const partnerEvents = sortedEvents.filter(e => e.data.isPartnerEvent);
             type="button"
             data-filter-type="category"
             data-value="partner"
-            class="filter-cat-btn px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold bg-white dark:bg-[#2a2948] text-slate-700 dark:text-[#bdaccf] hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-[#3e3c66] transition-colors"
+            class="filter-cat-btn px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold bg-white dark:bg-[#2a2948] text-slate-700 dark:text-[#bdaccf] hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-[#3e3c66] transition-colors shrink-0"
             role="tab"
             aria-selected="false"
           >
@@ -114,7 +116,7 @@ const partnerEvents = sortedEvents.filter(e => e.data.isPartnerEvent);
             type="button"
             data-filter-type="category"
             data-value="past"
-            class="filter-cat-btn px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold bg-white dark:bg-[#2a2948] text-slate-700 dark:text-[#bdaccf] hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-[#3e3c66] transition-colors"
+            class="filter-cat-btn px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold bg-white dark:bg-[#2a2948] text-slate-700 dark:text-[#bdaccf] hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-[#3e3c66] transition-colors shrink-0"
             role="tab"
             aria-selected="false"
           >
@@ -123,13 +125,13 @@ const partnerEvents = sortedEvents.filter(e => e.data.isPartnerEvent);
         </div>
 
         <!-- Regional Chapter Chips -->
-        <div class="flex flex-wrap items-center gap-1.5 pt-1" role="tablist" aria-label="Regional chapter filters">
-          <span class="text-xs font-mono font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mr-1 hidden sm:inline">Chapter:</span>
+        <div class="flex items-center gap-1.5 pt-1 overflow-x-auto no-scrollbar pb-1 sm:pb-0 sm:flex-wrap" role="tablist" aria-label="Regional chapter filters">
+          <span class="text-xs font-mono font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mr-1 hidden sm:inline shrink-0">Chapter:</span>
           <button
             type="button"
             data-filter-type="city"
             data-value="all"
-            class="filter-city-btn active px-2.5 py-1 rounded-md text-xs font-medium bg-[#56548c] text-white transition-colors"
+            class="filter-city-btn active px-2.5 py-1 rounded-md text-xs font-medium bg-[#56548c] text-white transition-colors shrink-0"
             role="tab"
             aria-selected="true"
           >
@@ -139,51 +141,56 @@ const partnerEvents = sortedEvents.filter(e => e.data.isPartnerEvent);
             type="button"
             data-filter-type="city"
             data-value="edinburgh"
-            class="filter-city-btn px-2.5 py-1 rounded-md text-xs font-medium bg-slate-100 dark:bg-[#1b1a30] text-slate-700 dark:text-[#bdaccf] hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-[#3e3c66] transition-colors flex items-center gap-1"
+            class="filter-city-btn px-2.5 py-1 rounded-md text-xs font-medium bg-slate-100 dark:bg-[#1b1a30] text-slate-700 dark:text-[#bdaccf] hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-[#3e3c66] transition-colors flex items-center gap-1.5 shrink-0"
             role="tab"
             aria-selected="false"
           >
-            <span>🏰</span> <span>Edinburgh</span>
+            <Landmark class="w-3.5 h-3.5 text-[#6fb7e6]" aria-hidden="true" />
+            <span>Edinburgh</span>
           </button>
           <button
             type="button"
             data-filter-type="city"
             data-value="glasgow"
-            class="filter-city-btn px-2.5 py-1 rounded-md text-xs font-medium bg-slate-100 dark:bg-[#1b1a30] text-slate-700 dark:text-[#bdaccf] hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-[#3e3c66] transition-colors flex items-center gap-1"
+            class="filter-city-btn px-2.5 py-1 rounded-md text-xs font-medium bg-slate-100 dark:bg-[#1b1a30] text-slate-700 dark:text-[#bdaccf] hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-[#3e3c66] transition-colors flex items-center gap-1.5 shrink-0"
             role="tab"
             aria-selected="false"
           >
-            <span>🚢</span> <span>Glasgow</span>
+            <Ship class="w-3.5 h-3.5 text-[#895294]" aria-hidden="true" />
+            <span>Glasgow</span>
           </button>
           <button
             type="button"
             data-filter-type="city"
             data-value="dundee"
-            class="filter-city-btn px-2.5 py-1 rounded-md text-xs font-medium bg-slate-100 dark:bg-[#1b1a30] text-slate-700 dark:text-[#bdaccf] hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-[#3e3c66] transition-colors flex items-center gap-1"
+            class="filter-city-btn px-2.5 py-1 rounded-md text-xs font-medium bg-slate-100 dark:bg-[#1b1a30] text-slate-700 dark:text-[#bdaccf] hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-[#3e3c66] transition-colors flex items-center gap-1.5 shrink-0"
             role="tab"
             aria-selected="false"
           >
-            <span>🎮</span> <span>Dundee</span>
+            <Gamepad2 class="w-3.5 h-3.5 text-pink-400" aria-hidden="true" />
+            <span>Dundee</span>
           </button>
           <button
             type="button"
             data-filter-type="city"
             data-value="aberdeen"
-            class="filter-city-btn px-2.5 py-1 rounded-md text-xs font-medium bg-slate-100 dark:bg-[#1b1a30] text-slate-700 dark:text-[#bdaccf] hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-[#3e3c66] transition-colors flex items-center gap-1"
+            class="filter-city-btn px-2.5 py-1 rounded-md text-xs font-medium bg-slate-100 dark:bg-[#1b1a30] text-slate-700 dark:text-[#bdaccf] hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-[#3e3c66] transition-colors flex items-center gap-1.5 shrink-0"
             role="tab"
             aria-selected="false"
           >
-            <span>⚡</span> <span>Aberdeen</span>
+            <Zap class="w-3.5 h-3.5 text-amber-400" aria-hidden="true" />
+            <span>Aberdeen</span>
           </button>
           <button
             type="button"
             data-filter-type="city"
             data-value="virtual"
-            class="filter-city-btn px-2.5 py-1 rounded-md text-xs font-medium bg-slate-100 dark:bg-[#1b1a30] text-slate-700 dark:text-[#bdaccf] hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-[#3e3c66] transition-colors flex items-center gap-1"
+            class="filter-city-btn px-2.5 py-1 rounded-md text-xs font-medium bg-slate-100 dark:bg-[#1b1a30] text-slate-700 dark:text-[#bdaccf] hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-[#3e3c66] transition-colors flex items-center gap-1.5 shrink-0"
             role="tab"
             aria-selected="false"
           >
-            <span>🌐</span> <span>Virtual</span>
+            <Globe class="w-3.5 h-3.5 text-sky-400" aria-hidden="true" />
+            <span>Virtual</span>
           </button>
         </div>
       </div>

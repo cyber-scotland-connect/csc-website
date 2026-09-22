@@ -1,5 +1,20 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import { 
+  MapPin, 
+  Clock, 
+  ArrowRight, 
+  ExternalLink, 
+  Tv, 
+  Accessibility, 
+  Ear, 
+  Landmark, 
+  Ship, 
+  Gamepad2, 
+  Zap, 
+  Globe, 
+  Shield 
+} from 'lucide-astro';
 
 interface Props {
   event: CollectionEntry<'events'>;
@@ -22,48 +37,49 @@ const formattedFullDate = eventDate.toLocaleDateString('en-GB', {
   year: 'numeric',
 });
 
-const chapterConfig: Record<string, { badge: string; icon: string }> = {
+const chapterConfig: Record<string, { badge: string; IconComponent: any }> = {
   Edinburgh: {
     badge: 'bg-[#56548c] text-white border border-[#6fb7e6]/30',
-    icon: '🏰',
+    IconComponent: Landmark,
   },
   Glasgow: {
     badge: 'bg-[#382b5c] text-purple-100 border border-[#895294]/50',
-    icon: '🚢',
+    IconComponent: Ship,
   },
   Dundee: {
     badge: 'bg-[#895294] text-white border border-pink-300/40',
-    icon: '🎮',
+    IconComponent: Gamepad2,
   },
   Aberdeen: {
     badge: 'bg-slate-800 text-sky-200 border border-sky-400/40',
-    icon: '⚡',
+    IconComponent: Zap,
   },
   Virtual: {
     badge: 'bg-sky-50 dark:bg-[#1b1a30] text-sky-800 dark:text-[#6fb7e6] border border-sky-300 dark:border-[#6fb7e6]/40',
-    icon: '🌐',
+    IconComponent: Globe,
   },
   'Scotland-wide': {
     badge: 'bg-slate-100 dark:bg-[#1b1a30] text-slate-800 dark:text-white border border-slate-300 dark:border-[#3e3c66]',
-    icon: '🏴󠁧󠁢󠁳󠁣󠁴󠁿',
+    IconComponent: Shield,
   },
 };
 
 const cityConfig = chapterConfig[data.city] || {
   badge: 'bg-[#56548c] text-white border border-[#6fb7e6]/30',
-  icon: '📍',
+  IconComponent: MapPin,
 };
 
+const CityIcon = cityConfig.IconComponent;
 const mapsUrl = data.locationUrl || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(data.location)}`;
 ---
 
 <article 
-  class="card-tactile bg-white dark:bg-[#2a2948] rounded-2xl border border-slate-200 dark:border-[#3e3c66] p-6 hover:border-[#895294] flex flex-col justify-between group event-card"
+  class="card-tactile bg-white dark:bg-[#2a2948] rounded-2xl border border-slate-200 dark:border-[#3e3c66] p-6 hover:border-[#895294] flex flex-col justify-between group event-card h-full"
   data-category={isUpcoming ? 'upcoming' : 'past'}
   data-type={data.isPartnerEvent ? 'partner' : 'csc'}
   data-city={data.city.toLowerCase()}
 >
-  <div>
+  <div class="flex-1 flex flex-col">
     <!-- Top Row: Date badge + Metadata -->
     <div class="flex items-start gap-3.5 mb-4">
       <div class="flex flex-col items-center justify-center w-14 h-14 rounded-xl bg-slate-100 dark:bg-[#21203a] border border-slate-200 dark:border-[#3e3c66] shrink-0 text-center shadow-inner group-hover:border-[#895294] transition-colors">
@@ -73,8 +89,8 @@ const mapsUrl = data.locationUrl || `https://www.google.com/maps/search/?api=1&q
 
       <div class="flex-1 min-w-0">
         <div class="flex flex-wrap items-center gap-1.5 mb-1.5">
-          <span class={`text-xs px-2.5 py-0.5 rounded-full font-bold inline-flex items-center gap-1 ${cityConfig.badge}`}>
-            <span>{cityConfig.icon}</span>
+          <span class={`text-xs px-2.5 py-0.5 rounded-full font-bold inline-flex items-center gap-1.5 ${cityConfig.badge}`}>
+            <CityIcon class="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
             <span>{data.city}</span>
           </span>
           {data.isPartnerEvent ? (
@@ -93,8 +109,8 @@ const mapsUrl = data.locationUrl || `https://www.google.com/maps/search/?api=1&q
       </div>
     </div>
 
-    <!-- Title -->
-    <h3 class="text-xl font-heading font-bold text-slate-900 dark:text-white group-hover:text-[#895294] dark:group-hover:text-[#6fb7e6] transition-colors mb-2.5 line-clamp-2">
+    <!-- Title with locked 2-line baseline height -->
+    <h3 class="text-xl font-heading font-bold text-slate-900 dark:text-white group-hover:text-[#895294] dark:group-hover:text-[#6fb7e6] transition-colors mb-2.5 line-clamp-2 min-h-[3.5rem] flex items-start">
       <a href={`${base}/events/${slug}`} class="focus:outline-none focus:ring-2 focus:ring-[#6fb7e6] rounded">
         {data.title}
       </a>
@@ -103,25 +119,21 @@ const mapsUrl = data.locationUrl || `https://www.google.com/maps/search/?api=1&q
     <!-- Date & Location details -->
     <div class="space-y-1.5 text-xs sm:text-sm text-slate-600 dark:text-[#bdaccf] mb-4">
       <div class="flex items-center gap-2">
-        <svg class="w-4 h-4 text-[#895294] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
+        <Clock class="w-4 h-4 text-[#895294] shrink-0" aria-hidden="true" />
         <span class="font-medium text-slate-900 dark:text-white">{formattedFullDate}</span>
         {data.time && <span class="font-mono text-xs text-slate-500 dark:text-slate-400">({data.time})</span>}
       </div>
       <div class="flex items-center gap-2">
-        <svg class="w-4 h-4 text-[#56548c] dark:text-[#6fb7e6] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-        </svg>
+        <MapPin class="w-4 h-4 text-[#56548c] dark:text-[#6fb7e6] shrink-0" aria-hidden="true" />
         <a
           href={mapsUrl}
           target="_blank"
           rel="noopener noreferrer"
-          class="truncate hover:underline hover:text-[#895294] dark:hover:text-[#6fb7e6] transition-colors"
+          class="truncate hover:underline hover:text-[#895294] dark:hover:text-[#6fb7e6] transition-colors inline-flex items-center gap-1"
           title={`View ${data.location} on Google Maps`}
         >
-          {data.location} 📍
+          <span>{data.location}</span>
+          <ExternalLink class="w-3 h-3 shrink-0" aria-hidden="true" />
         </a>
       </div>
     </div>
@@ -142,17 +154,19 @@ const mapsUrl = data.locationUrl || `https://www.google.com/maps/search/?api=1&q
     )}
   </div>
 
-  <!-- Accessibility Badges & Action Links -->
-  <div class="pt-4 border-t border-slate-100 dark:border-[#3e3c66] flex flex-wrap items-center justify-between gap-2.5 text-xs">
+  <!-- Accessibility Badges & Action Links (Pinned to bottom) -->
+  <div class="pt-4 border-t border-slate-100 dark:border-[#3e3c66] flex flex-wrap items-center justify-between gap-2.5 text-xs mt-auto">
     <div class="flex items-center gap-1.5 text-slate-500 dark:text-slate-400" title="Venue Accessibility">
       {data.accessibility.stepFree && (
-        <span class="flex items-center gap-1 bg-slate-100 dark:bg-[#21203a] px-2 py-0.5 rounded-md border border-slate-200 dark:border-[#3e3c66] font-medium" title="Step-free accessible venue">
-          ♿ <span class="hidden sm:inline">Step-free</span>
+        <span class="flex items-center gap-1.5 bg-slate-100 dark:bg-[#21203a] px-2 py-0.5 rounded-md border border-slate-200 dark:border-[#3e3c66] font-medium" title="Step-free accessible venue">
+          <Accessibility class="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" aria-hidden="true" />
+          <span class="hidden sm:inline">Step-free</span>
         </span>
       )}
       {data.accessibility.hearingLoop && (
-        <span class="flex items-center gap-1 bg-slate-100 dark:bg-[#21203a] px-2 py-0.5 rounded-md border border-slate-200 dark:border-[#3e3c66] font-medium" title="Induction Hearing Loop available">
-          🦻 <span class="hidden sm:inline">Hearing Loop</span>
+        <span class="flex items-center gap-1.5 bg-slate-100 dark:bg-[#21203a] px-2 py-0.5 rounded-md border border-slate-200 dark:border-[#3e3c66] font-medium" title="Induction Hearing Loop available">
+          <Ear class="w-3.5 h-3.5 text-sky-600 dark:text-sky-400" aria-hidden="true" />
+          <span class="hidden sm:inline">Hearing Loop</span>
         </span>
       )}
     </div>
@@ -162,17 +176,19 @@ const mapsUrl = data.locationUrl || `https://www.google.com/maps/search/?api=1&q
         href={`${base}/events/${slug}`}
         class="text-[#895294] dark:text-[#6fb7e6] hover:underline font-bold flex items-center gap-1 transition-colors py-1"
       >
-        <span>Details</span> →
+        <span>Details</span>
+        <ArrowRight class="w-3.5 h-3.5" aria-hidden="true" />
       </a>
       {data.recordingUrl && (
         <a
           href={data.recordingUrl}
           target="_blank"
           rel="noopener noreferrer"
-          class="bg-red-700 hover:bg-red-800 text-white px-3 py-1.5 rounded-lg font-bold transition-all shadow-sm flex items-center gap-1 text-xs"
+          class="btn-tactile bg-red-700 hover:bg-red-800 text-white px-3 py-1.5 rounded-lg font-bold transition-all shadow-sm flex items-center gap-1.5 text-xs"
           title="Watch recording on YouTube"
         >
-          <span>Watch</span> 📺
+          <span>Watch</span>
+          <Tv class="w-3.5 h-3.5" aria-hidden="true" />
         </a>
       )}
       {data.meetupUrl && (
@@ -180,9 +196,10 @@ const mapsUrl = data.locationUrl || `https://www.google.com/maps/search/?api=1&q
           href={data.meetupUrl}
           target="_blank"
           rel="noopener noreferrer"
-          class="bg-[#895294] hover:bg-[#9d5fa8] text-white px-3 py-1.5 rounded-lg font-bold transition-all shadow-sm"
+          class="btn-tactile bg-[#895294] hover:bg-[#9d5fa8] text-white px-3 py-1.5 rounded-lg font-bold transition-all shadow-sm flex items-center gap-1"
         >
-          Meetup ↗
+          <span>Meetup</span>
+          <ExternalLink class="w-3 h-3" aria-hidden="true" />
         </a>
       )}
       {data.registrationUrl && (
@@ -190,9 +207,10 @@ const mapsUrl = data.locationUrl || `https://www.google.com/maps/search/?api=1&q
           href={data.registrationUrl}
           target="_blank"
           rel="noopener noreferrer"
-          class="bg-[#56548c] hover:bg-[#6764a8] text-white px-3 py-1.5 rounded-lg font-bold transition-all shadow-sm"
+          class="btn-tactile bg-[#56548c] hover:bg-[#6764a8] text-white px-3 py-1.5 rounded-lg font-bold transition-all shadow-sm flex items-center gap-1"
         >
-          Register ↗
+          <span>Register</span>
+          <ExternalLink class="w-3 h-3" aria-hidden="true" />
         </a>
       )}
     </div>

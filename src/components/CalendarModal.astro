@@ -1,4 +1,6 @@
 ---
+import { Calendar, Shield, ExternalLink, X } from 'lucide-astro';
+
 interface Props {
   id?: string;
 }
@@ -45,12 +47,10 @@ const cscRssUrl = `${sitePath}/feeds/csc.xml`;
 
       <button
         type="button"
-        class="close-cal-modal p-2 rounded-xl text-slate-400 hover:text-slate-700 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#2a2948] transition-colors"
+        class="close-cal-modal btn-tactile p-2 rounded-xl text-slate-400 hover:text-slate-700 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#2a2948] transition-colors"
         aria-label="Close modal"
       >
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-        </svg>
+        <X class="w-5 h-5" aria-hidden="true" />
       </button>
     </div>
 
@@ -59,22 +59,22 @@ const cscRssUrl = `${sitePath}/feeds/csc.xml`;
       <div class="flex rounded-xl bg-slate-100 dark:bg-[#1b1a30] p-1 border border-slate-200 dark:border-[#3e3c66]" role="tablist">
         <button
           type="button"
-          class="cal-tab-btn active flex-1 py-2.5 px-3 text-xs sm:text-sm font-bold rounded-lg transition-all text-center flex items-center justify-center gap-1.5 bg-white dark:bg-[#2a2948] text-[#895294] dark:text-[#6fb7e6] shadow-sm"
+          class="cal-tab-btn active flex-1 py-2.5 px-3 text-xs sm:text-sm font-bold rounded-lg transition-all text-center flex items-center justify-center gap-2 bg-white dark:bg-[#2a2948] text-[#895294] dark:text-[#6fb7e6] shadow-sm"
           data-target="community-feed"
           role="tab"
           aria-selected="true"
         >
-          <span>🏴󠁧󠁢󠁳󠁣󠁴󠁿</span>
+          <Shield class="w-4 h-4 text-[#895294] dark:text-[#6fb7e6]" aria-hidden="true" />
           <span>All Scottish Cyber Community</span>
         </button>
         <button
           type="button"
-          class="cal-tab-btn flex-1 py-2.5 px-3 text-xs sm:text-sm font-bold rounded-lg transition-all text-center flex items-center justify-center gap-1.5 text-slate-600 dark:text-[#bdaccf] hover:text-slate-900 dark:hover:text-white"
+          class="cal-tab-btn flex-1 py-2.5 px-3 text-xs sm:text-sm font-bold rounded-lg transition-all text-center flex items-center justify-center gap-2 text-slate-600 dark:text-[#bdaccf] hover:text-slate-900 dark:hover:text-white"
           data-target="csc-feed"
           role="tab"
           aria-selected="false"
         >
-          <span>🛡️</span>
+          <Calendar class="w-4 h-4 text-[#56548c] dark:text-[#bdaccf]" aria-hidden="true" />
           <span>CSC Gatherings Only</span>
         </button>
       </div>
@@ -96,19 +96,19 @@ const cscRssUrl = `${sitePath}/feeds/csc.xml`;
               href={communityGcalUrl}
               target="_blank"
               rel="noopener noreferrer"
-              class="flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-[#56548c] hover:bg-[#6764a8] text-white font-bold text-xs sm:text-sm shadow transition-all"
+              class="btn-tactile flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-[#56548c] hover:bg-[#6764a8] text-white font-bold text-xs sm:text-sm shadow transition-all"
             >
-              <span>📅</span>
+              <Calendar class="w-4 h-4" aria-hidden="true" />
               <span>Add to Google Calendar</span>
-              <span class="text-xs opacity-75">↗</span>
+              <ExternalLink class="w-3.5 h-3.5 opacity-75" aria-hidden="true" />
             </a>
             <a
               href={communityWebcalUrl}
-              class="flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-slate-800 dark:bg-[#382b5c] hover:bg-slate-900 dark:hover:bg-[#483775] text-white font-bold text-xs sm:text-sm shadow transition-all"
+              class="btn-tactile flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-slate-800 dark:bg-[#382b5c] hover:bg-slate-900 dark:hover:bg-[#483775] text-white font-bold text-xs sm:text-sm shadow transition-all"
             >
-              <span>🍏</span>
+              <Calendar class="w-4 h-4" aria-hidden="true" />
               <span>Apple / Outlook / Cal</span>
-              <span class="text-xs opacity-75">↗</span>
+              <ExternalLink class="w-3.5 h-3.5 opacity-75" aria-hidden="true" />
             </a>
           </div>
         </div>
@@ -133,7 +133,7 @@ const cscRssUrl = `${sitePath}/feeds/csc.xml`;
               <button
                 type="button"
                 data-copy={communityIcsUrl}
-                class="copy-btn shrink-0 px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-[#2a2948] hover:bg-slate-200 dark:hover:bg-[#382b5c] border border-slate-200 dark:border-[#3e3c66] text-xs font-bold text-slate-700 dark:text-white transition-colors"
+                class="copy-btn btn-tactile shrink-0 px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-[#2a2948] hover:bg-slate-200 dark:hover:bg-[#382b5c] border border-slate-200 dark:border-[#3e3c66] text-xs font-bold text-slate-700 dark:text-white transition-colors"
               >
                 Copy
               </button>
@@ -158,7 +158,7 @@ const cscRssUrl = `${sitePath}/feeds/csc.xml`;
               <button
                 type="button"
                 data-copy={communityRssUrl}
-                class="copy-btn shrink-0 px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-[#2a2948] hover:bg-slate-200 dark:hover:bg-[#382b5c] border border-slate-200 dark:border-[#3e3c66] text-xs font-bold text-slate-700 dark:text-white transition-colors"
+                class="copy-btn btn-tactile shrink-0 px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-[#2a2948] hover:bg-slate-200 dark:hover:bg-[#382b5c] border border-slate-200 dark:border-[#3e3c66] text-xs font-bold text-slate-700 dark:text-white transition-colors"
               >
                 Copy
               </button>
@@ -184,19 +184,19 @@ const cscRssUrl = `${sitePath}/feeds/csc.xml`;
               href={cscGcalUrl}
               target="_blank"
               rel="noopener noreferrer"
-              class="flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-[#895294] hover:bg-[#9d5fa8] text-white font-bold text-xs sm:text-sm shadow transition-all"
+              class="btn-tactile flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-[#895294] hover:bg-[#9d5fa8] text-white font-bold text-xs sm:text-sm shadow transition-all"
             >
-              <span>📅</span>
+              <Calendar class="w-4 h-4" aria-hidden="true" />
               <span>Add to Google Calendar</span>
-              <span class="text-xs opacity-75">↗</span>
+              <ExternalLink class="w-3.5 h-3.5 opacity-75" aria-hidden="true" />
             </a>
             <a
               href={cscWebcalUrl}
-              class="flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-slate-800 dark:bg-[#382b5c] hover:bg-slate-900 dark:hover:bg-[#483775] text-white font-bold text-xs sm:text-sm shadow transition-all"
+              class="btn-tactile flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-slate-800 dark:bg-[#382b5c] hover:bg-slate-900 dark:hover:bg-[#483775] text-white font-bold text-xs sm:text-sm shadow transition-all"
             >
-              <span>🍏</span>
+              <Calendar class="w-4 h-4" aria-hidden="true" />
               <span>Apple / Outlook / Cal</span>
-              <span class="text-xs opacity-75">↗</span>
+              <ExternalLink class="w-3.5 h-3.5 opacity-75" aria-hidden="true" />
             </a>
           </div>
         </div>

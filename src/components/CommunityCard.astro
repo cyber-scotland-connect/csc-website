@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import { MapPin, Calendar, MessageSquare, ExternalLink } from 'lucide-astro';
 
 interface Props {
   community: CollectionEntry<'community'>;
@@ -44,43 +45,43 @@ const badgeStyle = categoryBadges[data.category] || {
 ---
 
 <div
-  class="card-tactile bg-white dark:bg-[#2a2948] rounded-2xl border border-slate-200 dark:border-[#3e3c66] p-6 hover:border-[#56548c] dark:hover:border-[#6fb7e6] flex flex-col justify-between group transition-all"
+  class="card-tactile bg-white dark:bg-[#2a2948] rounded-2xl border border-slate-200 dark:border-[#3e3c66] p-6 hover:border-[#56548c] dark:hover:border-[#6fb7e6] flex flex-col justify-between group transition-all h-full"
   data-category={data.category}
   data-city={data.city}
 >
-  <div>
+  <div class="flex-1 flex flex-col">
     <!-- Badges Row -->
     <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
       <span class={`text-xs px-2.5 py-0.5 rounded-full font-semibold border ${badgeStyle.bg} ${badgeStyle.text} ${badgeStyle.border}`}>
         {data.category}
       </span>
       <div class="flex items-center gap-1.5 text-xs text-slate-500 dark:text-[#bdaccf]">
-        <span>📍</span>
+        <MapPin class="w-3.5 h-3.5 text-[#895294] dark:text-[#6fb7e6]" aria-hidden="true" />
         <span class="font-medium">{data.city}</span>
       </div>
     </div>
 
-    <!-- Title -->
-    <h3 class="text-xl font-heading font-bold text-slate-900 dark:text-white group-hover:text-[#56548c] dark:group-hover:text-[#6fb7e6] transition-colors mb-2">
+    <!-- Title with locked 2-line baseline height -->
+    <h3 class="text-xl font-heading font-bold text-slate-900 dark:text-white group-hover:text-[#56548c] dark:group-hover:text-[#6fb7e6] transition-colors mb-2 min-h-[3.5rem] flex items-start">
       {data.name}
     </h3>
 
     <!-- Description -->
-    <p class="text-sm text-slate-600 dark:text-[#bdaccf] leading-relaxed mb-4">
+    <p class="text-sm text-slate-600 dark:text-[#bdaccf] leading-relaxed mb-4 flex-1">
       {data.description}
     </p>
 
     <!-- Meeting Frequency Pill (if available) -->
     {data.meetingFrequency && (
-      <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-slate-50 dark:bg-[#1f1e38] border border-slate-200 dark:border-[#3e3c66] text-xs text-slate-600 dark:text-[#bdaccf] mb-4">
-        <span aria-hidden="true">🗓️</span>
+      <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-slate-50 dark:bg-[#1f1e38] border border-slate-200 dark:border-[#3e3c66] text-xs text-slate-600 dark:text-[#bdaccf] mb-4 self-start">
+        <Calendar class="w-3.5 h-3.5 text-[#56548c] dark:text-[#6fb7e6]" aria-hidden="true" />
         <span>{data.meetingFrequency}</span>
       </div>
     )}
   </div>
 
-  <!-- Links / Actions -->
-  <div class="pt-4 border-t border-slate-100 dark:border-[#3e3c66] flex flex-wrap items-center justify-between gap-3">
+  <!-- Links / Actions (Pinned to bottom) -->
+  <div class="pt-4 border-t border-slate-100 dark:border-[#3e3c66] flex flex-wrap items-center justify-between gap-3 mt-auto">
     <a
       href={data.websiteUrl}
       target="_blank"
@@ -89,7 +90,7 @@ const badgeStyle = categoryBadges[data.category] || {
       aria-label={`Visit ${data.name} website`}
     >
       <span>Website</span>
-      <span aria-hidden="true">↗</span>
+      <ExternalLink class="w-3 h-3" aria-hidden="true" />
     </a>
 
     {data.chatUrl && (
@@ -97,11 +98,12 @@ const badgeStyle = categoryBadges[data.category] || {
         href={data.chatUrl}
         target="_blank"
         rel="noopener noreferrer"
-        class="inline-flex items-center gap-1 px-3 py-1 rounded-lg text-xs font-semibold bg-[#56548c]/10 dark:bg-[#56548c]/30 text-[#56548c] dark:text-[#6fb7e6] hover:bg-[#56548c]/20 transition-colors"
+        class="btn-tactile inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold bg-[#56548c]/10 dark:bg-[#56548c]/30 text-[#56548c] dark:text-[#6fb7e6] hover:bg-[#56548c]/20 transition-colors"
         aria-label={`Join ${data.name} chat or Discord`}
       >
-        <span>💬 Community Chat</span>
-        <span aria-hidden="true">↗</span>
+        <MessageSquare class="w-3.5 h-3.5" aria-hidden="true" />
+        <span>Community Chat</span>
+        <ExternalLink class="w-3 h-3" aria-hidden="true" />
       </a>
     )}
   </div>
