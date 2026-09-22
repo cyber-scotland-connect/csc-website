@@ -2,6 +2,16 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import CommunityCard from '../components/CommunityCard.astro';
 import { getCollection } from 'astro:content';
+import { 
+  Terminal, 
+  GraduationCap, 
+  Sparkles, 
+  Building2, 
+  Users, 
+  MessageSquare, 
+  ExternalLink, 
+  Handshake 
+} from 'lucide-astro';
 
 const allCommunity = await getCollection('community');
 const activeCommunity = allCommunity.filter((c) => c.data.active);
@@ -9,31 +19,31 @@ const activeCommunity = allCommunity.filter((c) => c.data.active);
 const categories = [
   {
     name: 'Hacker Society & Meetup',
-    icon: '💻',
+    IconComponent: Terminal,
     description:
       'Grassroots technical meetups, CTF crews, DEF CON groups, and open hardware hacking clubs meeting regularly across Scottish cities.',
   },
   {
     name: 'Student Cyber Society',
-    icon: '🎓',
+    IconComponent: GraduationCap,
     description:
       'University and college ethical hacking clubs, academic CTF teams, and student-run infosec conferences developing Scotland’s next generation.',
   },
   {
     name: 'Diversity & Inclusion',
-    icon: '🌈',
+    IconComponent: Sparkles,
     description:
       'Initiatives breaking barriers, championing underrepresented technologists, and fostering welcoming spaces in Scottish cybersecurity and tech.',
   },
   {
     name: 'Professional Association',
-    icon: '🏛️',
+    IconComponent: Building2,
     description:
       'Chartered bodies, regional security chapters, and formal networking forums offering mentorship, CPE credits, and industry standards.',
   },
   {
     name: 'Support & Veteran Network',
-    icon: '🤝',
+    IconComponent: Users,
     description:
       'Community care organisations, military veteran cyber pathways, and civic tech volunteering collectives.',
   },
@@ -69,18 +79,21 @@ const totalCount = sortedCommunity.length;
         A curated directory of {totalCount} grassroots tech meetups, student societies, diversity groups, and professional networks across Scotland—connecting alongside the Cyber Scotland Connect community.
       </p>
 
-      <!-- Category Quick Jump Bar -->
-      <nav aria-label="Community Categories" class="mt-6 flex flex-wrap gap-2 pt-4">
+      <!-- Category Quick Jump Bar (Horizontal Scroll Rail on Mobile) -->
+      <nav aria-label="Community Categories" class="mt-6 flex items-center gap-2 pt-4 overflow-x-auto no-scrollbar pb-1.5 sm:pb-0 sm:flex-wrap">
         {
-          categories.map((cat) => (
-            <a
-              href={`#${cat.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`}
-              class="inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-[#21203a] text-slate-700 dark:text-[#bdaccf] hover:bg-[#895294] hover:text-white dark:hover:bg-[#56548c] dark:hover:text-white border border-slate-200 dark:border-[#3e3c66] transition-all"
-            >
-              <span>{cat.icon}</span>
-              <span>{cat.name}</span>
-            </a>
-          ))
+          categories.map((cat) => {
+            const Icon = cat.IconComponent;
+            return (
+              <a
+                href={`#${cat.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`}
+                class="btn-tactile shrink-0 inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-[#21203a] text-slate-700 dark:text-[#bdaccf] hover:bg-[#895294] hover:text-white dark:hover:bg-[#56548c] dark:hover:text-white border border-slate-200 dark:border-[#3e3c66] transition-all"
+              >
+                <Icon class="w-3.5 h-3.5 text-[#895294] dark:text-[#6fb7e6]" aria-hidden="true" />
+                <span>{cat.name}</span>
+              </a>
+            );
+          })
         }
       </nav>
     </header>
@@ -93,7 +106,8 @@ const totalCount = sortedCommunity.length;
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
         <div class="lg:col-span-2 space-y-4">
           <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#5865F2]/15 text-[#5865F2] dark:text-indigo-300 text-xs font-bold border border-[#5865F2]/30">
-            <span>💬 Live Digital Gathering</span>
+            <MessageSquare class="w-3.5 h-3.5" aria-hidden="true" />
+            <span>Live Digital Gathering</span>
             <span>•</span>
             <span>Always Open</span>
           </div>
@@ -130,8 +144,8 @@ const totalCount = sortedCommunity.length;
 
         <!-- Join CTA Box -->
         <div class="flex flex-col items-center justify-center text-center p-6 rounded-xl bg-white dark:bg-[#21203a] border border-slate-200 dark:border-[#3e3c66] shadow-md">
-          <div class="w-14 h-14 rounded-2xl bg-[#5865F2] flex items-center justify-center text-white text-2xl font-bold mb-3 shadow-md">
-            💬
+          <div class="w-14 h-14 rounded-2xl bg-[#5865F2] flex items-center justify-center text-white mb-3 shadow-md">
+            <MessageSquare class="w-7 h-7" aria-hidden="true" />
           </div>
           <span class="text-base font-bold text-slate-900 dark:text-white mb-1">CSC Discord Server</span>
           <p class="text-xs text-slate-500 dark:text-[#bdaccf] mb-5">
@@ -141,10 +155,10 @@ const totalCount = sortedCommunity.length;
             href="https://discord.gg/cyberscotlandconnect"
             target="_blank"
             rel="noopener noreferrer"
-            class="w-full py-3 px-5 rounded-xl font-bold text-xs uppercase tracking-wider bg-[#5865F2] hover:bg-[#4752c4] text-white shadow transition-all flex items-center justify-center gap-2 focus:ring-2 focus:ring-[#5865F2]"
+            class="btn-tactile w-full py-3 px-5 rounded-xl font-bold text-xs uppercase tracking-wider bg-[#5865F2] hover:bg-[#4752c4] text-white shadow transition-all flex items-center justify-center gap-2 focus:ring-2 focus:ring-[#5865F2]"
           >
             <span>Join Our Discord</span>
-            <span aria-hidden="true">↗</span>
+            <ExternalLink class="w-4 h-4" aria-hidden="true" />
           </a>
         </div>
       </div>
@@ -153,54 +167,57 @@ const totalCount = sortedCommunity.length;
     <!-- Community Directory Sections -->
     <main>
       {
-        communityByCategory.map((category) => (
-          <section
-            id={category.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}
-            class="mb-16 scroll-mt-20"
-          >
-            <div class="flex items-center gap-3 mb-2">
-              <span class="text-2xl" aria-hidden="true">
-                {category.icon}
-              </span>
-              <h2 class="text-2xl font-heading font-bold text-slate-900 dark:text-white uppercase tracking-wide">
-                {category.name}
-              </h2>
-            </div>
-            <p class="text-sm text-slate-600 dark:text-[#bdaccf] mb-6 max-w-2xl">
-              {category.description}
-            </p>
+        communityByCategory.map((category) => {
+          const CategoryIcon = category.IconComponent;
+          return (
+            <section
+              id={category.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}
+              class="mb-16 scroll-mt-20"
+            >
+              <div class="flex items-center gap-3 mb-2">
+                <div class="w-9 h-9 rounded-xl bg-[#56548c]/15 dark:bg-[#6fb7e6]/15 text-[#56548c] dark:text-[#6fb7e6] flex items-center justify-center shrink-0">
+                  <CategoryIcon class="w-5 h-5" aria-hidden="true" />
+                </div>
+                <h2 class="text-2xl font-heading font-bold text-slate-900 dark:text-white uppercase tracking-wide">
+                  {category.name}
+                </h2>
+              </div>
+              <p class="text-sm text-slate-600 dark:text-[#bdaccf] mb-6 max-w-2xl">
+                {category.description}
+              </p>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {category.items.map((item) => (
-                <CommunityCard community={item} />
-              ))}
-            </div>
-          </section>
-        ))
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {category.items.map((item) => (
+                  <CommunityCard community={item} />
+                ))}
+              </div>
+            </section>
+          );
+        })
       }
 
       <!-- Elevate Your Group Callout -->
       <section class="mt-20 bg-slate-50 dark:bg-[#21203a] rounded-2xl border border-slate-200 dark:border-[#3e3c66] p-8 text-center sm:text-left sm:flex sm:items-center sm:justify-between gap-6 transition-colors">
         <div class="max-w-2xl">
           <div class="flex items-center justify-center sm:justify-start gap-2 mb-2">
-            <span class="text-xl" aria-hidden="true">🤝</span>
+            <Handshake class="w-5 h-5 text-[#895294] dark:text-[#6fb7e6]" aria-hidden="true" />
             <h2 class="text-xl font-heading font-bold text-slate-900 dark:text-white uppercase tracking-tight">
               Lead or know a grassroots Scottish community group?
             </h2>
           </div>
-          <p class="text-sm text-slate-600 dark:text-[#bdaccf] leading-relaxed">
-            We actively promote peer groups across Scotland. Whether you run a local DEF CON meetup, university cyber society, or diversity network, submit a quick PR to add your group card to this directory.
+          <p class="text-xs sm:text-sm text-slate-600 dark:text-[#bdaccf] leading-relaxed">
+            We actively list non-profit security, tech, diversity, and student groups across Scotland for free. Submit a quick PR or drop us an email to get added.
           </p>
         </div>
-        <div class="mt-6 sm:mt-0 flex-shrink-0">
+        <div class="mt-6 sm:mt-0 shrink-0">
           <a
-            href="https://github.com/cyber-scotland-connect/csc-website/blob/main/.github/content-templates/community.md"
+            href="https://github.com/cyber-scotland-connect/csc-website"
             target="_blank"
             rel="noopener noreferrer"
-            class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider bg-[#895294] text-white hover:bg-[#6e3e78] dark:bg-[#6fb7e6] dark:text-slate-900 dark:hover:bg-[#5aa3cf] transition-colors shadow-sm"
+            class="btn-tactile inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-[#895294] hover:bg-[#9d5fa8] text-white font-bold text-xs uppercase tracking-wider shadow transition-all focus:ring-2 focus:ring-[#6fb7e6]"
           >
-            <span>Add Your Group</span>
-            <span>↗</span>
+            <span>Submit via GitHub</span>
+            <ExternalLink class="w-4 h-4" aria-hidden="true" />
           </a>
         </div>
       </section>
