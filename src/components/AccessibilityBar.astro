@@ -5,7 +5,7 @@ import { Accessibility, Type, Contrast, Sun, Moon, X } from 'lucide-astro';
 <!-- Accessible Display & Preferences Modal Dialog -->
 <div 
   id="a11y-modal-backdrop" 
-  class="fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm hidden opacity-0 transition-opacity duration-200 flex flex-col justify-end sm:justify-center items-center p-0 sm:p-4"
+  class="fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm hidden opacity-0 transition-opacity duration-200 flex items-center justify-center p-4 overflow-y-auto"
   aria-hidden="true"
 >
   <div 
@@ -14,11 +14,9 @@ import { Accessibility, Type, Contrast, Sun, Moon, X } from 'lucide-astro';
     aria-modal="true"
     aria-labelledby="a11y-dialog-title"
     aria-describedby="a11y-dialog-desc"
-    class="w-full sm:max-w-md bg-white dark:bg-[#21203a] border-t sm:border border-slate-200 dark:border-[#3e3c66] rounded-t-3xl sm:rounded-2xl shadow-2xl p-5 sm:p-6 pb-8 sm:pb-6 max-h-[85dvh] sm:max-h-[90vh] overflow-y-auto transform translate-y-full sm:translate-y-0 sm:scale-95 transition-all duration-200 focus:outline-none"
+    class="w-full max-w-md bg-white dark:bg-[#21203a] border border-slate-200 dark:border-[#3e3c66] rounded-2xl shadow-2xl p-5 sm:p-6 my-auto max-h-[calc(100dvh-2rem)] overflow-y-auto transform scale-95 transition-transform duration-200 focus:outline-none"
     tabindex="-1"
   >
-    <!-- Mobile Sheet Handle Indicator -->
-    <div class="sm:hidden w-10 h-1 bg-slate-300 dark:bg-[#3e3c66] rounded-full mx-auto mb-3 shrink-0" aria-hidden="true"></div>
     <!-- Dialog Header -->
     <div class="flex items-center justify-between pb-4 border-b border-slate-200 dark:border-[#3e3c66]">
       <div class="flex items-center gap-2.5 text-slate-900 dark:text-white">
@@ -158,8 +156,8 @@ import { Accessibility, Type, Contrast, Sun, Moon, X } from 'lucide-astro';
       backdrop.setAttribute('aria-hidden', 'false');
       requestAnimationFrame(() => {
         backdrop.classList.remove('opacity-0');
-        dialog.classList.remove('translate-y-full', 'sm:scale-95');
-        dialog.classList.add('translate-y-0', 'sm:scale-100');
+        dialog.classList.remove('scale-95');
+        dialog.classList.add('scale-100');
       });
       dialog.focus();
       document.body.style.overflow = 'hidden';
@@ -168,8 +166,8 @@ import { Accessibility, Type, Contrast, Sun, Moon, X } from 'lucide-astro';
     function closeModal() {
       if (!backdrop || !dialog) return;
       backdrop.classList.add('opacity-0');
-      dialog.classList.remove('translate-y-0', 'sm:scale-100');
-      dialog.classList.add('translate-y-full', 'sm:scale-95');
+      dialog.classList.remove('scale-100');
+      dialog.classList.add('scale-95');
       setTimeout(() => {
         backdrop.classList.add('hidden');
         backdrop.setAttribute('aria-hidden', 'true');
