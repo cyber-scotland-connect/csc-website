@@ -7,8 +7,8 @@ const commitSha = process.env.GITHUB_SHA ?? 'local';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://cyber-scotland-connect.github.io',
-  base: isGithubPages ? '/csc-website' : '/',
+  site: 'https://cyberscotlandconnect.com',
+  base: '/',
   integrations: [sitemap()],
   vite: {
     plugins: [tailwindcss()],

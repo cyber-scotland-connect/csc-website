@@ -6,7 +6,7 @@
 - **Name:** Cyber Scotland Connect (CSC)
 - **Founded:** 2019 by Harry McLaren and Stu Hirst
 - **Type:** Grassroots volunteer-led non-profit cyber security community
-- **Website:** https://cyber-scotland-connect.github.io/csc-website/
+- **Website:** https://cyberscotlandconnect.com/
 - **Meetup Hub:** https://www.meetup.com/cyberscotconnect/
 - **LinkedIn:** https://www.linkedin.com/company/cyber-scotland-connect/
 - **Discord:** https://discord.gg/cyberscotlandconnect
@@ -23,7 +23,7 @@ CSC organizes regional gatherings across Scotland:
 ## Key Principles & Policies
 - **Strictly Non-Commercial / Zero Sales:** CSC strictly prohibits vendor sales pitches, commercial presentations, product demos, or direct recruitment outreach during talks. All sessions must focus on technical depth, defensive lessons, offensive research, or practical practitioner experiences.
 - **Free & Open Access:** Events are free to attend and open to everyone regardless of career level, from students breaking into cyber to senior practitioners and CISOs.
-- **Code of Conduct:** CSC is dedicated to a harassment-free, safe, inclusive experience. All attendees, speakers, organizers, and volunteers must abide by the community Code of Conduct: https://cyber-scotland-connect.github.io/csc-website/code-of-conduct/
+- **Code of Conduct:** CSC is dedicated to a harassment-free, safe, inclusive experience. All attendees, speakers, organizers, and volunteers must abide by the community Code of Conduct: https://cyberscotlandconnect.com/code-of-conduct/
 
 ## Community Leadership
 CSC is operated entirely by volunteer organizers and moderators:
@@ -33,12 +33,12 @@ CSC is operated entirely by volunteer organizers and moderators:
 - **Moderator Alumni:** Federico Charosky, Jamie O'Hare, Miguel Marques
 
 ## Key Pages & Documentation
-- [Home](https://cyber-scotland-connect.github.io/csc-website/): Community introduction, quick facts, upcoming gatherings.
-- [Events & Session Archive](https://cyber-scotland-connect.github.io/csc-website/events): Complete archive of past meetup volumes, agendas, slides, and talk recordings since 2019.
-- [Speakers Directory](https://cyber-scotland-connect.github.io/csc-website/speakers): Directory of defenders, researchers, and engineers who have delivered sessions at CSC.
-- [Leadership Team](https://cyber-scotland-connect.github.io/csc-website/leaders): Founders, regional organizers, and volunteer moderators.
-- [Ecosystem Partners](https://cyber-scotland-connect.github.io/csc-website/partners): Non-profit, host venue, ecosystem, and academic partners.
-- [Frequently Asked Questions (FAQ)](https://cyber-scotland-connect.github.io/csc-website/faq): Guidance on attending, submitting talk proposals (CFP), and volunteering.
-- [Community Resources](https://cyber-scotland-connect.github.io/csc-website/resources): Curated tools, learning roadmaps, and Scottish cybersecurity ecosystem links.
-- [Brand Assets](https://cyber-scotland-connect.github.io/csc-website/brand): Official logos, color palette, badges, and usage guidelines.
-- [Code of Conduct](https://cyber-scotland-connect.github.io/csc-website/code-of-conduct): Anti-harassment policy and reporting procedures.
+- [Home](https://cyberscotlandconnect.com/): Community introduction, quick facts, upcoming gatherings.
+- [Events & Session Archive](https://cyberscotlandconnect.com/events): Complete archive of past meetup volumes, agendas, slides, and talk recordings since 2019.
+- [Speakers Directory](https://cyberscotlandconnect.com/speakers): Directory of defenders, researchers, and engineers who have delivered sessions at CSC.
+- [Leadership Team](https://cyberscotlandconnect.com/leaders): Founders, regional organizers, and volunteer moderators.
+- [Ecosystem Partners](https://cyberscotlandconnect.com/partners): Non-profit, host venue, ecosystem, and academic partners.
+- [Frequently Asked Questions (FAQ)](https://cyberscotlandconnect.com/faq): Guidance on attending, submitting talk proposals (CFP), and volunteering.
+- [Community Resources](https://cyberscotlandconnect.com/resources): Curated tools, learning roadmaps, and Scottish cybersecurity ecosystem links.
+- [Brand Assets](https://cyberscotlandconnect.com/brand): Official logos, color palette, badges, and usage guidelines.
+- [Code of Conduct](https://cyberscotlandconnect.com/code-of-conduct): Anti-harassment policy and reporting procedures.

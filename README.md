@@ -1,6 +1,6 @@
 # Cyber Scotland Connect (CSC) Website
 
-[![GitHub Pages Deployment](https://img.shields.io/github/deployments/cyber-scotland-connect/csc-website/github-pages?label=GitHub%20Pages&logo=github)](https://cyber-scotland-connect.github.io/csc-website/)
+[![Deployment](https://img.shields.io/github/deployments/cyber-scotland-connect/csc-website/github-pages?label=Live%20Site&logo=github)](https://cyberscotlandconnect.com)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Branch Protection](https://img.shields.io/badge/main-protected-green.svg)](https://github.com/cyber-scotland-connect/csc-website)
 [![Accessibility WCAG 2.1 AA](https://img.shields.io/badge/Accessibility-WCAG%202.1%20AA-purple.svg)](#-accessibility--inclusive-design)

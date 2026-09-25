@@ -11,7 +11,7 @@ export const GET: APIRoute = async ({ site }) => {
     );
 
   const base = import.meta.env.BASE_URL.replace(/\/$/, '');
-  const siteOrigin = site ? site.origin : 'https://cyber-scotland-connect.github.io';
+  const siteOrigin = site ? site.origin : 'https://cyberscotlandconnect.com';
   const siteUrl = `${siteOrigin}${base}`;
   const feedUrl = `${siteUrl}/feeds/csc.xml`;
 

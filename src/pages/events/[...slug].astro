@@ -49,7 +49,7 @@ const leadershipRoles: Record<string, string> = {
 };
 const eventCanonicalUrl = new URL(
   Astro.url.pathname,
-  Astro.site || 'https://cyber-scotland-connect.github.io'
+  Astro.site || 'https://cyberscotlandconnect.com'
 ).href;
 
 const eventSchema = {
@@ -69,7 +69,7 @@ const eventSchema = {
           '@type': 'VirtualLocation',
           url:
             data.streamUrl ||
-            'https://cyber-scotland-connect.github.io/csc-website',
+            'https://cyberscotlandconnect.com',
         }
       : {
           '@type': 'Place',
@@ -84,7 +84,7 @@ const eventSchema = {
   organizer: {
     '@type': 'Organization',
     name: 'Cyber Scotland Connect',
-    url: 'https://cyber-scotland-connect.github.io/csc-website',
+    url: 'https://cyberscotlandconnect.com',
   },
   offers: {
     '@type': 'Offer',

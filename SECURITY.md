@@ -8,7 +8,7 @@ Cyber Scotland Connect (CSC) is a community of cyber security professionals, stu
 
 This security policy applies to:
 - The [CSC Website Repository](https://github.com/cyber-scotland-connect/csc-website)
-- Hosted assets under [`cyber-scotland-connect.github.io/csc-website`](https://cyber-scotland-connect.github.io/csc-website/) and official custom domains.
+- Hosted assets under [`cyberscotlandconnect.com`](https://cyberscotlandconnect.com) and official subdomains.
 
 ---
 

@@ -20,7 +20,7 @@ const {
   structuredData,
 } = Astro.props;
 
-const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://cyber-scotland-connect.github.io');
+const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://cyberscotlandconnect.com');
 const fullTitle = `${title} | Cyber Scotland Connect`;
 const resolvedOgImage = ogImage.startsWith('http') ? ogImage : new URL(ogImage, canonicalURL.origin).href;
 
@@ -29,8 +29,8 @@ const schemaData = {
   "@type": "Organization",
   "name": "Cyber Scotland Connect",
   "alternateName": "CSC",
-  "url": "https://cyber-scotland-connect.github.io/csc-website",
-  "logo": "https://cyber-scotland-connect.github.io/csc-website/branding/logo-fullcolor-stacked.png",
+  "url": "https://cyberscotlandconnect.com",
+  "logo": "https://cyberscotlandconnect.com/branding/logo-fullcolor-stacked.png",
   "description": description,
   "sameAs": [
     "https://www.meetup.com/cyberscotconnect/",
