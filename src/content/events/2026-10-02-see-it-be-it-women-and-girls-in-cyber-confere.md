@@ -8,8 +8,8 @@ partnerName: 'Cyber and Fraud Centre Scotland'
 meetupUrl: 'https://cyberfraudcentre.com/events/see-it-be-it-oct-2026-registration'
 accessibility:
   stepFree: true
-  hearingLoop: false
-  notes: 'Check organizer registration link for full accessibility accommodations.'
+  hearingLoop: null
+  notes: 'RBS Gogarburn features step-free street entrance and elevators to conference areas. Contact organizers for specific hearing loop accommodations.'
 speakers: []
 agenda: []
 ---

@@ -157,17 +157,25 @@ const mapsUrl = data.locationUrl || `https://www.google.com/maps/search/?api=1&q
   <!-- Accessibility Badges & Action Links (Pinned to bottom) -->
   <div class="pt-4 border-t border-slate-100 dark:border-[#3e3c66] flex flex-wrap items-center justify-between gap-2.5 text-xs mt-auto">
     <div class="flex items-center gap-1.5 text-slate-500 dark:text-slate-400" title="Venue Accessibility">
-      {data.accessibility.stepFree && (
-        <span class="flex items-center gap-1.5 bg-slate-100 dark:bg-[#21203a] px-2 py-0.5 rounded-md border border-slate-200 dark:border-[#3e3c66] font-medium" title="Step-free accessible venue">
-          <Accessibility class="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" aria-hidden="true" />
-          <span class="hidden sm:inline">Step-free</span>
+      {data.city === 'Virtual' ? (
+        <span class="flex items-center gap-1 bg-purple-50 dark:bg-purple-950/40 text-purple-700 dark:text-purple-300 px-2 py-0.5 rounded-md border border-purple-200 dark:border-purple-800/50 font-medium text-[11px]" title="Online Virtual Event">
+          <span>🌐 Online</span>
         </span>
-      )}
-      {data.accessibility.hearingLoop && (
-        <span class="flex items-center gap-1.5 bg-slate-100 dark:bg-[#21203a] px-2 py-0.5 rounded-md border border-slate-200 dark:border-[#3e3c66] font-medium" title="Induction Hearing Loop available">
-          <Ear class="w-3.5 h-3.5 text-sky-600 dark:text-sky-400" aria-hidden="true" />
-          <span class="hidden sm:inline">Hearing Loop</span>
-        </span>
+      ) : (
+        <>
+          {data.accessibility?.stepFree === true && (
+            <span class="flex items-center gap-1.5 bg-slate-100 dark:bg-[#21203a] px-2 py-0.5 rounded-md border border-slate-200 dark:border-[#3e3c66] font-medium" title="Verified Step-free accessible venue">
+              <Accessibility class="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" aria-hidden="true" />
+              <span class="hidden sm:inline">Step-free</span>
+            </span>
+          )}
+          {data.accessibility?.hearingLoop === true && (
+            <span class="flex items-center gap-1.5 bg-slate-100 dark:bg-[#21203a] px-2 py-0.5 rounded-md border border-slate-200 dark:border-[#3e3c66] font-medium" title="Verified Induction Hearing Loop available">
+              <Ear class="w-3.5 h-3.5 text-sky-600 dark:text-sky-400" aria-hidden="true" />
+              <span class="hidden sm:inline">Hearing Loop</span>
+            </span>
+          )}
+        </>
       )}
     </div>
 

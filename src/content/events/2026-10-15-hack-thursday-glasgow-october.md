@@ -9,9 +9,9 @@ isPartnerEvent: true
 partnerName: 'Hack Thursday'
 meetupUrl: 'https://hackthurs.day/'
 accessibility:
-  stepFree: true
-  hearingLoop: false
-  notes: 'Ground floor access via Waterloo Street entrance.'
+  stepFree: null
+  hearingLoop: null
+  notes: 'Venue lists street-level disabled access; contact venue (+44 141 221 5479) or organizers to confirm function room step-free route.'
 speakers: []
 agenda: []
 ---

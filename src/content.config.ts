@@ -27,11 +27,11 @@ const eventsCollection = defineCollection({
     recordingUrl: z.string().url().optional(),
     accessibility: z
       .object({
-        stepFree: z.boolean().default(true),
-        hearingLoop: z.boolean().default(false),
+        stepFree: z.boolean().nullable().optional(),
+        hearingLoop: z.boolean().nullable().optional(),
         notes: z.string().optional(),
       })
-      .default({ stepFree: true, hearingLoop: false }),
+      .default({ stepFree: null, hearingLoop: null }),
     speakers: z
       .array(
         z.object({

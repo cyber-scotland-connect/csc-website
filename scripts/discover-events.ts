@@ -511,9 +511,9 @@ ${isValidUrl(ev.locationUrl) ? `locationUrl: '${ev.locationUrl}'\n` : ''}city: '
 isPartnerEvent: ${ev.isPartnerEvent}
 partnerName: '${ev.partnerName.replace(/'/g, "''")}'
 ${isValidUrl(ev.meetupUrl) ? `meetupUrl: '${ev.meetupUrl}'\n` : ''}accessibility:
-  stepFree: true
-  hearingLoop: false
-  notes: 'Check organizer registration link for full accessibility accommodations.'
+  stepFree: null
+  hearingLoop: null
+  notes: '${ev.city === 'Virtual' ? 'Online event. Check registration link for captioning and remote accommodations.' : 'Check organizer registration link for verified venue accessibility accommodations.'}'
 speakers: []
 agenda: []
 ---

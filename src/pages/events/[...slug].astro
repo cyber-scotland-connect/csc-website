@@ -259,49 +259,89 @@ const eventSchema = {
     <div
       class="bg-slate-50 dark:bg-[#1b1a30] rounded-xl border border-slate-200 dark:border-[#3e3c66] p-6 mb-10 transition-colors"
     >
-      <h2
-        class="text-lg font-heading font-bold text-slate-900 dark:text-white uppercase tracking-wide flex items-center gap-2 mb-3"
-      >
-        <span>♿</span>
-        <span>Accessibility Baseline</span>
-      </h2>
-      <div
-        class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs text-slate-600 dark:text-[#bdaccf] mb-3"
-      >
-        <div class="flex items-center gap-2">
-          <span
-            class={data.accessibility.stepFree
-              ? 'text-emerald-600 dark:text-emerald-400 font-bold'
-              : 'text-slate-400'}
+      {data.city === 'Virtual' || data.location.toLowerCase().includes('online') || data.location.toLowerCase().includes('virtual') ? (
+        <div>
+          <h2
+            class="text-lg font-heading font-bold text-slate-900 dark:text-white uppercase tracking-wide flex items-center gap-2 mb-3"
           >
-            {
-              data.accessibility.stepFree
-                ? '✓ Step-free Route & Lifts'
-                : '✗ Limited Step-free Access'
-            }
-          </span>
+            <span>🌐</span>
+            <span>Virtual Event Accessibility</span>
+          </h2>
+          <div class="space-y-3 text-xs text-slate-600 dark:text-[#bdaccf]">
+            <div class="flex items-center gap-2">
+              <span class="text-emerald-600 dark:text-emerald-400 font-bold">
+                ✓ Remote Online Participation
+              </span>
+              <span class="text-slate-500 dark:text-slate-400">(No physical venue access required)</span>
+            </div>
+            {data.accessibility?.notes && (
+              <p class="text-xs text-slate-700 dark:text-slate-300 bg-white dark:bg-[#2a2948] p-3 rounded border border-slate-200 dark:border-[#3e3c66]/60">
+                {data.accessibility.notes}
+              </p>
+            )}
+          </div>
         </div>
-        <div class="flex items-center gap-2">
-          <span
-            class={data.accessibility.hearingLoop
-              ? 'text-emerald-600 dark:text-emerald-400 font-bold'
-              : 'text-slate-400'}
+      ) : data.city === 'Scotland-wide' || data.location.toLowerCase().includes('scotland-wide') ? (
+        <div>
+          <h2
+            class="text-lg font-heading font-bold text-slate-900 dark:text-white uppercase tracking-wide flex items-center gap-2 mb-3"
           >
-            {
-              data.accessibility.hearingLoop
-                ? '✓ Induction Hearing Loop Available'
-                : '✗ Induction Loop Not Installed'
-            }
-          </span>
-        </div>
-      </div>
-      {
-        data.accessibility.notes && (
-          <p class="text-xs text-slate-700 dark:text-slate-300 bg-white dark:bg-[#2a2948] p-3 rounded border border-slate-200 dark:border-[#3e3c66]/60">
-            {data.accessibility.notes}
+            <span>♿</span>
+            <span>Multi-Venue Campaign Accessibility</span>
+          </h2>
+          <p class="text-xs text-slate-700 dark:text-slate-300 bg-white dark:bg-[#2a2948] p-3 rounded border border-slate-200 dark:border-[#3e3c66]/60 mb-2">
+            {data.accessibility?.notes || 'This campaign encompasses multiple independent events and venues across Scotland. Please check the specific host venue details for verified accessibility accommodations.'}
           </p>
-        )
-      }
+        </div>
+      ) : (
+        <div>
+          <h2
+            class="text-lg font-heading font-bold text-slate-900 dark:text-white uppercase tracking-wide flex items-center gap-2 mb-3"
+          >
+            <span>♿</span>
+            <span>Accessibility Baseline</span>
+          </h2>
+          <div
+            class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs text-slate-600 dark:text-[#bdaccf] mb-3"
+          >
+            <div class="flex items-center gap-2">
+              {data.accessibility?.stepFree === true ? (
+                <span class="text-emerald-600 dark:text-emerald-400 font-bold">
+                  ✓ Verified Step-free Route & Lifts
+                </span>
+              ) : data.accessibility?.stepFree === false ? (
+                <span class="text-amber-600 dark:text-amber-400 font-medium">
+                  ✗ Limited / No Step-free Access (Steps present)
+                </span>
+              ) : (
+                <span class="text-slate-500 dark:text-slate-400">
+                  — Step-free Access: Unconfirmed (Check with venue)
+                </span>
+              )}
+            </div>
+            <div class="flex items-center gap-2">
+              {data.accessibility?.hearingLoop === true ? (
+                <span class="text-emerald-600 dark:text-emerald-400 font-bold">
+                  ✓ Verified Induction Hearing Loop Available
+                </span>
+              ) : data.accessibility?.hearingLoop === false ? (
+                <span class="text-slate-500 dark:text-slate-400">
+                  ✗ Induction Loop Not Installed
+                </span>
+              ) : (
+                <span class="text-slate-500 dark:text-slate-400">
+                  — Induction Hearing Loop: Unconfirmed
+                </span>
+              )}
+            </div>
+          </div>
+          {data.accessibility?.notes && (
+            <p class="text-xs text-slate-700 dark:text-slate-300 bg-white dark:bg-[#2a2948] p-3 rounded border border-slate-200 dark:border-[#3e3c66]/60">
+              {data.accessibility.notes}
+            </p>
+          )}
+        </div>
+      )}
     </div>
 
     <!-- Event Agenda Section -->

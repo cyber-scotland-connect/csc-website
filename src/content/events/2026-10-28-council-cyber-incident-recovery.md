@@ -8,8 +8,8 @@ isPartnerEvent: true
 partnerName: 'Cyber and Fraud Centre - Scotland'
 meetupUrl: 'https://cyberfraudcentre.com/events/a-councils-cyber-security-story-oct-26'
 accessibility:
-  stepFree: true
-  hearingLoop: false
+  stepFree: null
+  hearingLoop: null
   notes: 'Online event with live captioning and presentation materials provided.'
 speakers: []
 agenda: []

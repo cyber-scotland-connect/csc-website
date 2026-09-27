@@ -7,9 +7,9 @@ isPartnerEvent: true
 partnerName: 'CyberScotland'
 meetupUrl: 'https://www.cyberscotland.com/cyberscotland-week/'
 accessibility:
-  stepFree: true
-  hearingLoop: false
-  notes: 'Individual events hosted across Scotland have dedicated accessibility arrangements.'
+  stepFree: null
+  hearingLoop: null
+  notes: 'National campaign week with events hosted across multiple Scottish venues. Check individual event listings for specific venue accessibility accommodations.'
 speakers: []
 agenda: []
 ---

@@ -8,9 +8,9 @@ isPartnerEvent: true
 partnerName: 'Cyber and Fraud Centre - Scotland'
 meetupUrl: 'https://cyberfraudcentre.com/events/cyber-byte-recruitment'
 accessibility:
-  stepFree: true
-  hearingLoop: false
-  notes: 'Online webinar session.'
+  stepFree: null
+  hearingLoop: null
+  notes: 'Online webinar session. Check registration link for captioning and recording details.'
 speakers: []
 agenda: []
 ---
