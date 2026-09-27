@@ -5,7 +5,7 @@ location: 'RBS Gogarburn, Edinburgh'
 city: 'Edinburgh'
 isPartnerEvent: true
 partnerName: 'Cyber and Fraud Centre Scotland'
-meetupUrl: 'https://cyberfraudcentre.com/events/see-it-be-it-oct-2026-registration'
+registrationUrl: 'https://cyberfraudcentre.com/events/see-it-be-it-oct-2026-registration'
 accessibility:
   stepFree: true
   hearingLoop: null

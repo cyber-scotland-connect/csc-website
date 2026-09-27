@@ -67,11 +67,13 @@ locationUrl: "<Google Maps URL if address is known>"
 city: "<city>"
 isPartnerEvent: true
 partnerName: "<organising community or group name>"
-meetupUrl: "<RSVP or registration URL>"
+accessType: "<Open/Public | Corporate/Paid | Student/Academic | Restricted/Civil Service>"
+meetupUrl: "<Meetup.com event URL — ONLY if hosted on Meetup>"
+registrationUrl: "<Eventbrite, conference website, or external ticket portal>"
 accessibility:
   stepFree: null
   hearingLoop: null
-  notes: ""
+  notes: "<Check registration link for verified venue accessibility accommodations.>"
 speakers: []
 agenda: []
 ---
@@ -84,11 +86,13 @@ agenda: []
 Filename format: `YYYY-MM-DD-<slugified-title>.md`
 
 Rules:
-- Leave `speakers` and `agenda` as empty arrays — these are filled in manually after review
-- Set `stepFree: null` and `hearingLoop: null` (not `false`) when accessibility info is unknown
-- Include the `[SOURCE: <url>]` line at the bottom of the body — this helps the reviewer verify accuracy
-- If `time` is unknown, omit that field entirely rather than guessing
-- If `location` is unknown or only a city is known, use just the city name in `location` and omit `locationUrl`
+- Never put non-Meetup URLs in `meetupUrl`. Use `registrationUrl` for Eventbrite, conference sites, and external registration portals.
+- `accessType` must be one of: `Open/Public`, `Corporate/Paid`, `Student/Academic`, or `Restricted/Civil Service`.
+- Leave `speakers` and `agenda` as empty arrays — these are filled in manually after review.
+- Set `stepFree: null` and `hearingLoop: null` (never guess `true` or `false`) when accessibility info is unconfirmed.
+- Include the `[SOURCE: <url>]` line at the bottom of the body — this helps the reviewer verify accuracy.
+- If `time` is unknown, omit that field entirely rather than guessing.
+- If `location` is unknown or only a city is known, use just the city name in `location` and omit `locationUrl`.
 
 ---
 

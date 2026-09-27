@@ -3,6 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import EventAgenda from '../../components/EventAgenda.astro';
 import EventPhotoGallery from '../../components/EventPhotoGallery.astro';
 import { getCollection, render } from 'astro:content';
+import { getEventActionLinks } from '../../utils/event-link';
 
 export async function getStaticPaths() {
   const events = await getCollection('events');
@@ -16,6 +17,7 @@ const { event } = Astro.props;
 const { data } = event;
 const { Content } = await render(event);
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const actionLinks = getEventActionLinks(data);
 
 const eventDate = new Date(data.date);
 const isUpcoming = eventDate.getTime() >= new Date().setHours(0, 0, 0, 0);
@@ -205,28 +207,16 @@ const eventSchema = {
       <!-- Action Buttons -->
       <div class="flex flex-wrap items-center gap-3 mt-6">
         {
-          data.meetupUrl && (
+          actionLinks.map((link) => (
             <a
-              href={data.meetupUrl}
+              href={link.url}
               target="_blank"
               rel="noopener noreferrer"
-              class="px-5 py-2.5 rounded-lg bg-[#895294] hover:bg-[#9d5fa8] text-white font-bold text-sm shadow transition-colors flex items-center gap-1.5"
+              class={`px-5 py-2.5 rounded-lg ${link.colorClass.bg} ${link.colorClass.hover} ${link.colorClass.text} font-bold text-sm shadow transition-colors flex items-center gap-1.5`}
             >
-              <span>RSVP on Meetup</span> ↗
+              <span>{link.label}</span> ↗
             </a>
-          )
-        }
-        {
-          data.registrationUrl && (
-            <a
-              href={data.registrationUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="px-5 py-2.5 rounded-lg bg-[#56548c] hover:bg-[#6764a8] text-white font-bold text-sm shadow transition-colors flex items-center gap-1.5"
-            >
-              <span>External Registration</span> ↗
-            </a>
-          )
+          ))
         }
         {
           data.slidesUrl && (

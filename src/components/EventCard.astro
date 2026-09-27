@@ -16,6 +16,8 @@ import {
   Shield 
 } from 'lucide-astro';
 
+import { getEventActionLinks } from '../utils/event-link';
+
 interface Props {
   event: CollectionEntry<'events'>;
 }
@@ -23,6 +25,7 @@ interface Props {
 const { event } = Astro.props;
 const { data, id: slug } = event;
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const actionLinks = getEventActionLinks(data);
 
 const eventDate = new Date(data.date);
 const isUpcoming = eventDate.getTime() >= new Date().setHours(0, 0, 0, 0);
@@ -199,28 +202,18 @@ const mapsUrl = data.locationUrl || `https://www.google.com/maps/search/?api=1&q
           <Tv class="w-3.5 h-3.5" aria-hidden="true" />
         </a>
       )}
-      {data.meetupUrl && (
+      {actionLinks.map(link => (
         <a
-          href={data.meetupUrl}
+          href={link.url}
           target="_blank"
           rel="noopener noreferrer"
-          class="btn-tactile bg-[#895294] hover:bg-[#9d5fa8] text-white px-3 py-1.5 rounded-lg font-bold transition-all shadow-sm flex items-center gap-1"
+          class={`btn-tactile ${link.colorClass.bg} ${link.colorClass.hover} ${link.colorClass.text} px-3 py-1.5 rounded-lg font-bold transition-all shadow-sm flex items-center gap-1`}
+          title={link.label}
         >
-          <span>Meetup</span>
+          <span>{link.shortLabel}</span>
           <ExternalLink class="w-3 h-3" aria-hidden="true" />
         </a>
-      )}
-      {data.registrationUrl && (
-        <a
-          href={data.registrationUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="btn-tactile bg-[#56548c] hover:bg-[#6764a8] text-white px-3 py-1.5 rounded-lg font-bold transition-all shadow-sm flex items-center gap-1"
-        >
-          <span>Register</span>
-          <ExternalLink class="w-3 h-3" aria-hidden="true" />
-        </a>
-      )}
+      ))}
     </div>
   </div>
 </article>

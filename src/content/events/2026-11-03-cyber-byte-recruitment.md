@@ -6,7 +6,7 @@ location: 'Online (virtual)'
 city: 'Virtual'
 isPartnerEvent: true
 partnerName: 'Cyber and Fraud Centre - Scotland'
-meetupUrl: 'https://cyberfraudcentre.com/events/cyber-byte-recruitment'
+registrationUrl: 'https://cyberfraudcentre.com/events/cyber-byte-recruitment'
 accessibility:
   stepFree: null
   hearingLoop: null

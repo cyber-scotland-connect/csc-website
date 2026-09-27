@@ -102,11 +102,11 @@ The website should be designed around structured, typed content models:
 7. **Governance & Safety (`/about`, `/code-of-conduct`, `/security`):** Contributor Covenant 2.1, security disclosure policy, organizing team info.
 
 ### 6.2 Data Schemas (Markdown / Content Collections)
-- **Event Schema:** `title`, `date`, `time`, `location` (venue name, address, chapter), `format` (in-person/virtual/hybrid), `meetupUrl`, `streamUrl`, `slidoUrl`, `accessibility` (stepFree, hearingLoop, notes), `speakers` (refs), `slidesUrl`, `recordingUrl`.
-- **Leader / Organizer Schema:** `name`, `role`, `chapter`, `bio`, `avatar`, `linkedin`, `github`, `website`, `status`, `order`.
-- **Partner Schema:** `name`, `tier` (Host Venue, Ecosystem Partner, Sponsor, Academic Partner), `logo`, `websiteUrl`, `active`, `order`.
-- **Resource Schema:** `title`, `url`, `category` (6 domains), `type` (5 types), `description`, `isScottishOrUK`, `order`.
-- **Community Schema:** `name`, `category` (5 categories), `city` (6 regions), `websiteUrl`, `chatUrl`, `meetingFrequency`, `description`, `active`, `order`.
+- **Event Schema (`src/content/events/*.md`):** `title`, `date`, `time`, `location`, `locationUrl`, `city` (Edinburgh, Glasgow, Dundee, Virtual, Aberdeen, Scotland-wide), `isPartnerEvent`, `partnerName`, `accessType` (Open/Public, Corporate/Paid, Student/Academic, Restricted/Civil Service), `meetupUrl` (strictly Meetup.com), `registrationUrl` (Eventbrite, portals, external tickets), `streamUrl`, `slidesUrl`, `recordingUrl`, `accessibility` (strict tri-state `stepFree: boolean | null`, `hearingLoop: boolean | null`, `notes`), `speakers` (array of objects), `agenda` (array of objects).
+- **Leader / Organizer Schema (`src/content/leaders/*.md`):** `name`, `role`, `chapter`, `bio`, `avatar`, `linkedin`, `github`, `website`, `status`, `order`.
+- **Partner Schema (`src/content/partners/*.md`):** `name`, `tier` (Host Venue, Ecosystem Partner, Sponsor, Academic Partner), `logo`, `websiteUrl`, `active`, `order`.
+- **Resource Schema (`src/content/resources/*.md`):** `title`, `url`, `category` (6 domains), `type` (5 types), `description`, `isScottishOrUK`, `order`.
+- **Community Schema (`src/content/community/*.md`):** `name`, `category` (5 categories), `city` (6 regions), `websiteUrl`, `chatUrl`, `meetingFrequency`, `description`, `active`, `order`.
 
 ---
 
@@ -115,18 +115,19 @@ The website should be designed around structured, typed content models:
 Cyber Scotland Connect was established through the merger of two prominent Scottish cyber security meetup groups, co-founded by **Harry McLaren** and **Stu Hirst**, and announced at DIGIT Expo.
 
 ### 7.1 Community Moderators & Advisory Network
-The community is guided by local cyber security leaders across industry, government, and academia:
-- 
+The community is guided by volunteer cybersecurity leaders, chapter organisers, and moderators across Scotland:
+- **Co-Founders:** Harry McLaren, Stu Hirst
+- **Organisers & Chapter Leaders:** Federico Charosky, Gary Hunter, Magda de Jager, Dr. Rich Macfarlane, Sophie Lanc, Joshua Adegoke, Ben Haine, Iheanyi Obasi, James Ramirez, Jamie O'Hare, Kevin Gray, Miguel Marques, Richard Grey, Samuel English-Kershaw
 
 ### 7.2 Ecosystem Collaborations
-CSC maintains active relationships across Scotland's broader cyber resilience ecosystem, including **ScotlandIS Cyber Cluster**, **Scottish Business Resilience Centre (SBRC) / Cyber and Fraud Centre Scotland**, **Abertay cyberQuarter**, **CodeBase**, and university student societies (e.g. ENUSEC).
+CSC maintains active relationships across Scotland's broader cyber resilience ecosystem, including **ScotlandIS Cyber Cluster**, **Cyber and Fraud Centre Scotland**, **Abertay cyberQuarter**, **CodeBase**, and university student societies (e.g. ENUSEC).
 
 ---
 
 ## 8. Brand System & Local Assets
 
-- **Brand Specification:** Detailed colour codes, CSS tokens, and font hierarchy live in [`docs/BRAND_GUIDELINES.md`](BRAND_GUIDELINES.md).
-- **Historical Event Seed Data:** Curated past meetup talks, venues, and speaker abstracts live in [`docs/PAST_EVENTS_ARCHIVE.md`](PAST_EVENTS_ARCHIVE.md).
+- **Brand Specification:** Detailed colour codes, CSS tokens, and font hierarchy live in [`BRAND_GUIDELINES.md`](./BRAND_GUIDELINES.md).
+- **Historical Event Seed Data:** Curated past meetup talks, venues, and speaker abstracts live in [`PAST_EVENTS_ARCHIVE.md`](./PAST_EVENTS_ARCHIVE.md).
 - **Static Brand Assets:** High-resolution transparent PNG logos, icons, and badges are available in [`public/branding/`](../public/branding/):
   - `logo-fullcolor-horizontal.png` & `logo-fullcolor-stacked.png`
   - `logo-white-horizontal.png` & `logo-white-stacked.png`

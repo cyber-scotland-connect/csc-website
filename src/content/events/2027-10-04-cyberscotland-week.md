@@ -5,7 +5,7 @@ location: 'Scotland-wide'
 city: 'Scotland-wide'
 isPartnerEvent: true
 partnerName: 'CyberScotland'
-meetupUrl: 'https://www.cyberscotland.com/cyberscotland-week/'
+registrationUrl: 'https://www.cyberscotland.com/cyberscotland-week/'
 accessibility:
   stepFree: null
   hearingLoop: null

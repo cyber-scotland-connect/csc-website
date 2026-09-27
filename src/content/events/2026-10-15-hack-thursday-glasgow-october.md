@@ -7,7 +7,7 @@ locationUrl: 'https://maps.app.goo.gl/wJk4z6R1Gf1V8z7v9'
 city: 'Glasgow'
 isPartnerEvent: true
 partnerName: 'Hack Thursday'
-meetupUrl: 'https://hackthurs.day/'
+registrationUrl: 'https://hackthurs.day/'
 accessibility:
   stepFree: null
   hearingLoop: null

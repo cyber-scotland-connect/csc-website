@@ -27,7 +27,7 @@ CSC is dedicated to radical inclusivity and accessibility (WCAG 2.1 AA/AAA compl
 - **Dyslexia Font Switcher:** One-click toggle switching between standard typography and [Atkinson Hyperlegible](https://brailleinstitute.org/freefont) / OpenDyslexic with optimized line-height and letter-spacing.
 - **Text Sizing Controls:** Three-tier scaling (Normal 100%, Large 112%, Extra Large 125%).
 - **High-Contrast Mode:** Enhanced visual borders for low-vision users.
-- **Physical Venue Disclosures:** Every event explicitly states step-free mobility routes and induction hearing loop availability.
+- **Physical Venue Disclosures:** Every event strictly tracks step-free mobility routes and induction hearing loop availability with a tri-state honesty model (`true` verified, `false` limited/none, `null` unconfirmed). Virtual events and national campaigns feature remote accommodation guidance rather than misleading architectural badges.
 - **Keyboard & Screen Reader Ready:** Skip-to-content links, semantic HTML5 landmarks, ARIA labels, and visible focus rings.
 
 ---
@@ -37,6 +37,9 @@ CSC is dedicated to radical inclusivity and accessibility (WCAG 2.1 AA/AAA compl
 - **Static Site Generator:** [Astro 5](https://astro.build) (Pure SSG, zero runtime vulnerabilities)
 - **Styling:** [Tailwind CSS v4](https://tailwindcss.com) via `@tailwindcss/vite` with the CSC Brand System (`#21203a` Deep Purple, `#56548c` Lilac, `#895294` Pink)
 - **Type Safety & Schemas:** TypeScript + Zod content schemas (`src/content.config.ts`)
+- **Automated Event Discovery:** Multi-protocol discovery engine (`scripts/discover-events.ts`) monitoring 18 ecosystem feeds across RSS, iCal, Bluesky ATProto RSS, and Squarespace JSON APIs.
+- **Live Calendars & RSS Feeds:** Build-time generation of direct `.ics` and RSS `.xml` feeds for 1-click subscription in Google Calendar, Apple Calendar, Outlook, and Discord webhooks.
+- **Intelligent Platform Resolution:** Hostname-driven link resolver (`src/utils/event-link.ts`) guaranteeing links are never labeled "Meetup" unless pointing to `meetup.com`, with tailored CTAs for Eventbrite, Luma, LinkedIn, and external portals.
 - **SEO & AI Discovery:**
   - Automated XML sitemaps via `@astrojs/sitemap` (`sitemap-index.xml`)
   - Crawler directives via `public/robots.txt`
@@ -111,6 +114,12 @@ csc-website/
 │   ├── robots.txt                 # Search engine & AI crawler directives
 │   ├── llms.txt                   # LLM & AI agent discovery manifest
 │   └── favicon.svg
+├── scripts/
+│   ├── discover-events.ts         # Multi-protocol event discovery engine (RSS, iCal, Bluesky, Squarespace)
+│   ├── event-sources.json         # Ecosystem feed endpoints & filter definitions
+│   ├── run-event-discovery.sh     # Headless runner with build/lint verification & git branch isolation
+│   ├── check-links.ts             # External link health & WAF-aware validator
+│   └── FIND_EVENTS_AGENT.md       # Autonomous agent operational runbook
 ├── src/
 │   ├── content/                   # Type-safe Content Collections
 │   │   ├── events/                # Event Markdown files
@@ -123,7 +132,7 @@ csc-website/
 │   │   ├── AccessibilityBar.astro # Theme, dyslexia font & text-size toolbar
 │   │   ├── Header.astro           # Sticky navigation header
 │   │   ├── Footer.astro           # Footer links & copyright
-│   │   ├── EventCard.astro        # Event preview card
+│   │   ├── EventCard.astro        # Event preview card with dynamic platform pills
 │   │   ├── EventAgenda.astro      # Interactive schedule & timeline
 │   │   ├── LeaderCard.astro       # Organizer / Moderator card
 │   │   ├── PartnerCard.astro      # Sponsor / Partner card
@@ -134,6 +143,7 @@ csc-website/
 │   ├── pages/
 │   │   ├── index.astro            # Homepage, leadership section & community metrics
 │   │   ├── events/                # Events calendar & dynamic slug views
+│   │   ├── calendar/              # Calendar & RSS feed subscription portal
 │   │   ├── community.astro        # Scottish cyber community hub, Discord & peer directory
 │   │   ├── speakers.astro         # Speaker directory with randomized rotation
 │   │   ├── leaders.astro          # Leadership team with randomized rotation
@@ -143,8 +153,12 @@ csc-website/
 │   │   ├── brand.astro            # Brand assets & guidelines
 │   │   ├── code-of-conduct.astro  # Community safety charter
 │   │   └── security.astro         # Security policy & disclosure
-│   └── styles/
-│       └── global.css             # Tailwind CSS v4 brand tokens & a11y styling
+│   ├── styles/
+│   │   └── global.css             # Tailwind CSS v4 brand tokens & a11y styling
+│   └── utils/
+│       ├── event-link.ts          # Dynamic platform detection & link action resolver
+│       ├── calendar.ts            # Dynamic iCalendar (.ics) feed generator
+│       └── rss.ts                 # Dynamic RSS (.xml) feed generator
 ├── astro.config.mjs               # Astro configuration with @astrojs/sitemap
 └── tsconfig.json                  # Strict TypeScript configuration
 ```

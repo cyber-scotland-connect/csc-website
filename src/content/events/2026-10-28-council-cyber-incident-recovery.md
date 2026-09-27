@@ -6,7 +6,7 @@ location: 'Online (virtual)'
 city: 'Virtual'
 isPartnerEvent: true
 partnerName: 'Cyber and Fraud Centre - Scotland'
-meetupUrl: 'https://cyberfraudcentre.com/events/a-councils-cyber-security-story-oct-26'
+registrationUrl: 'https://cyberfraudcentre.com/events/a-councils-cyber-security-story-oct-26'
 accessibility:
   stepFree: null
   hearingLoop: null

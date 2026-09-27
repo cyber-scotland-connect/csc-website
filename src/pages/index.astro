@@ -6,6 +6,7 @@ import LeaderCard from '../components/LeaderCard.astro';
 import CommunityPhotoStrip from '../components/CommunityPhotoStrip.astro';
 import { getCollection } from 'astro:content';
 import { Target, Handshake, Shield, Coffee, ArrowRight, ExternalLink } from 'lucide-astro';
+import { parseEventLink } from '../utils/event-link';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
@@ -25,6 +26,11 @@ const upcomingEvents = sortedEvents
 const cscUpcomingEvents = upcomingEvents.filter((e) => !e.data.isPartnerEvent);
 const cscPastEvents = sortedEvents.filter((e) => !e.data.isPartnerEvent);
 const nextMeetup = cscUpcomingEvents[0] || cscPastEvents[0];
+const nextMeetupUrl =
+  nextMeetup?.data?.meetupUrl ||
+  nextMeetup?.data?.registrationUrl ||
+  'https://www.meetup.com/cyberscotconnect/';
+const nextMeetupLink = parseEventLink(nextMeetupUrl);
 
 // Featured and upcoming events based on recency: the next upcoming events, regardless of who's hosting them:
 const featuredEvents =
@@ -228,15 +234,12 @@ const topPartners = partners
                     View Talk Abstracts →
                   </a>
                   <a
-                    href={
-                      nextMeetup.data.meetupUrl ||
-                      'https://www.meetup.com/cyberscotconnect/'
-                    }
+                    href={nextMeetupUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="px-4 py-2 bg-[#895294] hover:bg-[#9d5fa8] text-white text-xs font-bold rounded-lg shadow transition-all"
+                    class={`px-4 py-2 ${nextMeetupLink?.colorClass?.bg || 'bg-[#895294]'} ${nextMeetupLink?.colorClass?.hover || 'hover:bg-[#9d5fa8]'} text-white text-xs font-bold rounded-lg shadow transition-all`}
                   >
-                    RSVP on Meetup ↗
+                    {nextMeetupLink?.label || 'RSVP on Meetup'} ↗
                   </a>
                 </div>
               </div>

@@ -563,6 +563,19 @@ async function main() {
 
     if (isWriteMode) {
       const targetFile = path.join(EVENTS_DIR, filename);
+      const isMeetup = (() => {
+        try {
+          const host = new URL(ev.meetupUrl).hostname.toLowerCase();
+          return host === 'meetup.com' || host.endsWith('.meetup.com');
+        } catch {
+          return false;
+        }
+      })();
+      const urlFrontmatter = isValidUrl(ev.meetupUrl)
+        ? (isMeetup
+            ? `meetupUrl: '${ev.meetupUrl}'\n`
+            : `registrationUrl: '${ev.meetupUrl}'\n`)
+        : '';
       const content = `---
 title: '${ev.title.replace(/'/g, "''")}'
 date: ${ev.date}
@@ -571,7 +584,7 @@ ${isValidUrl(ev.locationUrl) ? `locationUrl: '${ev.locationUrl}'\n` : ''}city: '
 isPartnerEvent: ${ev.isPartnerEvent}
 partnerName: '${ev.partnerName.replace(/'/g, "''")}'
 accessType: '${ev.accessType || 'Open/Public'}'
-${isValidUrl(ev.meetupUrl) ? `meetupUrl: '${ev.meetupUrl}'\n` : ''}accessibility:
+${urlFrontmatter}accessibility:
   stepFree: null
   hearingLoop: null
   notes: '${ev.city === 'Virtual' ? 'Online event. Check registration link for captioning and remote accommodations.' : 'Check organizer registration link for verified venue accessibility accommodations.'}'

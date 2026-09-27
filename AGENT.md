@@ -104,12 +104,34 @@ Before declaring any task or PR complete, execute and document the following:
 
 ---
 
+---
+
 ## 📚 Content Collections & Schema Specifications
 
-When creating or modifying content, AI agents must strictly conform to the Zod schemas in `src/content/config.ts`. Markdown templates are provided under `.github/content-templates/`:
+When creating or modifying content, AI agents must strictly conform to the Zod schemas in `src/content.config.ts`. Markdown templates are provided under `.github/content-templates/`:
 
 1. **Events (`src/content/events/*.md`):**
-   - Fields: `title` (string), `date` (YYYY-MM-DD), `time` (string), `location` (string), `city` (Edinburgh | Glasgow | Dundee | Virtual | Aberdeen | Scotland-wide), `isPartnerEvent` (boolean), `partnerName` (optional), `meetupUrl` (url), `registrationUrl` (url), `slidesUrl` (url), `recordingUrl` (url), `accessibility` (stepFree: boolean, hearingLoop: boolean, notes: string), `speakers` (array of { name, talkTitle, company, role, abstract }), `featured` (boolean).
+   - Fields:
+     - `title`: string
+     - `date`: YYYY-MM-DD
+     - `time`: optional string (e.g. `18:00 – 20:30 BST`)
+     - `location`: string (venue name, address, postcode)
+     - `locationUrl`: optional Google Maps URL
+     - `city`: `Edinburgh` | `Glasgow` | `Dundee` | `Virtual` | `Aberdeen` | `Scotland-wide`
+     - `isPartnerEvent`: boolean (default `false`)
+     - `partnerName`: optional string
+     - `accessType`: `Open/Public` | `Corporate/Paid` | `Student/Academic` | `Restricted/Civil Service` (default `Open/Public`)
+     - `meetupUrl`: optional URL — **STRICTLY for `meetup.com` URLs only**. Never place non-Meetup links here.
+     - `registrationUrl`: optional URL — For Eventbrite, Luma, conference tickets, or external registration portals.
+     - `streamUrl`: optional livestream URL
+     - `slidesUrl`: optional slide deck URL
+     - `recordingUrl`: optional YouTube video recording URL
+     - `accessibility`:
+       - `stepFree`: `boolean | null` (Strict Tri-State: `true` = verified accessible, `false` = limited/none, `null` = unconfirmed). **Never guess `true` without physical venue confirmation.**
+       - `hearingLoop`: `boolean | null` (Strict Tri-State: `true` = verified installed, `false` = none, `null` = unconfirmed).
+       - `notes`: optional string (e.g. lift routes, quiet rooms, online captioning details)
+     - `speakers`: array of `{ name, talkTitle, company?, role?, abstract? }`
+     - `agenda`: array of `{ time, title, speaker?, speakerUrl? }`
 2. **Leaders & Moderators (`src/content/leaders/*.md`):**
    - Fields: `name` (string), `role` (string), `chapter` (string), `bio` (string), `avatar` (url/path), `linkedin` (url), `github` (url), `website` (url), `order` (number).
 3. **Partners & Sponsors (`src/content/partners/*.md`):**
@@ -119,13 +141,26 @@ When creating or modifying content, AI agents must strictly conform to the Zod s
 5. **Scottish Community Groups (`src/content/community/*.md`):**
    - Fields: `name` (string), `category` (Hacker Society & Meetup | Student Cyber Society | Diversity & Inclusion | Professional Association | Support & Veteran Network), `city` (Edinburgh | Glasgow | Dundee | Aberdeen | St Andrews | Scotland-wide), `websiteUrl` (url), `chatUrl` (optional url), `description` (string), `meetingFrequency` (optional string), `active` (boolean), `order` (number).
 
-### Verification Gate for Agents
+---
 
-Every AI agent must run the production build and link validator before submitting a PR:
+## 🛰️ Automated Event Discovery Engine
+
+The repository includes a multi-protocol event discovery engine in `scripts/`:
+- **Engine Script:** `scripts/discover-events.ts` (dry run: `bun run discover:dry`, write mode: `bun run discover`)
+- **Sources Manifest:** `scripts/event-sources.json` (maps 18 ecosystem feeds across RSS, iCal, Bluesky ATProto RSS, and Squarespace JSON APIs)
+- **Shell Runner:** `scripts/run-event-discovery.sh` (handles git branch isolation, build/lint gates, and commits)
+- **Action Details Engine:** `src/utils/event-link.ts` dynamically parses destination hostnames to render honest action CTAs (`Meetup`, `Eventbrite`, `Luma`, `LinkedIn`, `Register / Event Page`).
+
+---
+
+## 🛡️ Verification Gate for Agents
+
+Every AI agent must execute the production verification suite before submitting changes or opening a PR:
 
 ```bash
 bun run check:links # Validates external links (cached for 30 days)
-bun run build       # or: npm run build
+bun run build       # Executes Astro typecheck + production SSG build
+bun run lint        # ESLint check
 ```
 
 Verify exit code 0, 0 errors, and 0 warnings.

@@ -61,7 +61,7 @@ function extractUrlsFromDir(dirPath: string): { source: string; url: string }[] 
   for (const file of files) {
     const fullPath = path.join(dirPath, file);
     const content = fs.readFileSync(fullPath, 'utf-8');
-    const matches = content.matchAll(/(?:url|websiteUrl|chatUrl):\s*['"]([^'"]+)['"]/g);
+    const matches = content.matchAll(/(?:url|websiteUrl|chatUrl|meetupUrl|registrationUrl|locationUrl):\s*['"]([^'"]+)['"]/g);
     for (const match of matches) {
       if (match[1]) {
         results.push({ source: file, url: match[1] });
@@ -92,12 +92,13 @@ async function main() {
   const resourcesDir = path.resolve(process.cwd(), 'src/content/resources');
   const communityDir = path.resolve(process.cwd(), 'src/content/community');
   const partnersDir = path.resolve(process.cwd(), 'src/content/partners');
+  const eventsDir = path.resolve(process.cwd(), 'src/content/events');
 
   const targets = [
     ...extractStaticUrls(),
     ...extractUrlsFromDir(resourcesDir),
     ...extractUrlsFromDir(communityDir),
-    ...(checkAllCollections ? extractUrlsFromDir(partnersDir) : []),
+    ...(checkAllCollections ? [...extractUrlsFromDir(partnersDir), ...extractUrlsFromDir(eventsDir)] : []),
   ];
 
   // Deduplicate by URL
