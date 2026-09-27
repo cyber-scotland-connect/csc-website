@@ -21,7 +21,9 @@ Do not merge anything. Open the PR and stop.
 
 Read the file `scripts/event-sources.json` from the `main` branch of `cyber-scotland-connect/csc-website` using the GitHub MCP `get_file_contents` tool. Extract:
 - `seedUrls` array (each has `name`, `url`, `category`, `city`)
-- `searchQueries` array
+- `rssFeeds` and `iCalFeeds` arrays (structured XML/iCal feeds)
+- `blueskyFeeds` array (public RSS feeds for Scottish cyber accounts)
+- `searchQueries` array (including Bluesky and Luma targeted queries)
 - `filters` object
 
 ---
@@ -34,20 +36,19 @@ Alternatively, use `get_file_contents` on `src/content/events/` to list the dire
 
 ---
 
-### Step 3 — Crawl Seed URLs
+### Step 3 — Ingest Structured Feeds (RSS, iCal & Bluesky)
 
-For each URL in `seedUrls`, use `read_url_content` to fetch the page. Extract any event mentions that include:
-- A title
-- A date (in the future — after today's date)
-- A location (must match one of the `locationKeywords` in the filters)
-
-If `read_url_content` fails or returns empty for a URL, skip it and note it in the PR body. Do not retry more than once per URL.
+For each feed in `rssFeeds`, `iCalFeeds`, and `blueskyFeeds`:
+- Use `read_url_content` or `curl` to fetch the feed XML/iCal.
+- Parse candidate events with titles, future dates, and Scottish cybersecurity relevance.
+- Structured feeds are clean, low-token, and fast — prioritize these before crawling raw HTML.
 
 ---
 
-### Step 4 — Broad Web Search
+### Step 4 — Crawl Seed URLs & Run Broad Search
 
-For each query in `searchQueries`, run `search_web`. Extract any additional event mentions not already found in Step 3. Apply the same date and location filters.
+1. For each URL in `seedUrls`, use `read_url_content` to fetch the page and extract event mentions matching the filters.
+2. For each query in `searchQueries` (including Bluesky `site:bsky.app` and Luma `site:lu.ma` queries), run `search_web`. Extract any additional events.
 
 ---
 

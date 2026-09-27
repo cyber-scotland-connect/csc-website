@@ -153,12 +153,58 @@
     }
   ],
 
+  "rssFeeds": [
+    {
+      "name": "Cyber and Fraud Centre Scotland — Events RSS",
+      "url": "https://cyberfraudcentre.com/events/feed/",
+      "format": "rss",
+      "category": "partner"
+    },
+    {
+      "name": "ScotlandIS — Events RSS",
+      "url": "https://www.scotlandis.com/events/feed/",
+      "format": "rss",
+      "category": "partner"
+    },
+    {
+      "name": "DIGIT — Tech & Cyber Events RSS",
+      "url": "https://digit.fyi/category/events/feed/",
+      "format": "rss",
+      "category": "partner"
+    }
+  ],
+
+  "iCalFeeds": [
+    {
+      "name": "OWASP Scotland Chapter — iCal",
+      "url": "https://www.meetup.com/owasp-scotland-chapter/events/ical/",
+      "format": "ical",
+      "category": "community"
+    },
+    {
+      "name": "Glasgow Infosec / 2600 — iCal",
+      "url": "https://www.meetup.com/glasgow-computer-security-meetup-group/events/ical/",
+      "format": "ical",
+      "category": "community"
+    }
+  ],
+
+  "blueskyFeeds": [
+    {
+      "name": "Rory McCune (Datadog / CSC Speaker)",
+      "handle": "raesene.bsky.social",
+      "rssUrl": "https://bsky.app/profile/raesene.bsky.social/rss"
+    }
+  ],
+
   "searchQueries": [
     "Scottish cybersecurity event meetup 2026",
     "Edinburgh Glasgow cybersecurity meetup 2026",
     "ScotSecure 2026 conference",
     "BSides Scotland 2026",
     "CYBERUK Scotland 2026",
+    "site:bsky.app (\"Hack Thursday\" OR \"Cyber Scotland\" OR \"ScotSecure\" OR \"Scottish cyber\" OR \"Glasgow infosec\")",
+    "site:lu.ma (\"Scotland\" OR \"Edinburgh\" OR \"Glasgow\") (\"cyber\" OR \"security\" OR \"hack\")",
     "Scottish cyber community event site:eventbrite.co.uk",
     "Scottish cyber event site:meetup.com 2026",
     "Scotland infosec conference 2026",
