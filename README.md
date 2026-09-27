@@ -169,6 +169,14 @@ Consult [`CONTRIBUTING.md`](CONTRIBUTING.md) for branch naming and workflow rule
 
 ---
 
+## 👥 Community Contributors
+
+A heartfelt thank you to everyone who has contributed to improving the Cyber Scotland Connect website:
+
+- **[Rory McCune](https://github.com/raesene)** ([#30](https://github.com/cyber-scotland-connect/csc-website/pull/30)) — Historical meetup corrections (Leith) and June 2026 virtual event integration.
+
+---
+
 ## 🤖 AI Agents & Automated Collaborators
 
 If you are using an AI assistant (Antigravity, Claude Code, Cursor, Copilot Workspace, Aider):
