@@ -142,6 +142,48 @@ function isValidUrl(u?: string): boolean {
   }
 }
 
+// Helper: Natural language English date extraction
+const MONTHS: Record<string, string> = {
+  jan: '01', january: '01',
+  feb: '02', february: '02',
+  mar: '03', march: '03',
+  apr: '04', april: '04',
+  may: '05',
+  jun: '06', june: '06',
+  jul: '07', july: '07',
+  aug: '08', august: '08',
+  sep: '09', sept: '09', september: '09',
+  oct: '10', october: '10',
+  nov: '11', november: '11',
+  dec: '12', december: '12'
+};
+
+function extractNaturalDate(text: string): string | null {
+  // Pattern 1: ISO YYYY-MM-DD
+  const isoMatch = text.match(/\b(202[6-9])-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])\b/);
+  if (isoMatch) return isoMatch[0];
+
+  // Pattern 2: 2 October 2026 or 2nd October 2026
+  const dmyMatch = text.match(/\b([0-9]{1,2})(?:st|nd|rd|th)?\s+(January|February|March|April|May|June|July|August|September|October|November|December)\s+(202[6-9])\b/i);
+  if (dmyMatch) {
+    const day = dmyMatch[1].padStart(2, '0');
+    const month = MONTHS[dmyMatch[2].toLowerCase()];
+    const year = dmyMatch[3];
+    if (month) return `${year}-${month}-${day}`;
+  }
+
+  // Pattern 3: October 2, 2026 or October 2nd, 2026
+  const mdyMatch = text.match(/\b(January|February|March|April|May|June|July|August|September|October|November|December)\s+([0-9]{1,2})(?:st|nd|rd|th)?,?\s+(202[6-9])\b/i);
+  if (mdyMatch) {
+    const month = MONTHS[mdyMatch[1].toLowerCase()];
+    const day = mdyMatch[2].padStart(2, '0');
+    const year = mdyMatch[3];
+    if (month) return `${year}-${month}-${day}`;
+  }
+
+  return null;
+}
+
 // Match city from text
 function detectCity(
   text: string
@@ -190,6 +232,7 @@ async function parseRssFeed(feed: RssFeedSource, todayStr: string): Promise<Disc
     const titleMatch = itemXml.match(/<title><!\[CDATA\[(.*?)\]\]><\/title>/i) || itemXml.match(/<title>(.*?)<\/title>/i);
     const linkMatch = itemXml.match(/<link>(.*?)<\/link>/i);
     const descMatch = itemXml.match(/<description><!\[CDATA\[([\s\S]*?)\]\]><\/description>/i) || itemXml.match(/<description>([\s\S]*?)<\/description>/i);
+    const contentMatch = itemXml.match(/<content:encoded><!\[CDATA\[([\s\S]*?)\]\]><\/content:encoded>/i) || itemXml.match(/<content:encoded>([\s\S]*?)<\/content:encoded>/i);
     const pubDateMatch = itemXml.match(/<pubDate>(.*?)<\/pubDate>/i);
 
     if (!titleMatch || !linkMatch) continue;
@@ -197,15 +240,14 @@ async function parseRssFeed(feed: RssFeedSource, todayStr: string): Promise<Disc
     const rawTitle = stripHtml(titleMatch[1]);
     const link = linkMatch[1].trim();
     const rawDesc = descMatch ? stripHtml(descMatch[1]) : '';
+    const rawContent = contentMatch ? stripHtml(contentMatch[1]) : '';
+    const fullText = `${rawTitle} ${rawDesc} ${rawContent}`;
 
-    // Extract embedded event date from title, description, or pubDate
-    let eventDateStr = '';
-    const datePattern = /(?:202[6-9])-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12][0-9]|3[01])/;
-    const directDateMatch = link.match(datePattern) || rawDesc.match(datePattern);
+    // Extract embedded event date from link, title, description, or content
+    let eventDateStr = extractNaturalDate(link) || extractNaturalDate(fullText);
 
-    if (directDateMatch) {
-      eventDateStr = directDateMatch[0];
-    } else if (pubDateMatch) {
+    // Fall back to pubDate if no embedded future event date found
+    if (!eventDateStr && pubDateMatch) {
       const parsed = new Date(pubDateMatch[1]);
       if (!isNaN(parsed.getTime())) {
         eventDateStr = parsed.toISOString().slice(0, 10);
@@ -214,15 +256,28 @@ async function parseRssFeed(feed: RssFeedSource, todayStr: string): Promise<Disc
 
     if (!eventDateStr || eventDateStr < todayStr) continue;
 
+    const city = detectCity(fullText);
+    let location = 'Scotland';
+    if (fullText.toLowerCase().includes('gogarburn')) {
+      location = 'RBS Gogarburn, Edinburgh';
+    } else if (feed.name.includes('Virtual') || city === 'Virtual') {
+      location = 'Online (virtual)';
+    } else if (city !== 'Scotland-wide') {
+      location = city;
+    }
+
+    // Clean description to avoid boilerplate
+    const cleanDesc = rawDesc.replace(/The post .*? appeared first on .*?\./gi, '').trim();
+
     events.push({
       title: rawTitle,
       date: eventDateStr,
-      location: feed.name.includes('Virtual') ? 'Online (virtual)' : 'Scotland',
-      city: detectCity(`${rawTitle} ${rawDesc}`),
+      location,
+      city,
       isPartnerEvent: true,
       partnerName: feed.name.split('—')[0].trim(),
       meetupUrl: link,
-      description: rawDesc.slice(0, 280) || rawTitle,
+      description: cleanDesc.slice(0, 320) || rawTitle,
       sourceUrl: feed.url,
       sourceType: 'rss',
     });
@@ -300,12 +355,8 @@ async function parseBlueskyFeed(source: BlueskyFeedSource, todayStr: string): Pr
 
     if (!hasEventKeyword || !hasScotlandKeyword) continue;
 
-    // Check for future date mentions like 'October 15', '15th Oct', '15.10.26', '2026-10-15'
-    const dateMatch = postText.match(/(?:202[6-9])-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12][0-9]|3[01])/);
-    if (!dateMatch) continue;
-
-    const eventDateStr = dateMatch[0];
-    if (eventDateStr < todayStr) continue;
+    const eventDateStr = extractNaturalDate(postText);
+    if (!eventDateStr || eventDateStr < todayStr) continue;
 
     events.push({
       title: postText.slice(0, 60).replace(/\n/g, ' ') + '...',
@@ -374,20 +425,49 @@ async function main() {
     candidateEvents.push(...found);
   }
 
-  // Deduplicate candidates
+  // Deduplicate and filter candidates
   const newEvents: DiscoveredEvent[] = [];
   const seenInRun = new Set<string>();
 
   for (const ev of candidateEvents) {
+    const fullText = `${ev.title} ${ev.description}`.toLowerCase();
+
+    // 1. Check exclude keywords
+    if (config.filters.excludeKeywords?.some((kw) => fullText.includes(kw.toLowerCase()))) {
+      continue;
+    }
+
+    // 2. Check cyber relevance
+    if (config.filters.requireCyberRelevance) {
+      const isRelevant = config.filters.cyberKeywords?.some((kw) => fullText.includes(kw.toLowerCase()));
+      if (!isRelevant) continue;
+    }
+
+    // Clean title (remove trailing 'Registration')
+    ev.title = ev.title.replace(/\s+Registration$/i, '').trim();
+
     const slug = `${ev.date}-${slugify(ev.title)}`;
     const normalizedKey = `${ev.date}-${normalizeTitle(ev.title)}`;
 
     if (existingEvents.has(slug) || existingEvents.has(normalizedKey)) {
       continue;
     }
-    if (seenInRun.has(normalizedKey)) {
-      continue;
+
+    // Check if an event on the same date with similar title was already seen in this run
+    let isDuplicateInRun = false;
+    for (const seenKey of seenInRun) {
+      if (seenKey.startsWith(ev.date)) {
+        // If same date and shares >2 significant keywords, treat as duplicate
+        const evWords = new Set(normalizeTitle(ev.title).split(' ').filter(w => w.length > 3));
+        const seenWords = seenKey.split(' ').filter(w => w.length > 3);
+        const overlap = seenWords.filter(w => evWords.has(w)).length;
+        if (overlap >= 2) {
+          isDuplicateInRun = true;
+          break;
+        }
+      }
     }
+    if (isDuplicateInRun) continue;
 
     seenInRun.add(normalizedKey);
     newEvents.push(ev);
