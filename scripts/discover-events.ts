@@ -443,6 +443,11 @@ async function main() {
       if (!isRelevant) continue;
     }
 
+    // 3. Skip editorial news articles covering announcements
+    if (/\b(announces|announced for|reveals)\b/i.test(ev.title)) {
+      continue;
+    }
+
     // Clean title (remove trailing 'Registration')
     ev.title = ev.title.replace(/\s+Registration$/i, '').trim();
 
