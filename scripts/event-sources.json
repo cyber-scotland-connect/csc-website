@@ -194,6 +194,41 @@
       "name": "Rory McCune (Datadog / CSC Speaker)",
       "handle": "raesene.bsky.social",
       "rssUrl": "https://bsky.app/profile/raesene.bsky.social/rss"
+    },
+    {
+      "name": "Hack Glasgow (Annual Conference & Community)",
+      "handle": "hackglasgow.bsky.social",
+      "rssUrl": "https://bsky.app/profile/hackglasgow.bsky.social/rss"
+    },
+    {
+      "name": "Andy Gill (ZephrSec / Hack Thursday Organiser)",
+      "handle": "zephrfish.yxz.red",
+      "rssUrl": "https://bsky.app/profile/zephrfish.yxz.red/rss"
+    },
+    {
+      "name": "Scott McGready (Hack Thursday / Hack Glasgow Organiser)",
+      "handle": "scottmcgready.bsky.social",
+      "rssUrl": "https://bsky.app/profile/scottmcgready.bsky.social/rss"
+    },
+    {
+      "name": "SICSA Scotland (Scottish Informatics & Cyber Research)",
+      "handle": "sicsa-scotland.bsky.social",
+      "rssUrl": "https://bsky.app/profile/sicsa-scotland.bsky.social/rss"
+    },
+    {
+      "name": "Abertay University (cyberQuarter / Securi-Tay)",
+      "handle": "abertayuni.bsky.social",
+      "rssUrl": "https://bsky.app/profile/abertayuni.bsky.social/rss"
+    },
+    {
+      "name": "Edinburgh Napier University (School of Computing & Cyber Academy)",
+      "handle": "edinburghnapier.bsky.social",
+      "rssUrl": "https://bsky.app/profile/edinburghnapier.bsky.social/rss"
+    },
+    {
+      "name": "Police Scotland (Cybercrime & Prevention)",
+      "handle": "policescotland.bsky.social",
+      "rssUrl": "https://bsky.app/profile/policescotland.bsky.social/rss"
     }
   ],
 
