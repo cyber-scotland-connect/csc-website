@@ -32,6 +32,13 @@ interface BlueskyFeedSource {
   rssUrl: string;
 }
 
+interface JsonFeedSource {
+  name: string;
+  url: string;
+  format: 'squarespace' | 'generic';
+  category: string;
+}
+
 interface EventFilters {
   requireFutureDate: boolean;
   requireScotlandLocation: boolean;
@@ -43,6 +50,7 @@ interface EventFilters {
 
 interface EventSourcesConfig {
   rssFeeds?: RssFeedSource[];
+  jsonFeeds?: JsonFeedSource[];
   iCalFeeds?: ICalFeedSource[];
   blueskyFeeds?: BlueskyFeedSource[];
   filters: EventFilters;
@@ -57,6 +65,7 @@ export interface DiscoveredEvent {
   city: 'Edinburgh' | 'Glasgow' | 'Dundee' | 'Aberdeen' | 'Virtual' | 'Scotland-wide';
   isPartnerEvent: boolean;
   partnerName: string;
+  accessType?: 'Open/Public' | 'Corporate/Paid' | 'Student/Academic' | 'Restricted/Civil Service';
   meetupUrl: string;
   description: string;
   sourceUrl: string;
@@ -330,6 +339,49 @@ async function parseICalFeed(feed: ICalFeedSource, todayStr: string): Promise<Di
   return events;
 }
 
+// Ingest Squarespace Events JSON API
+async function parseSquarespaceJson(
+  source: JsonFeedSource,
+  todayStr: string
+): Promise<DiscoveredEvent[]> {
+  const raw = await fetchWithTimeout(source.url);
+  if (!raw) return [];
+
+  try {
+    const data = JSON.parse(raw);
+    const events: DiscoveredEvent[] = [];
+    const items = [...(data.upcoming || []), ...(data.items || [])];
+
+    for (const item of items) {
+      if (!item.title || !item.startDate) continue;
+
+      const eventDateStr = new Date(item.startDate).toISOString().slice(0, 10);
+      if (eventDateStr < todayStr) continue;
+
+      const title = stripHtml(item.title);
+      const desc = item.body ? stripHtml(item.body).slice(0, 300) : title;
+      const fullUrl = item.fullUrl ? `https://cyberfraudhub.org${item.fullUrl}` : source.url;
+
+      events.push({
+        title,
+        date: eventDateStr,
+        location: item.location?.addressTitle || 'Abertay cyberQuarter, Dundee',
+        city: detectCity(`${title} ${item.location?.addressLine2 || ''}`),
+        isPartnerEvent: true,
+        partnerName: 'Cyber and Fraud Hub',
+        accessType: 'Open/Public',
+        meetupUrl: fullUrl,
+        description: desc,
+        sourceUrl: source.url,
+        sourceType: 'rss',
+      });
+    }
+    return events;
+  } catch {
+    return [];
+  }
+}
+
 // Ingest Bluesky Profile RSS
 async function parseBlueskyFeed(source: BlueskyFeedSource, todayStr: string): Promise<DiscoveredEvent[]> {
   const xml = await fetchWithTimeout(source.rssUrl);
@@ -417,7 +469,15 @@ async function main() {
     candidateEvents.push(...found);
   }
 
-  // 3. Ingest Bluesky feeds
+  // 3. Ingest JSON API feeds (Squarespace, etc.)
+  for (const feed of config.jsonFeeds || []) {
+    if (!isJsonMode && isVerbose) process.stdout.write(`  [JSON] Fetching ${feed.name}... `);
+    const found = await parseSquarespaceJson(feed, todayStr);
+    if (!isJsonMode && isVerbose) console.log(`${found.length} items`);
+    candidateEvents.push(...found);
+  }
+
+  // 4. Ingest Bluesky feeds
   for (const source of config.blueskyFeeds || []) {
     if (!isJsonMode && isVerbose) process.stdout.write(`  [Bluesky] Fetching @${source.handle}... `);
     const found = await parseBlueskyFeed(source, todayStr);
@@ -444,7 +504,7 @@ async function main() {
     }
 
     // 3. Skip editorial news articles covering announcements
-    if (/\b(announces|announced for|reveals)\b/i.test(ev.title)) {
+    if (/\b(announces|announced for|reveals|moves to)\b/i.test(ev.title)) {
       continue;
     }
 
@@ -485,7 +545,7 @@ async function main() {
 
   console.log(`\n-------------------------------------------------`);
   console.log(`📊 Ingestion Complete:`);
-  console.log(`   Sources Checked: ${(config.rssFeeds?.length || 0) + (config.iCalFeeds?.length || 0) + (config.blueskyFeeds?.length || 0)} feeds`);
+  console.log(`   Sources Checked: ${(config.rssFeeds?.length || 0) + (config.iCalFeeds?.length || 0) + (config.blueskyFeeds?.length || 0) + (config.jsonFeeds?.length || 0)} feeds`);
   console.log(`   Total Items Scanned: ${candidateEvents.length}`);
   console.log(`   New Candidate Events: ${newEvents.length}`);
   console.log(`-------------------------------------------------\n`);
@@ -510,6 +570,7 @@ ${ev.time ? `time: '${ev.time}'\n` : ''}location: '${ev.location.replace(/'/g, "
 ${isValidUrl(ev.locationUrl) ? `locationUrl: '${ev.locationUrl}'\n` : ''}city: '${ev.city}'
 isPartnerEvent: ${ev.isPartnerEvent}
 partnerName: '${ev.partnerName.replace(/'/g, "''")}'
+accessType: '${ev.accessType || 'Open/Public'}'
 ${isValidUrl(ev.meetupUrl) ? `meetupUrl: '${ev.meetupUrl}'\n` : ''}accessibility:
   stepFree: null
   hearingLoop: null

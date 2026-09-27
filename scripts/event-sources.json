@@ -150,6 +150,55 @@
       "category": "partner",
       "city": "Glasgow",
       "cadence": "Ongoing"
+    },
+    {
+      "name": "Securi-Tay (Abertay Ethical Hacking Society)",
+      "url": "https://securi-tay.co.uk",
+      "category": "academic",
+      "city": "Dundee",
+      "cadence": "Annual (Late February)"
+    },
+    {
+      "name": "Hack Glasgow (Annual Community Conference)",
+      "url": "https://hackglasgow.live",
+      "category": "community",
+      "city": "Glasgow",
+      "cadence": "Annual"
+    },
+    {
+      "name": "Holyrood Connect (Public Sector Cyber Security)",
+      "url": "https://events.holyrood.com/",
+      "category": "policy",
+      "city": "Scotland-wide",
+      "cadence": "Annual (February)"
+    },
+    {
+      "name": "FutureScot Conferences",
+      "url": "https://futurescot.com/conferences/",
+      "category": "policy",
+      "city": "Glasgow",
+      "cadence": "Annual (February)"
+    },
+    {
+      "name": "Scottish Cyber Awards",
+      "url": "https://scottishcyberawards.co.uk/",
+      "category": "industry",
+      "city": "Edinburgh",
+      "cadence": "Annual"
+    },
+    {
+      "name": "DC44141 Glasgow Hacker Meetup",
+      "url": "https://dc44141.github.io/",
+      "category": "community",
+      "city": "Glasgow",
+      "cadence": "Monthly"
+    },
+    {
+      "name": "Glasgow Social Infosec Wiki",
+      "url": "https://wiki.glasgow.social/infosec",
+      "category": "community",
+      "city": "Glasgow",
+      "cadence": "Monthly"
     }
   ],
 
@@ -170,6 +219,39 @@
       "name": "DIGIT — Tech & Cyber Events RSS",
       "url": "https://digit.fyi/category/events/feed/",
       "format": "rss",
+      "category": "partner"
+    },
+    {
+      "name": "CyberScotland Partnership — News & Events RSS",
+      "url": "https://www.cyberscotland.com/feed/",
+      "format": "rss",
+      "category": "partner"
+    },
+    {
+      "name": "FutureScot — Tech & Public Sector Cyber RSS",
+      "url": "https://futurescot.com/feed/",
+      "format": "rss",
+      "category": "policy"
+    },
+    {
+      "name": "DEF CON Edinburgh (DC44131) — Mastodon ActivityPub RSS",
+      "url": "https://infosec.exchange/@DC44131.rss",
+      "format": "rss",
+      "category": "community"
+    },
+    {
+      "name": "SICSA (Informatics & Cyber Research Alliance) — RSS",
+      "url": "https://sicsa.ac.uk/feed/",
+      "format": "rss",
+      "category": "academic"
+    }
+  ],
+
+  "jsonFeeds": [
+    {
+      "name": "Cyber and Fraud Hub — Squarespace Events API",
+      "url": "https://cyberfraudhub.org/events-database?format=json-pretty",
+      "format": "squarespace",
       "category": "partner"
     }
   ],

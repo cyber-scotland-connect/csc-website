@@ -2,8 +2,8 @@
 name: "Glasgow Hacking Society (DC44141)"
 category: "Hacker Society & Meetup"
 city: "Glasgow"
-websiteUrl: "https://twitter.com/dc44141"
-description: "Glasgow’s grassroots hacker meetup and DEF CON group bringing together ethical hackers, hobbyists, and security analysts for informal technical talks and lockpicking."
+websiteUrl: "https://dc44141.github.io/"
+description: "Glasgow’s grassroots hacker meetup and DEF CON group bringing together ethical hackers, security analysts, and enthusiasts for informal technical talks, exploit discussions, and hands-on offensive security."
 meetingFrequency: "Monthly"
 active: true
 order: 10

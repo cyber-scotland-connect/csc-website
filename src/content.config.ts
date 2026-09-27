@@ -20,6 +20,14 @@ const eventsCollection = defineCollection({
     ]),
     isPartnerEvent: z.boolean().default(false),
     partnerName: z.string().optional(),
+    accessType: z
+      .enum([
+        'Open/Public',
+        'Corporate/Paid',
+        'Student/Academic',
+        'Restricted/Civil Service',
+      ])
+      .default('Open/Public'),
     meetupUrl: z.string().url().optional(),
     registrationUrl: z.string().url().optional(),
     streamUrl: z.string().url().optional(),
