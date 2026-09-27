@@ -14,7 +14,9 @@
     "lint:fix": "eslint . --fix",
     "format": "prettier --check .",
     "format:write": "prettier --write .",
-    "check:links": "bun run scripts/check-links.ts"
+    "check:links": "bun run scripts/check-links.ts",
+    "discover": "bun run scripts/discover-events.ts --write",
+    "discover:dry": "bun run scripts/discover-events.ts"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.10",

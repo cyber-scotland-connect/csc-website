@@ -20,8 +20,12 @@ fi
 REPO_DIR="/Users/harrymclaren/Projects/csc-website"
 LOG_DIR="$REPO_DIR/logs"
 LOG_FILE="$LOG_DIR/event-discovery.log"
-AGY="$HOME/.local/bin/agy"
-PROMPT_FILE="$REPO_DIR/scripts/FIND_EVENTS_AGENT.md"
+BUN_BIN="$HOME/Projects/LifeOS/local-bun/bin/bun"
+
+# Fallback to PATH bun if local-bun is not at standard location
+if [ ! -x "$BUN_BIN" ]; then
+  BUN_BIN="$(which bun 2>/dev/null || echo 'bun')"
+fi
 
 mkdir -p "$LOG_DIR"
 
@@ -29,15 +33,46 @@ echo "========================================" >> "$LOG_FILE"
 echo "Run started: $(date '+%Y-%m-%d %H:%M:%S')" >> "$LOG_FILE"
 echo "========================================" >> "$LOG_FILE"
 
-# Read the agent prompt from the versioned file
-PROMPT=$(cat "$PROMPT_FILE")
+cd "$REPO_DIR"
 
-# Run agy in print (non-interactive) mode and append output to log
-"$AGY" --print "$PROMPT" >> "$LOG_FILE" 2>&1
-EXIT_CODE=$?
+# 1. Deterministic Fast Feed Discovery (RSS, iCal, Bluesky)
+echo "Executing deterministic feed discovery..." >> "$LOG_FILE"
+"$BUN_BIN" run discover >> "$LOG_FILE" 2>&1 || true
+
+# 2. Check for new event files
+NEW_FILES=$(git status --porcelain src/content/events/ 2>/dev/null || true)
+
+if [ -n "$NEW_FILES" ]; then
+  echo "New events found on disk:" >> "$LOG_FILE"
+  echo "$NEW_FILES" >> "$LOG_FILE"
+  
+  echo "Verifying site build & lint..." >> "$LOG_FILE"
+  if "$BUN_BIN" run build >> "$LOG_FILE" 2>&1 && "$BUN_BIN" run lint >> "$LOG_FILE" 2>&1; then
+    echo "Verification passed (build & lint clean)." >> "$LOG_FILE"
+    
+    BRANCH="auto/events-$(date '+%Y-%m-%d')"
+    echo "Creating branch: $BRANCH" >> "$LOG_FILE"
+    git checkout -b "$BRANCH" >> "$LOG_FILE" 2>&1 || git checkout "$BRANCH" >> "$LOG_FILE" 2>&1
+    git add src/content/events/ >> "$LOG_FILE" 2>&1
+    git commit -m "feat(events): auto-discovered Scottish cyber events ($(date '+%Y-%m-%d'))" >> "$LOG_FILE" 2>&1
+    
+    if git push -u origin "$BRANCH" >> "$LOG_FILE" 2>&1; then
+      echo "Pushed branch $BRANCH to origin." >> "$LOG_FILE"
+    else
+      echo "Failed to push branch $BRANCH to origin (check network/credentials)." >> "$LOG_FILE"
+    fi
+    git checkout main >> "$LOG_FILE" 2>&1
+  else
+    echo "Build or lint failed! Reverting unverified files for safety." >> "$LOG_FILE"
+    git checkout -- src/content/events/ >> "$LOG_FILE" 2>&1 || true
+    git clean -fd src/content/events/ >> "$LOG_FILE" 2>&1 || true
+  fi
+else
+  echo "No new events discovered from feeds." >> "$LOG_FILE"
+fi
 
 echo "----------------------------------------" >> "$LOG_FILE"
-echo "Run finished: $(date '+%Y-%m-%d %H:%M:%S') | Exit: $EXIT_CODE" >> "$LOG_FILE"
+echo "Run finished: $(date '+%Y-%m-%d %H:%M:%S')" >> "$LOG_FILE"
 echo "" >> "$LOG_FILE"
 
-exit $EXIT_CODE
+exit 0
