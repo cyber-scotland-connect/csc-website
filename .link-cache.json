@@ -294,5 +294,13 @@
   "https://www.glasgowunisrc.org/organisation/15324/": {
     "status": 200,
     "lastChecked": "2026-09-08T14:12:13.227Z"
+  },
+  "https://dc44141.github.io/": {
+    "status": 200,
+    "lastChecked": "2026-09-27T10:37:08.591Z"
+  },
+  "https://infosec.exchange/@DC44131": {
+    "status": 200,
+    "lastChecked": "2026-09-27T10:37:08.724Z"
   }
 }

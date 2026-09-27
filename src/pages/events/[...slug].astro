@@ -28,9 +28,17 @@ const formattedDate = eventDate.toLocaleDateString('en-GB', {
   month: 'long',
   year: 'numeric',
 });
+const isVirtual =
+  data.city === 'Virtual' ||
+  data.location.toLowerCase().includes('virtual') ||
+  data.location.toLowerCase().includes('online');
+const isCampaign = data.city === 'Scotland-wide';
+const isPhysical = !isVirtual && !isCampaign;
 const mapsUrl =
-  data.locationUrl ||
-  `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(data.location)}`;
+  isPhysical
+    ? data.locationUrl ||
+      `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(data.location)}`
+    : null;
 
 const leadershipRoles: Record<string, string> = {
   'harry mclaren': 'Co-Founder & Organiser',
@@ -111,7 +119,13 @@ const eventSchema = {
 
 <BaseLayout
   title={data.title}
-  description={`Cyber Scotland Connect gathering in ${data.city} on ${formattedDate}.`}
+  description={
+    isVirtual
+      ? `Cyber Scotland Connect virtual gathering on ${formattedDate}.`
+      : isCampaign
+        ? `CyberScotland campaign across Scotland on ${formattedDate}.`
+        : `Cyber Scotland Connect gathering in ${data.city} on ${formattedDate}.`
+  }
   structuredData={eventSchema}
 >
   <article class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -133,8 +147,15 @@ const eventSchema = {
         <span
           class="text-xs px-3 py-1 rounded-full font-bold bg-[#56548c] text-white"
         >
-          {data.city} Chapter
+          {isVirtual ? '🌐 Virtual Gathering' : isCampaign ? '🏴󠁧󠁢󠁳󠁣󠁴󠁿 Scotland-wide' : `${data.city} Chapter`}
         </span>
+        {
+          data.accessType && data.accessType !== 'Open/Public' && (
+            <span class="text-xs px-3 py-1 rounded-full font-semibold bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-700">
+              {data.accessType}
+            </span>
+          )
+        }
         {
           data.isPartnerEvent ? (
             <span class="text-xs px-3 py-1 rounded-full font-medium bg-pink-100 dark:bg-[#895294]/30 text-pink-800 dark:text-pink-300 border border-pink-200 dark:border-[#895294]">
@@ -182,24 +203,40 @@ const eventSchema = {
         <div class="space-y-1">
           <span
             class="text-xs uppercase text-slate-500 dark:text-slate-400 font-semibold block"
-            >Venue & Location</span
+            >{isVirtual ? 'Format & Delivery' : 'Venue & Location'}</span
           >
           <p class="font-medium text-slate-900 dark:text-white text-base">
             {data.location}
           </p>
           <div class="flex items-center gap-2 pt-1 text-xs">
-            <span class="text-slate-500 dark:text-[#bdaccf]"
-              >Physical Gathering ({data.city})</span
-            >
-            <span>•</span>
-            <a
-              href={mapsUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="font-semibold text-[#895294] dark:text-[#6fb7e6] hover:underline inline-flex items-center gap-0.5"
-            >
-              <span>View on Google Maps</span> 📍 ↗
-            </a>
+            {
+              isVirtual ? (
+                <span class="text-purple-700 dark:text-[#6fb7e6] font-medium flex items-center gap-1">
+                  <span>🌐</span>
+                  <span>Online / Virtual Event</span>
+                </span>
+              ) : isCampaign ? (
+                <span class="text-slate-600 dark:text-[#bdaccf] font-medium flex items-center gap-1">
+                  <span>🏴󠁧󠁢󠁳󠁣󠁴󠁿</span>
+                  <span>National Campaign (Multiple Venues)</span>
+                </span>
+              ) : (
+                <>
+                  <span class="text-slate-500 dark:text-[#bdaccf]"
+                    >In-Person Gathering ({data.city})</span
+                  >
+                  <span>•</span>
+                  <a
+                    href={mapsUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="font-semibold text-[#895294] dark:text-[#6fb7e6] hover:underline inline-flex items-center gap-0.5"
+                  >
+                    <span>View on Google Maps</span> 📍 ↗
+                  </a>
+                </>
+              )
+            }
           </div>
         </div>
       </div>

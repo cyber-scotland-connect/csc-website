@@ -73,7 +73,9 @@ const cityConfig = chapterConfig[data.city] || {
 };
 
 const CityIcon = cityConfig.IconComponent;
-const mapsUrl = data.locationUrl || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(data.location)}`;
+const isVirtual = data.city === 'Virtual' || data.location.toLowerCase().includes('virtual') || data.location.toLowerCase().includes('online');
+const isCampaign = data.city === 'Scotland-wide';
+const mapsUrl = (!isVirtual && !isCampaign) ? (data.locationUrl || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(data.location)}`) : null;
 ---
 
 <article 
@@ -105,6 +107,11 @@ const mapsUrl = data.locationUrl || `https://www.google.com/maps/search/?api=1&q
               CSC Gathering
             </span>
           )}
+          {data.accessType && data.accessType !== 'Open/Public' && (
+            <span class="text-xs px-2 py-0.5 rounded-full font-semibold bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-700">
+              {data.accessType}
+            </span>
+          )}
         </div>
         <span class={`inline-block text-[11px] font-bold px-2 py-0.5 rounded-md ${isUpcoming ? 'bg-emerald-100 text-emerald-800 border border-emerald-300 dark:bg-emerald-950 dark:text-emerald-300 dark:border-emerald-600' : 'bg-slate-100 text-slate-500 border border-slate-200 dark:bg-slate-800 dark:text-slate-400 dark:border-slate-700'}`}>
           {isUpcoming ? '● Upcoming Meetup' : 'Archived'}
@@ -127,17 +134,31 @@ const mapsUrl = data.locationUrl || `https://www.google.com/maps/search/?api=1&q
         {data.time && <span class="font-mono text-xs text-slate-500 dark:text-slate-400">({data.time})</span>}
       </div>
       <div class="flex items-center gap-2">
-        <MapPin class="w-4 h-4 text-[#56548c] dark:text-[#6fb7e6] shrink-0" aria-hidden="true" />
-        <a
-          href={mapsUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="truncate hover:underline hover:text-[#895294] dark:hover:text-[#6fb7e6] transition-colors inline-flex items-center gap-1"
-          title={`View ${data.location} on Google Maps`}
-        >
-          <span>{data.location}</span>
-          <ExternalLink class="w-3 h-3 shrink-0" aria-hidden="true" />
-        </a>
+        {isVirtual ? (
+          <>
+            <Globe class="w-4 h-4 text-purple-600 dark:text-[#6fb7e6] shrink-0" aria-hidden="true" />
+            <span class="truncate text-slate-700 dark:text-slate-300 font-medium">{data.location || 'Online Virtual Event'}</span>
+          </>
+        ) : isCampaign ? (
+          <>
+            <Shield class="w-4 h-4 text-[#56548c] dark:text-[#6fb7e6] shrink-0" aria-hidden="true" />
+            <span class="truncate text-slate-700 dark:text-slate-300 font-medium">{data.location || 'Multiple Venues across Scotland'}</span>
+          </>
+        ) : (
+          <>
+            <MapPin class="w-4 h-4 text-[#56548c] dark:text-[#6fb7e6] shrink-0" aria-hidden="true" />
+            <a
+              href={mapsUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="truncate hover:underline hover:text-[#895294] dark:hover:text-[#6fb7e6] transition-colors inline-flex items-center gap-1"
+              title={`View ${data.location} on Google Maps`}
+            >
+              <span>{data.location}</span>
+              <ExternalLink class="w-3 h-3 shrink-0" aria-hidden="true" />
+            </a>
+          </>
+        )}
       </div>
     </div>
 
@@ -160,9 +181,13 @@ const mapsUrl = data.locationUrl || `https://www.google.com/maps/search/?api=1&q
   <!-- Accessibility Badges & Action Links (Pinned to bottom) -->
   <div class="pt-4 border-t border-slate-100 dark:border-[#3e3c66] flex flex-wrap items-center justify-between gap-2.5 text-xs mt-auto">
     <div class="flex items-center gap-1.5 text-slate-500 dark:text-slate-400" title="Venue Accessibility">
-      {data.city === 'Virtual' ? (
+      {isVirtual ? (
         <span class="flex items-center gap-1 bg-purple-50 dark:bg-purple-950/40 text-purple-700 dark:text-purple-300 px-2 py-0.5 rounded-md border border-purple-200 dark:border-purple-800/50 font-medium text-[11px]" title="Online Virtual Event">
           <span>🌐 Online</span>
+        </span>
+      ) : isCampaign ? (
+        <span class="flex items-center gap-1 bg-slate-100 dark:bg-[#1b1a30] text-slate-700 dark:text-slate-300 px-2 py-0.5 rounded-md border border-slate-200 dark:border-[#3e3c66] font-medium text-[11px]" title="Multi-venue National Campaign">
+          <span>🏴󠁧󠁢󠁳󠁣󠁴󠁿 Multi-venue</span>
         </span>
       ) : (
         <>

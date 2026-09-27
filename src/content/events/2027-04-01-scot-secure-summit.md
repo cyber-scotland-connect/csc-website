@@ -7,6 +7,7 @@ locationUrl: "https://maps.google.com/?q=EICC+Edinburgh"
 city: "Edinburgh"
 isPartnerEvent: true
 partnerName: "DIGIT"
+accessType: "Corporate/Paid"
 registrationUrl: "https://www.scot-secure.com/"
 accessibility:
   stepFree: true

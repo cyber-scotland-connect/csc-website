@@ -5,7 +5,7 @@ time: '11:00 – 12:00 GMT'
 location: 'Online (virtual)'
 city: 'Virtual'
 isPartnerEvent: true
-partnerName: 'Cyber and Fraud Centre - Scotland'
+partnerName: 'Cyber and Fraud Centre Scotland'
 registrationUrl: 'https://cyberfraudcentre.com/events/cyber-byte-recruitment'
 accessibility:
   stepFree: null

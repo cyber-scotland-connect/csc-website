@@ -5,7 +5,7 @@ time: '10:00 – 11:30 BST'
 location: 'Online (virtual)'
 city: 'Virtual'
 isPartnerEvent: true
-partnerName: 'Cyber and Fraud Centre - Scotland'
+partnerName: 'Cyber and Fraud Centre Scotland'
 registrationUrl: 'https://cyberfraudcentre.com/events/a-councils-cyber-security-story-oct-26'
 accessibility:
   stepFree: null
