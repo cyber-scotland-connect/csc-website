@@ -12,6 +12,7 @@ concurrency:
 
 permissions:
   contents: read
+  issues: write
 
 jobs:
   link-audit:
@@ -30,4 +31,23 @@ jobs:
         run: bun install --frozen-lockfile
 
       - name: Verify All Links (Bypassing 30-Day Cache)
-        run: bun run check:links --force
+        run: bun run check:links --force --report-only --report-file broken-links.md
+
+      - name: File or Update Issue on Broken Links
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [ -f broken-links.md ] && [ -s broken-links.md ]; then
+            ISSUE_TITLE="[Link Health] Broken External Links Detected"
+            EXISTING_ISSUE=$(gh issue list --search "$ISSUE_TITLE in:title state:open" --json number --jq '.[0].number')
+            if [ -n "$EXISTING_ISSUE" ]; then
+              echo "Updating existing open issue #$EXISTING_ISSUE with latest audit findings..."
+              gh issue comment "$EXISTING_ISSUE" --body-file broken-links.md
+            else
+              echo "Filing new issue for broken external links..."
+              gh issue create --title "$ISSUE_TITLE" --body-file broken-links.md --label "bug"
+            fi
+          else
+            echo "No broken links found. Pipeline is clean."
+          fi

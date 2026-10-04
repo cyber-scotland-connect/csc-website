@@ -1,7 +1,32 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 
-const faqCategories = [
+interface FAQStep {
+  stepNumber: number;
+  badge: string;
+  title: string;
+  description: string;
+  buttonLabel: string;
+  url: string;
+}
+
+interface FAQItem {
+  id?: string;
+  q: string;
+  a: string;
+  callout?: string;
+  steps?: FAQStep[];
+}
+
+interface FAQCategory {
+  id: string;
+  title: string;
+  icon: string;
+  subtitle: string;
+  items: FAQItem[];
+}
+
+const faqCategories: FAQCategory[] = [
   {
     id: 'speaking',
     title: 'Speaking at an Event',
@@ -25,8 +50,28 @@ const faqCategories = [
         a: 'Our standard keynote slots are 25–35 minutes with 5–10 minutes of audience Q&A. We also frequently host 10–15 minute "Lightning Talks" which are ideal for short case studies, tool demonstrations, or first-time speakers.',
       },
       {
+        id: 'submit-talk',
         q: 'How do I submit a talk proposal?',
-        a: 'Simply send an email to hello@cyberscotlandconnect.com with your name, a working title, a 2–3 sentence summary of what attendees will learn, and any AV requirements. You can also chat informally with any moderator on our Discord server.',
+        a: 'We operate a structured, two-step speaker onboarding process to collect session details programmatically, keep our calendar organized, and preserve our zero-sales community charter. Submissions are reviewed by our volunteer organizing team for upcoming gatherings across Edinburgh, Glasgow, Dundee, and Aberdeen.',
+        callout: 'Prerequisite requirement: You must complete the Speaker Profile (Step 1) before submitting your Talk Proposal (Step 2). If you have previously submitted a speaker profile for CSC, you can proceed directly to Step 2.',
+        steps: [
+          {
+            stepNumber: 1,
+            badge: 'Step 1 · Required First',
+            title: 'CSC Speaker Profile',
+            description: 'Provide your bio, professional role, contact details, headshot, and agree to our community speaker charter. You only need to register this once.',
+            buttonLabel: 'Fill Speaker Profile Form',
+            url: 'https://docs.google.com/forms/d/e/1FAIpQLSfgZdVeI1Cfk7NTRgZzmjlIZlhEL4iEKylo8AlSRWdmDbqovA/viewform?usp=dialog',
+          },
+          {
+            stepNumber: 2,
+            badge: 'Step 2 · Talk Proposal',
+            title: 'Call for Papers (CFP)',
+            description: 'Submit your talk title, session format (keynote or lightning talk), technical abstract, and key educational takeaways for Scottish defenders.',
+            buttonLabel: 'Submit Talk Proposal Form',
+            url: 'https://docs.google.com/forms/d/e/1FAIpQLScGsfJB8A2R5TaUPIum3sC1Ay6y5XlzW0MLU6P0OER0PQscLg/viewform?usp=dialog',
+          },
+        ],
       },
     ],
   },
@@ -230,7 +275,7 @@ const faqSchema = {
           <!-- Questions Accordion / Cards List -->
           <div class="space-y-4">
             {category.items.map((item, idx) => (
-              <details class="group bg-white dark:bg-[#2a2948] rounded-xl border border-slate-200 dark:border-[#3e3c66] shadow-sm overflow-hidden transition-all duration-200 open:border-[#895294] dark:open:border-[#6fb7e6]">
+              <details id={item.id} class="group bg-white dark:bg-[#2a2948] rounded-xl border border-slate-200 dark:border-[#3e3c66] shadow-sm overflow-hidden transition-all duration-200 open:border-[#895294] dark:open:border-[#6fb7e6] scroll-mt-24">
                 <summary class="flex items-center justify-between p-5 sm:p-6 cursor-pointer select-none text-base font-bold text-slate-900 dark:text-white group-hover:text-[#895294] dark:group-hover:text-[#6fb7e6] transition-colors focus:outline-none focus:ring-2 focus:ring-[#6fb7e6]">
                   <span class="flex items-center gap-3">
                     <span class="text-xs font-mono text-slate-400 dark:text-slate-500">0{idx + 1}</span>
@@ -240,8 +285,44 @@ const faqSchema = {
                     ▼
                   </span>
                 </summary>
-                <div class="px-5 sm:px-6 pb-6 pt-1 text-sm text-slate-600 dark:text-[#bdaccf] leading-relaxed border-t border-slate-100 dark:border-[#3e3c66]/40">
+                <div class="px-5 sm:px-6 pb-6 pt-1 text-sm text-slate-600 dark:text-[#bdaccf] leading-relaxed border-t border-slate-100 dark:border-[#3e3c66]/40 space-y-4">
                   <p>{item.a}</p>
+
+                  {item.callout && (
+                    <div class="p-3.5 rounded-xl bg-purple-50/70 dark:bg-[#1b1a30] border border-purple-200/80 dark:border-[#56548c] text-slate-700 dark:text-[#bdaccf] text-xs flex items-start gap-2.5">
+                      <span class="text-sm shrink-0" aria-hidden="true">ℹ️</span>
+                      <p class="leading-relaxed font-medium">{item.callout}</p>
+                    </div>
+                  )}
+
+                  {item.steps && (
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-1">
+                      {item.steps.map(step => (
+                        <div class="p-4 rounded-xl bg-slate-50 dark:bg-[#1b1a30] border border-slate-200 dark:border-[#3e3c66] flex flex-col justify-between space-y-3">
+                          <div class="space-y-1.5">
+                            <span class="text-[11px] font-mono font-bold uppercase tracking-wider text-[#895294] dark:text-[#6fb7e6] block">
+                              {step.badge}
+                            </span>
+                            <h3 class="font-heading font-bold text-slate-900 dark:text-white text-base">
+                              {step.title}
+                            </h3>
+                            <p class="text-xs text-slate-600 dark:text-[#bdaccf] leading-relaxed">
+                              {step.description}
+                            </p>
+                          </div>
+                          <a
+                            href={step.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-lg bg-[#56548c] hover:bg-[#6764a8] text-white font-bold text-xs shadow-sm transition-colors w-full"
+                          >
+                            <span>{step.buttonLabel}</span>
+                            <span aria-hidden="true">↗</span>
+                          </a>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </details>
             ))}
@@ -277,4 +358,21 @@ const faqSchema = {
       </div>
     </div>
   </div>
+
+  <script is:inline>
+    function handleFaqHash() {
+      const hash = window.location.hash.slice(1);
+      if (!hash) return;
+      const target = document.getElementById(hash);
+      if (!target) return;
+      if (target.tagName.toLowerCase() === 'details') {
+        target.open = true;
+        setTimeout(() => {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 50);
+      }
+    }
+    window.addEventListener('DOMContentLoaded', handleFaqHash);
+    window.addEventListener('hashchange', handleFaqHash);
+  </script>
 </BaseLayout>

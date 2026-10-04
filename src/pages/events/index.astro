@@ -280,10 +280,11 @@ const partnerEvents = sortedEvents.filter(e => e.data.isPartnerEvent);
 
         <div class="flex flex-col gap-3">
           <a
-            href="mailto:hello@cyberscotlandconnect.com"
-            class="px-5 py-3 rounded-lg bg-[#56548c] hover:bg-[#6764a8] text-white font-bold text-sm text-center shadow transition-colors"
+            href={`${base}/faq#submit-talk`}
+            class="px-5 py-3 rounded-lg bg-[#56548c] hover:bg-[#6764a8] text-white font-bold text-sm text-center shadow transition-colors flex items-center justify-center gap-1.5"
           >
-            Submit a Talk Idea
+            <span>Submit a Talk Proposal</span>
+            <span aria-hidden="true">↗</span>
           </a>
           <a
             href={`${base}/faq#speaking`}

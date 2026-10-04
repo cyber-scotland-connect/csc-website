@@ -11,9 +11,15 @@ type LinkCache = Record<string, CacheEntry>;
 const CACHE_FILE = path.resolve(process.cwd(), '.link-cache.json');
 const CACHE_TTL_DAYS = 30;
 const CACHE_TTL_MS = CACHE_TTL_DAYS * 24 * 60 * 60 * 1000;
-
 const forceCheck = process.argv.includes('--force') || process.argv.includes('--all');
 const checkAllCollections = process.argv.includes('--all-collections');
+const reportOnly = process.argv.includes('--report-only') || process.argv.includes('--non-fatal');
+
+let reportFilePath: string | null = null;
+const reportFileIndex = process.argv.indexOf('--report-file');
+if (reportFileIndex !== -1 && process.argv[reportFileIndex + 1]) {
+  reportFilePath = path.resolve(process.cwd(), process.argv[reportFileIndex + 1]);
+}
 
 function loadCache(): LinkCache {
   if (fs.existsSync(CACHE_FILE)) {
@@ -162,12 +168,61 @@ async function main() {
   console.log(`  Failed / Broken:      ${failedCount}`);
   console.log('=============================================\n');
 
+  const summaryMarkdown: string[] = [
+    `### 🔗 External Link Health Audit Report`,
+    ``,
+    `* **Run Date:** ${new Date().toISOString()}`,
+    `* **Total Evaluated:** ${uniqueUrls.size}`,
+    `* **Live Checked:** ${checkedCount}`,
+    `* **Valid Cached:** ${cachedCount}`,
+    `* **Broken / Failed:** ${failedCount}`,
+    ``,
+  ];
+
+  if (failedCount > 0) {
+    summaryMarkdown.push(`#### ❌ Broken Links Detected`);
+    summaryMarkdown.push(``);
+    summaryMarkdown.push(`| Source File | Target URL | Error / Status |`);
+    summaryMarkdown.push(`| :--- | :--- | :--- |`);
+    for (const f of failures) {
+      summaryMarkdown.push(`| \`${f.source}\` | [${f.url}](${f.url}) | \`${f.status}\` |`);
+    }
+    summaryMarkdown.push(``);
+    summaryMarkdown.push(`> ℹ️ *Please review and update or remove dead links in the content directory.*`);
+  } else {
+    summaryMarkdown.push(`✅ All external links passed health checks.`);
+  }
+
+  const summaryText = summaryMarkdown.join('\n');
+
+  if (process.env.GITHUB_STEP_SUMMARY) {
+    try {
+      fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, summaryText + '\n');
+    } catch (e) {
+      console.warn('Failed to write to GITHUB_STEP_SUMMARY:', e);
+    }
+  }
+
+  if (reportFilePath) {
+    if (failedCount > 0) {
+      fs.writeFileSync(reportFilePath, summaryText, 'utf-8');
+      console.log(`📝 Broken link report written to: ${reportFilePath}`);
+    } else if (fs.existsSync(reportFilePath)) {
+      fs.unlinkSync(reportFilePath);
+    }
+  }
+
   if (failedCount > 0) {
     console.error('❌ Broken links detected:');
     for (const f of failures) {
       console.error(`  - [${f.status}] ${f.source} -> ${f.url}`);
     }
-    process.exit(1);
+    if (reportOnly) {
+      console.log('⚠️ Running in report-only mode: Exiting with code 0.');
+      process.exit(0);
+    } else {
+      process.exit(1);
+    }
   } else {
     console.log('✅ All external links verified successfully.');
     process.exit(0);
