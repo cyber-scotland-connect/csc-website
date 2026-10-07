@@ -101,19 +101,47 @@ function slugify(t: string): string {
     .slice(0, 45);
 }
 
+const HTML_ENTITIES: Record<string, string> = {
+  '&lt;': '<',
+  '&gt;': '>',
+  '&quot;': '"',
+  '&apos;': "'",
+  '&amp;': '&',
+  '&#038;': '&',
+  '&#38;': '&',
+  '&#039;': "'",
+  '&#39;': "'",
+  '&#8217;': "'",
+  '&#8216;': "'",
+  '&#8220;': '"',
+  '&#8221;': '"',
+  '&#8211;': '–',
+  '&#8212;': '—',
+  '&nbsp;': ' ',
+};
+
 // Helper: Strip HTML tags and clean up text
 function stripHtml(html: string): string {
   return html
     .replace(/<[^>]+>/g, ' ')
-    .replace(/&amp;/g, '&')
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
-    .replace(/&quot;/g, '"')
-    .replace(/&#038;/g, '&')
-    .replace(/&#8217;/g, "'")
-    .replace(/&#8220;/g, '"')
-    .replace(/&#8221;/g, '"')
-    .replace(/&#8211;/g, '–')
+    .replace(/&(?:#\d+|#x[\da-f]+|[a-z\d]+);/gi, (entity) => {
+      const lower = entity.toLowerCase();
+      if (HTML_ENTITIES[lower]) {
+        return HTML_ENTITIES[lower];
+      }
+      if (lower.startsWith('&#x')) {
+        const code = parseInt(lower.slice(3, -1), 16);
+        if (!isNaN(code) && code > 0 && code <= 0x10ffff) {
+          return String.fromCodePoint(code);
+        }
+      } else if (lower.startsWith('&#')) {
+        const code = parseInt(lower.slice(2, -1), 10);
+        if (!isNaN(code) && code > 0 && code <= 0x10ffff) {
+          return String.fromCodePoint(code);
+        }
+      }
+      return entity;
+    })
     .replace(/\s+/g, ' ')
     .trim();
 }

@@ -21,10 +21,18 @@ REPO_DIR="/Users/harrymclaren/Projects/csc-website"
 LOG_DIR="$REPO_DIR/logs"
 LOG_FILE="$LOG_DIR/event-discovery.log"
 BUN_BIN="$HOME/Projects/LifeOS/local-bun/bin/bun"
+GH_BIN="/opt/homebrew/bin/gh"
+OSASCRIPT_BIN="/usr/bin/osascript"
 
-# Fallback to PATH bun if local-bun is not at standard location
+# Fallbacks if binaries are not at standard paths
 if [ ! -x "$BUN_BIN" ]; then
   BUN_BIN="$(which bun 2>/dev/null || echo 'bun')"
+fi
+if [ ! -x "$GH_BIN" ]; then
+  GH_BIN="$(which gh 2>/dev/null || echo 'gh')"
+fi
+if [ ! -x "$OSASCRIPT_BIN" ]; then
+  OSASCRIPT_BIN="$(which osascript 2>/dev/null || echo 'osascript')"
 fi
 
 mkdir -p "$LOG_DIR"
@@ -58,8 +66,30 @@ if [ -n "$NEW_FILES" ]; then
     
     if git push -u origin "$BRANCH" >> "$LOG_FILE" 2>&1; then
       echo "Pushed branch $BRANCH to origin." >> "$LOG_FILE"
+      
+      echo "Creating Pull Request via GitHub CLI..." >> "$LOG_FILE"
+      PR_URL=$("$GH_BIN" pr create \
+        --base main \
+        --head "$BRANCH" \
+        --title "feat(events): auto-discovered Scottish cyber events ($(date '+%Y-%m-%d'))" \
+        --body "### 🤖 Auto-Discovered Events ($(date '+%Y-%m-%d'))
+
+The CSC Event Discovery Engine identified and staged new community events:
+
+\`\`\`
+$NEW_FILES
+\`\`\`
+
+- ✅ Astro site build & schema validation verified clean
+- ✅ ESLint passed with 0 errors" 2>&1 || true)
+      
+      echo "PR status: $PR_URL" >> "$LOG_FILE"
+      
+      # macOS User Notification
+      "$OSASCRIPT_BIN" -e "display notification \"New events discovered! PR created: $BRANCH\" with title \"CSC Event Discovery\" sound name \"Glass\"" 2>/dev/null || true
     else
       echo "Failed to push branch $BRANCH to origin (check network/credentials)." >> "$LOG_FILE"
+      "$OSASCRIPT_BIN" -e "display notification \"Event discovery found new events, but git push failed.\" with title \"CSC Event Discovery\" sound name \"Basso\"" 2>/dev/null || true
     fi
     git checkout main >> "$LOG_FILE" 2>&1
   else
