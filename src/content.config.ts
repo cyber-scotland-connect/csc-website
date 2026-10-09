@@ -31,7 +31,7 @@ const eventsCollection = defineCollection({
     meetupUrl: z.string().url().optional(),
     registrationUrl: z.string().url().optional(),
     streamUrl: z.string().url().optional(),
-    slidesUrl: z.string().url().optional(),
+    slidesUrl: z.string().optional(),
     recordingUrl: z.string().url().optional(),
     accessibility: z
       .object({
@@ -48,6 +48,7 @@ const eventsCollection = defineCollection({
           company: z.string().optional(),
           talkTitle: z.string(),
           abstract: z.string().optional(),
+          slidesUrl: z.string().optional(),
         })
       )
       .optional(),

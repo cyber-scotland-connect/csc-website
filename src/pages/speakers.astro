@@ -14,6 +14,7 @@ interface SpeakerTalk {
   eventTitle: string;
   eventDate: Date;
   city: string;
+  slidesUrl?: string;
 }
 
 interface AggregatedSpeaker {
@@ -61,6 +62,7 @@ allEvents.forEach(event => {
       eventTitle: event.data.title,
       eventDate: new Date(event.data.date),
       city: event.data.city,
+      slidesUrl: speaker.slidesUrl,
     };
 
     const leadershipRole = leadershipRoles[key];
@@ -193,9 +195,23 @@ const totalTalks = speakersList.reduce((acc, s) => acc + s.talkCount, 0);
                 </span>
                 {speaker.talks.map(talk => (
                   <div class="bg-slate-50 dark:bg-[#1b1a30] p-3.5 rounded-xl border border-slate-200/80 dark:border-[#3e3c66]/60 space-y-1.5">
-                    <h3 class="text-sm font-bold text-[#56548c] dark:text-[#6fb7e6] leading-snug">
-                      "{talk.talkTitle}"
-                    </h3>
+                    <div class="flex flex-wrap items-baseline justify-between gap-2">
+                      <h3 class="text-sm font-bold text-[#56548c] dark:text-[#6fb7e6] leading-snug">
+                        "{talk.talkTitle}"
+                      </h3>
+                      {talk.slidesUrl && (
+                        <a
+                          href={talk.slidesUrl.startsWith('http') ? talk.slidesUrl : `${base}${talk.slidesUrl}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          class="shrink-0 inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-[#895294]/10 dark:bg-[#6fb7e6]/15 hover:bg-[#895294]/20 dark:hover:bg-[#6fb7e6]/25 text-[#895294] dark:text-[#6fb7e6] border border-[#895294]/30 dark:border-[#6fb7e6]/40 transition-colors shadow-sm"
+                          title="View slide deck for this session"
+                        >
+                          <span aria-hidden="true">📊</span>
+                          <span>Slides (PDF)</span> ↗
+                        </a>
+                      )}
+                    </div>
                     <div class="flex flex-wrap items-center gap-2 text-xs text-slate-500 dark:text-[#bdaccf]">
                       <a 
                         href={`${base}/events/${talk.eventSlug}`}

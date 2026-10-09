@@ -258,7 +258,7 @@ const eventSchema = {
         {
           data.slidesUrl && (
             <a
-              href={data.slidesUrl}
+              href={data.slidesUrl.startsWith('http') ? data.slidesUrl : `${base}${data.slidesUrl}`}
               target="_blank"
               rel="noopener noreferrer"
               class="px-4 py-2.5 rounded-lg bg-white dark:bg-[#2a2948] hover:bg-slate-50 dark:hover:bg-[#382b5c] border border-slate-300 dark:border-[#56548c] text-slate-800 dark:text-white font-medium text-sm transition-colors flex items-center gap-1.5"
@@ -420,6 +420,19 @@ const eventSchema = {
                     <p class="text-sm text-slate-600 dark:text-[#bdaccf] leading-relaxed">
                       {speaker.abstract}
                     </p>
+                  )}
+                  {speaker.slidesUrl && (
+                    <div class="mt-4 pt-3 border-t border-slate-100 dark:border-[#3e3c66]/50">
+                      <a
+                        href={speaker.slidesUrl.startsWith('http') ? speaker.slidesUrl : `${base}${speaker.slidesUrl}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-[#895294]/10 dark:bg-[#6fb7e6]/15 hover:bg-[#895294]/20 dark:hover:bg-[#6fb7e6]/25 text-[#895294] dark:text-[#6fb7e6] border border-[#895294]/30 dark:border-[#6fb7e6]/40 transition-colors shadow-sm"
+                      >
+                        <span aria-hidden="true">📊</span>
+                        <span>View Slides (PDF)</span> ↗
+                      </a>
+                    </div>
                   )}
                 </div>
               );
