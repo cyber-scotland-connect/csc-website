@@ -212,6 +212,18 @@ function isValidUrl(u?: string): boolean {
   }
 }
 
+// Helper: Check if a seed URL belongs to a UK-wide organization (rather than a dedicated Scottish source)
+// Uses parsed URL.hostname to satisfy CodeQL js/incomplete-url-substring-sanitization
+const UK_WIDE_DOMAINS = ['theiet.org', 'ciisec.org', 'thesasig.com'] as const;
+function isUkWideSourceUrl(rawUrl: string): boolean {
+  try {
+    const host = new URL(rawUrl).hostname.toLowerCase();
+    return UK_WIDE_DOMAINS.some((domain) => host === domain || host.endsWith(`.${domain}`));
+  } catch {
+    return false;
+  }
+}
+
 // Helper: Natural language English date extraction (supports full & abbreviated months, slash dates, and year inference)
 const MONTHS: Record<string, string> = {
   jan: '01',
@@ -780,7 +792,7 @@ async function parseHtmlSeedUrl(
       description: rawDesc,
       sourceUrl: seed.url,
       sourceType: 'ld-json',
-      isDedicatedScottishSource: !seed.url.includes('theiet.org') && !seed.url.includes('ciisec.org') && !seed.url.includes('thesasig.com'),
+      isDedicatedScottishSource: !isUkWideSourceUrl(seed.url),
     });
   }
 
