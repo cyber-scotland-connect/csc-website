@@ -1,7 +1,8 @@
 #!/bin/zsh -l
-# CSC Event Discovery — Weekly cron runner
-# Fires every Monday 08:00, logs to logs/event-discovery.log (gitignored)
-# Crontab entry: 0 8 * * 1 /Users/harrymclaren/Projects/csc-website/scripts/run-event-discovery.sh
+# CSC Event Discovery — Weekly launchd + Local AI runner
+# Fires every Monday 08:30 (and catches up on wake via launchd StartCalendarInterval),
+# logs to logs/event-discovery.log (gitignored)
+# LaunchAgent: ~/Library/LaunchAgents/com.cyberscotlandconnect.event-discovery.plist
 
 set -euo pipefail
 
@@ -43,8 +44,8 @@ echo "========================================" >> "$LOG_FILE"
 
 cd "$REPO_DIR"
 
-# 1. Deterministic Fast Feed Discovery (RSS, iCal, Bluesky)
-echo "Executing deterministic feed discovery..." >> "$LOG_FILE"
+# 1. Deterministic + Local Ollama AI/NLP Feed & Seed Discovery
+echo "Executing deterministic + Local AI/NLP feed discovery..." >> "$LOG_FILE"
 "$BUN_BIN" run discover >> "$LOG_FILE" 2>&1 || true
 
 # 2. Check for new event files

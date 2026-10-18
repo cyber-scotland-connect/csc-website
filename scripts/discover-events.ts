@@ -1,13 +1,14 @@
 #!/usr/bin/env bun
 /**
- * CSC Event Discovery Engine v2.1
- * Deterministic, fast event ingestion across RSS, iCal, Bluesky, WP Tribe Events API,
- * Squarespace JSON API, and HTML Schema.org ld+json seed pages.
+ * CSC Event Discovery Engine v2.2
+ * Deterministic + Local AI/NLP event ingestion across RSS, iCal, Bluesky, WP Tribe Events API,
+ * Squarespace JSON API, and HTML Schema.org ld+json + unstructured seed pages.
  *
  * Usage:
- *   bun run scripts/discover-events.ts             # Dry run (scans and reports)
- *   bun run scripts/discover-events.ts --write     # Writes new events to src/content/events/
- *   bun run scripts/discover-events.ts --json      # Outputs candidates as JSON
+ *   bun run scripts/discover-events.ts                # Dry run (deterministic scan)
+ *   bun run scripts/discover-events.ts --ai           # Dry run with local Ollama NLP extraction & refinement
+ *   bun run scripts/discover-events.ts --ai --write   # Writes AI-verified new events to src/content/events/
+ *   bun run scripts/discover-events.ts --json         # Outputs candidates as JSON
  */
 
 import fs from 'fs';
@@ -110,10 +111,15 @@ const EVENTS_DIR = path.join(REPO_ROOT, 'src/content/events');
 
 const isWriteMode = process.argv.includes('--write');
 const isJsonMode = process.argv.includes('--json');
+const isAiMode = process.argv.includes('--ai');
 const isVerbose = process.argv.includes('--verbose') || process.argv.includes('-v');
 
+const LOCAL_AI_BASE_URL = 'http://127.0.0.1:11434';
+const LOCAL_AI_MODEL = process.env.LOCAL_AI_MODEL || 'gemma3:4b';
+let localAiOnline = false;
+
 const USER_AGENT =
-  'CSC-Event-Discovery/2.1 (+https://cyberscotlandconnect.com; bot@cyberscotlandconnect.com)';
+  'CSC-Event-Discovery/2.2 (+https://cyberscotlandconnect.com; bot@cyberscotlandconnect.com)';
 
 // Helper: Normalize strings for deduplication
 export function normalizeTitle(t: string): string {
@@ -796,7 +802,206 @@ async function parseHtmlSeedUrl(
     });
   }
 
+  // Fallback: If 0 JSON-LD events were found on this seed page and --ai (local Ollama) is active,
+  // run a lightweight NLP pass over date-bearing HTML snippets on Scottish seed pages.
+  if (events.length === 0 && localAiOnline && !isUkWideSourceUrl(seed.url)) {
+    const aiEvents = await extractSeedEventsWithLocalAi(html, seed, todayStr);
+    events.push(...aiEvents);
+  }
+
   return events;
+}
+
+// Check if local Ollama daemon on 127.0.0.1:11434 is reachable
+async function checkLocalAiAvailable(): Promise<boolean> {
+  try {
+    const parsed = new URL(LOCAL_AI_BASE_URL);
+    if (parsed.hostname !== '127.0.0.1' && parsed.hostname !== 'localhost') return false;
+    const res = await fetch(`${LOCAL_AI_BASE_URL}/api/tags`, {
+      method: 'GET',
+      signal: AbortSignal.timeout(2000),
+    });
+    return res.ok;
+  } catch {
+    return false;
+  }
+}
+
+// Call local Ollama OpenAI-compatible JSON completion endpoint on loopback
+async function queryLocalAiJson<T>(
+  systemPrompt: string,
+  userPrompt: string,
+  timeoutMs = 18000
+): Promise<T | null> {
+  try {
+    const parsed = new URL(LOCAL_AI_BASE_URL);
+    if (parsed.hostname !== '127.0.0.1' && parsed.hostname !== 'localhost') return null;
+
+    const res = await fetch(`${LOCAL_AI_BASE_URL}/v1/chat/completions`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: LOCAL_AI_MODEL,
+        messages: [
+          { role: 'system', content: systemPrompt },
+          { role: 'user', content: userPrompt },
+        ],
+        temperature: 0.1,
+        max_tokens: 600,
+        response_format: { type: 'json_object' },
+      }),
+      signal: AbortSignal.timeout(timeoutMs),
+    });
+    if (!res.ok) return null;
+    const data = (await res.json()) as {
+      choices?: Array<{ message?: { content?: string } }>;
+    };
+    const rawContent = data.choices?.[0]?.message?.content;
+    if (!rawContent) return null;
+    return JSON.parse(rawContent) as T;
+  } catch {
+    return null;
+  }
+}
+
+interface AiExtractedSeedPayload {
+  events?: Array<{
+    title?: string;
+    date?: string;
+    time?: string;
+    location?: string;
+    city?: string;
+    accessType?: string;
+    description?: string;
+    isCyberRelevant?: boolean;
+  }>;
+}
+
+// Extract structured events from unstructured HTML seed pages using local Ollama NLP
+async function extractSeedEventsWithLocalAi(
+  rawHtml: string,
+  seed: SeedUrlSource,
+  todayStr: string
+): Promise<DiscoveredEvent[]> {
+  // Strip script/style/svg/nav/footer blocks before extracting text
+  const cleanedText = stripHtml(
+    rawHtml
+      .replace(/<(script|style|svg|nav|footer|header|noscript)[\s\S]*?<\/\1>/gi, ' ')
+  );
+
+  // Only invoke local AI if the page text actually mentions a future year or upcoming event cues
+  if (
+    !/\b(2026|2027)\b/.test(cleanedText) ||
+    !/\b(cyber|security|infosec|hacking|owasp|resilience|fraud|ciso|meetup|conference|workshop|summit)\b/i.test(
+      cleanedText
+    )
+  ) {
+    return [];
+  }
+
+  const snippet = cleanedText.slice(0, 3200);
+  const systemPrompt =
+    `You extract upcoming Scottish cybersecurity/infosec events from webpage text. Today is ${todayStr}. ` +
+    `Return ONLY valid JSON matching: {"events":[{"title":"string","date":"YYYY-MM-DD","time":"HH:MM - HH:MM or empty","location":"venue","city":"Edinburgh|Glasgow|Dundee|Aberdeen|Virtual|Scotland-wide","accessType":"Open/Public|Corporate/Paid|Student/Academic|Restricted/Civil Service","description":"2 factual sentences","isCyberRelevant":true}]}. ` +
+    `Never invent dates or events. Omit past events (< ${todayStr}) or general news articles.`;
+
+  const userPrompt = `Source: ${seed.name} (${seed.city}, ${seed.url})\nText:\n${snippet}`;
+  const result = await queryLocalAiJson<AiExtractedSeedPayload>(systemPrompt, userPrompt, 15000);
+  if (!result || !Array.isArray(result.events)) return [];
+
+  const extracted: DiscoveredEvent[] = [];
+  for (const item of result.events) {
+    if (!item.title || !item.date || item.isCyberRelevant === false) continue;
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(item.date) || item.date < todayStr) continue;
+
+    const fullText = `${item.title} ${item.description || ''} ${item.location || ''}`;
+    const city = detectCity(fullText, (item.city as CityType) || seed.city);
+
+    extracted.push({
+      title: stripHtml(item.title).slice(0, 110),
+      date: item.date,
+      time: item.time && /\d{1,2}:\d{2}/.test(item.time) ? item.time.trim() : undefined,
+      location: item.location ? stripHtml(item.location) : city,
+      city,
+      isPartnerEvent: true,
+      partnerName: seed.name.split('—')[0].trim(),
+      accessType: detectAccessType(seed.category, fullText),
+      meetupUrl: seed.url,
+      description: item.description ? stripHtml(item.description).slice(0, 320) : item.title,
+      sourceUrl: seed.url,
+      sourceType: 'ld-json',
+      isDedicatedScottishSource: true,
+    });
+  }
+  return extracted;
+}
+
+interface AiRefinementPayload {
+  isActualFutureEvent?: boolean;
+  isCyberRelevant?: boolean;
+  cleanTitle?: string;
+  cleanDescription?: string;
+  city?: CityType;
+  accessType?: AccessType;
+}
+
+// Refine & verify a candidate event using local Ollama NLP
+async function refineCandidateWithLocalAi(
+  ev: DiscoveredEvent,
+  todayStr: string
+): Promise<{ keep: boolean; event: DiscoveredEvent }> {
+  const systemPrompt =
+    `You are the Cyber Scotland Connect event curator. Today is ${todayStr}. ` +
+    `Evaluate this candidate Scottish event and return JSON: ` +
+    `{"isActualFutureEvent":boolean,"isCyberRelevant":boolean,"cleanTitle":"string","cleanDescription":"2 concise factual sentences without HTML or promotional fluff","city":"Edinburgh|Glasgow|Dundee|Aberdeen|Virtual|Scotland-wide","accessType":"Open/Public|Corporate/Paid|Student/Academic|Restricted/Civil Service"}. ` +
+    `Set isActualFutureEvent=false if it is a news recap, award winner announcement, or job listing. ` +
+    `Set isCyberRelevant=true for cybersecurity, infosec, hacking, digital resilience, fraud, OT/ICS, AI security, or public sector security events.`;
+
+  const userPrompt = JSON.stringify({
+    title: ev.title,
+    date: ev.date,
+    location: ev.location,
+    city: ev.city,
+    partnerName: ev.partnerName,
+    description: ev.description,
+  });
+
+  const refined = await queryLocalAiJson<AiRefinementPayload>(systemPrompt, userPrompt, 15000);
+  if (!refined) return { keep: true, event: ev };
+
+  if (refined.isActualFutureEvent === false || refined.isCyberRelevant === false) {
+    return { keep: false, event: ev };
+  }
+
+  const validCities: CityType[] = [
+    'Edinburgh',
+    'Glasgow',
+    'Dundee',
+    'Aberdeen',
+    'Virtual',
+    'Scotland-wide',
+  ];
+  const validAccess: AccessType[] = [
+    'Open/Public',
+    'Corporate/Paid',
+    'Student/Academic',
+    'Restricted/Civil Service',
+  ];
+
+  return {
+    keep: true,
+    event: {
+      ...ev,
+      title: refined.cleanTitle?.trim() || ev.title,
+      description: refined.cleanDescription?.trim() || ev.description,
+      city:
+        refined.city && validCities.includes(refined.city) ? refined.city : ev.city,
+      accessType:
+        refined.accessType && validAccess.includes(refined.accessType)
+          ? refined.accessType
+          : ev.accessType,
+    },
+  };
 }
 
 // Ingest Bluesky Profile RSS
@@ -886,10 +1091,18 @@ async function mapConcurrent<T, R>(
 async function main() {
   const todayStr = new Date().toISOString().slice(0, 10);
 
+  if (isAiMode) {
+    localAiOnline = await checkLocalAiAvailable();
+  }
+
   if (!isJsonMode) {
     console.log(`\n=================================================`);
-    console.log(`  CSC Event Discovery Engine v2.1`);
-    console.log(`  Date: ${todayStr} | Mode: ${isWriteMode ? 'WRITE' : 'DRY-RUN'}`);
+    console.log(`  CSC Event Discovery Engine v2.2`);
+    console.log(
+      `  Date: ${todayStr} | Mode: ${isWriteMode ? 'WRITE' : 'DRY-RUN'} | Local AI (${LOCAL_AI_MODEL}): ${
+        isAiMode ? (localAiOnline ? 'ONLINE' : 'OFFLINE (fallback)') : 'DISABLED'
+      }`
+    );
     console.log(`=================================================\n`);
   }
 
@@ -1027,7 +1240,20 @@ async function main() {
     if (isDuplicateInRun) continue;
 
     seenInRun.add(normalizedKey);
-    newEvents.push(ev);
+
+    if (localAiOnline) {
+      if (!isJsonMode && isVerbose) {
+        process.stdout.write(`  [AI-NLP] Verifying & polishing "${ev.title}"... `);
+      }
+      const { keep, event: polished } = await refineCandidateWithLocalAi(ev, todayStr);
+      if (!isJsonMode && isVerbose) {
+        console.log(keep ? 'KEEP' : 'SKIP (filtered by AI)');
+      }
+      if (!keep) continue;
+      newEvents.push(polished);
+    } else {
+      newEvents.push(ev);
+    }
   }
 
   if (isJsonMode) {
