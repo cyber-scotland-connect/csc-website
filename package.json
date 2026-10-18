@@ -16,7 +16,11 @@
     "format:write": "prettier --write .",
     "check:links": "bun run scripts/check-links.ts",
     "discover": "bun run scripts/discover-events.ts --write",
-    "discover:dry": "bun run scripts/discover-events.ts"
+    "discover:dry": "bun run scripts/discover-events.ts",
+    "notify:discord:csc": "bun run scripts/notify-discord.ts --scope csc",
+    "notify:discord:scotland": "bun run scripts/notify-discord.ts --scope scotland",
+    "notify:discord:dry:csc": "bun run scripts/notify-discord.ts --scope csc --latest --dry-run",
+    "notify:discord:dry:scotland": "bun run scripts/notify-discord.ts --scope scotland --latest --dry-run"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.10",

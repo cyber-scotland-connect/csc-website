@@ -5,6 +5,17 @@ on:
     branches:
       - main
   workflow_dispatch:
+    inputs:
+      test_discord_scope:
+        description: "Send a test Discord notification for the next upcoming event (none | csc | scotland | both)"
+        required: false
+        default: "none"
+        type: choice
+        options:
+          - none
+          - csc
+          - scotland
+          - both
 
 permissions:
   contents: read
@@ -50,3 +61,35 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v5
+
+      - name: Checkout repository for event history
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Notify Discord — CSC Official Events Channel
+        env:
+          DISCORD_CSC_WEBHOOK_URL: ${{ secrets.DISCORD_CSC_WEBHOOK_URL }}
+          TEST_SCOPE: ${{ inputs.test_discord_scope }}
+        run: |
+          if [ "$TEST_SCOPE" = "csc" ] || [ "$TEST_SCOPE" = "both" ]; then
+            bun run scripts/notify-discord.ts --scope csc --latest
+          else
+            bun run scripts/notify-discord.ts --scope csc
+          fi
+
+      - name: Notify Discord — Scotland Cyber Events Channel (Excludes CSC)
+        env:
+          DISCORD_SCOTLAND_WEBHOOK_URL: ${{ secrets.DISCORD_SCOTLAND_WEBHOOK_URL }}
+          TEST_SCOPE: ${{ inputs.test_discord_scope }}
+        run: |
+          if [ "$TEST_SCOPE" = "scotland" ] || [ "$TEST_SCOPE" = "both" ]; then
+            bun run scripts/notify-discord.ts --scope scotland --latest
+          else
+            bun run scripts/notify-discord.ts --scope scotland
+          fi
