@@ -1,12 +1,12 @@
 ---
 title: '2600 Glasgow - Informal hacker/infosec/computer security meetup'
 date: 2026-11-06
-location: 'Scotland'
+location: 'Glasgow'
 city: 'Glasgow'
 isPartnerEvent: true
 partnerName: 'Glasgow Infosec / 2600'
 accessType: 'Open/Public'
-meetupUrl: 'https://www.meetup.com/glasgow-computer-security-meetup-grou'
+meetupUrl: 'https://www.meetup.com/glasgow-computer-security-meetup-group/events/316745912/'
 accessibility:
   stepFree: null
   hearingLoop: null
@@ -15,6 +15,6 @@ speakers: []
 agenda: []
 ---
 
-Glasgow Infosec, Cybersecurity and Hacker Meetup The monthly
+Glasgow Infosec, Cybersecurity and Hacker Meetup: the monthly 2600 Glasgow meeting. Hackers, security practitioners, students, technology enthusiasts, and curious newcomers are all welcome.
 
-[SOURCE: https://www.meetup.com/glasgow-computer-security-meetup-grou]
+[SOURCE: https://www.meetup.com/glasgow-computer-security-meetup-group/events/316745912/]

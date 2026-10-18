@@ -64,6 +64,9 @@ if [ -n "$NEW_FILES" ]; then
     git add src/content/events/ >> "$LOG_FILE" 2>&1
     git commit -m "feat(events): auto-discovered Scottish cyber events ($(date '+%Y-%m-%d'))" >> "$LOG_FILE" 2>&1
     
+    # Ensure git uses GitHub CLI credentials in headless cron
+    "$GH_BIN" auth setup-git >> "$LOG_FILE" 2>&1 || true
+    
     if git push -u origin "$BRANCH" >> "$LOG_FILE" 2>&1; then
       echo "Pushed branch $BRANCH to origin." >> "$LOG_FILE"
       

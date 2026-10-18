@@ -1,7 +1,7 @@
 {
   "_comment": "Seed configuration for the Antigravity automated event discovery agent. Add new community URLs here — no code changes needed. All sources are publicly listed on cyberscotlandconnect.com.",
-  "_version": "1.0.0",
-  "_updated": "2026-09-08",
+  "_version": "2.0.0",
+  "_updated": "2026-10-18",
 
   "seedUrls": [
     {
@@ -26,6 +26,20 @@
       "cadence": "Quarterly"
     },
     {
+      "name": "ISC2 Scotland Chapter",
+      "url": "https://www.isc2chapter-scotland.co.uk/",
+      "category": "community",
+      "city": "Scotland-wide",
+      "cadence": "Quarterly"
+    },
+    {
+      "name": "Women in Cybersecurity Scotland (WiCS)",
+      "url": "https://www.cyberscotland.com/women-in-cyber/",
+      "category": "community",
+      "city": "Scotland-wide",
+      "cadence": "Bi-monthly"
+    },
+    {
       "name": "Hack Thursday",
       "url": "https://hackthurs.day/",
       "category": "community",
@@ -40,18 +54,81 @@
       "cadence": "Monthly (1st Friday)"
     },
     {
+      "name": "DEF CON Edinburgh (DC44131)",
+      "url": "https://dc44131.org/",
+      "category": "community",
+      "city": "Edinburgh",
+      "cadence": "Monthly"
+    },
+    {
+      "name": "DC44141 Glasgow Hacker Meetup",
+      "url": "https://dc44141.github.io/",
+      "category": "community",
+      "city": "Glasgow",
+      "cadence": "Monthly"
+    },
+    {
+      "name": "Glasgow Social Infosec Wiki",
+      "url": "https://wiki.glasgow.social/infosec",
+      "category": "community",
+      "city": "Glasgow",
+      "cadence": "Monthly"
+    },
+    {
       "name": "Abertay Hackers — Securi-Tay & Events",
       "url": "https://hacksoc.co.uk",
-      "category": "community",
+      "category": "academic",
       "city": "Dundee",
       "cadence": "Annual conference + weekly semester"
     },
     {
       "name": "ENUSEC (Edinburgh Napier Cyber Society)",
       "url": "https://enusec.org",
-      "category": "community",
+      "category": "academic",
       "city": "Edinburgh",
       "cadence": "Weekly during semester"
+    },
+    {
+      "name": "SIGINT (Edinburgh CompSoc)",
+      "url": "https://sigint.mx/",
+      "category": "academic",
+      "city": "Edinburgh",
+      "cadence": "Weekly during semester"
+    },
+    {
+      "name": "Glasgow University Hacking Society (GUHS)",
+      "url": "https://www.glasgowunisrc.org/organisation/15324/",
+      "category": "academic",
+      "city": "Glasgow",
+      "cadence": "Weekly during semester"
+    },
+    {
+      "name": "STACS (St Andrews Computing Society)",
+      "url": "https://www.yourunion.net/activities/societies/explore/stacs/",
+      "category": "academic",
+      "city": "Dundee",
+      "cadence": "Weekly during semester"
+    },
+    {
+      "name": "StrathCyber Outreach",
+      "url": "https://www.strath.ac.uk/science/computerinformationsciences/strathcyber/",
+      "category": "academic",
+      "city": "Glasgow",
+      "cadence": "Academic sessions and events"
+    },
+    {
+      "name": "GCU Ethical Hacking Society",
+      "url": "https://www.gcustudents.co.uk/groups/ethical-hacking-society",
+      "category": "academic",
+      "city": "Glasgow",
+      "cadence": "Bi-weekly during semester"
+    },
+    {
+      "name": "Turing's Testers",
+      "url": "https://www.cyberfirstschools.co.uk/",
+      "category": "academic",
+      "city": "Scotland-wide",
+      "cadence": "Academic sessions"
     },
     {
       "name": "Scotland Women in Technology",
@@ -75,25 +152,18 @@
       "cadence": "Ongoing"
     },
     {
-      "name": "SIGINT (Edinburgh CompSoc)",
-      "url": "https://sigint.mx/",
+      "name": "Scottish Tech Army",
+      "url": "https://www.scottishtecharmy.org/",
       "category": "community",
+      "city": "Scotland-wide",
+      "cadence": "Ongoing"
+    },
+    {
+      "name": "CodeBase Events & Techscaler",
+      "url": "https://www.thisiscodebase.com/events",
+      "category": "partner",
       "city": "Edinburgh",
-      "cadence": "Weekly during semester"
-    },
-    {
-      "name": "StrathCyber Outreach",
-      "url": "https://www.strath.ac.uk/science/computerinformationsciences/strathcyber/",
-      "category": "community",
-      "city": "Glasgow",
-      "cadence": "Academic sessions and events"
-    },
-    {
-      "name": "GCU Ethical Hacking Society",
-      "url": "https://www.gcustudents.co.uk/groups/ethical-hacking-society",
-      "category": "community",
-      "city": "Glasgow",
-      "cadence": "Bi-weekly during semester"
+      "cadence": "Ongoing"
     },
     {
       "name": "ScotlandIS — Events & Cyber Cluster",
@@ -113,7 +183,7 @@
       "name": "The Cyber Academy — Events",
       "url": "https://thecyberacademy.org/events",
       "category": "partner",
-      "city": "Scotland-wide",
+      "city": "Edinburgh",
       "cadence": "Ongoing"
     },
     {
@@ -140,15 +210,43 @@
     {
       "name": "Edinburgh Napier University — Events",
       "url": "https://www.napier.ac.uk/about-us/our-schools/school-of-computing/events",
-      "category": "partner",
+      "category": "academic",
       "city": "Edinburgh",
       "cadence": "Ongoing"
     },
     {
       "name": "University of Strathclyde — CIS Events",
       "url": "https://www.strath.ac.uk/events/",
-      "category": "partner",
+      "category": "academic",
       "city": "Glasgow",
+      "cadence": "Ongoing"
+    },
+    {
+      "name": "University of Edinburgh — Informatics Security & Privacy",
+      "url": "https://web.inf.ed.ac.uk/infweb/events",
+      "category": "academic",
+      "city": "Edinburgh",
+      "cadence": "Ongoing"
+    },
+    {
+      "name": "University of Glasgow — School of Computing Science Events",
+      "url": "https://www.gla.ac.uk/schools/computing/events/",
+      "category": "academic",
+      "city": "Glasgow",
+      "cadence": "Ongoing"
+    },
+    {
+      "name": "Robert Gordon University (RGU) — Cyber & Computing Events",
+      "url": "https://www.rgu.ac.uk/events",
+      "category": "academic",
+      "city": "Aberdeen",
+      "cadence": "Ongoing"
+    },
+    {
+      "name": "Heriot-Watt University — MACS & National Robotarium Events",
+      "url": "https://www.hw.ac.uk/uk/events.htm",
+      "category": "academic",
+      "city": "Edinburgh",
       "cadence": "Ongoing"
     },
     {
@@ -166,10 +264,87 @@
       "cadence": "Annual"
     },
     {
+      "name": "BSides Scotland / BSides Glasgow",
+      "url": "https://www.bsidesscotland.org/",
+      "category": "community",
+      "city": "Scotland-wide",
+      "cadence": "Annual"
+    },
+    {
+      "name": "BCS Edinburgh Branch",
+      "url": "https://www.bcs.org/membership-and-registrations/member-communities/edinburgh-branch/",
+      "category": "community",
+      "city": "Edinburgh",
+      "cadence": "Monthly"
+    },
+    {
+      "name": "BCS Glasgow Branch",
+      "url": "https://www.bcs.org/membership-and-registrations/member-communities/glasgow-branch/",
+      "category": "community",
+      "city": "Glasgow",
+      "cadence": "Monthly"
+    },
+    {
+      "name": "BCS Aberdeen Branch",
+      "url": "https://www.bcs.org/membership-and-registrations/member-communities/aberdeen-branch/",
+      "category": "community",
+      "city": "Aberdeen",
+      "cadence": "Monthly"
+    },
+    {
+      "name": "BCS Tayside & Fife Branch",
+      "url": "https://www.bcs.org/membership-and-registrations/member-communities/tayside-and-fife-branch/",
+      "category": "community",
+      "city": "Dundee",
+      "cadence": "Monthly"
+    },
+    {
+      "name": "CIISec (Chartered Institute of Information Security) — Events",
+      "url": "https://www.ciisec.org/Events",
+      "category": "community",
+      "city": "Scotland-wide",
+      "cadence": "Quarterly"
+    },
+    {
+      "name": "SASIG (Security Awareness Special Interest Group) — Scotland",
+      "url": "https://www.thesasig.com/calendar/",
+      "category": "industry",
+      "city": "Scotland-wide",
+      "cadence": "Quarterly"
+    },
+    {
+      "name": "IET Scotland — Events",
+      "url": "https://events.theiet.org/",
+      "category": "community",
+      "city": "Scotland-wide",
+      "cadence": "Monthly"
+    },
+    {
+      "name": "CENSIS (Innovation Centre for Sensing, Imaging & IoT) — Events",
+      "url": "https://censis.org.uk/events/",
+      "category": "partner",
+      "city": "Glasgow",
+      "cadence": "Monthly"
+    },
+    {
+      "name": "FinTech Scotland — Events",
+      "url": "https://www.fintechscotland.com/fintech-events/",
+      "category": "industry",
+      "city": "Edinburgh",
+      "cadence": "Monthly"
+    },
+    {
+      "name": "SC3 (Scottish Cyber Coordination Centre) & CyberScotland Portal",
+      "url": "https://www.cyberscotland.com/events/",
+      "category": "policy",
+      "city": "Scotland-wide",
+      "cadence": "Ongoing"
+    },
+    {
       "name": "Holyrood Connect (Public Sector Cyber Security)",
       "url": "https://events.holyrood.com/",
       "category": "policy",
-      "city": "Scotland-wide",
+      "city": "Edinburgh",
       "cadence": "Annual (February)"
     },
     {
@@ -185,20 +360,6 @@
       "category": "industry",
       "city": "Edinburgh",
       "cadence": "Annual"
-    },
-    {
-      "name": "DC44141 Glasgow Hacker Meetup",
-      "url": "https://dc44141.github.io/",
-      "category": "community",
-      "city": "Glasgow",
-      "cadence": "Monthly"
-    },
-    {
-      "name": "Glasgow Social Infosec Wiki",
-      "url": "https://wiki.glasgow.social/infosec",
-      "category": "community",
-      "city": "Glasgow",
-      "cadence": "Monthly"
     }
   ],
 
@@ -244,6 +405,53 @@
       "url": "https://sicsa.ac.uk/feed/",
       "format": "rss",
       "category": "academic"
+    },
+    {
+      "name": "The Data Lab — Events RSS",
+      "url": "https://thedatalab.com/events/feed/",
+      "format": "rss",
+      "category": "partner"
+    },
+    {
+      "name": "CENSIS — Events & News RSS",
+      "url": "https://censis.org.uk/feed/",
+      "format": "rss",
+      "category": "partner"
+    },
+    {
+      "name": "The Cyber Academy (Edinburgh Napier) — RSS",
+      "url": "https://thecyberacademy.org/feed/",
+      "format": "rss",
+      "category": "academic"
+    },
+    {
+      "name": "FinTech Scotland — RSS",
+      "url": "https://www.fintechscotland.com/feed/",
+      "format": "rss",
+      "category": "industry"
+    }
+  ],
+
+  "wpFeeds": [
+    {
+      "name": "ScotlandIS — WP Events REST API",
+      "url": "https://www.scotlandis.com/wp-json/tribe/events/v1/events?per_page=25",
+      "category": "partner"
+    },
+    {
+      "name": "The Data Lab — WP Events REST API",
+      "url": "https://thedatalab.com/wp-json/tribe/events/v1/events?per_page=25",
+      "category": "partner"
+    },
+    {
+      "name": "CyberScotland Partnership — WP Events REST API",
+      "url": "https://www.cyberscotland.com/wp-json/tribe/events/v1/events?per_page=25",
+      "category": "partner"
+    },
+    {
+      "name": "CENSIS — WP Events REST API",
+      "url": "https://censis.org.uk/wp-json/tribe/events/v1/events?per_page=25",
+      "category": "partner"
     }
   ],
 
@@ -251,6 +459,12 @@
     {
       "name": "Cyber and Fraud Hub — Squarespace Events API",
       "url": "https://cyberfraudhub.org/events-database?format=json-pretty",
+      "format": "squarespace",
+      "category": "partner"
+    },
+    {
+      "name": "CodeBase — Squarespace Events API",
+      "url": "https://www.thisiscodebase.com/events?format=json-pretty",
       "format": "squarespace",
       "category": "partner"
     }
@@ -311,33 +525,112 @@
       "name": "Police Scotland (Cybercrime & Prevention)",
       "handle": "policescotland.bsky.social",
       "rssUrl": "https://bsky.app/profile/policescotland.bsky.social/rss"
+    },
+    {
+      "name": "ENUSEC (Edinburgh Napier Security Society)",
+      "handle": "enusec.bsky.social",
+      "rssUrl": "https://bsky.app/profile/enusec.bsky.social/rss"
+    },
+    {
+      "name": "Abertay Ethical Hacking Society (Securi-Tay)",
+      "handle": "abertayhackers.bsky.social",
+      "rssUrl": "https://bsky.app/profile/abertayhackers.bsky.social/rss"
     }
   ],
 
   "searchQueries": [
-    "Scottish cybersecurity event meetup 2026",
-    "Edinburgh Glasgow cybersecurity meetup 2026",
-    "ScotSecure 2026 conference",
-    "BSides Scotland 2026",
-    "CYBERUK Scotland 2026",
-    "site:bsky.app (\"Hack Thursday\" OR \"Cyber Scotland\" OR \"ScotSecure\" OR \"Scottish cyber\" OR \"Glasgow infosec\")",
-    "site:lu.ma (\"Scotland\" OR \"Edinburgh\" OR \"Glasgow\") (\"cyber\" OR \"security\" OR \"hack\")",
+    "Scottish cybersecurity event meetup 2026 2027",
+    "Edinburgh Glasgow cybersecurity meetup 2026 2027",
+    "ScotSecure 2026 2027 conference",
+    "BSides Scotland Glasgow Edinburgh 2026 2027",
+    "Securi-Tay 2027 Dundee conference",
+    "ISACA Scotland chapter event 2026 2027",
+    "ISC2 Scotland chapter event 2026 2027",
+    "SASIG Scotland cyber security event 2026 2027",
+    "BCS Edinburgh Glasgow cybersecurity talk 2026 2027",
+    "site:bsky.app (\"Hack Thursday\" OR \"Cyber Scotland\" OR \"ScotSecure\" OR \"Scottish cyber\" OR \"Glasgow infosec\" OR \"Securi-Tay\")",
+    "site:lu.ma (\"Scotland\" OR \"Edinburgh\" OR \"Glasgow\" OR \"CodeBase\" OR \"Techscaler\") (\"cyber\" OR \"security\" OR \"hack\")",
     "Scottish cyber community event site:eventbrite.co.uk",
-    "Scottish cyber event site:meetup.com 2026",
-    "Scotland infosec conference 2026",
-    "Dundee Aberdeen cybersecurity event 2026",
-    "DC44141 Glasgow hacker meetup 2026",
-    "DC44131 Edinburgh hacker meetup 2026",
-    "WiCS Scotland event 2026",
-    "ISC2 Scotland chapter event 2026"
+    "Scottish cyber event site:meetup.com",
+    "Dundee Aberdeen cybersecurity event 2026 2027",
+    "DC44141 Glasgow hacker meetup",
+    "DC44131 Edinburgh hacker meetup",
+    "WiCS Women in Cyber Security Scotland event",
+    "Holyrood cyber security event Edinburgh"
   ],
 
   "filters": {
     "requireFutureDate": true,
     "requireScotlandLocation": true,
     "requireCyberRelevance": true,
-    "locationKeywords": ["Edinburgh", "Glasgow", "Dundee", "Aberdeen", "St Andrews", "Scotland", "Scottish", "Inverness", "Perth", "Stirling"],
-    "cyberKeywords": ["cyber", "security", "infosec", "hacking", "CTF", "OSINT", "privacy", "malware", "threat", "pentest", "DevSecOps", "OWASP", "ISACA", "ISC2", "DEF CON"],
-    "excludeKeywords": ["webinar only", "online only", "London", "Manchester", "Birmingham", "paid course", "certification exam"]
+    "locationKeywords": [
+      "Edinburgh",
+      "Glasgow",
+      "Dundee",
+      "Aberdeen",
+      "St Andrews",
+      "Scotland",
+      "Scottish",
+      "Inverness",
+      "Perth",
+      "Stirling",
+      "Leith",
+      "Gogarburn",
+      "CodeBase",
+      "Techscaler",
+      "cyberQuarter",
+      "Napier",
+      "Strathclyde",
+      "Abertay",
+      "Heriot-Watt"
+    ],
+    "cyberKeywords": [
+      "cyber",
+      "security",
+      "infosec",
+      "hacking",
+      "hacker",
+      "CTF",
+      "OSINT",
+      "privacy",
+      "malware",
+      "threat",
+      "pentest",
+      "DevSecOps",
+      "OWASP",
+      "ISACA",
+      "ISC2",
+      "DEF CON",
+      "DC44131",
+      "DC44141",
+      "2600",
+      "BSides",
+      "Securi-Tay",
+      "fraud",
+      "resilience",
+      "incident response",
+      "SOC",
+      "SIEM",
+      "CISO",
+      "NIS2",
+      "DORA",
+      "cryptography",
+      "AppSec",
+      "OT security",
+      "ICS"
+    ],
+    "excludeKeywords": [
+      "webinar only",
+      "online only",
+      "London",
+      "Manchester",
+      "Birmingham",
+      "Bristol",
+      "Leeds",
+      "Belfast",
+      "Cardiff",
+      "paid training course",
+      "certification exam bootcamp"
+    ]
   }
 }

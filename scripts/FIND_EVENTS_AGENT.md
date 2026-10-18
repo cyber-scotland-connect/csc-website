@@ -11,8 +11,8 @@ Do not merge anything. Open the PR and stop.
 ### Step 1 — Read Sources Config
 
 Read the file `scripts/event-sources.json` from the `main` branch of `cyber-scotland-connect/csc-website` using the GitHub MCP `get_file_contents` tool. Extract:
-- `seedUrls` array (each has `name`, `url`, `category`, `city`)
-- `rssFeeds` and `iCalFeeds` arrays (structured XML/iCal feeds)
+- `seedUrls` array (each has `name`, `url`, `category`, `city` — scanned for Schema.org `application/ld+json` `Event` payloads)
+- `rssFeeds`, `wpFeeds` (WordPress Tribe Events REST API), `jsonFeeds` (Squarespace Events JSON API), and `iCalFeeds` arrays
 - `blueskyFeeds` array (public RSS feeds for Scottish cyber accounts)
 - `searchQueries` array (including Bluesky and Luma targeted queries)
 - `filters` object
