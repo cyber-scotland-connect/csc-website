@@ -234,7 +234,7 @@ export function buildDiscordEmbed(ev: ParsedEventFile): DiscordEmbed {
     ],
     footer: {
       text: ev.isPartnerEvent
-        ? 'Scottish Cyber Community Feed • cyberscotlandconnect.com/feeds/community.xml'
+        ? 'Scottish Cyber Partners Feed • cyberscotlandconnect.com/feeds/partner.xml'
         : 'Cyber Scotland Connect • cyberscotlandconnect.com/feeds/csc.xml',
     },
     timestamp: new Date().toISOString(),

@@ -14,15 +14,19 @@ const sitePath = `${siteDomain}${base}`;
 
 const communityIcsUrl = `${sitePath}/calendar/community.ics`;
 const cscIcsUrl = `${sitePath}/calendar/csc.ics`;
+const partnerIcsUrl = `${sitePath}/calendar/partner.ics`;
 
 const communityWebcalUrl = communityIcsUrl.replace(/^https?:\/\//, 'webcal://');
 const cscWebcalUrl = cscIcsUrl.replace(/^https?:\/\//, 'webcal://');
+const partnerWebcalUrl = partnerIcsUrl.replace(/^https?:\/\//, 'webcal://');
 
 const communityGcalUrl = `https://calendar.google.com/calendar/render?cid=${encodeURIComponent(communityWebcalUrl)}`;
 const cscGcalUrl = `https://calendar.google.com/calendar/render?cid=${encodeURIComponent(cscWebcalUrl)}`;
+const partnerGcalUrl = `https://calendar.google.com/calendar/render?cid=${encodeURIComponent(partnerWebcalUrl)}`;
 
 const communityRssUrl = `${sitePath}/feeds/community.xml`;
 const cscRssUrl = `${sitePath}/feeds/csc.xml`;
+const partnerRssUrl = `${sitePath}/feeds/partner.xml`;
 ---
 
 <dialog
@@ -41,7 +45,7 @@ const cscRssUrl = `${sitePath}/feeds/csc.xml`;
           Sync Events to Your Workflow
         </h2>
         <p class="text-xs sm:text-sm text-slate-600 dark:text-[#bdaccf] mt-1.5 leading-relaxed">
-          Stay in sync automatically. Choose between the broader Scottish cyber ecosystem calendar or official Cyber Scotland Connect meetups only.
+          Stay in sync automatically. Choose the full Scottish ecosystem, official CSC meetups only, or external Scottish partner events only.
         </p>
       </div>
 
@@ -56,26 +60,36 @@ const cscRssUrl = `${sitePath}/feeds/csc.xml`;
 
     <!-- Feed Selector Tabs -->
     <div class="mt-6">
-      <div class="flex rounded-xl bg-slate-100 dark:bg-[#1b1a30] p-1 border border-slate-200 dark:border-[#3e3c66]" role="tablist">
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-1 rounded-xl bg-slate-100 dark:bg-[#1b1a30] p-1 border border-slate-200 dark:border-[#3e3c66]" role="tablist">
         <button
           type="button"
-          class="cal-tab-btn active flex-1 py-2.5 px-3 text-xs sm:text-sm font-bold rounded-lg transition-all text-center flex items-center justify-center gap-2 bg-white dark:bg-[#2a2948] text-[#895294] dark:text-[#6fb7e6] shadow-sm"
+          class="cal-tab-btn active py-2.5 px-3 text-xs font-bold rounded-lg transition-all text-center flex items-center justify-center gap-1.5 bg-white dark:bg-[#2a2948] text-[#895294] dark:text-[#6fb7e6] shadow-sm"
           data-target="community-feed"
           role="tab"
           aria-selected="true"
         >
-          <Shield class="w-4 h-4 text-[#895294] dark:text-[#6fb7e6]" aria-hidden="true" />
-          <span>All Scottish Cyber Community</span>
+          <Shield class="w-3.5 h-3.5 text-[#895294] dark:text-[#6fb7e6]" aria-hidden="true" />
+          <span>All Scottish Events</span>
         </button>
         <button
           type="button"
-          class="cal-tab-btn flex-1 py-2.5 px-3 text-xs sm:text-sm font-bold rounded-lg transition-all text-center flex items-center justify-center gap-2 text-slate-600 dark:text-[#bdaccf] hover:text-slate-900 dark:hover:text-white"
+          class="cal-tab-btn py-2.5 px-3 text-xs font-bold rounded-lg transition-all text-center flex items-center justify-center gap-1.5 text-slate-600 dark:text-[#bdaccf] hover:text-slate-900 dark:hover:text-white"
           data-target="csc-feed"
           role="tab"
           aria-selected="false"
         >
-          <Calendar class="w-4 h-4 text-[#56548c] dark:text-[#bdaccf]" aria-hidden="true" />
-          <span>CSC Gatherings Only</span>
+          <Calendar class="w-3.5 h-3.5 text-[#56548c] dark:text-[#bdaccf]" aria-hidden="true" />
+          <span>CSC Only</span>
+        </button>
+        <button
+          type="button"
+          class="cal-tab-btn py-2.5 px-3 text-xs font-bold rounded-lg transition-all text-center flex items-center justify-center gap-1.5 text-slate-600 dark:text-[#bdaccf] hover:text-slate-900 dark:hover:text-white"
+          data-target="partner-feed"
+          role="tab"
+          aria-selected="false"
+        >
+          <Calendar class="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" aria-hidden="true" />
+          <span>Partners Only</span>
         </button>
       </div>
 
@@ -246,6 +260,94 @@ const cscRssUrl = `${sitePath}/feeds/csc.xml`;
               <button
                 type="button"
                 data-copy={cscRssUrl}
+                class="copy-btn shrink-0 px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-[#2a2948] hover:bg-slate-200 dark:hover:bg-[#382b5c] border border-slate-200 dark:border-[#3e3c66] text-xs font-bold text-slate-700 dark:text-white transition-colors"
+              >
+                Copy
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab Content 3: Partner Events Only (Excludes CSC) -->
+      <div id="partner-feed" class="cal-tab-panel mt-6 space-y-6 hidden">
+        <div class="p-4 rounded-xl bg-emerald-50/50 dark:bg-[#2a2948]/50 border border-emerald-200 dark:border-[#3e3c66] text-xs sm:text-sm text-slate-600 dark:text-[#bdaccf]">
+          <strong class="text-slate-900 dark:text-white block mb-0.5">Scottish Partners Only (Excludes CSC):</strong>
+          External Scottish community meetups (OWASP, 2600, Hack Thursday, ISSA-UK), university societies, and national conferences — strictly excluding CSC's own events so you can separate streams cleanly.
+        </div>
+
+        <!-- 1-Click Calendar Subscription Buttons -->
+        <div class="space-y-3">
+          <span class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 block">
+            1-Click Calendar Subscription:
+          </span>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <a
+              href={partnerGcalUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn-tactile flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs sm:text-sm shadow transition-all"
+            >
+              <Calendar class="w-4 h-4" aria-hidden="true" />
+              <span>Add to Google Calendar</span>
+              <ExternalLink class="w-3.5 h-3.5 opacity-75" aria-hidden="true" />
+            </a>
+            <a
+              href={partnerWebcalUrl}
+              class="btn-tactile flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-slate-800 dark:bg-[#382b5c] hover:bg-slate-900 dark:hover:bg-[#483775] text-white font-bold text-xs sm:text-sm shadow transition-all"
+            >
+              <Calendar class="w-4 h-4" aria-hidden="true" />
+              <span>Apple / Outlook / Cal</span>
+              <ExternalLink class="w-3.5 h-3.5 opacity-75" aria-hidden="true" />
+            </a>
+          </div>
+        </div>
+
+        <!-- Manual .ics & RSS copy fields -->
+        <div class="space-y-4 pt-2">
+          <!-- .ics URL -->
+          <div>
+            <div class="flex items-center justify-between mb-1.5">
+              <label class="text-xs font-semibold text-slate-700 dark:text-slate-300">
+                Direct iCalendar URL (.ics)
+              </label>
+              <span class="text-[11px] text-slate-500 dark:text-slate-400">For any calendar client</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <input
+                type="text"
+                readonly
+                value={partnerIcsUrl}
+                class="w-full text-xs font-mono bg-slate-50 dark:bg-[#1b1a30] border border-slate-200 dark:border-[#3e3c66] rounded-xl px-3 py-2 text-slate-700 dark:text-[#bdaccf] select-all focus:outline-none focus:ring-1 focus:ring-emerald-500"
+              />
+              <button
+                type="button"
+                data-copy={partnerIcsUrl}
+                class="copy-btn shrink-0 px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-[#2a2948] hover:bg-slate-200 dark:hover:bg-[#382b5c] border border-slate-200 dark:border-[#3e3c66] text-xs font-bold text-slate-700 dark:text-white transition-colors"
+              >
+                Copy
+              </button>
+            </div>
+          </div>
+
+          <!-- RSS XML URL -->
+          <div>
+            <div class="flex items-center justify-between mb-1.5">
+              <label class="text-xs font-semibold text-slate-700 dark:text-slate-300">
+                RSS Feed URL (.xml)
+              </label>
+              <span class="text-[11px] text-slate-500 dark:text-slate-400">For Discord Webhooks, Slack &amp; RSS</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <input
+                type="text"
+                readonly
+                value={partnerRssUrl}
+                class="w-full text-xs font-mono bg-slate-50 dark:bg-[#1b1a30] border border-slate-200 dark:border-[#3e3c66] rounded-xl px-3 py-2 text-slate-700 dark:text-[#bdaccf] select-all focus:outline-none focus:ring-1 focus:ring-emerald-500"
+              />
+              <button
+                type="button"
+                data-copy={partnerRssUrl}
                 class="copy-btn shrink-0 px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-[#2a2948] hover:bg-slate-200 dark:hover:bg-[#382b5c] border border-slate-200 dark:border-[#3e3c66] text-xs font-bold text-slate-700 dark:text-white transition-colors"
               >
                 Copy

@@ -62,12 +62,47 @@ const eventCanonicalUrl = new URL(
   Astro.site || 'https://cyberscotlandconnect.com'
 ).href;
 
+// Parse start/end times from data.time (e.g. "18:00 – 21:00 GMT" or "09:00 - 17:00")
+const dateIsoPrefix = eventDate.toISOString().slice(0, 10);
+const timeRangeMatch = data.time?.match(/(\d{1,2}:\d{2})(?:\s*[–—-]\s*(\d{1,2}:\d{2}))?/);
+const startTimeIso = timeRangeMatch
+  ? `${dateIsoPrefix}T${timeRangeMatch[1].padStart(5, '0')}:00Z`
+  : eventDate.toISOString();
+const endTimeIso =
+  timeRangeMatch && timeRangeMatch[2]
+    ? `${dateIsoPrefix}T${timeRangeMatch[2].padStart(5, '0')}:00Z`
+    : undefined;
+
+const rawBodyExcerpt = (event.body || '')
+  .replace(/\[SOURCE:.*?\]/gi, '')
+  .replace(/[#*_`~>\[\]]/g, '')
+  .replace(/\s+/g, ' ')
+  .trim()
+  .slice(0, 260);
+
+const pageDescription =
+  rawBodyExcerpt ||
+  (data.isPartnerEvent
+    ? `${data.partnerName || 'Scottish Cyber Ecosystem'} event in ${data.city} on ${formattedDate}.`
+    : isVirtual
+      ? `Cyber Scotland Connect virtual gathering on ${formattedDate}.`
+      : isCampaign
+        ? `CyberScotland campaign across Scotland on ${formattedDate}.`
+        : `Cyber Scotland Connect gathering in ${data.city} on ${formattedDate}.`);
+
 const eventSchema = {
   '@context': 'https://schema.org',
   '@type': 'Event',
   name: data.title,
-  description: `Cyber Scotland Connect gathering in ${data.city} on ${formattedDate}. High-signal, zero-sales cyber security community event.`,
-  startDate: eventDate.toISOString(),
+  description: pageDescription,
+  startDate: startTimeIso,
+  ...(endTimeIso ? { endDate: endTimeIso } : {}),
+  image: [
+    data.isPartnerEvent
+      ? 'https://cyberscotlandconnect.com/branding/discord-bot-scotland.png'
+      : 'https://cyberscotlandconnect.com/branding/discord-bot-csc.png',
+    'https://cyberscotlandconnect.com/branding/logo-fullcolor-horizontal.png',
+  ],
   eventStatus: 'https://schema.org/EventScheduled',
   eventAttendanceMode:
     data.city === 'Virtual'
@@ -79,6 +114,8 @@ const eventSchema = {
           '@type': 'VirtualLocation',
           url:
             data.streamUrl ||
+            data.registrationUrl ||
+            data.meetupUrl ||
             'https://cyberscotlandconnect.com',
         }
       : {
@@ -93,12 +130,16 @@ const eventSchema = {
         },
   organizer: {
     '@type': 'Organization',
-    name: 'Cyber Scotland Connect',
-    url: 'https://cyberscotlandconnect.com',
+    name: data.isPartnerEvent
+      ? data.partnerName || 'Scottish Cyber Ecosystem Partner'
+      : 'Cyber Scotland Connect',
+    url: data.isPartnerEvent
+      ? data.registrationUrl || data.meetupUrl || 'https://cyberscotlandconnect.com/events/'
+      : 'https://cyberscotlandconnect.com',
   },
   offers: {
     '@type': 'Offer',
-    price: '0',
+    price: data.accessType === 'Corporate/Paid' ? undefined : '0',
     priceCurrency: 'GBP',
     availability: 'https://schema.org/InStock',
     url: data.registrationUrl || data.meetupUrl || eventCanonicalUrl,
@@ -119,13 +160,7 @@ const eventSchema = {
 
 <BaseLayout
   title={data.title}
-  description={
-    isVirtual
-      ? `Cyber Scotland Connect virtual gathering on ${formattedDate}.`
-      : isCampaign
-        ? `CyberScotland campaign across Scotland on ${formattedDate}.`
-        : `Cyber Scotland Connect gathering in ${data.city} on ${formattedDate}.`
-  }
+  description={pageDescription}
   structuredData={eventSchema}
 >
   <article class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
