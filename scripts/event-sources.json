@@ -360,6 +360,41 @@
       "category": "industry",
       "city": "Edinburgh",
       "cadence": "Annual"
+    },
+    {
+      "name": "Scotland Splunk User Group",
+      "url": "https://usergroups.splunk.com/",
+      "category": "community",
+      "city": "Scotland-wide",
+      "cadence": "Bi-monthly"
+    },
+    {
+      "name": "Glasgow Azure User Group",
+      "url": "https://www.meetup.com/glasgow-azure-user-group/events/",
+      "category": "community",
+      "city": "Glasgow",
+      "cadence": "Bi-monthly"
+    },
+    {
+      "name": "Cloud Native + Kubernetes Edinburgh",
+      "url": "https://www.meetup.com/cloud-native-edinburgh/events/",
+      "category": "community",
+      "city": "Edinburgh",
+      "cadence": "Quarterly"
+    },
+    {
+      "name": "AWS User Group Edinburgh",
+      "url": "https://www.meetup.com/amazon-web-services-user-group-edinburgh/events/",
+      "category": "community",
+      "city": "Edinburgh",
+      "cadence": "Quarterly"
+    },
+    {
+      "name": "AWS User Group North East Scotland",
+      "url": "https://www.meetup.com/aws-north-east-scotland/events/",
+      "category": "community",
+      "city": "Aberdeen",
+      "cadence": "Quarterly"
     }
   ],
 
@@ -482,6 +517,24 @@
       "url": "https://www.meetup.com/glasgow-computer-security-meetup-group/events/ical/",
       "format": "ical",
       "category": "community"
+    },
+    {
+      "name": "Glasgow Azure User Group — iCal",
+      "url": "https://www.meetup.com/glasgow-azure-user-group/events/ical/",
+      "format": "ical",
+      "category": "community"
+    },
+    {
+      "name": "Cloud Native Edinburgh — iCal",
+      "url": "https://www.meetup.com/cloud-native-edinburgh/events/ical/",
+      "format": "ical",
+      "category": "community"
+    },
+    {
+      "name": "AWS User Group Edinburgh — iCal",
+      "url": "https://www.meetup.com/amazon-web-services-user-group-edinburgh/events/ical/",
+      "format": "ical",
+      "category": "community"
     }
   ],
 
@@ -556,7 +609,12 @@
     "DC44141 Glasgow hacker meetup",
     "DC44131 Edinburgh hacker meetup",
     "WiCS Women in Cyber Security Scotland event",
-    "Holyrood cyber security event Edinburgh"
+    "Holyrood cyber security event Edinburgh",
+    "\"Scotland Splunk User Group\" 2026 2027",
+    "\"Wiz\" (\"Scotland\" OR \"Edinburgh\" OR \"Glasgow\") (\"security\" OR \"meetup\" OR \"event\")",
+    "\"Glasgow Azure User Group\" meetup 2026 2027",
+    "\"Cloud Native Edinburgh\" meetup 2026 2027",
+    "\"AWS User Group\" (Edinburgh OR Glasgow OR Aberdeen) 2026 2027"
   ],
 
   "filters": {
@@ -617,7 +675,11 @@
       "cryptography",
       "AppSec",
       "OT security",
-      "ICS"
+      "ICS",
+      "Splunk",
+      "Azure",
+      "Kubernetes",
+      "Cloud Native"
     ],
     "excludeKeywords": [
       "webinar only",
