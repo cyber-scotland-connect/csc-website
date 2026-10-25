@@ -10,9 +10,9 @@ partnerName: 'ENUSEC (Napier Cyber Security Society)'
 accessType: 'Student/Academic'
 registrationUrl: 'https://enusec.org'
 accessibility:
-  stepFree: true
-  hearingLoop: true
-  notes: 'Full lift and ramp access at Merchiston Campus.'
+  stepFree: null
+  hearingLoop: null
+  notes: 'Check with event organizers or venue for confirmed accessibility accommodations.'
 speakers: []
 agenda: []
 ---
