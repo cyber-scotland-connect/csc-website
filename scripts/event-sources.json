@@ -619,6 +619,8 @@
     "WiCS Women in Cyber Security Scotland event",
     "Holyrood cyber security event Edinburgh",
     "\"Scotland Splunk User Group\" 2026 2027",
+    "\"ENUSEC\" (\"meetup\" OR \"workshop\" OR \"session\" OR \"hack\" OR \"TryHackMe\") 2026 2027",
+    "site:enusec.org (\"event\" OR \"meetup\" OR \"workshop\" OR \"hack\" OR \"TryHackMe\")",
     "\"Wiz\" (\"Scotland\" OR \"Edinburgh\" OR \"Glasgow\") (\"security\" OR \"meetup\" OR \"event\")",
     "\"Glasgow Azure User Group\" meetup 2026 2027",
     "\"Cloud Native Edinburgh\" meetup 2026 2027",
