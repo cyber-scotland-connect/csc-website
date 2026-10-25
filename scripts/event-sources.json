@@ -68,6 +68,13 @@
       "cadence": "Monthly"
     },
     {
+      "name": "DEF CON Dundee (DC441382)",
+      "url": "https://www.linkedin.com/company/dc441382/",
+      "category": "community",
+      "city": "Dundee",
+      "cadence": "Monthly"
+    },
+    {
       "name": "Glasgow Social Infosec Wiki",
       "url": "https://wiki.glasgow.social/infosec",
       "category": "community",
@@ -608,6 +615,7 @@
     "Dundee Aberdeen cybersecurity event 2026 2027",
     "DC44141 Glasgow hacker meetup",
     "DC44131 Edinburgh hacker meetup",
+    "DC441382 Dundee hacker meetup",
     "WiCS Women in Cyber Security Scotland event",
     "Holyrood cyber security event Edinburgh",
     "\"Scotland Splunk User Group\" 2026 2027",
@@ -661,6 +669,7 @@
       "DEF CON",
       "DC44131",
       "DC44141",
+      "DC441382",
       "2600",
       "BSides",
       "Securi-Tay",
