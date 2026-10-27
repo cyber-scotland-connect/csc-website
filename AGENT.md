@@ -127,9 +127,18 @@ When creating or modifying content, AI agents must strictly conform to the Zod s
      - `slidesUrl`: optional slide deck URL
      - `recordingUrl`: optional YouTube video recording URL
      - `accessibility`:
-       - `stepFree`: `boolean | null` (Strict Tri-State: `true` = verified accessible, `false` = limited/none, `null` = unconfirmed). **Never guess `true` without physical venue confirmation.**
-       - `hearingLoop`: `boolean | null` (Strict Tri-State: `true` = verified installed, `false` = none, `null` = unconfirmed).
-       - `notes`: optional string (e.g. lift routes, quiet rooms, online captioning details)
+       - `stepFree`: `boolean | null` (Strict Tri-State: `true` = verified accessible, `false` = limited/none, `null` = unconfirmed). **DEFAULT IS NULL. NEVER GUESS `true` WITHOUT PHYSICAL VENUE CONFIRMATION.**
+       - `hearingLoop`: `boolean | null` (Strict Tri-State: `true` = verified installed, `false` = none, `null` = unconfirmed). **DEFAULT IS NULL.**
+       - `notes`: required when `stepFree` or `hearingLoop` is `true` detailing the exact verified accommodation (e.g. lift routes, ramp entrances). Generic notes with `true` fail schema compilation.
+
+---
+
+### ♿ Accessibility Invariant (Safety-Critical & Non-Negotiable)
+
+Accessibility accommodations directly affect the safety and physical mobility of disabled attendees.
+1. **Never guess or assume accessibility:** Never set `stepFree: true` or `hearingLoop: true` based on building reputation, university campuses, public venues, or general accessibility statements.
+2. **Strict `null` default:** If the event organizers or venue booking have not explicitly confirmed room-level accessible routes and facilities for the specific event space, `stepFree` and `hearingLoop` **MUST** be `null`.
+3. **Compiler gate:** Astro content collection schemas enforce that `stepFree: true` or `hearingLoop: true` cannot be compiled without specific, verified accommodation notes. Generic "check with organizer" notes with `true` will break the build.
      - `speakers`: array of `{ name, talkTitle, company?, role?, abstract? }`
      - `agenda`: array of `{ time, title, speaker?, speakerUrl? }`
 2. **Leaders & Moderators (`src/content/leaders/*.md`):**

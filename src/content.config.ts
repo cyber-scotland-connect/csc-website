@@ -39,7 +39,27 @@ const eventsCollection = defineCollection({
         hearingLoop: z.boolean().nullable().optional(),
         notes: z.string().optional(),
       })
-      .default({ stepFree: null, hearingLoop: null }),
+      .default({ stepFree: null, hearingLoop: null })
+      .refine(
+        (val) => {
+          if (val.stepFree === true || val.hearingLoop === true) {
+            if (!val.notes || val.notes.trim().length < 10) return false;
+            const lower = val.notes.toLowerCase();
+            if (
+              lower.startsWith('check with') ||
+              lower.startsWith('check organizer') ||
+              lower.startsWith('check registration')
+            ) {
+              return false;
+            }
+          }
+          return true;
+        },
+        {
+          message:
+            'Accessibility fields (stepFree, hearingLoop) cannot be true without specific confirmed accommodation details in notes. Never guess true with generic check-with-organizer notes.',
+        }
+      ),
     speakers: z
       .array(
         z.object({
