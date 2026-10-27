@@ -10,9 +10,9 @@ partnerName: 'DEATHCon'
 accessType: 'Corporate/Paid'
 registrationUrl: 'https://deathcon.io/'
 accessibility:
-  stepFree: true
+  stepFree: null
   hearingLoop: null
-  notes: 'The Royal Botanic Garden Edinburgh visitor facilities feature step-free access.'
+  notes: 'Check with event organizers or venue for confirmed accessibility accommodations.'
 speakers: []
 agenda: []
 ---
