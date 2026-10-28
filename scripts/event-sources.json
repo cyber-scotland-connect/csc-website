@@ -215,6 +215,20 @@
       "cadence": "Ongoing"
     },
     {
+      "name": "Abertay cyberQuarter — Eventbrite Profile",
+      "url": "https://www.eventbrite.co.uk/o/cyberquarter-33434690353",
+      "category": "partner",
+      "city": "Dundee",
+      "cadence": "Ongoing"
+    },
+    {
+      "name": "Cyber & Script Meetup Dundee",
+      "url": "https://www.eventbrite.co.uk/o/cyberquarter-33434690353",
+      "category": "community",
+      "city": "Dundee",
+      "cadence": "Monthly"
+    },
+    {
       "name": "Edinburgh Napier University — Events",
       "url": "https://www.napier.ac.uk/about-us/our-schools/school-of-computing/events",
       "category": "academic",
@@ -624,7 +638,9 @@
     "\"Wiz\" (\"Scotland\" OR \"Edinburgh\" OR \"Glasgow\") (\"security\" OR \"meetup\" OR \"event\")",
     "\"Glasgow Azure User Group\" meetup 2026 2027",
     "\"Cloud Native Edinburgh\" meetup 2026 2027",
-    "\"AWS User Group\" (Edinburgh OR Glasgow OR Aberdeen) 2026 2027"
+    "\"AWS User Group\" (Edinburgh OR Glasgow OR Aberdeen) 2026 2027",
+    "\"Cyber & Script\" Dundee 2026 2027",
+    "site:eventbrite.co.uk/o/cyberquarter 2026 2027"
   ],
 
   "filters": {
@@ -690,7 +706,9 @@
       "Splunk",
       "Azure",
       "Kubernetes",
-      "Cloud Native"
+      "Cloud Native",
+      "scripting",
+      "Cyber & Script"
     ],
     "excludeKeywords": [
       "webinar only",
