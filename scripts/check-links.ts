@@ -82,7 +82,7 @@ function extractStaticUrls(): { source: string; url: string }[] {
     { source: 'resources.astro (SAMH)', url: 'https://www.samh.org.uk' },
     { source: 'resources.astro (Breathing Space)', url: 'https://breathingspace.scot/' },
     { source: 'resources.astro (Edinburgh Nightline)', url: 'https://ednightline.com/' },
-    { source: 'resources.astro (Discord)', url: 'https://discord.gg/cyberscotlandconnect' },
+    { source: 'resources.astro (Discord)', url: 'https://discord.gg/9SKzqdZNvS' },
   ];
 }
 
