@@ -4,10 +4,15 @@ import { generateEventRss } from '../../utils/rss';
 
 export const GET: APIRoute = async ({ site }) => {
   const allEvents = await getCollection('events');
+  const startOfToday = new Date().setHours(0, 0, 0, 0);
   const partnerEvents = allEvents
-    .filter((e) => e.data.isPartnerEvent === true)
+    .filter(
+      (e) =>
+        e.data.isPartnerEvent === true &&
+        new Date(e.data.date).getTime() >= startOfToday
+    )
     .sort(
-      (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+      (a, b) => new Date(a.data.date).getTime() - new Date(b.data.date).getTime()
     );
 
   const base = import.meta.env.BASE_URL.replace(/\/$/, '');

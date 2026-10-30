@@ -4,8 +4,13 @@ import { generateIcs } from '../../utils/calendar';
 
 export const GET: APIRoute = async ({ site }) => {
   const allEvents = await getCollection('events');
+  const startOfToday = new Date().setHours(0, 0, 0, 0);
   const partnerEvents = allEvents
-    .filter((e) => e.data.isPartnerEvent === true)
+    .filter(
+      (e) =>
+        e.data.isPartnerEvent === true &&
+        new Date(e.data.date).getTime() >= startOfToday
+    )
     .sort(
       (a, b) => new Date(a.data.date).getTime() - new Date(b.data.date).getTime()
     );

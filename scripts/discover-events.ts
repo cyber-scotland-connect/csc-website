@@ -223,7 +223,12 @@ function isValidUrl(u?: string): boolean {
 const UK_WIDE_DOMAINS = ['theiet.org', 'ciisec.org', 'thesasig.com'] as const;
 function isUkWideSourceUrl(rawUrl: string): boolean {
   try {
-    const host = new URL(rawUrl).hostname.toLowerCase();
+    const parsed = new URL(rawUrl);
+    // If the path specifically targets Scotland (e.g. /event/scotland-sasig/), treat as dedicated Scottish source
+    if (parsed.pathname.toLowerCase().includes('scotland')) {
+      return false;
+    }
+    const host = parsed.hostname.toLowerCase();
     return UK_WIDE_DOMAINS.some((domain) => host === domain || host.endsWith(`.${domain}`));
   } catch {
     return false;

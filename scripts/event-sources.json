@@ -1,7 +1,7 @@
 {
   "_comment": "Seed configuration for the Antigravity automated event discovery agent. Add new community URLs here — no code changes needed. All sources are publicly listed on cyberscotlandconnect.com.",
-  "_version": "2.0.0",
-  "_updated": "2026-10-18",
+  "_version": "2.1.0",
+  "_updated": "2026-10-30",
 
   "seedUrls": [
     {
@@ -416,6 +416,34 @@
       "category": "community",
       "city": "Aberdeen",
       "cadence": "Quarterly"
+    },
+    {
+      "name": "TechForce Cyber Scotland Aberdeen",
+      "url": "https://landing.techforce.co.uk/cyber-scotland-aberdeen-2025/",
+      "category": "industry",
+      "city": "Aberdeen",
+      "cadence": "Annual"
+    },
+    {
+      "name": "The SASIG — Scotland Regional Sessions",
+      "url": "https://www.thesasig.com/calendar/event/scotland-sasig/",
+      "category": "industry",
+      "city": "Scotland-wide",
+      "cadence": "Bi-annual"
+    },
+    {
+      "name": "Eventbrite — Highlands & Islands Cyber Security",
+      "url": "https://www.eventbrite.co.uk/d/united-kingdom--highland/cyber-security/",
+      "category": "community",
+      "city": "Scotland-wide",
+      "cadence": "Ongoing"
+    },
+    {
+      "name": "Eventbrite — Edinburgh Cyber Security",
+      "url": "https://www.eventbrite.co.uk/d/united-kingdom--edinburgh/cyber-security/",
+      "category": "community",
+      "city": "Edinburgh",
+      "cadence": "Ongoing"
     }
   ],
 
@@ -640,7 +668,10 @@
     "\"Cloud Native Edinburgh\" meetup 2026 2027",
     "\"AWS User Group\" (Edinburgh OR Glasgow OR Aberdeen) 2026 2027",
     "\"Cyber & Script\" Dundee 2026 2027",
-    "site:eventbrite.co.uk/o/cyberquarter 2026 2027"
+    "site:eventbrite.co.uk/o/cyberquarter 2026 2027",
+    "TechForce Cyber Scotland Aberdeen 2026 2027",
+    "site:thesasig.com (\"Scotland\" OR \"Edinburgh\" OR \"Glasgow\") 2026 2027",
+    "site:eventbrite.co.uk/d/united-kingdom--highland/cyber-security"
   ],
 
   "filters": {

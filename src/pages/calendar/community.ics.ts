@@ -4,9 +4,12 @@ import { generateIcs } from '../../utils/calendar';
 
 export const GET: APIRoute = async ({ site }) => {
   const allEvents = await getCollection('events');
-  const sortedEvents = allEvents.sort(
-    (a, b) => new Date(a.data.date).getTime() - new Date(b.data.date).getTime()
-  );
+  const startOfToday = new Date().setHours(0, 0, 0, 0);
+  const sortedEvents = allEvents
+    .filter((e) => new Date(e.data.date).getTime() >= startOfToday)
+    .sort(
+      (a, b) => new Date(a.data.date).getTime() - new Date(b.data.date).getTime()
+    );
 
   const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   const siteOrigin = site ? site.origin : 'https://cyberscotlandconnect.com';
