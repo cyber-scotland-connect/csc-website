@@ -47,6 +47,13 @@
       "cadence": "Monthly (3rd Thursday)"
     },
     {
+      "name": "Hack Thursday — LinkedIn",
+      "url": "https://www.linkedin.com/company/hack-thursday/posts/",
+      "category": "community",
+      "city": "Glasgow",
+      "cadence": "Monthly (3rd Thursday)"
+    },
+    {
       "name": "Glasgow Infosec / 2600 — Meetup",
       "url": "https://www.meetup.com/glasgow-computer-security-meetup-group/events/",
       "category": "community",
@@ -656,6 +663,7 @@
     "Scottish cyber event site:meetup.com",
     "Dundee Aberdeen cybersecurity event 2026 2027",
     "DC44141 Glasgow hacker meetup",
+    "\"Hack Thursday\" Glasgow site:linkedin.com",
     "DC44131 Edinburgh hacker meetup",
     "DC441382 Dundee hacker meetup",
     "WiCS Women in Cyber Security Scotland event",
