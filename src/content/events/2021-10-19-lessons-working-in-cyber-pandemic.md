@@ -5,6 +5,7 @@ time: "18:30 – 20:30 BST"
 location: "Virtual Stream"
 city: "Virtual"
 isPartnerEvent: false
+organizerType: "Community"
 recordingUrl: "https://www.youtube.com/watch?v=7ZgVmxd8IF0"
 accessibility:
   stepFree: true

@@ -6,6 +6,7 @@ location: "CodeBase Edinburgh, 37a Castle Terrace, Edinburgh EH1 2EL"
 locationUrl: "https://maps.app.goo.gl/3Fk8TNPhqXYdSLkc9"
 city: "Edinburgh"
 isPartnerEvent: false
+organizerType: "Community"
 featured: true
 meetupUrl: "https://www.meetup.com/cyberscotconnect/events/316264729/"
 accessibility:

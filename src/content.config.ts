@@ -20,6 +20,9 @@ const eventsCollection = defineCollection({
     ]),
     isPartnerEvent: z.boolean().default(false),
     partnerName: z.string().optional(),
+    organizerType: z
+      .enum(['Community', 'Commercial', 'Public Sector', 'Academic'])
+      .default('Community'),
     accessType: z
       .enum([
         'Open/Public',

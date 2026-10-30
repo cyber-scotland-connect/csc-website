@@ -5,6 +5,7 @@ time: "18:00 – 21:00 GMT"
 location: "Trustpilot, 10 George Street, Edinburgh EH2 2PF"
 city: "Edinburgh"
 isPartnerEvent: false
+organizerType: "Community"
 accessibility:
   stepFree: true
   hearingLoop: false

@@ -65,8 +65,9 @@ time: "<time range if known, otherwise omit this field>"
 location: "<venue name and address if known>"
 locationUrl: "<Google Maps URL if address is known>"
 city: "<city>"
-isPartnerEvent: true
+isPartnerEvent: false
 partnerName: "<organising community or group name>"
+organizerType: "<Community | Commercial | Public Sector | Academic>"
 accessType: "<Open/Public | Corporate/Paid | Student/Academic | Restricted/Civil Service>"
 meetupUrl: "<Meetup.com event URL — ONLY if hosted on Meetup>"
 registrationUrl: "<Eventbrite, conference website, or external ticket portal>"

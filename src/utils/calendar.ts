@@ -161,7 +161,9 @@ export function generateIcs(
     description += `📍 Venue: ${data.location}\\n`;
     if (data.time) description += `⏰ Time: ${data.time}\\n`;
     if (data.isPartnerEvent) {
-      description += `🤝 Host: ${data.partnerName || 'Community Partner'}\\n`;
+      description += `🤝 Host: ${data.partnerName || 'Community Partner'} (Official CSC Partner)\\n`;
+    } else if (data.partnerName) {
+      description += `🏛️ Host: ${data.partnerName}${data.organizerType ? ` [${data.organizerType}]` : ''}\\n`;
     } else {
       description += `🛡️ Host: Cyber Scotland Connect\\n`;
     }

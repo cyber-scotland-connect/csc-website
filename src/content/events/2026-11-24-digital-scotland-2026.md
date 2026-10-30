@@ -5,8 +5,9 @@ time: '08:45 – 16:30 GMT'
 location: 'Edinburgh International Conference Centre (EICC), Morrison St, Edinburgh EH3 8EE'
 locationUrl: 'https://maps.google.com/?q=EICC+Edinburgh'
 city: 'Edinburgh'
-isPartnerEvent: true
+isPartnerEvent: false
 partnerName: 'FutureScot'
+organizerType: "Commercial"
 accessType: 'Corporate/Paid'
 registrationUrl: 'https://futurescot.com/conferences/'
 accessibility:

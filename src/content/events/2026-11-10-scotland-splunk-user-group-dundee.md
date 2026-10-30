@@ -4,8 +4,9 @@ date: 2026-11-10
 time: '18:00 - 20:30'
 location: 'Abertay cyberQuarter, Dundee'
 city: 'Dundee'
-isPartnerEvent: true
+isPartnerEvent: false
 partnerName: 'Scotland Splunk User Group'
+organizerType: "Community"
 accessType: 'Open/Public'
 registrationUrl: 'https://usergroups.splunk.com/'
 accessibility:

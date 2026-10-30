@@ -8,7 +8,7 @@ export const GET: APIRoute = async ({ site }) => {
   const partnerEvents = allEvents
     .filter(
       (e) =>
-        e.data.isPartnerEvent === true &&
+        (e.data.isPartnerEvent === true || !!e.data.partnerName) &&
         new Date(e.data.date).getTime() >= startOfToday
     )
     .sort(

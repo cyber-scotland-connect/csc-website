@@ -25,7 +25,7 @@ const sortedEvents = [...allEvents].sort(
   (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
 );
 
-const partnerEvents = sortedEvents.filter(e => e.data.isPartnerEvent);
+const partnerEvents = sortedEvents.filter(e => e.data.isPartnerEvent || !!e.data.partnerName);
 ---
 
 <BaseLayout 
@@ -101,7 +101,7 @@ const partnerEvents = sortedEvents.filter(e => e.data.isPartnerEvent);
             role="tab"
             aria-selected="false"
           >
-            CSC Gatherings ({sortedEvents.filter(e => !e.data.isPartnerEvent).length})
+            CSC Gatherings ({sortedEvents.filter(e => !e.data.isPartnerEvent && !e.data.partnerName).length})
           </button>
           <button
             type="button"
@@ -111,7 +111,7 @@ const partnerEvents = sortedEvents.filter(e => e.data.isPartnerEvent);
             role="tab"
             aria-selected="false"
           >
-            Partner Events ({partnerEvents.length})
+            Partner & Ecosystem ({partnerEvents.length})
           </button>
           <button
             type="button"
@@ -211,7 +211,7 @@ const partnerEvents = sortedEvents.filter(e => e.data.isPartnerEvent);
     <!-- Events Grid -->
     <div id="events-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
       {upcomingEvents.map(event => {
-        const isPartner = event.data.isPartnerEvent;
+        const isPartner = event.data.isPartnerEvent || !!event.data.partnerName;
         return (
           <div 
             class="event-item"
@@ -240,7 +240,7 @@ const partnerEvents = sortedEvents.filter(e => e.data.isPartnerEvent);
       </div>
 
       {pastEvents.map(event => {
-        const isPartner = event.data.isPartnerEvent;
+        const isPartner = event.data.isPartnerEvent || !!event.data.partnerName;
         return (
           <div 
             class="event-item opacity-60 hover:opacity-100 transition-opacity duration-200"

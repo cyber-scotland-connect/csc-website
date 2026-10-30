@@ -5,6 +5,7 @@ time: "18:00 – 20:00 BST"
 location: "Online Livestream"
 city: "Virtual"
 isPartnerEvent: false
+organizerType: "Community"
 accessibility:
   stepFree: true
   hearingLoop: false

@@ -5,6 +5,7 @@ time: "18:00 – 21:00 GMT"
 location: "CodeBase, 37a Castle Terrace, Edinburgh EH1 2EL"
 city: "Edinburgh"
 isPartnerEvent: false
+organizerType: "Community"
 accessibility:
   stepFree: true
   hearingLoop: true

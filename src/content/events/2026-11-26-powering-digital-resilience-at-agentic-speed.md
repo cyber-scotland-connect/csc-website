@@ -6,6 +6,7 @@ location: "Abertay cyberQuarter, Dundee"
 city: "Dundee"
 isPartnerEvent: true
 partnerName: "Cyber and Fraud Centre Scotland"
+organizerType: "Public Sector"
 accessType: "Open/Public"
 registrationUrl: "https://cyberfraudcentre.com/event/powering-digital-resilience-at-agentic-speed/"
 accessibility:

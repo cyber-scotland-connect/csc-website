@@ -4,8 +4,9 @@ date: 2018-10-30
 time: "17:30 – 20:30 GMT"
 location: "Edinburgh Napier University, Merchiston Campus, 10 Colinton Rd, Edinburgh EH10 5DT"
 city: "Edinburgh"
-isPartnerEvent: true
+isPartnerEvent: false
 partnerName: "ISSA-UK & Quorum Cyber"
+organizerType: "Community"
 accessibility:
   stepFree: true
   hearingLoop: true

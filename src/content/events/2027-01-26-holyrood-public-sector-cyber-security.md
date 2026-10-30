@@ -4,8 +4,9 @@ date: 2027-01-26
 time: '09:00 – 16:30 GMT'
 location: 'Edinburgh (Holyrood Connect Venue)'
 city: 'Edinburgh'
-isPartnerEvent: true
+isPartnerEvent: false
 partnerName: 'Holyrood Connect'
+organizerType: "Commercial"
 accessType: 'Restricted/Civil Service'
 registrationUrl: 'https://events.holyrood.com/'
 accessibility:

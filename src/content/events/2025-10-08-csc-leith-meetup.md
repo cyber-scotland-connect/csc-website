@@ -6,6 +6,7 @@ location: 'Season Quayside, 72 Commercial St, Leith, Edinburgh EH6 6LX'
 locationUrl: 'https://maps.app.goo.gl/cfobqrx8e1LHBAY29'
 city: 'Edinburgh'
 isPartnerEvent: false
+organizerType: "Community"
 meetupUrl: 'https://www.meetup.com/cyberscotconnect/events/310472819/'
 accessibility:
   stepFree: true

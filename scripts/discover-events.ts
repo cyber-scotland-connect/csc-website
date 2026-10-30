@@ -97,6 +97,7 @@ export interface DiscoveredEvent {
   city: CityType;
   isPartnerEvent: boolean;
   partnerName: string;
+  organizerType?: 'Community' | 'Commercial' | 'Public Sector' | 'Academic';
   accessType?: AccessType;
   meetupUrl: string;
   description: string;
@@ -382,6 +383,65 @@ export function detectAccessType(category: string, text: string): AccessType {
   return 'Open/Public';
 }
 
+// Check whether an organizing entity is an official CSC partner
+export function isOfficialPartner(partnerName: string): boolean {
+  const normalized = partnerName.toLowerCase();
+  const partners = [
+    'abertay cyberquarter',
+    'adarma',
+    'codebase',
+    'cyber and fraud centre scotland',
+    'cyera',
+    'digit',
+    'edinburgh napier university',
+    'enusec',
+    'extrahop',
+    'freeagent',
+    'harvey nash',
+    'riversafe',
+    'scotlandis',
+    'skyscanner',
+    'the cyber academy',
+    'the data lab',
+    'trustpilot',
+    'university of strathclyde',
+    'wood mackenzie',
+    'cyberscotland',
+  ];
+  return partners.some((p) => normalized.includes(p));
+}
+
+// Detect hosting entity classification
+export function detectOrganizerType(
+  category: string,
+  name: string,
+  text: string
+): 'Community' | 'Commercial' | 'Public Sector' | 'Academic' {
+  const combined = `${category} ${name} ${text}`.toLowerCase();
+  if (
+    /\b(university|college|academic|student society|napier|abertay|strathclyde|enusec)\b/.test(
+      combined
+    )
+  ) {
+    return 'Academic';
+  }
+  if (
+    /\b(public sector|police|nhs|council|government|cyber and fraud centre|cyberscotland)\b/.test(
+      combined
+    )
+  ) {
+    return 'Public Sector';
+  }
+  if (
+    /\b(conference|summit|expo|commercial|vendor|sponsor|techforce|futurescot|digit|barclays|holyrood|sasig|private|corporate)\b/.test(
+      combined
+    )
+  ) {
+    return 'Commercial';
+  }
+  return 'Community';
+}
+
 // Safe HTTP Fetch with timeout
 async function fetchWithTimeout(url: string, timeoutMs = 8000): Promise<string | null> {
   try {
@@ -519,13 +579,15 @@ async function parseRssFeed(feed: RssFeedSource, todayStr: string): Promise<Disc
 
     const cleanDesc = rawDesc.replace(/The post .*? appeared first on .*?\./gi, '').trim();
 
+    const pName = feed.name.split('—')[0].trim();
     events.push({
       title: rawTitle,
       date: eventDateStr,
       location,
       city,
-      isPartnerEvent: true,
-      partnerName: feed.name.split('—')[0].trim(),
+      isPartnerEvent: isOfficialPartner(pName),
+      partnerName: pName,
+      organizerType: detectOrganizerType(feed.category, pName, fullText),
       accessType: detectAccessType(feed.category, fullText),
       meetupUrl: link,
       description: cleanDesc.slice(0, 320) || rawTitle,
@@ -573,14 +635,16 @@ async function parseWpTribeEvents(
         item.end_date ? String(item.end_date).replace(' ', 'T') : undefined
       );
 
+      const pName = source.name.split('—')[0].trim();
       events.push({
         title,
         date: eventDateStr,
         time,
         location: locationStr,
         city,
-        isPartnerEvent: true,
-        partnerName: source.name.split('—')[0].trim(),
+        isPartnerEvent: isOfficialPartner(pName),
+        partnerName: pName,
+        organizerType: detectOrganizerType(source.category, pName, fullText),
         accessType: detectAccessType(source.category, fullText),
         meetupUrl: item.url || item.website || source.url,
         description: desc,
@@ -630,13 +694,15 @@ async function parseICalFeed(feed: ICalFeedSource, todayStr: string): Promise<Di
       ? stripHtml(descMatch[1].replace(/\\n/g, ' ').replace(/\\,/g, ',').replace(/\\;/g, ';'))
       : '';
 
+    const pName = feed.name.split('—')[0].trim();
     events.push({
       title: rawTitle,
       date: eventDateStr,
       location: rawLocation || 'Scotland',
       city: detectCity(`${rawTitle} ${rawLocation} ${feed.name}`),
-      isPartnerEvent: true,
-      partnerName: feed.name.split('—')[0].trim(),
+      isPartnerEvent: isOfficialPartner(pName),
+      partnerName: pName,
+      organizerType: detectOrganizerType(feed.category, pName, `${rawTitle} ${rawDesc}`),
       accessType: detectAccessType(feed.category, `${rawTitle} ${rawDesc}`),
       meetupUrl: rawUrl,
       description:
@@ -689,8 +755,9 @@ async function parseSquarespaceJson(
         date: eventDateStr,
         location: item.location?.addressTitle || defaultLoc,
         city: detectCity(`${title} ${item.location?.addressLine2 || ''} ${defaultLoc}`),
-        isPartnerEvent: true,
+        isPartnerEvent: isOfficialPartner(partnerName),
         partnerName,
+        organizerType: detectOrganizerType(source.category, partnerName, `${title} ${desc}`),
         accessType: detectAccessType(source.category, `${title} ${desc}`),
         meetupUrl: fullUrl,
         description: desc,
@@ -790,14 +857,16 @@ async function parseHtmlSeedUrl(
     const fullText = `${rawName} ${rawDesc} ${locName}`;
     const city = detectCity(fullText, seed.city);
 
+    const pName = seed.name.split('—')[0].trim();
     events.push({
       title: rawName,
       date: eventDateStr,
       time: extractTimeRange(rawStart, rawEnd),
       location: locName || city,
       city,
-      isPartnerEvent: true,
-      partnerName: seed.name.split('—')[0].trim(),
+      isPartnerEvent: isOfficialPartner(pName),
+      partnerName: pName,
+      organizerType: detectOrganizerType(seed.category, pName, fullText),
       accessType: detectAccessType(seed.category, fullText),
       meetupUrl: rawUrl,
       description: rawDesc,
@@ -922,14 +991,16 @@ async function extractSeedEventsWithLocalAi(
     const fullText = `${item.title} ${item.description || ''} ${item.location || ''}`;
     const city = detectCity(fullText, (item.city as CityType) || seed.city);
 
+    const pName = seed.name.split('—')[0].trim();
     extracted.push({
       title: stripHtml(item.title).slice(0, 110),
       date: item.date,
       time: item.time && /\d{1,2}:\d{2}/.test(item.time) ? item.time.trim() : undefined,
       location: item.location ? stripHtml(item.location) : city,
       city,
-      isPartnerEvent: true,
-      partnerName: seed.name.split('—')[0].trim(),
+      isPartnerEvent: isOfficialPartner(pName),
+      partnerName: pName,
+      organizerType: detectOrganizerType(seed.category, pName, fullText),
       accessType: detectAccessType(seed.category, fullText),
       meetupUrl: seed.url,
       description: item.description ? stripHtml(item.description).slice(0, 320) : item.title,
@@ -1059,8 +1130,9 @@ async function parseBlueskyFeed(
       date: eventDateStr,
       location: 'Scotland',
       city: detectCity(postText),
-      isPartnerEvent: true,
+      isPartnerEvent: isOfficialPartner(source.name),
       partnerName: source.name,
+      organizerType: detectOrganizerType('community', source.name, postText),
       accessType: 'Open/Public',
       meetupUrl: link,
       description: postText.slice(0, 300),
@@ -1314,6 +1386,7 @@ ${ev.time ? `time: '${ev.time}'\n` : ''}location: '${ev.location.replace(/'/g, "
 ${isValidUrl(ev.locationUrl) ? `locationUrl: '${ev.locationUrl}'\n` : ''}city: '${ev.city}'
 isPartnerEvent: ${ev.isPartnerEvent}
 partnerName: '${ev.partnerName.replace(/'/g, "''")}'
+organizerType: '${ev.organizerType || 'Community'}'
 accessType: '${ev.accessType || 'Open/Public'}'
 ${urlFrontmatter}accessibility:
   stepFree: null

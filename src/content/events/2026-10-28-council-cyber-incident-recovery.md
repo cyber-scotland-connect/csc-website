@@ -6,6 +6,7 @@ location: 'Online (virtual)'
 city: 'Virtual'
 isPartnerEvent: true
 partnerName: 'Cyber and Fraud Centre Scotland'
+organizerType: "Public Sector"
 registrationUrl: 'https://cyberfraudcentre.com/events/a-councils-cyber-security-story-oct-26'
 accessibility:
   stepFree: null

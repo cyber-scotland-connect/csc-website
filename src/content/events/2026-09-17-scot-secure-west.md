@@ -7,6 +7,7 @@ locationUrl: "https://maps.google.com/?q=Hilton+Glasgow"
 city: "Glasgow"
 isPartnerEvent: true
 partnerName: "DIGIT"
+organizerType: "Commercial"
 registrationUrl: "https://www.scotsecurewest.com/"
 accessibility:
   stepFree: true

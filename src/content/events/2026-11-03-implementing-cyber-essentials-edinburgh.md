@@ -7,6 +7,7 @@ locationUrl: "https://maps.google.com/?q=The+Place+Hotel+Edinburgh"
 city: "Edinburgh"
 isPartnerEvent: true
 partnerName: "Cyber and Fraud Centre Scotland"
+organizerType: "Public Sector"
 accessType: "Open/Public"
 registrationUrl: "https://www.eventbrite.co.uk/e/implementing-cyber-essentials-within-your-organisation-edinburgh-tickets-2003192096485"
 accessibility:

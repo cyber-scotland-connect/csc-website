@@ -41,7 +41,9 @@ export function generateEventRss(
       if (data.time) description += `Time: ${data.time}. `;
       description += `Location: ${data.location}. `;
       if (data.isPartnerEvent) {
-        description += `Host: ${data.partnerName || 'Partner Organisation'}. `;
+        description += `Host: ${data.partnerName || 'Partner Organisation'} (CSC Partner). `;
+      } else if (data.partnerName) {
+        description += `Host: ${data.partnerName}${data.organizerType ? ` [${data.organizerType}]` : ''}. `;
       } else {
         description += `Host: Cyber Scotland Connect. `;
       }
@@ -59,8 +61,9 @@ export function generateEventRss(
       <pubDate>${pubDate}</pubDate>
       <description>${escapeXml(description)}</description>
       <category>${escapeXml(data.city)}</category>
-      <category>${data.isPartnerEvent ? 'Partner Event' : 'CSC Gathering'}</category>
-      <source url="${escapeXml(rsvpUrl)}">${escapeXml(data.isPartnerEvent ? data.partnerName || 'Partner' : 'Cyber Scotland Connect')}</source>
+      <category>${data.isPartnerEvent ? 'Partner Event' : data.partnerName ? 'Ecosystem Event' : 'CSC Gathering'}</category>
+      ${data.organizerType ? `<category>${escapeXml(data.organizerType)}</category>` : ''}
+      <source url="${escapeXml(rsvpUrl)}">${escapeXml(data.partnerName || 'Cyber Scotland Connect')}</source>
     </item>`;
     })
     .join('\n');

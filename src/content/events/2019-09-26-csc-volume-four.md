@@ -5,6 +5,7 @@ time: "18:00 – 21:00 BST"
 location: "Wood Mackenzie, 1 Exchange Cres, Conference Square, Edinburgh EH3 8AN"
 city: "Edinburgh"
 isPartnerEvent: false
+organizerType: "Community"
 recordingUrl: "https://www.youtube.com/watch?v=Qe2q5xI2AQo"
 accessibility:
   stepFree: true

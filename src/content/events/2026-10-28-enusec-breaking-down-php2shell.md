@@ -7,6 +7,7 @@ locationUrl: 'https://maps.google.com/?q=Edinburgh+Napier+University+Merchiston+
 city: 'Edinburgh'
 isPartnerEvent: true
 partnerName: 'ENUSEC (Napier Cyber Security Society)'
+organizerType: "Academic"
 accessType: 'Student/Academic'
 registrationUrl: 'https://enusec.org'
 accessibility:

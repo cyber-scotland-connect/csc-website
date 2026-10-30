@@ -5,8 +5,9 @@ time: "09:00 – 12:30 GMT"
 location: "Barclays Campus, Clyde Place, Glasgow G5 8DP"
 locationUrl: "https://maps.google.com/?q=Barclays+Clyde+Place+Glasgow"
 city: "Glasgow"
-isPartnerEvent: true
+isPartnerEvent: false
 partnerName: "Barclays Eagle Labs"
+organizerType: "Commercial"
 accessType: "Open/Public"
 registrationUrl: "https://www.eventbrite.co.uk/e/it-started-with-a-click-how-to-protect-your-business-from-cyber-threats-tickets-2002212023059"
 accessibility:

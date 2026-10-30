@@ -5,8 +5,9 @@ time: '09:30 – 17:00 GMT (13–14 Nov)'
 location: 'Royal Botanic Garden Edinburgh, Arboretum Place, Edinburgh EH3 5NZ'
 locationUrl: 'https://maps.google.com/?q=Royal+Botanic+Garden+Edinburgh'
 city: 'Edinburgh'
-isPartnerEvent: true
+isPartnerEvent: false
 partnerName: 'DEATHCon'
+organizerType: "Commercial"
 accessType: 'Corporate/Paid'
 registrationUrl: 'https://deathcon.io/'
 accessibility:

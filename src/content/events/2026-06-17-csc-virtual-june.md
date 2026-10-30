@@ -5,6 +5,7 @@ time: '18:00 – 20:30 BST'
 location: 'Online (virtual)'
 city: 'Virtual'
 isPartnerEvent: false
+organizerType: "Community"
 meetupUrl: 'https://www.meetup.com/cyberscotconnect/events/315050946/'
 accessibility:
   stepFree: true

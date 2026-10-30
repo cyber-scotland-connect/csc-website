@@ -5,6 +5,7 @@ time: "19:00 – 21:30 BST"
 location: "Wood Mackenzie, Exchange Place 2, 5 Semple St, Edinburgh EH3 8BL"
 city: "Edinburgh"
 isPartnerEvent: false
+organizerType: "Community"
 accessibility:
   stepFree: true
   hearingLoop: false

@@ -7,6 +7,7 @@ locationUrl: "https://maps.google.com/?q=EICC+Edinburgh"
 city: "Edinburgh"
 isPartnerEvent: true
 partnerName: "DIGIT"
+organizerType: "Commercial"
 registrationUrl: "https://digit-expo.com/"
 accessibility:
   stepFree: true

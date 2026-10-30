@@ -6,6 +6,7 @@ location: "Edinburgh International Conference Centre (EICC), Morrison St, Edinbu
 city: "Edinburgh"
 isPartnerEvent: true
 partnerName: "DIGIT"
+organizerType: "Commercial"
 accessibility:
   stepFree: true
   hearingLoop: true

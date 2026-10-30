@@ -6,6 +6,7 @@ location: 'Abertay cyberQuarter, 1-3 Bell Street, Dundee DD1 1HG'
 city: 'Dundee'
 isPartnerEvent: true
 partnerName: 'Abertay cyberQuarter'
+organizerType: "Academic"
 accessType: 'Open/Public'
 registrationUrl: 'https://www.eventbrite.co.uk/o/cyberquarter-33434690353'
 accessibility:

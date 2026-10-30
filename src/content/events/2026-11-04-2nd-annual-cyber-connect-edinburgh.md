@@ -5,8 +5,9 @@ time: "17:30 – 20:30 GMT"
 location: "The Royal Scots Club, 29-31 Abercromby Pl, Edinburgh EH3 6QE"
 locationUrl: "https://maps.google.com/?q=The+Royal+Scots+Club+Edinburgh"
 city: "Edinburgh"
-isPartnerEvent: true
+isPartnerEvent: false
 partnerName: "Cyber Connect"
+organizerType: "Commercial"
 accessType: "Open/Public"
 registrationUrl: "https://www.eventbrite.co.uk/e/2nd-annual-cyber-connect-edinburgh-tickets-2001193169641"
 accessibility:

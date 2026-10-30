@@ -5,8 +5,9 @@ time: '18:00 – 21:00 BST'
 location: 'The Rhoderick Dhu (Function Room), 21-23 Waterloo St, Glasgow G2 6BZ'
 locationUrl: 'https://maps.app.goo.gl/wJk4z6R1Gf1V8z7v9'
 city: 'Glasgow'
-isPartnerEvent: true
+isPartnerEvent: false
 partnerName: 'Hack Thursday'
+organizerType: "Community"
 registrationUrl: 'https://hackthurs.day/'
 accessibility:
   stepFree: null

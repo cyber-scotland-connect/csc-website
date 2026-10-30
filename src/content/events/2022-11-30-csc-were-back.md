@@ -5,6 +5,7 @@ time: "18:00 – 21:00 GMT"
 location: "FreeAgent, 133 Fountainbridge, Edinburgh EH3 9QG"
 city: "Edinburgh"
 isPartnerEvent: false
+organizerType: "Community"
 accessibility:
   stepFree: true
   hearingLoop: false

@@ -5,7 +5,7 @@
 > 1. `CSC New Website Requirements` (Project Specification & Migration Strategy)
 > 2. `CSC Events Mods Manual V2.0` (Playbook & Operations Manual for Organizers, Speakers, and Volunteers)
 >
-> *Last Updated: 2026-08-30*
+> *Last Updated: 2026-10-30*
 
 ---
 
@@ -102,7 +102,7 @@ The website should be designed around structured, typed content models:
 7. **Governance & Safety (`/about`, `/code-of-conduct`, `/security`):** Contributor Covenant 2.1, security disclosure policy, organizing team info.
 
 ### 6.2 Data Schemas (Markdown / Content Collections)
-- **Event Schema (`src/content/events/*.md`):** `title`, `date`, `time`, `location`, `locationUrl`, `city` (Edinburgh, Glasgow, Dundee, Virtual, Aberdeen, Scotland-wide), `isPartnerEvent`, `partnerName`, `accessType` (Open/Public, Corporate/Paid, Student/Academic, Restricted/Civil Service), `meetupUrl` (strictly Meetup.com), `registrationUrl` (Eventbrite, portals, external tickets), `streamUrl`, `slidesUrl`, `recordingUrl`, `accessibility` (strict tri-state `stepFree: boolean | null`, `hearingLoop: boolean | null`, `notes`), `speakers` (array of objects), `agenda` (array of objects).
+- **Event Schema (`src/content/events/*.md`):** `title`, `date`, `time`, `location`, `locationUrl`, `city` (Edinburgh, Glasgow, Dundee, Virtual, Aberdeen, Scotland-wide), `isPartnerEvent` (boolean, strictly true ONLY for verified partners in `src/content/partners/`), `partnerName`, `organizerType` (`Community` | `Commercial` | `Public Sector` | `Academic`), `accessType` (Open/Public, Corporate/Paid, Student/Academic, Restricted/Civil Service), `meetupUrl` (strictly Meetup.com), `registrationUrl` (Eventbrite, portals, external tickets), `streamUrl`, `slidesUrl`, `recordingUrl`, `accessibility` (strict tri-state `stepFree: boolean | null`, `hearingLoop: boolean | null`, `notes`), `speakers` (array of objects), `agenda` (array of objects).
 - **Leader / Organizer Schema (`src/content/leaders/*.md`):** `name`, `role`, `chapter`, `bio`, `avatar`, `linkedin`, `github`, `website`, `status`, `order`.
 - **Partner Schema (`src/content/partners/*.md`):** `name`, `tier` (Host Venue, Ecosystem Partner, Sponsor, Academic Partner), `logo`, `websiteUrl`, `active`, `order`.
 - **Resource Schema (`src/content/resources/*.md`):** `title`, `url`, `category` (6 domains), `type` (5 types), `description`, `isScottishOrUK`, `order`.
@@ -121,16 +121,3 @@ The community is guided by volunteer cybersecurity leaders, chapter organisers, 
 
 ### 7.2 Ecosystem Collaborations
 CSC maintains active relationships across Scotland's broader cyber resilience ecosystem, including **ScotlandIS Cyber Cluster**, **Cyber and Fraud Centre Scotland**, **Abertay cyberQuarter**, **CodeBase**, and university student societies (e.g. ENUSEC).
-
----
-
-## 8. Brand System & Local Assets
-
-- **Brand Specification:** Detailed colour codes, CSS tokens, and font hierarchy live in [`BRAND_GUIDELINES.md`](./BRAND_GUIDELINES.md).
-- **Historical Event Seed Data:** Curated past meetup talks, venues, and speaker abstracts live in [`PAST_EVENTS_ARCHIVE.md`](./PAST_EVENTS_ARCHIVE.md).
-- **Static Brand Assets:** High-resolution transparent PNG logos, icons, and badges are available in [`public/branding/`](../public/branding/):
-  - `logo-fullcolor-horizontal.png` & `logo-fullcolor-stacked.png`
-  - `logo-white-horizontal.png` & `logo-white-stacked.png`
-  - `icon-fullcolor.png`, `icon-deeppurple.png`, `icon-lilac.png`, `icon-pink.png`
-  - `icon-linkedin.png`
-

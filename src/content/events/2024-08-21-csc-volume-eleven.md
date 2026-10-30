@@ -5,6 +5,7 @@ time: "18:00 – 21:00 BST"
 location: "UserTesting, 7 Exchange Crescent, Conference Square, Edinburgh EH3 8AN"
 city: "Edinburgh"
 isPartnerEvent: false
+organizerType: "Community"
 accessibility:
   stepFree: true
   hearingLoop: false

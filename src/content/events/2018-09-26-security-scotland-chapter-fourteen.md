@@ -5,6 +5,7 @@ time: "19:00 – 21:30 BST"
 location: "Skyscanner, Quartermile One, 15 Lauriston Place, Edinburgh EH3 9EN"
 city: "Edinburgh"
 isPartnerEvent: false
+organizerType: "Community"
 accessibility:
   stepFree: true
   hearingLoop: false

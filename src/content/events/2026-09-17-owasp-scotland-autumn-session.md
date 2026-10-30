@@ -5,8 +5,9 @@ time: "18:00 – 20:00 BST"
 location: "Hays, 2 Lochrin Square, Edinburgh EH3 9QA"
 locationUrl: "https://maps.google.com/?q=Hays+2+Lochrin+Square+Edinburgh"
 city: "Edinburgh"
-isPartnerEvent: true
+isPartnerEvent: false
 partnerName: "OWASP Scotland Chapter"
+organizerType: "Community"
 meetupUrl: "https://www.meetup.com/owasp-scotland-chapter/events/316374072/"
 accessibility:
   stepFree: true

@@ -3,8 +3,9 @@ title: 'Overthewire.org war games workshop - Hacker games and tutorials'
 date: 2026-10-19
 location: 'Glasgow'
 city: 'Glasgow'
-isPartnerEvent: true
+isPartnerEvent: false
 partnerName: 'Glasgow Infosec / 2600'
+organizerType: "Community"
 accessType: 'Open/Public'
 meetupUrl: 'https://www.meetup.com/glasgow-computer-security-meetup-group/events/316976137/'
 accessibility:

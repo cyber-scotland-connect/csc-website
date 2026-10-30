@@ -4,8 +4,9 @@ date: 2026-12-04
 time: '18:30 – 21:30 GMT'
 location: 'Glasgow City Centre (see Meetup page for venue details)'
 city: 'Glasgow'
-isPartnerEvent: true
+isPartnerEvent: false
 partnerName: 'Glasgow Infosec / 2600'
+organizerType: "Community"
 accessType: 'Open/Public'
 meetupUrl: 'https://www.meetup.com/glasgow-computer-security-meetup-group/'
 accessibility:

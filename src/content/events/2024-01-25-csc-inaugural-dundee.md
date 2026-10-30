@@ -5,6 +5,7 @@ time: "18:00 – 21:00 GMT"
 location: "Abertay cyberQuarter, 1-3 Bell Street, Dundee DD1 1HP"
 city: "Dundee"
 isPartnerEvent: false
+organizerType: "Community"
 accessibility:
   stepFree: true
   hearingLoop: true

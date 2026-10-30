@@ -118,8 +118,9 @@ When creating or modifying content, AI agents must strictly conform to the Zod s
      - `location`: string (venue name, address, postcode)
      - `locationUrl`: optional Google Maps URL
      - `city`: `Edinburgh` | `Glasgow` | `Dundee` | `Virtual` | `Aberdeen` | `Scotland-wide`
-     - `isPartnerEvent`: boolean (default `false`)
+     - `isPartnerEvent`: boolean (default `false`) — **STRICTLY true ONLY for verified partners in `src/content/partners/`**. Never mark general third-party or commercial meetups as true.
      - `partnerName`: optional string
+     - `organizerType`: `Community` | `Commercial` | `Public Sector` | `Academic` (default `Community`) — explicitly classifies the hosting entity so attendees are aware of commercial/sales contexts.
      - `accessType`: `Open/Public` | `Corporate/Paid` | `Student/Academic` | `Restricted/Civil Service` (default `Open/Public`)
      - `meetupUrl`: optional URL — **STRICTLY for `meetup.com` URLs only**. Never place non-Meetup links here.
      - `registrationUrl`: optional URL — For Eventbrite, Luma, conference tickets, or external registration portals.

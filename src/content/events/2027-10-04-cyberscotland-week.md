@@ -5,6 +5,7 @@ location: 'Scotland-wide'
 city: 'Scotland-wide'
 isPartnerEvent: true
 partnerName: 'CyberScotland'
+organizerType: "Public Sector"
 registrationUrl: 'https://www.cyberscotland.com/cyberscotland-week/'
 accessibility:
   stepFree: null

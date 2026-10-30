@@ -5,6 +5,7 @@ time: "18:00 – 21:00 BST"
 location: "Harvey Nash Edinburgh, 2-4 Waterloo Place, Edinburgh EH1 3EG"
 city: "Edinburgh"
 isPartnerEvent: false
+organizerType: "Community"
 accessibility:
   stepFree: true
   hearingLoop: false

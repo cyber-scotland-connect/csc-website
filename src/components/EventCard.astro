@@ -81,7 +81,7 @@ const mapsUrl = (!isVirtual && !isCampaign) ? (data.locationUrl || `https://www.
 <article 
   class="card-tactile bg-white dark:bg-[#2a2948] rounded-2xl border border-slate-200 dark:border-[#3e3c66] p-6 hover:border-[#895294] flex flex-col justify-between group event-card h-full"
   data-category={isUpcoming ? 'upcoming' : 'past'}
-  data-type={data.isPartnerEvent ? 'partner' : 'csc'}
+  data-type={data.isPartnerEvent || data.partnerName ? 'partner' : 'csc'}
   data-city={data.city.toLowerCase()}
 >
   <div class="flex-1 flex flex-col">
@@ -102,9 +102,26 @@ const mapsUrl = (!isVirtual && !isCampaign) ? (data.locationUrl || `https://www.
             <span class="text-xs px-2 py-0.5 rounded-full font-semibold bg-pink-100 dark:bg-[#895294]/30 text-pink-800 dark:text-pink-300 border border-pink-200 dark:border-[#895294]">
               Partner: {data.partnerName || 'Ecosystem'}
             </span>
+          ) : data.partnerName ? (
+            <span class="text-xs px-2 py-0.5 rounded-full font-semibold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
+              Host: {data.partnerName}
+            </span>
           ) : (
             <span class="text-xs px-2 py-0.5 rounded-full font-semibold bg-sky-100 dark:bg-[#6fb7e6]/20 text-sky-800 dark:text-sky-200 border border-sky-200 dark:border-[#6fb7e6]/40">
               CSC Gathering
+            </span>
+          )}
+          {data.partnerName && data.organizerType && (
+            <span class={`text-xs px-2 py-0.5 rounded-full font-semibold border ${
+              data.organizerType === 'Commercial'
+                ? 'bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 border-amber-300 dark:border-amber-700'
+                : data.organizerType === 'Public Sector'
+                  ? 'bg-blue-100 dark:bg-blue-950/60 text-blue-800 dark:text-blue-300 border-blue-200 dark:border-blue-700'
+                  : data.organizerType === 'Academic'
+                    ? 'bg-purple-100 dark:bg-purple-950/60 text-purple-800 dark:text-purple-300 border-purple-200 dark:border-purple-700'
+                    : 'bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border-emerald-200 dark:border-emerald-700'
+            }`}>
+              {data.organizerType === 'Commercial' ? 'Commercial Host' : data.organizerType}
             </span>
           )}
           {data.accessType && data.accessType !== 'Open/Public' && (
