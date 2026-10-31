@@ -60,11 +60,32 @@ const communityByCategory = categories.map((cat) => ({
 }));
 
 const totalCount = sortedCommunity.length;
+
+const communitySchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: 'Scottish Cyber Security Community Directory',
+  description:
+    "Curated directory of Scotland's grassroots cybersecurity meetups, student societies, diversity groups, and professional networks.",
+  numberOfItems: totalCount,
+  itemListElement: sortedCommunity.map((item, idx) => ({
+    '@type': 'ListItem',
+    position: idx + 1,
+    item: {
+      '@type': 'Organization',
+      name: item.data.name,
+      description: item.data.description,
+      url: item.data.websiteUrl,
+      areaServed: item.data.city,
+    },
+  })),
+};
 ---
 
 <BaseLayout
   title="Scottish Cyber Community Hub"
   description="Elevating and connecting Scotland's grassroots cybersecurity meetups, student societies, diversity groups, and professional networks alongside the Cyber Scotland Connect Discord."
+  structuredData={communitySchema}
 >
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
     <!-- Header -->
@@ -165,7 +186,7 @@ const totalCount = sortedCommunity.length;
     </section>
 
     <!-- Community Directory Sections -->
-    <main>
+    <div>
       {
         communityByCategory.map((category) => {
           const CategoryIcon = category.IconComponent;
@@ -221,6 +242,6 @@ const totalCount = sortedCommunity.length;
           </a>
         </div>
       </section>
-    </main>
+    </div>
   </div>
 </BaseLayout>

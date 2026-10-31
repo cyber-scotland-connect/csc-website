@@ -6,3 +6,7 @@ Allow: /
 
 # Sitemap Index
 Sitemap: https://cyberscotlandconnect.com/sitemap-index.xml
+
+# AI & LLM Context Endpoints
+# Summary: https://cyberscotlandconnect.com/llms.txt
+# Full Corpus: https://cyberscotlandconnect.com/llms-full.txt

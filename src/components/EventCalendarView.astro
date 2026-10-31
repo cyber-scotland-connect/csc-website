@@ -229,7 +229,7 @@ const calendarEvents = events.map((event) => {
   is:inline
   id="calendar-raw-data"
   type="application/json"
-  set:html={JSON.stringify(calendarEvents)}
+  set:html={JSON.stringify(calendarEvents).replace(/</g, '\\u003c')}
 />
 <script is:inline>
   (function () {
@@ -439,10 +439,16 @@ const calendarEvents = events.map((event) => {
               ' bg-[#895294]/90 hover:bg-[#9d5fa8] text-white border border-[#9d5fa8]/30';
           }
 
-          pill.innerHTML = `
-            <span class="w-1.5 h-1.5 rounded-full shrink-0" style="background-color: ${cityColor}"></span>
-            <span class="truncate flex-1">${evt.title}</span>
-          `;
+          const dotSpan = document.createElement('span');
+          dotSpan.className = 'w-1.5 h-1.5 rounded-full shrink-0';
+          dotSpan.style.backgroundColor = cityColor;
+
+          const titleSpan = document.createElement('span');
+          titleSpan.className = 'truncate flex-1';
+          titleSpan.textContent = evt.title;
+
+          pill.appendChild(dotSpan);
+          pill.appendChild(titleSpan);
 
           // Popover events
           pill.addEventListener('mouseenter', (e) => showPopover(e, evt));
@@ -468,11 +474,25 @@ const calendarEvents = events.map((event) => {
 
         cell.appendChild(pillsContainer);
 
-        // Click on entire cell to open details on mobile or if events present
+        // Click or keyboard activation on cell to open details on mobile or if events present
         if (dayEvents.length > 0) {
-          cell.classList.add('cursor-pointer');
+          cell.classList.add('cursor-pointer', 'focus:outline-none', 'focus:ring-2', 'focus:ring-[#6fb7e6]', 'focus:z-10');
+          cell.tabIndex = 0;
+          cell.setAttribute('role', 'button');
+          cell.setAttribute(
+            'aria-label',
+            `View ${dayEvents.length} ${dayEvents.length === 1 ? 'event' : 'events'} on ${cellDateStr}`
+          );
           cell.addEventListener('click', () => {
             showDayDetails(cellDateStr, dayEvents);
+          });
+          cell.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              if (e.target === cell) {
+                e.preventDefault();
+                showDayDetails(cellDateStr, dayEvents);
+              }
+            }
           });
         }
 
@@ -543,27 +563,74 @@ const calendarEvents = events.map((event) => {
 
         const cityColor = cityColors[evt.city.toLowerCase()] || '#6fb7e6';
 
-        item.innerHTML = `
-          <div class="space-y-1">
-            <div class="flex items-center gap-2">
-              <span class="w-2 h-2 rounded-full" style="background-color: ${cityColor}"></span>
-              <span class="text-xs font-mono font-bold uppercase text-slate-500 dark:text-[#bdaccf]">${evt.city}</span>
-              ${evt.isPartner ? '<span class="text-[10px] px-2 py-0.5 rounded bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 font-bold uppercase">Partner</span>' : '<span class="text-[10px] px-2 py-0.5 rounded bg-purple-100 dark:bg-[#382b5c] text-[#895294] dark:text-[#6fb7e6] font-bold uppercase">CSC</span>'}
-            </div>
-            <h4 class="font-bold text-sm text-slate-900 dark:text-white">${evt.title}</h4>
-            <p class="text-xs text-slate-600 dark:text-[#bdaccf] flex items-center gap-3">
-              <span>⏰ ${evt.time || 'TBA'}</span>
-              <span>📍 ${evt.location}</span>
-            </p>
-          </div>
-          <a
-            href="${evt.url}"
-            class="self-start sm:self-auto btn-tactile px-3.5 py-1.5 rounded-lg bg-[#895294] hover:bg-[#9d5fa8] text-white text-xs font-bold transition-all shadow-sm flex items-center gap-1.5 shrink-0"
-          >
-            <span>View Details</span>
-            <span>&rarr;</span>
-          </a>
-        `;
+        const leftDiv = document.createElement('div');
+        leftDiv.className = 'space-y-1';
+
+        const metaRow = document.createElement('div');
+        metaRow.className = 'flex items-center gap-2';
+
+        const cityDot = document.createElement('span');
+        cityDot.className = 'w-2 h-2 rounded-full';
+        cityDot.style.backgroundColor = cityColor;
+
+        const cityLabel = document.createElement('span');
+        cityLabel.className =
+          'text-xs font-mono font-bold uppercase text-slate-500 dark:text-[#bdaccf]';
+        cityLabel.textContent = evt.city;
+
+        const typeBadge = document.createElement('span');
+        if (evt.isPartner) {
+          typeBadge.className =
+            'text-[10px] px-2 py-0.5 rounded bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 font-bold uppercase';
+          typeBadge.textContent = 'Partner';
+        } else {
+          typeBadge.className =
+            'text-[10px] px-2 py-0.5 rounded bg-purple-100 dark:bg-[#382b5c] text-[#895294] dark:text-[#6fb7e6] font-bold uppercase';
+          typeBadge.textContent = 'CSC';
+        }
+
+        metaRow.appendChild(cityDot);
+        metaRow.appendChild(cityLabel);
+        metaRow.appendChild(typeBadge);
+
+        const titleEl = document.createElement('h4');
+        titleEl.className = 'font-bold text-sm text-slate-900 dark:text-white';
+        titleEl.textContent = evt.title;
+
+        const subRow = document.createElement('p');
+        subRow.className =
+          'text-xs text-slate-600 dark:text-[#bdaccf] flex items-center gap-3';
+
+        const timeSpan = document.createElement('span');
+        timeSpan.textContent = `⏰ ${evt.time || 'TBA'}`;
+
+        const locSpan = document.createElement('span');
+        locSpan.textContent = `📍 ${evt.location}`;
+
+        subRow.appendChild(timeSpan);
+        subRow.appendChild(locSpan);
+
+        leftDiv.appendChild(metaRow);
+        leftDiv.appendChild(titleEl);
+        leftDiv.appendChild(subRow);
+
+        const actionLink = document.createElement('a');
+        actionLink.href = evt.url;
+        actionLink.className =
+          'self-start sm:self-auto btn-tactile px-3.5 py-1.5 rounded-lg bg-[#895294] hover:bg-[#9d5fa8] text-white text-xs font-bold transition-all shadow-sm flex items-center gap-1.5 shrink-0';
+
+        const actionText = document.createElement('span');
+        actionText.textContent = 'View Details';
+
+        const actionArrow = document.createElement('span');
+        actionArrow.textContent = '→';
+        actionArrow.setAttribute('aria-hidden', 'true');
+
+        actionLink.appendChild(actionText);
+        actionLink.appendChild(actionArrow);
+
+        item.appendChild(leftDiv);
+        item.appendChild(actionLink);
         dayDetailsList.appendChild(item);
       });
 

@@ -1,0 +1,7 @@
+# Cyber Scotland Connect (CSC) Security Disclosure Policy (RFC 9116)
+Contact: https://github.com/cyber-scotland-connect/csc-website/security/advisories/new
+Contact: mailto:hello@cyberscotlandconnect.com
+Expires: 2027-12-31T23:59:59.000Z
+Preferred-Languages: en
+Canonical: https://cyberscotlandconnect.com/.well-known/security.txt
+Policy: https://cyberscotlandconnect.com/security/

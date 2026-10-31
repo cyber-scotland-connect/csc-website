@@ -1,124 +1,25 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import LeaderCard from '../components/LeaderCard.astro';
-import { getCollection } from 'astro:content';
-
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
-const allLeaders = await getCollection('leaders');
-// Shuffle active leaders at build time so static HTML doesn't favor any leader
-const activeLeaders = allLeaders.filter(l => l.data.status !== 'alumni').sort(() => Math.random() - 0.5);
-const alumniLeaders = allLeaders.filter(l => l.data.status === 'alumni').sort((a, b) => a.data.order - b.data.order);
+const targetUrl = `${base}/#leadership`;
+const canonicalTarget = 'https://cyberscotlandconnect.com/#leadership';
 ---
 
-<BaseLayout 
-  title="Leadership & Moderators" 
-  description="Meet the founders, regional chapter leads, and volunteer moderators behind Cyber Scotland Connect."
->
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    <!-- Moved Notice Banner -->
-    <div class="mb-8 p-4 rounded-xl bg-purple-50 dark:bg-[#252342] border border-purple-200 dark:border-[#56548c] flex flex-wrap items-center justify-between gap-3 text-xs">
-      <div class="flex items-center gap-2 text-slate-700 dark:text-[#bdaccf]">
-        <span class="text-base">💡</span>
-        <span>Community leadership is now integrated directly into our homepage.</span>
-      </div>
-      <a
-        href={`${base}/#leadership`}
-        class="font-bold text-[#895294] dark:text-[#6fb7e6] hover:underline flex items-center gap-1"
-      >
-        <span>Jump to Homepage Leadership</span> →
-      </a>
-    </div>
-
-    <!-- Header -->
-    <div class="border-b border-slate-200 dark:border-[#3e3c66] pb-8 mb-12 transition-colors">
-      <span class="text-xs font-semibold uppercase tracking-wider text-[#56548c] dark:text-[#6fb7e6] block mb-1">
-        Grassroots Leadership
-      </span>
-      <h1 class="text-3xl sm:text-5xl font-heading font-bold text-slate-900 dark:text-white uppercase tracking-tight transition-colors">
-        Founders, Organizers & Moderators
-      </h1>
-      <p class="text-slate-600 dark:text-[#bdaccf] text-base mt-2 max-w-2xl transition-colors">
-        Cyber Scotland Connect is steered by passionate volunteer cybersecurity practitioners and community leaders dedicated to open, accessible, and high-integrity knowledge exchange.
-      </p>
-    </div>
-
-    <!-- Active Leaders Grid -->
-    <section class="mb-16">
-      <div class="flex items-center gap-3 mb-6">
-        <span class="text-xl">🛡️</span>
-        <h2 class="text-2xl font-heading font-bold text-slate-900 dark:text-white uppercase tracking-wide">
-          Community Leadership & Moderators
-        </h2>
-      </div>
-      <div id="active-leaders-grid" class="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {activeLeaders.map(leader => <LeaderCard leader={leader} />)}
-      </div>
-
-      <!-- Client-side shuffle to randomize order on every page visit -->
-      <script is:inline>
-        (function() {
-          const grid = document.getElementById('active-leaders-grid');
-          if (!grid) return;
-          const cards = Array.from(grid.children);
-          for (let i = cards.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [cards[i], cards[j]] = [cards[j], cards[i]];
-          }
-          cards.forEach(card => grid.appendChild(card));
-        })();
-      </script>
-    </section>
-
-    <!-- Alumni & Historic Moderators Grid -->
-    {alumniLeaders.length > 0 && (
-      <section class="mb-16 border-t border-slate-200 dark:border-[#3e3c66] pt-12">
-        <div class="mb-8">
-          <div class="flex items-center gap-3 mb-2">
-            <span class="text-xl">🤝</span>
-            <h2 class="text-2xl font-heading font-bold text-slate-900 dark:text-white uppercase tracking-wide">
-              Community Moderators & Alumni
-            </h2>
-          </div>
-          <p class="text-sm text-slate-600 dark:text-[#bdaccf] max-w-2xl">
-            Celebrating the founding moderators and volunteer contributors who helped establish, nurture, and grow Cyber Scotland Connect across the years.
-          </p>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {alumniLeaders.map(leader => <LeaderCard leader={leader} />)}
-        </div>
-      </section>
-    )}
-
-    <!-- Volunteer & Moderator Info -->
-    <div class="bg-slate-50 dark:bg-[#1b1a30] rounded-2xl border border-slate-200 dark:border-[#3e3c66] p-8 sm:p-10 text-slate-600 dark:text-[#bdaccf] transition-colors">
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
-        <div class="lg:col-span-2 space-y-3">
-          <span class="text-xs font-semibold uppercase tracking-wider text-[#895294]">
-            Get Involved
-          </span>
-          <h2 class="text-2xl font-heading font-bold text-slate-900 dark:text-white uppercase">
-            Volunteer with Cyber Scotland Connect
-          </h2>
-          <p class="text-sm leading-relaxed">
-            CSC is 100% powered by volunteer time. We welcome community members who want to help run check-in desks at regional meetups, manage audiovisual and YouTube livestreams, curate speaker abstracts, or moderate our online community discussions.
-          </p>
-        </div>
-
-        <div class="flex flex-col gap-3">
-          <a
-            href="mailto:hello@cyberscotlandconnect.com"
-            class="px-5 py-3 rounded-lg bg-[#895294] hover:bg-[#9d5fa8] text-white font-bold text-sm text-center shadow transition-colors"
-          >
-            Join as a Volunteer
-          </a>
-          <a
-            href="https://github.com/cyber-scotland-connect/csc-website/blob/main/CODE_OF_CONDUCT.md"
-            class="px-5 py-3 rounded-lg bg-white dark:bg-[#2a2948] hover:bg-slate-100 dark:hover:bg-[#382b5c] border border-slate-200 dark:border-[#3e3c66] text-slate-800 dark:text-white text-xs text-center transition-colors shadow-sm"
-          >
-            Review Code of Conduct ↗
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>
-</BaseLayout>
+<!DOCTYPE html>
+<html lang="en-GB" class="dark">
+  <head>
+    <meta charset="utf-8" />
+    <title>Redirecting to Community Leadership | Cyber Scotland Connect</title>
+    <meta name="robots" content="noindex" />
+    <link rel="canonical" href={canonicalTarget} />
+    <meta http-equiv="refresh" content={`0;url=${targetUrl}`} />
+    <script is:inline define:vars={{ targetUrl }}>
+      window.location.replace(targetUrl);
+    </script>
+  </head>
+  <body style="background:#21203a;color:#ffffff;font-family:system-ui,sans-serif;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;padding:1.5rem;text-align:center;">
+    <p>
+      Community Leadership &amp; Alumni now live on the homepage. Redirecting to{' '}
+      <a href={targetUrl} style="color:#6fb7e6;font-weight:700;">{targetUrl}</a>…
+    </p>
+  </body>
+</html>

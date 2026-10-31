@@ -43,7 +43,7 @@ import { Accessibility, Type, Contrast, Sun, Moon, X } from 'lucide-astro';
       <!-- Theme Switcher -->
       <div class="flex items-center justify-between">
         <div>
-          <label class="text-sm font-semibold text-slate-800 dark:text-slate-200 block">Color Theme</label>
+          <label for="theme-toggle-btn" class="text-sm font-semibold text-slate-800 dark:text-slate-200 block cursor-pointer">Color Theme</label>
           <span class="text-xs text-slate-500 dark:text-[#bdaccf]">Switch between light and dark modes</span>
         </div>
         <button 
@@ -61,7 +61,7 @@ import { Accessibility, Type, Contrast, Sun, Moon, X } from 'lucide-astro';
       <!-- Dyslexia Font Toggle -->
       <div class="flex items-center justify-between">
         <div>
-          <label class="text-sm font-semibold text-slate-800 dark:text-slate-200 block">Dyslexia-Friendly Font</label>
+          <label for="toggle-font-btn" class="text-sm font-semibold text-slate-800 dark:text-slate-200 block cursor-pointer">Dyslexia-Friendly Font</label>
           <span class="text-xs text-slate-500 dark:text-[#bdaccf]">Atkinson Hyperlegible by Braille Institute</span>
         </div>
         <button 
@@ -78,15 +78,16 @@ import { Accessibility, Type, Contrast, Sun, Moon, X } from 'lucide-astro';
       <!-- Text Sizing -->
       <div class="flex items-center justify-between">
         <div>
-          <label class="text-sm font-semibold text-slate-800 dark:text-slate-200 block">Text Sizing</label>
+          <span id="text-size-group-label" class="text-sm font-semibold text-slate-800 dark:text-slate-200 block">Text Sizing</span>
           <span class="text-xs text-slate-500 dark:text-[#bdaccf]">Scale base font size across the site</span>
         </div>
-        <div class="flex items-center gap-1 border border-slate-300 dark:border-[#56548c] rounded-lg bg-slate-50 dark:bg-[#2a2948] p-1" role="group" aria-label="Text Size Controls">
+        <div class="flex items-center gap-1 border border-slate-300 dark:border-[#56548c] rounded-lg bg-slate-50 dark:bg-[#2a2948] p-1" role="group" aria-labelledby="text-size-group-label">
           <button 
             type="button" 
             data-size="normal"
             class="size-btn px-2.5 py-1 rounded text-xs font-semibold focus:outline-none focus:ring-1 focus:ring-[#6fb7e6]"
             aria-label="Standard text size (100%)"
+            aria-pressed="true"
           >
             100%
           </button>
@@ -95,6 +96,7 @@ import { Accessibility, Type, Contrast, Sun, Moon, X } from 'lucide-astro';
             data-size="lg"
             class="size-btn px-2.5 py-1 rounded text-xs font-bold focus:outline-none focus:ring-1 focus:ring-[#6fb7e6]"
             aria-label="Large text size (112%)"
+            aria-pressed="false"
           >
             112%
           </button>
@@ -103,6 +105,7 @@ import { Accessibility, Type, Contrast, Sun, Moon, X } from 'lucide-astro';
             data-size="xl"
             class="size-btn px-2.5 py-1 rounded text-xs font-extrabold focus:outline-none focus:ring-1 focus:ring-[#6fb7e6]"
             aria-label="Extra large text size (125%)"
+            aria-pressed="false"
           >
             125%
           </button>
@@ -112,7 +115,7 @@ import { Accessibility, Type, Contrast, Sun, Moon, X } from 'lucide-astro';
       <!-- High Contrast Mode -->
       <div class="flex items-center justify-between">
         <div>
-          <label class="text-sm font-semibold text-slate-800 dark:text-slate-200 block">High Contrast Mode</label>
+          <label for="toggle-contrast-btn" class="text-sm font-semibold text-slate-800 dark:text-slate-200 block cursor-pointer">High Contrast Mode</label>
           <span class="text-xs text-slate-500 dark:text-[#bdaccf]">Maximises text-to-background contrast</span>
         </div>
         <button 
@@ -198,10 +201,27 @@ import { Accessibility, Type, Contrast, Sun, Moon, X } from 'lucide-astro';
       });
     }
 
-    // Escape key closes modal
+    // Escape key closes modal & Tab key traps focus within dialog
     window.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && backdrop && !backdrop.classList.contains('hidden')) {
+      if (!backdrop || backdrop.classList.contains('hidden')) return;
+      if (e.key === 'Escape') {
         closeModal();
+        return;
+      }
+      if (e.key === 'Tab' && dialog) {
+        const focusable = dialog.querySelectorAll(
+          'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        );
+        if (focusable.length === 0) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey && (document.activeElement === first || document.activeElement === dialog)) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
       }
     });
 
@@ -279,9 +299,11 @@ import { Accessibility, Type, Contrast, Sun, Moon, X } from 'lucide-astro';
         if (btn.getAttribute('data-size') === size) {
           btn.classList.add('bg-[#895294]', 'text-white');
           btn.classList.remove('text-slate-700', 'dark:text-slate-300');
+          btn.setAttribute('aria-pressed', 'true');
         } else {
           btn.classList.remove('bg-[#895294]', 'text-white');
           btn.classList.add('text-slate-700', 'dark:text-slate-300');
+          btn.setAttribute('aria-pressed', 'false');
         }
       });
     }

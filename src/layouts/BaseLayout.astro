@@ -2,6 +2,23 @@
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import AccessibilityBar from '../components/AccessibilityBar.astro';
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/400-italic.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
+import '@fontsource/roboto-condensed/400.css';
+import '@fontsource/roboto-condensed/700.css';
+import '@fontsource/space-grotesk/500.css';
+import '@fontsource/space-grotesk/600.css';
+import '@fontsource/space-grotesk/700.css';
+import '@fontsource/jetbrains-mono/400.css';
+import '@fontsource/jetbrains-mono/500.css';
+import '@fontsource/jetbrains-mono/700.css';
+import '@fontsource/atkinson-hyperlegible/400.css';
+import '@fontsource/atkinson-hyperlegible/400-italic.css';
+import '@fontsource/atkinson-hyperlegible/700.css';
+import '@fontsource/atkinson-hyperlegible/700-italic.css';
 import '../styles/global.css';
 
 interface Props {
@@ -56,6 +73,10 @@ const schemaData = {
     <!-- Security & Hygiene -->
     <meta http-equiv="X-Content-Type-Options" content="nosniff" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;"
+    />
 
     <!-- Primary Meta Tags -->
     <title>{fullTitle}</title>
@@ -77,7 +98,7 @@ const schemaData = {
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={resolvedOgImage} />
 
-    <!-- Calendar & RSS Feeds Autodiscovery -->
+    <!-- Calendar, RSS & LLM Feeds Autodiscovery -->
     <link
       rel="alternate"
       type="application/rss+xml"
@@ -90,32 +111,35 @@ const schemaData = {
       title="Cyber Scotland Connect Gatherings RSS"
       href={`${base}/feeds/csc.xml`}
     />
-
-    <!-- Typography Fonts: Space Grotesk (Brand Headings), Roboto, Roboto Condensed, Atkinson Hyperlegible (for A11y), and JetBrains Mono (Technical) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      rel="preload"
-      as="style"
-      href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&family=JetBrains+Mono:wght@400;500;700&family=Roboto+Condensed:wght@400;700&family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,400&family=Space+Grotesk:wght@500;600;700&display=swap"
+      rel="alternate"
+      type="application/rss+xml"
+      title="Scottish Cyber Partner Events RSS"
+      href={`${base}/feeds/partner.xml`}
     />
     <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&family=JetBrains+Mono:wght@400;500;700&family=Roboto+Condensed:wght@400;700&family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,400&family=Space+Grotesk:wght@500;600;700&display=swap"
-      media="print"
-      onload="this.media='all'"
+      rel="alternate"
+      type="text/calendar"
+      title="Scottish Cyber Community Events iCal"
+      href={`${base}/calendar/community.ics`}
     />
-    <noscript>
-      <link
-        rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&family=JetBrains+Mono:wght@400;500;700&family=Roboto+Condensed:wght@400;700&family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,400&family=Space+Grotesk:wght@500;600;700&display=swap"
-      />
-    </noscript>
+    <link
+      rel="alternate"
+      type="text/calendar"
+      title="Cyber Scotland Connect Gatherings iCal"
+      href={`${base}/calendar/csc.ics`}
+    />
+    <link
+      rel="llms"
+      type="text/plain"
+      title="Cyber Scotland Connect LLM Context"
+      href={`${base}/llms.txt`}
+    />
 
     <!-- JSON-LD Structured Data -->
-    <script is:inline type="application/ld+json" set:html={JSON.stringify(schemaData)} />
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(schemaData).replace(/</g, '\\u003c')} />
     {structuredData && (
-      <script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+      <script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData).replace(/</g, '\\u003c')} />
     )}
 
     <!-- Inline script to prevent FOUC for dark/light mode and accessibility prefs -->

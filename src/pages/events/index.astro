@@ -121,7 +121,7 @@ const partnerEvents = sortedEvents.filter(
       <div class="space-y-3 mt-8">
         <div
           class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1.5 sm:pb-0 sm:flex-wrap"
-          role="tablist"
+          role="group"
           aria-label="Event category filters"
         >
           <span class="text-xs font-mono font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mr-1 hidden sm:inline shrink-0">
@@ -132,8 +132,7 @@ const partnerEvents = sortedEvents.filter(
             data-filter-type="category"
             data-value="all"
             class="filter-cat-btn active px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold bg-[#895294] text-white transition-colors shrink-0"
-            role="tab"
-            aria-selected="true"
+            aria-pressed="true"
           >
             All Events ({sortedEvents.length})
           </button>
@@ -142,8 +141,7 @@ const partnerEvents = sortedEvents.filter(
             data-filter-type="category"
             data-value="upcoming"
             class="filter-cat-btn px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold bg-white dark:bg-[#2a2948] text-slate-700 dark:text-[#bdaccf] hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-[#3e3c66] transition-colors shrink-0"
-            role="tab"
-            aria-selected="false"
+            aria-pressed="false"
           >
             Upcoming ({upcomingEvents.length})
           </button>
@@ -152,8 +150,7 @@ const partnerEvents = sortedEvents.filter(
             data-filter-type="category"
             data-value="csc"
             class="filter-cat-btn px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold bg-white dark:bg-[#2a2948] text-slate-700 dark:text-[#bdaccf] hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-[#3e3c66] transition-colors shrink-0"
-            role="tab"
-            aria-selected="false"
+            aria-pressed="false"
           >
             CSC Gatherings (
             {
@@ -168,8 +165,7 @@ const partnerEvents = sortedEvents.filter(
             data-filter-type="category"
             data-value="partner"
             class="filter-cat-btn px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold bg-white dark:bg-[#2a2948] text-slate-700 dark:text-[#bdaccf] hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-[#3e3c66] transition-colors shrink-0"
-            role="tab"
-            aria-selected="false"
+            aria-pressed="false"
           >
             Partner & Ecosystem ({partnerEvents.length})
           </button>
@@ -178,8 +174,7 @@ const partnerEvents = sortedEvents.filter(
             data-filter-type="category"
             data-value="past"
             class="filter-cat-btn px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold bg-white dark:bg-[#2a2948] text-slate-700 dark:text-[#bdaccf] hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-[#3e3c66] transition-colors shrink-0"
-            role="tab"
-            aria-selected="false"
+            aria-pressed="false"
           >
             Archive ({pastEvents.length})
           </button>
@@ -188,7 +183,7 @@ const partnerEvents = sortedEvents.filter(
         <!-- Regional Chapter Chips -->
         <div
           class="flex items-center gap-1.5 pt-1 overflow-x-auto no-scrollbar pb-1 sm:pb-0 sm:flex-wrap"
-          role="tablist"
+          role="group"
           aria-label="Regional chapter filters"
         >
           <span class="text-xs font-mono font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mr-1 hidden sm:inline shrink-0">
@@ -199,8 +194,7 @@ const partnerEvents = sortedEvents.filter(
             data-filter-type="city"
             data-value="all"
             class="filter-city-btn active px-2.5 py-1 rounded-md text-xs font-medium bg-[#56548c] text-white transition-colors shrink-0"
-            role="tab"
-            aria-selected="true"
+            aria-pressed="true"
           >
             All Chapters
           </button>
@@ -209,8 +203,7 @@ const partnerEvents = sortedEvents.filter(
             data-filter-type="city"
             data-value="edinburgh"
             class="filter-city-btn px-2.5 py-1 rounded-md text-xs font-medium bg-slate-100 dark:bg-[#1b1a30] text-slate-700 dark:text-[#bdaccf] hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-[#3e3c66] transition-colors flex items-center gap-1.5 shrink-0"
-            role="tab"
-            aria-selected="false"
+            aria-pressed="false"
           >
             <Landmark class="w-3.5 h-3.5 text-[#6fb7e6]" aria-hidden="true" />
             <span>Edinburgh</span>
@@ -220,8 +213,7 @@ const partnerEvents = sortedEvents.filter(
             data-filter-type="city"
             data-value="glasgow"
             class="filter-city-btn px-2.5 py-1 rounded-md text-xs font-medium bg-slate-100 dark:bg-[#1b1a30] text-slate-700 dark:text-[#bdaccf] hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-[#3e3c66] transition-colors flex items-center gap-1.5 shrink-0"
-            role="tab"
-            aria-selected="false"
+            aria-pressed="false"
           >
             <Ship class="w-3.5 h-3.5 text-[#895294]" aria-hidden="true" />
             <span>Glasgow</span>
@@ -231,8 +223,7 @@ const partnerEvents = sortedEvents.filter(
             data-filter-type="city"
             data-value="dundee"
             class="filter-city-btn px-2.5 py-1 rounded-md text-xs font-medium bg-slate-100 dark:bg-[#1b1a30] text-slate-700 dark:text-[#bdaccf] hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-[#3e3c66] transition-colors flex items-center gap-1.5 shrink-0"
-            role="tab"
-            aria-selected="false"
+            aria-pressed="false"
           >
             <Gamepad2 class="w-3.5 h-3.5 text-pink-400" aria-hidden="true" />
             <span>Dundee</span>
@@ -242,8 +233,7 @@ const partnerEvents = sortedEvents.filter(
             data-filter-type="city"
             data-value="aberdeen"
             class="filter-city-btn px-2.5 py-1 rounded-md text-xs font-medium bg-slate-100 dark:bg-[#1b1a30] text-slate-700 dark:text-[#bdaccf] hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-[#3e3c66] transition-colors flex items-center gap-1.5 shrink-0"
-            role="tab"
-            aria-selected="false"
+            aria-pressed="false"
           >
             <Zap class="w-3.5 h-3.5 text-amber-400" aria-hidden="true" />
             <span>Aberdeen</span>
@@ -253,8 +243,7 @@ const partnerEvents = sortedEvents.filter(
             data-filter-type="city"
             data-value="virtual"
             class="filter-city-btn px-2.5 py-1 rounded-md text-xs font-medium bg-slate-100 dark:bg-[#1b1a30] text-slate-700 dark:text-[#bdaccf] hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-[#3e3c66] transition-colors flex items-center gap-1.5 shrink-0"
-            role="tab"
-            aria-selected="false"
+            aria-pressed="false"
           >
             <Globe class="w-3.5 h-3.5 text-sky-400" aria-hidden="true" />
             <span>Virtual</span>
@@ -264,8 +253,7 @@ const partnerEvents = sortedEvents.filter(
             data-filter-type="city"
             data-value="scotland-wide"
             class="filter-city-btn px-2.5 py-1 rounded-md text-xs font-medium bg-slate-100 dark:bg-[#1b1a30] text-slate-700 dark:text-[#bdaccf] hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-[#3e3c66] transition-colors flex items-center gap-1.5 shrink-0"
-            role="tab"
-            aria-selected="false"
+            aria-pressed="false"
           >
             <Shield class="w-3.5 h-3.5 text-indigo-400" aria-hidden="true" />
             <span>Scotland-wide</span>
@@ -557,7 +545,7 @@ const partnerEvents = sortedEvents.filter(
           'text-slate-700',
           'dark:text-[#bdaccf]'
         );
-        b.setAttribute('aria-selected', 'false');
+        b.setAttribute('aria-pressed', 'false');
       });
 
       btn.classList.add('active', 'bg-[#895294]', 'text-white');
@@ -567,7 +555,7 @@ const partnerEvents = sortedEvents.filter(
         'text-slate-700',
         'dark:text-[#bdaccf]'
       );
-      btn.setAttribute('aria-selected', 'true');
+      btn.setAttribute('aria-pressed', 'true');
 
       activeCategory = btn.getAttribute('data-value') || 'all';
       applyCombinedFilters();
@@ -584,7 +572,7 @@ const partnerEvents = sortedEvents.filter(
           'text-slate-700',
           'dark:text-[#bdaccf]'
         );
-        b.setAttribute('aria-selected', 'false');
+        b.setAttribute('aria-pressed', 'false');
       });
 
       btn.classList.add('active', 'bg-[#56548c]', 'text-white');
@@ -594,7 +582,7 @@ const partnerEvents = sortedEvents.filter(
         'text-slate-700',
         'dark:text-[#bdaccf]'
       );
-      btn.setAttribute('aria-selected', 'true');
+      btn.setAttribute('aria-pressed', 'true');
 
       activeCity = btn.getAttribute('data-value') || 'all';
       applyCombinedFilters();

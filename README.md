@@ -40,12 +40,15 @@ CSC is dedicated to radical inclusivity and accessibility (WCAG 2.1 AA/AAA compl
 - **Automated Event Discovery:** Multi-protocol discovery engine (`scripts/discover-events.ts`) monitoring 18 ecosystem feeds across RSS, iCal, Bluesky ATProto RSS, and Squarespace JSON APIs.
 - **Live Calendars & RSS Feeds:** Build-time generation of direct `.ics` and RSS `.xml` feeds for 1-click subscription in Google Calendar, Apple Calendar, Outlook, and Discord webhooks.
 - **Intelligent Platform Resolution:** Hostname-driven link resolver (`src/utils/event-link.ts`) guaranteeing links are never labeled "Meetup" unless pointing to `meetup.com`, with tailored CTAs for Eventbrite, Luma, LinkedIn, and external portals.
-- **SEO & AI Discovery:**
+- **SEO, AI Discovery & Security Standards:**
   - Automated XML sitemaps via `@astrojs/sitemap` (`sitemap-index.xml`)
   - Crawler directives via `public/robots.txt`
-  - Generative Engine Optimization (GEO) & LLM discovery standard via `public/llms.txt`
-  - Rich JSON-LD Structured Data: `schema.org/Organization`, `schema.org/Event`, and `schema.org/FAQPage`
+  - Dynamic Generative Engine Optimization (GEO) & LLM discovery standard via `src/pages/llms.txt.ts` (`/llms.txt`) and `src/pages/llms-full.txt.ts` (`/llms-full.txt`)
+  - Rich JSON-LD Structured Data: `schema.org/Organization`, `schema.org/Event`, `schema.org/ItemList`, and `schema.org/FAQPage`
   - Open Graph & Twitter / X card metadata with absolute URL resolution
+  - Self-hosted typography via `@fontsource` WOFF2 bundles (zero external Google font requests for visitor privacy)
+  - Content Security Policy (CSP) and Referrer Policy client protection via `<meta>` headers
+  - RFC 9116 Vulnerability Disclosure standard via `public/.well-known/security.txt` (`/.well-known/security.txt`)
 - **Hosting:** GitHub Pages via automated GitHub Actions workflow (`.github/workflows/deploy.yml`)
 - **Supported Runtimes:** [Bun](https://bun.sh) (preferred) or [Node.js](https://nodejs.org) (v20+)
 

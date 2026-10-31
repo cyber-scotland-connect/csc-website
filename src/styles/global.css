@@ -20,7 +20,7 @@
   --font-sans: 'Roboto', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-heading: 'Space Grotesk', 'Roboto Condensed', 'Roboto', sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  --font-dyslexic: 'OpenDyslexic', 'Atkinson Hyperlegible', sans-serif;
+  --font-dyslexic: 'Atkinson Hyperlegible', 'OpenDyslexic', sans-serif;
 }
 
 @layer base {

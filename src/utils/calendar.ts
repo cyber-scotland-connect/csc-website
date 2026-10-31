@@ -10,7 +10,7 @@ interface CalendarOptions {
  * Parses time string like "18:00 – 20:00 BST" or "08:30 – 16:30 GMT"
  * into start and end UTC Dates combined with the event date.
  */
-function parseEventTimes(
+export function parseEventTimes(
   eventDate: Date,
   timeStr?: string
 ): { start: Date; end: Date; allDay: boolean } {
@@ -57,7 +57,7 @@ function parseEventTimes(
 /**
  * Checks if a given date falls within British Summer Time (last Sun in March to last Sun in October)
  */
-function isBritishSummerTime(date: Date): boolean {
+export function isBritishSummerTime(date: Date): boolean {
   const year = date.getFullYear();
   // Last Sunday in March
   const marchEnd = new Date(year, 2, 31);
