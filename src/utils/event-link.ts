@@ -52,8 +52,8 @@ export function parseEventLink(rawUrl?: string): EventActionLink | null {
         shortLabel: 'Eventbrite',
         isMeetup: false,
         colorClass: {
-          bg: 'bg-[#e04f32]',
-          hover: 'hover:bg-[#f05f42]',
+          bg: 'bg-[#c8381e]',
+          hover: 'hover:bg-[#b32e16]',
           text: 'text-white',
         },
       };
@@ -68,8 +68,8 @@ export function parseEventLink(rawUrl?: string): EventActionLink | null {
         shortLabel: 'Luma',
         isMeetup: false,
         colorClass: {
-          bg: 'bg-[#eb3a4b]',
-          hover: 'hover:bg-[#f25261]',
+          bg: 'bg-[#cb2b3c]',
+          hover: 'hover:bg-[#b52232]',
           text: 'text-white',
         },
       };
