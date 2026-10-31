@@ -20,7 +20,7 @@
   --font-sans: 'Roboto', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-heading: 'Space Grotesk', 'Roboto Condensed', 'Roboto', sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  --font-dyslexic: 'Atkinson Hyperlegible', 'OpenDyslexic', sans-serif;
+  --font-dyslexic: 'OpenDyslexic', 'Atkinson Hyperlegible', sans-serif;
 }
 
 @layer base {
@@ -257,15 +257,38 @@
   }
 
   /* Dyslexia-friendly font class applied to html or body */
+  html.font-dyslexic {
+    --font-heading: 'OpenDyslexic', 'Atkinson Hyperlegible', sans-serif;
+    --font-sans: 'OpenDyslexic', 'Atkinson Hyperlegible', sans-serif;
+  }
+
   html.font-dyslexic body,
   html.font-dyslexic input,
   html.font-dyslexic button,
   html.font-dyslexic select,
-  html.font-dyslexic textarea {
-    font-family: 'Atkinson Hyperlegible', 'OpenDyslexic', sans-serif !important;
+  html.font-dyslexic textarea,
+  html.font-dyslexic h1,
+  html.font-dyslexic h2,
+  html.font-dyslexic h3,
+  html.font-dyslexic h4,
+  html.font-dyslexic h5,
+  html.font-dyslexic h6,
+  html.font-dyslexic p,
+  html.font-dyslexic a,
+  html.font-dyslexic li,
+  html.font-dyslexic label,
+  html.font-dyslexic span:not(.lucide),
+  html.font-dyslexic .font-heading {
+    font-family: 'OpenDyslexic', 'Atkinson Hyperlegible', sans-serif !important;
     letter-spacing: 0.03em !important;
     word-spacing: 0.08em !important;
     line-height: 1.75 !important;
+  }
+
+  html.font-dyslexic pre,
+  html.font-dyslexic code,
+  html.font-dyslexic .font-mono {
+    font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
   }
 
   body {
