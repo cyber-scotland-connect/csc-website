@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main
+  schedule:
+    # Rebuild daily at 06:00 UTC so upcoming/past event badges and RSS/iCal feeds stay fresh
+    - cron: '0 6 * * *'
   workflow_dispatch:
     inputs:
       test_discord_scope:
@@ -85,6 +88,7 @@ jobs:
           bun-version: latest
 
       - name: Notify Discord — CSC Official Events Channel
+        if: github.event_name != 'schedule'
         env:
           DISCORD_CSC_WEBHOOK_URL: ${{ secrets.DISCORD_CSC_WEBHOOK_URL }}
           TEST_SCOPE: ${{ inputs.test_discord_scope }}
@@ -96,6 +100,7 @@ jobs:
           fi
 
       - name: Notify Discord — Scotland Cyber Events Channel (Excludes CSC)
+        if: github.event_name != 'schedule'
         env:
           DISCORD_SCOTLAND_WEBHOOK_URL: ${{ secrets.DISCORD_SCOTLAND_WEBHOOK_URL }}
           TEST_SCOPE: ${{ inputs.test_discord_scope }}

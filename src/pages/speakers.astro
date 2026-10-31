@@ -95,11 +95,33 @@ speakerMap.forEach(speaker => {
 const speakersList = Array.from(speakerMap.values()).sort(() => Math.random() - 0.5);
 
 const totalTalks = speakersList.reduce((acc, s) => acc + s.talkCount, 0);
+
+const speakersSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: 'Cyber Scotland Connect Speakers Directory',
+  description:
+    'Cybersecurity defenders, researchers, and engineers who have delivered technical talks across Cyber Scotland Connect.',
+  numberOfItems: speakersList.length,
+  itemListElement: speakersList.map((s, idx) => ({
+    '@type': 'ListItem',
+    position: idx + 1,
+    item: {
+      '@type': 'Person',
+      name: s.name,
+      jobTitle: s.role,
+      worksFor: s.company
+        ? { '@type': 'Organization', name: s.company }
+        : undefined,
+    },
+  })),
+};
 ---
 
 <BaseLayout 
   title="Speakers & Session Archive" 
   description="Discover the defenders, researchers, and technical leaders who have shared knowledge across Cyber Scotland Connect gatherings."
+  structuredData={speakersSchema}
 >
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
     <!-- Page Header -->
@@ -245,20 +267,6 @@ const totalTalks = speakersList.reduce((acc, s) => acc + s.talkCount, 0);
         </p>
       </div>
     )}
-
-    <!-- Client-side shuffle to randomize speaker order on every page visit -->
-    <script is:inline>
-      (function() {
-        const grid = document.getElementById('speakers-grid');
-        if (!grid) return;
-        const cards = Array.from(grid.children);
-        for (let i = cards.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [cards[i], cards[j]] = [cards[j], cards[i]];
-        }
-        cards.forEach(card => grid.appendChild(card));
-      })();
-    </script>
 
     <!-- Speaker Call for Presentations (CFP) CTA Box -->
     <div class="bg-gradient-to-r from-purple-50 via-white to-sky-50 dark:from-[#252342] dark:via-[#1e1d35] dark:to-[#22273d] rounded-2xl border-2 border-[#895294]/30 dark:border-[#56548c]/60 p-8 sm:p-10 shadow-lg text-slate-700 dark:text-[#bdaccf]">

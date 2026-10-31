@@ -29,6 +29,9 @@ jobs:
         run: |
           GITLEAKS_VERSION="8.24.0"
           curl -sSL -o gitleaks.tar.gz "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz"
+          curl -sSL -o gitleaks_checksums.txt "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_checksums.txt"
+          EXPECTED_SHA=$(grep "gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz" gitleaks_checksums.txt | awk '{print $1}')
+          echo "${EXPECTED_SHA}  gitleaks.tar.gz" | sha256sum -c -
           tar -xzf gitleaks.tar.gz
           sudo mv gitleaks /usr/local/bin/
 

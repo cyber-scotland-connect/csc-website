@@ -60,33 +60,39 @@ const partnerRssUrl = `${sitePath}/feeds/partner.xml`;
 
     <!-- Feed Selector Tabs -->
     <div class="mt-6">
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-1 rounded-xl bg-slate-100 dark:bg-[#1b1a30] p-1 border border-slate-200 dark:border-[#3e3c66]" role="tablist">
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-1 rounded-xl bg-slate-100 dark:bg-[#1b1a30] p-1 border border-slate-200 dark:border-[#3e3c66]" role="tablist" aria-label="Event feed streams">
         <button
           type="button"
+          id="tab-community-feed"
           class="cal-tab-btn active py-2.5 px-3 text-xs font-bold rounded-lg transition-all text-center flex items-center justify-center gap-1.5 bg-white dark:bg-[#2a2948] text-[#895294] dark:text-[#6fb7e6] shadow-sm"
           data-target="community-feed"
           role="tab"
           aria-selected="true"
+          aria-controls="community-feed"
         >
           <Shield class="w-3.5 h-3.5 text-[#895294] dark:text-[#6fb7e6]" aria-hidden="true" />
           <span>All Scottish Events</span>
         </button>
         <button
           type="button"
+          id="tab-csc-feed"
           class="cal-tab-btn py-2.5 px-3 text-xs font-bold rounded-lg transition-all text-center flex items-center justify-center gap-1.5 text-slate-600 dark:text-[#bdaccf] hover:text-slate-900 dark:hover:text-white"
           data-target="csc-feed"
           role="tab"
           aria-selected="false"
+          aria-controls="csc-feed"
         >
           <Calendar class="w-3.5 h-3.5 text-[#56548c] dark:text-[#bdaccf]" aria-hidden="true" />
           <span>CSC Only</span>
         </button>
         <button
           type="button"
+          id="tab-partner-feed"
           class="cal-tab-btn py-2.5 px-3 text-xs font-bold rounded-lg transition-all text-center flex items-center justify-center gap-1.5 text-slate-600 dark:text-[#bdaccf] hover:text-slate-900 dark:hover:text-white"
           data-target="partner-feed"
           role="tab"
           aria-selected="false"
+          aria-controls="partner-feed"
         >
           <Calendar class="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" aria-hidden="true" />
           <span>Partners Only</span>
@@ -94,7 +100,7 @@ const partnerRssUrl = `${sitePath}/feeds/partner.xml`;
       </div>
 
       <!-- Tab Content 1: All Community Events -->
-      <div id="community-feed" class="cal-tab-panel mt-6 space-y-6">
+      <div id="community-feed" role="tabpanel" aria-labelledby="tab-community-feed" class="cal-tab-panel mt-6 space-y-6">
         <div class="p-4 rounded-xl bg-purple-50/50 dark:bg-[#2a2948]/50 border border-purple-100 dark:border-[#3e3c66] text-xs sm:text-sm text-slate-600 dark:text-[#bdaccf]">
           <strong class="text-slate-900 dark:text-white block mb-0.5">Includes Everything:</strong>
           Official Cyber Scotland Connect meetups + Scottish partner summits (Scot-Secure, DIGIT Expo), OWASP Scotland, ISSA-UK, and student society hackathons across Edinburgh, Glasgow, Dundee, and Aberdeen.
@@ -132,13 +138,14 @@ const partnerRssUrl = `${sitePath}/feeds/partner.xml`;
           <!-- .ics URL -->
           <div>
             <div class="flex items-center justify-between mb-1.5">
-              <label class="text-xs font-semibold text-slate-700 dark:text-slate-300">
+              <label for="modal-community-ics" class="text-xs font-semibold text-slate-700 dark:text-slate-300">
                 Direct iCalendar URL (.ics)
               </label>
               <span class="text-[11px] text-slate-500 dark:text-slate-400">For any calendar client</span>
             </div>
             <div class="flex items-center gap-2">
               <input
+                id="modal-community-ics"
                 type="text"
                 readonly
                 value={communityIcsUrl}
@@ -157,13 +164,14 @@ const partnerRssUrl = `${sitePath}/feeds/partner.xml`;
           <!-- RSS XML URL -->
           <div>
             <div class="flex items-center justify-between mb-1.5">
-              <label class="text-xs font-semibold text-slate-700 dark:text-slate-300">
+              <label for="modal-community-rss" class="text-xs font-semibold text-slate-700 dark:text-slate-300">
                 RSS Feed URL (.xml)
               </label>
               <span class="text-[11px] text-slate-500 dark:text-slate-400">For Discord Webhooks, Slack &amp; RSS</span>
             </div>
             <div class="flex items-center gap-2">
               <input
+                id="modal-community-rss"
                 type="text"
                 readonly
                 value={communityRssUrl}
@@ -182,7 +190,7 @@ const partnerRssUrl = `${sitePath}/feeds/partner.xml`;
       </div>
 
       <!-- Tab Content 2: CSC Gatherings Only -->
-      <div id="csc-feed" class="cal-tab-panel mt-6 space-y-6 hidden">
+      <div id="csc-feed" role="tabpanel" aria-labelledby="tab-csc-feed" class="cal-tab-panel mt-6 space-y-6 hidden">
         <div class="p-4 rounded-xl bg-sky-50/50 dark:bg-[#2a2948]/50 border border-sky-100 dark:border-[#3e3c66] text-xs sm:text-sm text-slate-600 dark:text-[#bdaccf]">
           <strong class="text-slate-900 dark:text-white block mb-0.5">CSC Events Only:</strong>
           Exclusively official Cyber Scotland Connect gatherings in Edinburgh, Glasgow, and Dundee. Zero third-party conferences or commercial summits.
@@ -220,13 +228,14 @@ const partnerRssUrl = `${sitePath}/feeds/partner.xml`;
           <!-- .ics URL -->
           <div>
             <div class="flex items-center justify-between mb-1.5">
-              <label class="text-xs font-semibold text-slate-700 dark:text-slate-300">
+              <label for="modal-csc-ics" class="text-xs font-semibold text-slate-700 dark:text-slate-300">
                 Direct iCalendar URL (.ics)
               </label>
               <span class="text-[11px] text-slate-500 dark:text-slate-400">For any calendar client</span>
             </div>
             <div class="flex items-center gap-2">
               <input
+                id="modal-csc-ics"
                 type="text"
                 readonly
                 value={cscIcsUrl}
@@ -245,13 +254,14 @@ const partnerRssUrl = `${sitePath}/feeds/partner.xml`;
           <!-- RSS XML URL -->
           <div>
             <div class="flex items-center justify-between mb-1.5">
-              <label class="text-xs font-semibold text-slate-700 dark:text-slate-300">
+              <label for="modal-csc-rss" class="text-xs font-semibold text-slate-700 dark:text-slate-300">
                 RSS Feed URL (.xml)
               </label>
               <span class="text-[11px] text-slate-500 dark:text-slate-400">For Discord Webhooks, Slack &amp; RSS</span>
             </div>
             <div class="flex items-center gap-2">
               <input
+                id="modal-csc-rss"
                 type="text"
                 readonly
                 value={cscRssUrl}
@@ -270,7 +280,7 @@ const partnerRssUrl = `${sitePath}/feeds/partner.xml`;
       </div>
 
       <!-- Tab Content 3: Partner Events Only (Excludes CSC) -->
-      <div id="partner-feed" class="cal-tab-panel mt-6 space-y-6 hidden">
+      <div id="partner-feed" role="tabpanel" aria-labelledby="tab-partner-feed" class="cal-tab-panel mt-6 space-y-6 hidden">
         <div class="p-4 rounded-xl bg-emerald-50/50 dark:bg-[#2a2948]/50 border border-emerald-200 dark:border-[#3e3c66] text-xs sm:text-sm text-slate-600 dark:text-[#bdaccf]">
           <strong class="text-slate-900 dark:text-white block mb-0.5">Scottish Partners Only (Excludes CSC):</strong>
           External Scottish community meetups (OWASP, 2600, Hack Thursday, ISSA-UK), university societies, and national conferences — strictly excluding CSC's own events so you can separate streams cleanly.
@@ -308,13 +318,14 @@ const partnerRssUrl = `${sitePath}/feeds/partner.xml`;
           <!-- .ics URL -->
           <div>
             <div class="flex items-center justify-between mb-1.5">
-              <label class="text-xs font-semibold text-slate-700 dark:text-slate-300">
+              <label for="modal-partner-ics" class="text-xs font-semibold text-slate-700 dark:text-slate-300">
                 Direct iCalendar URL (.ics)
               </label>
               <span class="text-[11px] text-slate-500 dark:text-slate-400">For any calendar client</span>
             </div>
             <div class="flex items-center gap-2">
               <input
+                id="modal-partner-ics"
                 type="text"
                 readonly
                 value={partnerIcsUrl}
@@ -333,13 +344,14 @@ const partnerRssUrl = `${sitePath}/feeds/partner.xml`;
           <!-- RSS XML URL -->
           <div>
             <div class="flex items-center justify-between mb-1.5">
-              <label class="text-xs font-semibold text-slate-700 dark:text-slate-300">
+              <label for="modal-partner-rss" class="text-xs font-semibold text-slate-700 dark:text-slate-300">
                 RSS Feed URL (.xml)
               </label>
               <span class="text-[11px] text-slate-500 dark:text-slate-400">For Discord Webhooks, Slack &amp; RSS</span>
             </div>
             <div class="flex items-center gap-2">
               <input
+                id="modal-partner-rss"
                 type="text"
                 readonly
                 value={partnerRssUrl}

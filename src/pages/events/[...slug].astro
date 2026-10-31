@@ -4,6 +4,7 @@ import EventAgenda from '../../components/EventAgenda.astro';
 import EventPhotoGallery from '../../components/EventPhotoGallery.astro';
 import { getCollection, render } from 'astro:content';
 import { getEventActionLinks } from '../../utils/event-link';
+import { parseEventTimes } from '../../utils/calendar';
 
 export async function getStaticPaths() {
   const events = await getCollection('events');
@@ -62,16 +63,14 @@ const eventCanonicalUrl = new URL(
   Astro.site || 'https://cyberscotlandconnect.com'
 ).href;
 
-// Parse start/end times from data.time (e.g. "18:00 – 21:00 GMT" or "09:00 - 17:00")
-const dateIsoPrefix = eventDate.toISOString().slice(0, 10);
-const timeRangeMatch = data.time?.match(/(\d{1,2}:\d{2})(?:\s*[–—-]\s*(\d{1,2}:\d{2}))?/);
-const startTimeIso = timeRangeMatch
-  ? `${dateIsoPrefix}T${timeRangeMatch[1].padStart(5, '0')}:00Z`
-  : eventDate.toISOString();
-const endTimeIso =
-  timeRangeMatch && timeRangeMatch[2]
-    ? `${dateIsoPrefix}T${timeRangeMatch[2].padStart(5, '0')}:00Z`
-    : undefined;
+// Parse start/end times from data.time accounting for BST (UTC+1) vs GMT (UTC+0)
+const parsedTimes = parseEventTimes(eventDate, data.time);
+const startTimeIso = parsedTimes.allDay
+  ? eventDate.toISOString().slice(0, 10)
+  : parsedTimes.start.toISOString();
+const endTimeIso = parsedTimes.allDay
+  ? undefined
+  : parsedTimes.end.toISOString();
 
 const rawBodyExcerpt = (event.body || '')
   .replace(/\[SOURCE:.*?\]/gi, '')
@@ -141,7 +140,9 @@ const eventSchema = {
     '@type': 'Offer',
     price: data.accessType === 'Corporate/Paid' ? undefined : '0',
     priceCurrency: 'GBP',
-    availability: 'https://schema.org/InStock',
+    availability: isUpcoming
+      ? 'https://schema.org/InStock'
+      : 'https://schema.org/SoldOut',
     url: data.registrationUrl || data.meetupUrl || eventCanonicalUrl,
   },
   performer:

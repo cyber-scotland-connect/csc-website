@@ -55,11 +55,31 @@ const resourcesByCategory = categories.map((cat) => ({
 }));
 
 const totalCount = sortedResources.length;
+
+const resourcesSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: 'Cyber Scotland Connect Community Resources',
+  description:
+    'Curated open-source cybersecurity tools, living standards, hands-on labs, and Scottish ecosystem resources.',
+  numberOfItems: totalCount,
+  itemListElement: sortedResources.map((r, idx) => ({
+    '@type': 'ListItem',
+    position: idx + 1,
+    item: {
+      '@type': 'CreativeWork',
+      name: r.data.title,
+      description: r.data.description,
+      url: r.data.url,
+    },
+  })),
+};
 ---
 
 <BaseLayout
   title="Community Resources & Reading Room"
   description="Curated, community-driven cybersecurity projects, open standards, hands-on labs, and mental health support resources for the Scottish cyber community."
+  structuredData={resourcesSchema}
 >
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
     <!-- Header -->
@@ -236,7 +256,7 @@ const totalCount = sortedResources.length;
     </section>
 
     <!-- Reading Room / Community Resources Sections -->
-    <main class="space-y-16">
+    <div class="space-y-16">
       {
         resourcesByCategory.map((categoryGroup) => (
           <section
@@ -304,6 +324,6 @@ const totalCount = sortedResources.length;
           </a>
         </div>
       </section>
-    </main>
+    </div>
   </div>
 </BaseLayout>
