@@ -186,26 +186,78 @@ export function stripHtml(html: string): string {
     .trim();
 }
 
+interface ExistingEventsIndex {
+  exactSlugs: Set<string>;
+  normalizedKeys: Set<string>;
+  urls: Set<string>;
+  eventbriteIds: Set<string>;
+  dateTitleWords: Map<string, Array<{ title: string; words: Set<string> }>>;
+}
+
+function normalizeUrlKey(raw?: string): string | null {
+  if (!raw) return null;
+  try {
+    const u = new URL(raw);
+    return `${u.hostname}${u.pathname}`.replace(/\/+$/, '').toLowerCase();
+  } catch {
+    return raw.split('?')[0].replace(/\/+$/, '').toLowerCase();
+  }
+}
+
+function extractEventbriteId(raw?: string): string | null {
+  if (!raw) return null;
+  const match = raw.match(/(?:tickets-|\/e\/[a-z0-9-]+-)([0-9]{9,})/i);
+  return match ? match[1] : null;
+}
+
 // Load existing events to avoid duplicates
-function loadExistingEvents(): Set<string> {
-  const existing = new Set<string>();
-  if (!fs.existsSync(EVENTS_DIR)) return existing;
+function loadExistingEvents(): ExistingEventsIndex {
+  const index: ExistingEventsIndex = {
+    exactSlugs: new Set<string>(),
+    normalizedKeys: new Set<string>(),
+    urls: new Set<string>(),
+    eventbriteIds: new Set<string>(),
+    dateTitleWords: new Map(),
+  };
+
+  if (!fs.existsSync(EVENTS_DIR)) return index;
 
   const files = fs.readdirSync(EVENTS_DIR).filter((f) => f.endsWith('.md') || f.endsWith('.mdx'));
   for (const file of files) {
-    existing.add(file.replace(/\.mdx?$/, ''));
+    index.exactSlugs.add(file.replace(/\.mdx?$/, ''));
     try {
       const content = fs.readFileSync(path.join(EVENTS_DIR, file), 'utf-8');
       const titleMatch = content.match(/title:\s*["']?([^"'\n\r]+)["']?/);
       const dateMatch = content.match(/date:\s*([0-9]{4}-[0-9]{2}-[0-9]{2})/);
+      const regMatch = content.match(/registrationUrl:\s*["']?([^"'\n\r]+)["']?/);
+      const meetupMatch = content.match(/meetupUrl:\s*["']?([^"'\n\r]+)["']?/);
+
       if (titleMatch && dateMatch) {
-        existing.add(`${dateMatch[1]}-${normalizeTitle(titleMatch[1])}`);
+        const rawTitle = titleMatch[1].trim();
+        const dateStr = dateMatch[1];
+        index.normalizedKeys.add(`${dateStr}-${normalizeTitle(rawTitle)}`);
+
+        const words = new Set(
+          normalizeTitle(rawTitle)
+            .split(' ')
+            .filter((w) => w.length > 3)
+        );
+        const existingForDate = index.dateTitleWords.get(dateStr) || [];
+        existingForDate.push({ title: rawTitle, words });
+        index.dateTitleWords.set(dateStr, existingForDate);
+      }
+
+      for (const u of [regMatch?.[1], meetupMatch?.[1]]) {
+        const norm = normalizeUrlKey(u);
+        if (norm) index.urls.add(norm);
+        const eb = extractEventbriteId(u);
+        if (eb) index.eventbriteIds.add(eb);
       }
     } catch {
       // Ignore read errors
     }
   }
-  return existing;
+  return index;
 }
 
 // Helper: Validate HTTP/HTTPS URLs
@@ -1192,7 +1244,9 @@ async function main() {
   const existingEvents = loadExistingEvents();
 
   if (!isJsonMode) {
-    console.log(`📂 Loaded ${existingEvents.size} existing event signatures for deduplication.`);
+    console.log(
+      `📂 Loaded ${existingEvents.exactSlugs.size} existing events (${existingEvents.urls.size} URLs, ${existingEvents.eventbriteIds.size} Eventbrite IDs) for deduplication.`
+    );
     console.log(`🌐 Ingesting sources...\n`);
   }
 
@@ -1293,11 +1347,54 @@ async function main() {
     const slug = `${ev.date}-${slugify(ev.title)}`;
     const normalizedKey = `${ev.date}-${normalizeTitle(ev.title)}`;
 
-    if (existingEvents.has(slug) || existingEvents.has(normalizedKey)) {
+    // 1. Exact slug or date+normalized title match
+    if (existingEvents.exactSlugs.has(slug) || existingEvents.normalizedKeys.has(normalizedKey)) {
       continue;
     }
 
-    // Check if an event on the same date with similar title was already seen in this run
+    // 2. Exact URL match or Eventbrite Ticket ID match against archive
+    const candidateNormUrl = normalizeUrlKey(ev.meetupUrl);
+    if (candidateNormUrl && existingEvents.urls.has(candidateNormUrl)) {
+      if (!isJsonMode && isVerbose) {
+        console.log(`  [DEDUP] Skipping "${ev.title}" (URL matches existing archive: ${candidateNormUrl})`);
+      }
+      continue;
+    }
+    const candidateEbId = extractEventbriteId(ev.meetupUrl);
+    if (candidateEbId && existingEvents.eventbriteIds.has(candidateEbId)) {
+      if (!isJsonMode && isVerbose) {
+        console.log(`  [DEDUP] Skipping "${ev.title}" (Eventbrite ID matches existing archive: ${candidateEbId})`);
+      }
+      continue;
+    }
+
+    // 3. Same-date title similarity match against archive
+    const existingOnDate = existingEvents.dateTitleWords.get(ev.date);
+    if (existingOnDate) {
+      const evWords = new Set(
+        normalizeTitle(ev.title)
+          .split(' ')
+          .filter((w) => w.length > 3)
+      );
+      const normEv = normalizeTitle(ev.title);
+      let isDuplicateOfArchive = false;
+      for (const item of existingOnDate) {
+        const overlap = [...item.words].filter((w) => evWords.has(w)).length;
+        const normEx = normalizeTitle(item.title);
+        if (overlap >= 2 || (normEv.length > 8 && (normEv.includes(normEx) || normEx.includes(normEv)))) {
+          isDuplicateOfArchive = true;
+          if (!isJsonMode && isVerbose) {
+            console.log(
+              `  [DEDUP] Skipping "${ev.title}" (matches existing event on ${ev.date}: "${item.title}")`
+            );
+          }
+          break;
+        }
+      }
+      if (isDuplicateOfArchive) continue;
+    }
+
+    // 4. Check if an event on the same date with similar title was already seen in this run
     let isDuplicateInRun = false;
     for (const seenKey of seenInRun) {
       if (seenKey.startsWith(ev.date)) {
