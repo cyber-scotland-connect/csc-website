@@ -23,8 +23,11 @@ const upcomingEvents = sortedEvents
   .reverse();
 
 // Next CSC-organised gathering exclusively for the Hero spotlight card:
-const cscUpcomingEvents = upcomingEvents.filter((e) => !e.data.isPartnerEvent);
-const cscPastEvents = sortedEvents.filter((e) => !e.data.isPartnerEvent);
+const isOfficialCsc = (e: (typeof sortedEvents)[0]) =>
+  !e.data.isPartnerEvent &&
+  (!e.data.partnerName || e.data.partnerName === 'Cyber Scotland Connect');
+const cscUpcomingEvents = upcomingEvents.filter(isOfficialCsc);
+const cscPastEvents = sortedEvents.filter(isOfficialCsc);
 const nextMeetup = cscUpcomingEvents[0] || cscPastEvents[0];
 const nextMeetupUrl =
   nextMeetup?.data?.meetupUrl ||

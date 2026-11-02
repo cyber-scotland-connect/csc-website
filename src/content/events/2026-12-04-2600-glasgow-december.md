@@ -4,7 +4,7 @@ date: 2026-12-04
 time: '18:30 – 21:30 GMT'
 location: 'Glasgow City Centre (see Meetup page for venue details)'
 city: 'Glasgow'
-isPartnerEvent: false
+isPartnerEvent: true
 partnerName: 'Glasgow Infosec / 2600'
 organizerType: "Community"
 accessType: 'Open/Public'

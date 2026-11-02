@@ -4,7 +4,7 @@ date: 2026-12-09
 time: '18:30 - 21:00'
 location: 'Incremental Group, The Garment Factory, 10 Montrose Street, Glasgow'
 city: 'Glasgow'
-isPartnerEvent: false
+isPartnerEvent: true
 partnerName: 'Glasgow Azure User Group'
 organizerType: "Community"
 accessType: 'Open/Public'

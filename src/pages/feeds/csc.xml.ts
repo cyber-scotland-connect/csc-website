@@ -9,6 +9,7 @@ export const GET: APIRoute = async ({ site }) => {
     .filter(
       (e) =>
         !e.data.isPartnerEvent &&
+        (!e.data.partnerName || e.data.partnerName === 'Cyber Scotland Connect') &&
         new Date(e.data.date).getTime() >= startOfToday
     )
     .sort(

@@ -4,7 +4,7 @@ date: 2027-02-23
 time: '09:00 – 16:30 GMT'
 location: 'Glasgow City Centre'
 city: 'Glasgow'
-isPartnerEvent: false
+isPartnerEvent: true
 partnerName: 'FutureScot'
 organizerType: "Commercial"
 accessType: 'Corporate/Paid'
