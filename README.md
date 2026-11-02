@@ -93,7 +93,14 @@ npm run dev
 ```
 Open `http://localhost:4321` in your browser.
 
-### 5. Build for Production
+### 5. Run Test Suite
+```bash
+# Using Bun
+bun test
+```
+Executes 86+ automated regression and integrity assertions across all event collections and notification routing rules.
+
+### 6. Build for Production
 ```bash
 # Using Bun
 bun run build
