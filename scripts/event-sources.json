@@ -474,12 +474,6 @@
       "category": "partner"
     },
     {
-      "name": "CyberScotland Partnership — News & Events RSS",
-      "url": "https://www.cyberscotland.com/feed/",
-      "format": "rss",
-      "category": "partner"
-    },
-    {
       "name": "FutureScot — Tech & Public Sector Cyber RSS",
       "url": "https://futurescot.com/feed/",
       "format": "rss",
@@ -709,8 +703,14 @@
     ],
     "cyberKeywords": [
       "cyber",
-      "security",
+      "cyber security",
+      "cybersecurity",
       "infosec",
+      "information security",
+      "network security",
+      "cloud security",
+      "appsec",
+      "application security",
       "hacking",
       "hacker",
       "CTF",
@@ -731,7 +731,6 @@
       "BSides",
       "Securi-Tay",
       "fraud",
-      "resilience",
       "incident response",
       "SOC",
       "SIEM",
@@ -739,14 +738,8 @@
       "NIS2",
       "DORA",
       "cryptography",
-      "AppSec",
       "OT security",
       "ICS",
-      "Splunk",
-      "Azure",
-      "Kubernetes",
-      "Cloud Native",
-      "scripting",
       "Cyber & Script"
     ],
     "excludeKeywords": [
@@ -760,7 +753,15 @@
       "Belfast",
       "Cardiff",
       "paid training course",
-      "certification exam bootcamp"
+      "certification exam bootcamp",
+      "food security",
+      "food-secure",
+      "food resilience",
+      "agricultural",
+      "SEDA Land",
+      "strategic plan",
+      "annual report",
+      "consultation"
     ]
   }
 }

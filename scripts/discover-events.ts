@@ -96,7 +96,7 @@ export interface DiscoveredEvent {
   locationUrl?: string;
   city: CityType;
   isPartnerEvent: boolean;
-  partnerName: string;
+  partnerName?: string;
   organizerType?: 'Community' | 'Commercial' | 'Public Sector' | 'Academic';
   accessType?: AccessType;
   meetupUrl: string;
@@ -435,6 +435,32 @@ export function detectAccessType(category: string, text: string): AccessType {
   return 'Open/Public';
 }
 
+export const MAX_FUTURE_DAYS = 366;
+
+export function getMaxFutureDateStr(refDate: string | Date = new Date()): string {
+  const base = typeof refDate === 'string' ? new Date(refDate) : refDate;
+  const target = new Date(base.getTime() + MAX_FUTURE_DAYS * 24 * 60 * 60 * 1000);
+  return target.toISOString().slice(0, 10);
+}
+
+export const GENERIC_TICKETING_PLATFORMS = new Set([
+  'eventbrite',
+  'meetup',
+  'luma',
+  'ticketmaster',
+  'ticketing',
+]);
+
+export function sanitizePartnerName(name?: string): string | undefined {
+  if (!name) return undefined;
+  const trimmed = name.trim();
+  if (!trimmed) return undefined;
+  if (GENERIC_TICKETING_PLATFORMS.has(trimmed.toLowerCase())) {
+    return undefined;
+  }
+  return trimmed;
+}
+
 // Check whether an organizing entity is an official CSC partner
 export function isOfficialPartner(partnerName: string): boolean {
   const normalized = partnerName.toLowerCase();
@@ -611,7 +637,8 @@ async function parseRssFeed(feed: RssFeedSource, todayStr: string): Promise<Disc
       }
     }
 
-    if (!eventDateStr || eventDateStr < todayStr) continue;
+    const maxFutureDateStr = getMaxFutureDateStr(todayStr);
+    if (!eventDateStr || eventDateStr < todayStr || eventDateStr > maxFutureDateStr) continue;
 
     const city = detectCity(fullText);
     let location = 'Scotland';
@@ -631,7 +658,7 @@ async function parseRssFeed(feed: RssFeedSource, todayStr: string): Promise<Disc
 
     const cleanDesc = rawDesc.replace(/The post .*? appeared first on .*?\./gi, '').trim();
 
-    const pName = feed.name.split('—')[0].trim();
+    const pName = sanitizePartnerName(feed.name.split('—')[0].trim());
     events.push({
       title: rawTitle,
       date: eventDateStr,
@@ -639,7 +666,7 @@ async function parseRssFeed(feed: RssFeedSource, todayStr: string): Promise<Disc
       city,
       isPartnerEvent: true,
       partnerName: pName,
-      organizerType: detectOrganizerType(feed.category, pName, fullText),
+      organizerType: detectOrganizerType(feed.category, pName || '', fullText),
       accessType: detectAccessType(feed.category, fullText),
       meetupUrl: link,
       description: cleanDesc.slice(0, 320) || rawTitle,
@@ -671,8 +698,9 @@ async function parseWpTribeEvents(
     for (const item of items) {
       if (!item.title || !item.start_date) continue;
 
+      const maxFutureDateStr = getMaxFutureDateStr(todayStr);
       const eventDateStr = String(item.start_date).slice(0, 10);
-      if (eventDateStr < todayStr) continue;
+      if (eventDateStr < todayStr || eventDateStr > maxFutureDateStr) continue;
 
       const title = stripHtml(String(item.title));
       const desc = item.description ? stripHtml(String(item.description)).slice(0, 320) : title;
@@ -687,7 +715,7 @@ async function parseWpTribeEvents(
         item.end_date ? String(item.end_date).replace(' ', 'T') : undefined
       );
 
-      const pName = source.name.split('—')[0].trim();
+      const pName = sanitizePartnerName(source.name.split('—')[0].trim());
       events.push({
         title,
         date: eventDateStr,
@@ -696,7 +724,7 @@ async function parseWpTribeEvents(
         city,
         isPartnerEvent: true,
         partnerName: pName,
-        organizerType: detectOrganizerType(source.category, pName, fullText),
+        organizerType: detectOrganizerType(source.category, pName || '', fullText),
         accessType: detectAccessType(source.category, fullText),
         meetupUrl: item.url || item.website || source.url,
         description: desc,
@@ -735,7 +763,8 @@ async function parseICalFeed(feed: ICalFeedSource, todayStr: string): Promise<Di
     const rawDate = dtstartMatch[1]; // YYYYMMDD or YYYYMMDDTHHMMSSZ
     const eventDateStr = `${rawDate.slice(0, 4)}-${rawDate.slice(4, 6)}-${rawDate.slice(6, 8)}`;
 
-    if (eventDateStr < todayStr) continue;
+    const maxFutureDateStr = getMaxFutureDateStr(todayStr);
+    if (eventDateStr < todayStr || eventDateStr > maxFutureDateStr) continue;
 
     const rawTitle = summaryMatch[1].replace(/\\,/g, ',').replace(/\\;/g, ';').trim();
     const rawLocation = locationMatch
@@ -746,7 +775,7 @@ async function parseICalFeed(feed: ICalFeedSource, todayStr: string): Promise<Di
       ? stripHtml(descMatch[1].replace(/\\n/g, ' ').replace(/\\,/g, ',').replace(/\\;/g, ';'))
       : '';
 
-    const pName = feed.name.split('—')[0].trim();
+    const pName = sanitizePartnerName(feed.name.split('—')[0].trim());
     events.push({
       title: rawTitle,
       date: eventDateStr,
@@ -754,7 +783,7 @@ async function parseICalFeed(feed: ICalFeedSource, todayStr: string): Promise<Di
       city: detectCity(`${rawTitle} ${rawLocation} ${feed.name}`),
       isPartnerEvent: true,
       partnerName: pName,
-      organizerType: detectOrganizerType(feed.category, pName, `${rawTitle} ${rawDesc}`),
+      organizerType: detectOrganizerType(feed.category, pName || '', `${rawTitle} ${rawDesc}`),
       accessType: detectAccessType(feed.category, `${rawTitle} ${rawDesc}`),
       meetupUrl: rawUrl,
       description:
@@ -787,8 +816,9 @@ async function parseSquarespaceJson(
     for (const item of items) {
       if (!item.title || !item.startDate) continue;
 
+      const maxFutureDateStr = getMaxFutureDateStr(todayStr);
       const eventDateStr = new Date(item.startDate).toISOString().slice(0, 10);
-      if (eventDateStr < todayStr) continue;
+      if (eventDateStr < todayStr || eventDateStr > maxFutureDateStr) continue;
 
       const title = stripHtml(item.title);
       const desc = item.body ? stripHtml(item.body).slice(0, 300) : title;
@@ -797,8 +827,9 @@ async function parseSquarespaceJson(
           ? item.fullUrl
           : `${baseOrigin}${item.fullUrl}`
         : source.url;
-      const partnerName = source.name.split('—')[0].trim();
-      const defaultLoc = partnerName.includes('CodeBase')
+      const rawPartnerName = source.name.split('—')[0].trim();
+      const partnerName = sanitizePartnerName(rawPartnerName);
+      const defaultLoc = (rawPartnerName || '').includes('CodeBase')
         ? 'CodeBase, 37a Castle Terrace, Edinburgh'
         : 'Abertay cyberQuarter, Dundee';
 
@@ -809,7 +840,7 @@ async function parseSquarespaceJson(
         city: detectCity(`${title} ${item.location?.addressLine2 || ''} ${defaultLoc}`),
         isPartnerEvent: true,
         partnerName,
-        organizerType: detectOrganizerType(source.category, partnerName, `${title} ${desc}`),
+        organizerType: detectOrganizerType(source.category, partnerName || '', `${title} ${desc}`),
         accessType: detectAccessType(source.category, `${title} ${desc}`),
         meetupUrl: fullUrl,
         description: desc,
@@ -878,7 +909,8 @@ async function parseHtmlSeedUrl(
     } else {
       eventDateStr = extractNaturalDate(rawStart, todayStr);
     }
-    if (!eventDateStr || eventDateStr < todayStr) continue;
+    const maxFutureDateStr = getMaxFutureDateStr(todayStr);
+    if (!eventDateStr || eventDateStr < todayStr || eventDateStr > maxFutureDateStr) continue;
 
     const rawUrl =
       typeof node.url === 'string' && isValidUrl(node.url) ? node.url : seed.url;
@@ -909,7 +941,15 @@ async function parseHtmlSeedUrl(
     const fullText = `${rawName} ${rawDesc} ${locName}`;
     const city = detectCity(fullText, seed.city);
 
-    const pName = seed.name.split('—')[0].trim();
+    let organizerName: string | undefined;
+    if (node.organizer && typeof node.organizer === 'object') {
+      const org = node.organizer as Record<string, unknown>;
+      if (typeof org.name === 'string' && org.name.trim()) {
+        organizerName = stripHtml(org.name).trim();
+      }
+    }
+    const rawPName = seed.name.split('—')[0].trim();
+    const pName = sanitizePartnerName(organizerName) || sanitizePartnerName(rawPName);
     events.push({
       title: rawName,
       date: eventDateStr,
@@ -918,7 +958,7 @@ async function parseHtmlSeedUrl(
       city,
       isPartnerEvent: true,
       partnerName: pName,
-      organizerType: detectOrganizerType(seed.category, pName, fullText),
+      organizerType: detectOrganizerType(seed.category, pName || '', fullText),
       accessType: detectAccessType(seed.category, fullText),
       meetupUrl: rawUrl,
       description: rawDesc,
@@ -1038,12 +1078,13 @@ async function extractSeedEventsWithLocalAi(
   const extracted: DiscoveredEvent[] = [];
   for (const item of result.events) {
     if (!item.title || !item.date || item.isCyberRelevant === false) continue;
-    if (!/^\d{4}-\d{2}-\d{2}$/.test(item.date) || item.date < todayStr) continue;
+    const maxFutureDateStr = getMaxFutureDateStr(todayStr);
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(item.date) || item.date < todayStr || item.date > maxFutureDateStr) continue;
 
     const fullText = `${item.title} ${item.description || ''} ${item.location || ''}`;
     const city = detectCity(fullText, (item.city as CityType) || seed.city);
 
-    const pName = seed.name.split('—')[0].trim();
+    const pName = sanitizePartnerName(seed.name.split('—')[0].trim());
     extracted.push({
       title: stripHtml(item.title).slice(0, 110),
       date: item.date,
@@ -1052,7 +1093,7 @@ async function extractSeedEventsWithLocalAi(
       city,
       isPartnerEvent: true,
       partnerName: pName,
-      organizerType: detectOrganizerType(seed.category, pName, fullText),
+      organizerType: detectOrganizerType(seed.category, pName || '', fullText),
       accessType: detectAccessType(seed.category, fullText),
       meetupUrl: seed.url,
       description: item.description ? stripHtml(item.description).slice(0, 320) : item.title,
@@ -1174,17 +1215,19 @@ async function parseBlueskyFeed(
 
     if (!hasEventKeyword || !hasScotlandKeyword) continue;
 
+    const maxFutureDateStr = getMaxFutureDateStr(todayStr);
     const eventDateStr = extractNaturalDate(postText, pubRefStr);
-    if (!eventDateStr || eventDateStr < todayStr) continue;
+    if (!eventDateStr || eventDateStr < todayStr || eventDateStr > maxFutureDateStr) continue;
 
+    const pName = sanitizePartnerName(source.name);
     events.push({
       title: postText.slice(0, 60).replace(/\n/g, ' ') + '...',
       date: eventDateStr,
       location: 'Scotland',
       city: detectCity(postText),
       isPartnerEvent: true,
-      partnerName: source.name,
-      organizerType: detectOrganizerType('community', source.name, postText),
+      partnerName: pName,
+      organizerType: detectOrganizerType('community', pName || '', postText),
       accessType: 'Open/Public',
       meetupUrl: link,
       description: postText.slice(0, 300),
@@ -1309,7 +1352,12 @@ async function main() {
   const seenInRun = new Set<string>();
 
   for (const ev of candidateEvents) {
-    const fullText = `${ev.title} ${ev.description} ${ev.location} ${ev.partnerName}`.toLowerCase();
+    const maxFutureDateStr = getMaxFutureDateStr(todayStr);
+    if (!ev.date || ev.date < todayStr || ev.date > maxFutureDateStr) {
+      continue;
+    }
+
+    const fullText = `${ev.title} ${ev.description} ${ev.location} ${ev.partnerName || ''}`.toLowerCase();
     const eventContentText = `${ev.title} ${ev.description}`;
 
     // 1. Check exclude keywords
@@ -1482,8 +1530,7 @@ date: ${ev.date}
 ${ev.time ? `time: '${ev.time}'\n` : ''}location: '${ev.location.replace(/'/g, "''")}'
 ${isValidUrl(ev.locationUrl) ? `locationUrl: '${ev.locationUrl}'\n` : ''}city: '${ev.city}'
 isPartnerEvent: ${ev.isPartnerEvent}
-partnerName: '${ev.partnerName.replace(/'/g, "''")}'
-organizerType: '${ev.organizerType || 'Community'}'
+${ev.partnerName && sanitizePartnerName(ev.partnerName) ? `partnerName: '${sanitizePartnerName(ev.partnerName)!.replace(/'/g, "''")}'\n` : ''}organizerType: '${ev.organizerType || 'Community'}'
 accessType: '${ev.accessType || 'Open/Public'}'
 ${urlFrontmatter}accessibility:
   stepFree: null
