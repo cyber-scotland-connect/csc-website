@@ -109,7 +109,58 @@ const eventsCollection = defineCollection({
       .max(6)
       .optional(),
     albumUrl: z.string().url().optional(),
-  }),
+  })
+  .refine(
+    (data) => {
+      // 1. Official CSC events cannot have an external partner specified
+      if (
+        !data.isPartnerEvent &&
+        data.partnerName &&
+        data.partnerName.trim() !== '' &&
+        data.partnerName !== 'Cyber Scotland Connect'
+      ) {
+        return false;
+      }
+      return true;
+    },
+    {
+      message:
+        'Official Cyber Scotland Connect events (isPartnerEvent: false) cannot define an external partnerName. Only partner/ecosystem events (isPartnerEvent: true) can have external partner names.',
+    }
+  )
+  .refine(
+    (data) => {
+      // 2. Generic ticketing or venue platforms cannot be listed as the partnerName
+      if (data.partnerName) {
+        const lower = data.partnerName.toLowerCase().trim();
+        if (
+          lower === 'eventbrite' ||
+          lower === 'luma' ||
+          lower === 'meetup' ||
+          lower === 'ticketmaster'
+        ) {
+          return false;
+        }
+      }
+      return true;
+    },
+    {
+      message:
+        'Generic ticketing platforms (Eventbrite, Luma, Meetup, Ticketmaster) cannot be listed as partnerName. Specify the actual organising group or omit partnerName.',
+    }
+  )
+  .refine(
+    (data) => {
+      // 3. Temporal sanity guard: dates cannot be more than 366 days in the future
+      const maxFuture = new Date();
+      maxFuture.setDate(maxFuture.getDate() + 366);
+      return new Date(data.date).getTime() <= maxFuture.getTime();
+    },
+    {
+      message:
+        'Event date cannot be more than 366 days in the future. Check for scraping year errors.',
+    }
+  ),
 });
 
 const leadersCollection = defineCollection({
