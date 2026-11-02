@@ -5,8 +5,8 @@ time: "18:00 – 20:30 BST"
 location: "Venue Name, Address, Postcode"
 locationUrl: "https://maps.google.com/?q=..." # Optional Google Maps link
 city: "Edinburgh" # Options: Edinburgh, Glasgow, Dundee, Virtual, Aberdeen, Scotland-wide
-isPartnerEvent: false # Set true ONLY if hosted/co-hosted with an official CSC partner listed in src/content/partners/
-partnerName: "Partner or Host Organization Name (if applicable)"
+isPartnerEvent: true # Set false STRICTLY for official Cyber Scotland Connect self-hosted meetups. Set true for ALL external partner, community, or commercial events in Scotland.
+partnerName: "Partner or Host Organization Name (if applicable)" # Optional. Never use generic ticketing platforms (Eventbrite, Meetup, Luma, Ticketmaster).
 organizerType: "Community" # Options: Community, Commercial, Public Sector, Academic
 accessType: "Open/Public" # Options: Open/Public, Corporate/Paid, Student/Academic, Restricted/Civil Service
 meetupUrl: "https://www.meetup.com/cyberscotconnect/events/XXXXX" # Meetup.com URLs only
