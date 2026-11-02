@@ -49,7 +49,7 @@ For each candidate event:
 1. Check if the date already exists in the existing events list (same YYYY-MM-DD)
 2. Do a fuzzy title match — if the title is >80% similar to an existing event title on the same date, treat it as a duplicate and skip it
 3. Apply the `filters.excludeKeywords` — drop any events containing those terms
-4. Drop any events where the date is in the past (before today)
+4. Drop any events where the date is in the past (before today) or more than 366 days in the future
 
 ---
 
@@ -65,8 +65,8 @@ time: "<time range if known, otherwise omit this field>"
 location: "<venue name and address if known>"
 locationUrl: "<Google Maps URL if address is known>"
 city: "<city>"
-isPartnerEvent: false
-partnerName: "<organising community or group name>"
+isPartnerEvent: true
+partnerName: "<organising community or group name (optional — NEVER generic ticketing platforms like Eventbrite/Luma/Meetup)>"
 organizerType: "<Community | Commercial | Public Sector | Academic>"
 accessType: "<Open/Public | Corporate/Paid | Student/Academic | Restricted/Civil Service>"
 meetupUrl: "<Meetup.com event URL — ONLY if hosted on Meetup>"
@@ -87,6 +87,9 @@ agenda: []
 Filename format: `YYYY-MM-DD-<slugified-title>.md`
 
 Rules:
+- `isPartnerEvent` MUST ALWAYS be `true` for discovered external events. `isPartnerEvent: false` is STRICTLY reserved for official Cyber Scotland Connect self-hosted meetups.
+- Never put generic ticketing platforms (`Eventbrite`, `Meetup`, `Luma`, `Ticketmaster`) as `partnerName`. If no specific organizing entity is identified, omit `partnerName` entirely.
+- Event dates must not exceed 366 days into the future.
 - Never put non-Meetup URLs in `meetupUrl`. Use `registrationUrl` for Eventbrite, conference sites, and external registration portals.
 - `accessType` must be one of: `Open/Public`, `Corporate/Paid`, `Student/Academic`, or `Restricted/Civil Service`.
 - Leave `speakers` and `agenda` as empty arrays — these are filled in manually after review.
