@@ -118,8 +118,10 @@ When creating or modifying content, AI agents must strictly conform to the Zod s
      - `location`: string (venue name, address, postcode)
      - `locationUrl`: optional Google Maps URL
      - `city`: `Edinburgh` | `Glasgow` | `Dundee` | `Virtual` | `Aberdeen` | `Scotland-wide`
-     - `isPartnerEvent`: boolean (default `false`) — **STRICTLY true ONLY for verified partners in `src/content/partners/`**. Never mark general third-party or commercial meetups as true.
-     - `partnerName`: optional string
+     - `isPartnerEvent`: boolean — **STRICT CLASSIFICATION CONTRACT:**
+       - `false`: **STRICTLY reserved for official Cyber Scotland Connect self-hosted gatherings.** If `false`, `partnerName` must either be omitted or `"Cyber Scotland Connect"`, and the title must carry CSC branding (`CSC`, `Cyber Scotland Connect`, or `Security Scotland`).
+       - `true`: **REQUIRED for ALL external partner, ecosystem, community, and commercial events in Scotland.**
+     - `partnerName`: optional string. Identifies the organizing entity (e.g. `Cyber and Fraud Centre Scotland`, `OWASP Scotland Chapter`, `CodeBase`, `TechForce Cyber`). **CRITICAL: Never put generic ticketing platforms (`Eventbrite`, `Luma`, `Meetup`, `Ticketmaster`) as the `partnerName` — this will hard-fail compile-time schema validation.**
      - `organizerType`: `Community` | `Commercial` | `Public Sector` | `Academic` (default `Community`) — explicitly classifies the hosting entity so attendees are aware of commercial/sales contexts.
      - `accessType`: `Open/Public` | `Corporate/Paid` | `Student/Academic` | `Restricted/Civil Service` (default `Open/Public`)
      - `meetupUrl`: optional URL — **STRICTLY for `meetup.com` URLs only**. Never place non-Meetup links here.
@@ -163,11 +165,27 @@ The repository includes a multi-protocol event discovery engine in `scripts/`:
 
 ---
 
+## 📡 Feed & Notification Architecture
+
+Programmatic feeds and webhooks directly power downstream ecosystem subscribers and community Discord channels. The separation between self-hosted gatherings and partner events is an absolute invariant:
+
+1. **Official CSC Channels (`/feeds/csc.xml`, `/calendar/csc.ics`, Discord `#events-csc`):**
+   - Strictly reserved for self-hosted CSC events.
+   - Enforced by schema refinement (`isPartnerEvent: false`, no external partner) and Discord dispatcher verification (`isCscOfficialEvent`).
+2. **External Scottish Cyber Ecosystem (`/feeds/partner.xml`, `/calendar/partner.ics`, Discord `#events-scotland`):**
+   - Dedicated exclusively to external partner/community events across Scotland.
+   - Strictly excludes CSC self-hosted events.
+3. **Master Community Feed (`/feeds/community.xml`):**
+   - Unified master chronological stream of all upcoming events across both CSC and partner groups.
+
+---
+
 ## 🛡️ Verification Gate for Agents
 
-Every AI agent must execute the production verification suite before submitting changes or opening a PR:
+Every AI agent must execute the complete test and verification suite before submitting changes or opening a PR:
 
 ```bash
+bun test            # Runs full unit and event archive integrity regression assertions
 bun run check:links # Validates external links (cached for 30 days)
 bun run build       # Executes Astro typecheck + production SSG build
 bun run lint        # ESLint check
