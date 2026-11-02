@@ -5,7 +5,7 @@ time: "08:30 – 14:00 GMT"
 location: "Sir Ian Wood Building, Robert Gordon University, Garthdee Rd, Aberdeen AB10 7GJ"
 locationUrl: "https://maps.google.com/?q=Sir+Ian+Wood+Building+Robert+Gordon+University"
 city: "Aberdeen"
-isPartnerEvent: false
+isPartnerEvent: true
 partnerName: "TechForce Cyber"
 organizerType: "Commercial"
 accessType: "Corporate/Paid"

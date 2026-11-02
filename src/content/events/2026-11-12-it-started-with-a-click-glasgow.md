@@ -5,7 +5,7 @@ time: "09:00 – 12:30 GMT"
 location: "Barclays Campus, Clyde Place, Glasgow G5 8DP"
 locationUrl: "https://maps.google.com/?q=Barclays+Clyde+Place+Glasgow"
 city: "Glasgow"
-isPartnerEvent: false
+isPartnerEvent: true
 partnerName: "Barclays Eagle Labs"
 organizerType: "Commercial"
 accessType: "Open/Public"

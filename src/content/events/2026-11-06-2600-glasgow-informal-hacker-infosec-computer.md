@@ -3,7 +3,7 @@ title: '2600 Glasgow - Informal hacker/infosec/computer security meetup'
 date: 2026-11-06
 location: 'Glasgow'
 city: 'Glasgow'
-isPartnerEvent: false
+isPartnerEvent: true
 partnerName: 'Glasgow Infosec / 2600'
 organizerType: "Community"
 accessType: 'Open/Public'

@@ -104,12 +104,15 @@ export function isValidDiscordWebhookUrl(rawUrl?: string): boolean {
 
 // Check if an event matches the requested channel scope
 export function matchesScope(ev: ParsedEventFile, targetScope: EventScope): boolean {
+  const isCsc =
+    !ev.isPartnerEvent &&
+    (!ev.partnerName || ev.partnerName === 'Cyber Scotland Connect');
   if (targetScope === 'csc') {
-    return !ev.isPartnerEvent;
+    return isCsc;
   }
   if (targetScope === 'scotland') {
     // Scotland-wide channel strictly excludes CSC's own events
-    return ev.isPartnerEvent === true;
+    return !isCsc;
   }
   return true;
 }
@@ -143,10 +146,12 @@ export function parseEventMarkdown(filePath: string): ParsedEventFile | null {
   const location = extractFrontmatterValue(frontmatter, 'location') || 'Scotland';
   const city = extractFrontmatterValue(frontmatter, 'city') || 'Scotland-wide';
   const isPartnerRaw = extractFrontmatterValue(frontmatter, 'isPartnerEvent');
-  const isPartnerEvent = isPartnerRaw === 'true';
-  const partnerName =
-    extractFrontmatterValue(frontmatter, 'partnerName') ||
-    (isPartnerEvent ? 'Community Partner' : 'Cyber Scotland Connect');
+  const partnerName = extractFrontmatterValue(frontmatter, 'partnerName') || '';
+  const isPartnerEvent =
+    isPartnerRaw === 'true' ||
+    (partnerName !== '' && partnerName !== 'Cyber Scotland Connect');
+  const finalPartnerName =
+    partnerName || (isPartnerEvent ? 'Community Partner' : 'Cyber Scotland Connect');
   const accessType = extractFrontmatterValue(frontmatter, 'accessType') || 'Open/Public';
   const meetupUrl = extractFrontmatterValue(frontmatter, 'meetupUrl');
   const registrationUrl = extractFrontmatterValue(frontmatter, 'registrationUrl');
@@ -167,7 +172,7 @@ export function parseEventMarkdown(filePath: string): ParsedEventFile | null {
     location,
     city,
     isPartnerEvent,
-    partnerName,
+    partnerName: finalPartnerName,
     accessType,
     meetupUrl,
     registrationUrl,
