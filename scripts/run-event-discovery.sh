@@ -71,9 +71,9 @@ if [ -n "$NEW_FILES" ]; then
   echo "New events found on disk:" >> "$LOG_FILE"
   echo "$NEW_FILES" >> "$LOG_FILE"
   
-  echo "Verifying site build & lint..." >> "$LOG_FILE"
-  if "$BUN_BIN" run build >> "$LOG_FILE" 2>&1 && "$BUN_BIN" run lint >> "$LOG_FILE" 2>&1; then
-    echo "Verification passed (build & lint clean)." >> "$LOG_FILE"
+  echo "Verifying test suite, site build & lint..." >> "$LOG_FILE"
+  if "$BUN_BIN" test >> "$LOG_FILE" 2>&1 && "$BUN_BIN" run build >> "$LOG_FILE" 2>&1 && "$BUN_BIN" run lint >> "$LOG_FILE" 2>&1; then
+    echo "Verification passed (tests, build & lint clean)." >> "$LOG_FILE"
     
     git add src/content/events/ >> "$LOG_FILE" 2>&1
     git commit -m "feat(events): auto-discovered Scottish cyber events ($(date '+%Y-%m-%d'))" >> "$LOG_FILE" 2>&1
