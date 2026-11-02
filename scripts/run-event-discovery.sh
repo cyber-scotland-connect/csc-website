@@ -36,6 +36,12 @@ if [ ! -x "$OSASCRIPT_BIN" ]; then
   OSASCRIPT_BIN="$(which osascript 2>/dev/null || echo 'osascript')"
 fi
 
+# Ensure GitHub CLI token is populated for headless non-interactive git authentication
+if [ -z "${GH_TOKEN:-}" ]; then
+  export GH_TOKEN="$("$GH_BIN" auth token 2>/dev/null || true)"
+fi
+"$GH_BIN" auth setup-git >/dev/null 2>&1 || true
+
 mkdir -p "$LOG_DIR"
 
 echo "========================================" >> "$LOG_FILE"
@@ -43,6 +49,16 @@ echo "Run started: $(date '+%Y-%m-%d %H:%M:%S')" >> "$LOG_FILE"
 echo "========================================" >> "$LOG_FILE"
 
 cd "$REPO_DIR"
+
+BRANCH="auto/events-$(date '+%Y-%m-%d')"
+echo "Preparing branch: $BRANCH" >> "$LOG_FILE"
+
+# Always ensure main is up to date and clean before branch checkout
+git checkout main >> "$LOG_FILE" 2>&1
+git pull --ff-only origin main >> "$LOG_FILE" 2>&1 || true
+
+# Switch to target branch before running discovery so new files land cleanly
+git checkout -B "$BRANCH" >> "$LOG_FILE" 2>&1
 
 # 1. Deterministic + Local Ollama AI/NLP Feed & Seed Discovery
 echo "Executing deterministic + Local AI/NLP feed discovery..." >> "$LOG_FILE"
@@ -59,14 +75,8 @@ if [ -n "$NEW_FILES" ]; then
   if "$BUN_BIN" run build >> "$LOG_FILE" 2>&1 && "$BUN_BIN" run lint >> "$LOG_FILE" 2>&1; then
     echo "Verification passed (build & lint clean)." >> "$LOG_FILE"
     
-    BRANCH="auto/events-$(date '+%Y-%m-%d')"
-    echo "Creating branch: $BRANCH" >> "$LOG_FILE"
-    git checkout -b "$BRANCH" >> "$LOG_FILE" 2>&1 || git checkout "$BRANCH" >> "$LOG_FILE" 2>&1
     git add src/content/events/ >> "$LOG_FILE" 2>&1
     git commit -m "feat(events): auto-discovered Scottish cyber events ($(date '+%Y-%m-%d'))" >> "$LOG_FILE" 2>&1
-    
-    # Ensure git uses GitHub CLI credentials in headless cron
-    "$GH_BIN" auth setup-git >> "$LOG_FILE" 2>&1 || true
     
     if git push -u origin "$BRANCH" >> "$LOG_FILE" 2>&1; then
       echo "Pushed branch $BRANCH to origin." >> "$LOG_FILE"
@@ -95,7 +105,6 @@ $NEW_FILES
       echo "Failed to push branch $BRANCH to origin (check network/credentials)." >> "$LOG_FILE"
       "$OSASCRIPT_BIN" -e "display notification \"Event discovery found new events, but git push failed.\" with title \"CSC Event Discovery\" sound name \"Basso\"" 2>/dev/null || true
     fi
-    git checkout main >> "$LOG_FILE" 2>&1
   else
     echo "Build or lint failed! Reverting unverified files for safety." >> "$LOG_FILE"
     git checkout -- src/content/events/ >> "$LOG_FILE" 2>&1 || true
@@ -103,7 +112,11 @@ $NEW_FILES
   fi
 else
   echo "No new events discovered from feeds." >> "$LOG_FILE"
+  git checkout main >> "$LOG_FILE" 2>&1
+  git branch -D "$BRANCH" >> "$LOG_FILE" 2>&1 || true
 fi
+
+git checkout main >> "$LOG_FILE" 2>&1
 
 echo "----------------------------------------" >> "$LOG_FILE"
 echo "Run finished: $(date '+%Y-%m-%d %H:%M:%S')" >> "$LOG_FILE"
