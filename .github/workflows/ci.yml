@@ -73,6 +73,9 @@ jobs:
       - name: Lint Code
         run: bun run lint
 
+      - name: Run Integrity Tests & Classification Assertions
+        run: bun test
+
       - name: Build Static Site & Typecheck
         run: bun run build
         env:

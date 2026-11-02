@@ -102,11 +102,32 @@ export function isValidDiscordWebhookUrl(rawUrl?: string): boolean {
   }
 }
 
+// Helper: Check if an event is strictly an official Cyber Scotland Connect meetup
+export function isCscOfficialEvent(ev: {
+  isPartnerEvent: boolean;
+  partnerName?: string;
+  title: string;
+}): boolean {
+  if (ev.isPartnerEvent) return false;
+  if (
+    ev.partnerName &&
+    ev.partnerName.trim() !== '' &&
+    ev.partnerName !== 'Cyber Scotland Connect'
+  ) {
+    return false;
+  }
+  const lowerTitle = ev.title.toLowerCase();
+  const isCscBranded =
+    lowerTitle.startsWith('csc') ||
+    lowerTitle.startsWith('cyber scotland connect') ||
+    lowerTitle.includes('cyber scotland connect') ||
+    lowerTitle.startsWith('security scotland');
+  return isCscBranded;
+}
+
 // Check if an event matches the requested channel scope
 export function matchesScope(ev: ParsedEventFile, targetScope: EventScope): boolean {
-  const isCsc =
-    !ev.isPartnerEvent &&
-    (!ev.partnerName || ev.partnerName === 'Cyber Scotland Connect');
+  const isCsc = isCscOfficialEvent(ev);
   if (targetScope === 'csc') {
     return isCsc;
   }
