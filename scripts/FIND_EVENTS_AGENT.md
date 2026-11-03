@@ -12,7 +12,7 @@ Do not merge anything. Open the PR and stop.
 
 Read the file `scripts/event-sources.json` from the `main` branch of `cyber-scotland-connect/csc-website` using the GitHub MCP `get_file_contents` tool. Extract:
 - `seedUrls` array (each has `name`, `url`, `category`, `city` — scanned for Schema.org `application/ld+json` `Event` payloads)
-- `rssFeeds`, `wpFeeds` (WordPress Tribe Events REST API), `jsonFeeds` (Squarespace Events JSON API), and `iCalFeeds` arrays
+- `rssFeeds`, `wpFeeds` (WordPress v2 CPT `/wp-json/wp/v2/event` and Tribe Events REST API), `jsonFeeds` (Squarespace Events JSON API), and `iCalFeeds` arrays
 - `blueskyFeeds` array (public RSS feeds for Scottish cyber accounts)
 - `searchQueries` array (including Bluesky and Luma targeted queries)
 - `filters` object
@@ -88,6 +88,7 @@ Filename format: `YYYY-MM-DD-<slugified-title>.md`
 
 Rules:
 - `isPartnerEvent` MUST ALWAYS be `true` for discovered external events. `isPartnerEvent: false` is STRICTLY reserved for official Cyber Scotland Connect self-hosted meetups.
+- **Strict Scottish Geography & Postcode Invariant:** Physical events MUST be located in Scotland (or Virtual/Online). Regional search pages like `eventbrite.co.uk/d/united-kingdom--edinburgh/` return "nearby" events up to ~100 miles away across the English border (e.g. Newcastle upon Tyne, Gateshead, Sunderland, Durham, Carlisle, Berwick-upon-Tweed `TD15`). Verify every event's actual venue city and Royal Mail postcode (`AB, DD, DG, EH, FK, G, HS, IV, KA, KW, KY, ML, PA, PH, TD` excluding `TD15`, `ZE`). Non-Scottish venues will fail `bun test` and `bun run build`.
 - Never put generic ticketing platforms (`Eventbrite`, `Meetup`, `Luma`, `Ticketmaster`) as `partnerName`. If no specific organizing entity is identified, omit `partnerName` entirely.
 - Event dates must not exceed 366 days into the future.
 - Never put non-Meetup URLs in `meetupUrl`. Use `registrationUrl` for Eventbrite, conference sites, and external registration portals.

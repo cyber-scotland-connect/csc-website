@@ -1,6 +1,7 @@
 import { defineCollection } from 'astro:content';
 import { z } from 'astro/zod';
 import { glob } from 'astro/loaders';
+import { isNonScottishLocation } from './utils/scottish-geography';
 
 const eventsCollection = defineCollection({
   loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: './src/content/events' }),
@@ -159,6 +160,16 @@ const eventsCollection = defineCollection({
     {
       message:
         'Event date cannot be more than 366 days in the future. Check for scraping year errors.',
+    }
+  )
+  .refine(
+    (data) => {
+      // 4. Scottish geography invariant: physical event locations must not be in non-Scottish UK cities or postcodes
+      return !isNonScottishLocation(data.location);
+    },
+    {
+      message:
+        'Event location must be in Scotland (or Online/Virtual). Non-Scottish UK cities, counties, and non-Scottish UK postcodes (e.g. Newcastle, Gateshead, London, NE/EC/M/BT/CF postcodes) are strictly rejected.',
     }
   ),
 });
