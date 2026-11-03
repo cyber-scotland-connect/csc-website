@@ -1,123 +1,92 @@
-# Cyber Scotland Connect (CSC) — Project Context & Operational Knowledge Base
+# Cyber Scotland Connect (CSC) — System Architecture, Context & Engineering Standard
 
-> **Primary Source Ingestion & Grounding Document**  
-> Synthesized from:
-> 1. `CSC New Website Requirements` (Project Specification & Migration Strategy)
-> 2. `CSC Events Mods Manual V2.0` (Playbook & Operations Manual for Organizers, Speakers, and Volunteers)
+> **Canonical System State & Knowledge Base**
 >
-> *Last Updated: 2026-10-30*
+> This document provides comprehensive domain, architectural, and operational context for all engineers and AI coding assistants collaborating on the **Cyber Scotland Connect (CSC)** website and platform.
 
 ---
 
-## 1. Background & Mission
+## 1. Executive Summary & Purpose
 
-Cyber Scotland Connect (CSC) is an inclusive, grassroots community connecting cyber security practitioners, students, researchers, career switchers, and enthusiasts across Scotland.
+**Cyber Scotland Connect (CSC)** is an inclusive, non-profit, volunteer-led cybersecurity community initiative serving Scotland. Established in 2018 through the unification of regional technical security meetups, CSC provides high-signal, zero-sales knowledge exchange, technical presentations, career enablement, and networking opportunities for security professionals, students, researchers, and hobbyists across the Scottish cyber ecosystem.
 
-### The Problem with Legacy WordPress
-The previous WordPress site suffered from fatal errors, plugin incompatibilities, maintenance overhead, and security vulnerability risks inherent in dynamic CMS platforms. 
-
-### The Target State
-Migrate to a modern, high-performance, community-driven **Static Site on GitHub Pages** deployed via GitHub Actions.
-- **Zero dynamic server vulnerabilities:** No PHP, no backend database, no plugin conflicts.
-- **Open-source transparency:** All content and policies managed in Markdown via version-controlled GitHub Pull Requests.
-- **High accessibility & speed:** Blazing fast load times, accessible design, and low maintenance burden.
+The primary goals of this repository and public website are:
+1. **Centralize Community Gatherings:** Provide a single, reliable calendar and archive of all CSC meetups across Edinburgh, Glasgow, Dundee, Aberdeen, and virtual sessions.
+2. **Promote Downstream Ecosystem Events:** Signpost ethical, non-sales events hosted by trusted Scottish cyber security partners, university societies, and regional clusters.
+3. **Showcase Community Leadership & Resources:** Recognize volunteer organizers, student societies, and provide access to curated tools, reading materials, and standards.
+4. **Demonstrate Open Engineering Excellence:** The site itself serves as an open-source demonstration of high-performance static web architecture, defensive security hygiene, WCAG 2.1 AA accessibility, and automated continuous delivery.
 
 ---
 
-## 2. Core Stakeholders & Use Cases
+## 2. Technical Stack & Architecture
 
-| Stakeholder | Key Interactions & Desired Outcomes |
-| :--- | :--- |
-| **Community Members** | Discover upcoming local and virtual events; access speaker slide archives and workshop tutorials; explore career paths and job opportunities; join real-time Discord discussions. |
-| **Speakers & Presenters** | Understand the "High-Signal, Zero-Sales" speaking standard; submit talk proposals; find AV/tech requirements for in-person venues and virtual green rooms. |
-| **Venues & Partners** | Review partnership agreements and hosting guidelines; understand venue accessibility baselines (step-free access, hearing loops); receive brand recognition as supporters. |
-| **Organizers & Moderators** | Manage content via standard git pull requests; publish and enforce the Code of Conduct; maintain transparency over community guidelines and donation/supporter links. |
+The website is engineered as a modern, high-performance static site built with **Astro 5** and **Tailwind CSS**, hosted on **GitHub Pages**.
 
----
-
-## 3. Operational Playbook & Event Delivery Model
-
-CSC operates across physical, virtual, and hybrid delivery models with strict operational baselines.
-
-### 3.1 Regional Chapters & Physical Hubs
-CSC hosts quarterly in-person events across key Scottish technology corridors:
-- **Edinburgh:** Central hub (e.g. CodeBase Edinburgh, WaverleyGate, Trustpilot).
-- **Glasgow:** Western hub targeting enterprise teams and academic networks.
-- **Dundee:** Tech and academic hub (e.g. Abertay cyberQuarter).
-
-#### Venue Capacity Tiers
-- **Small (25–30 attendees):** Technical workshops, interactive roundtables, regional market validation.
-- **Medium (31–70 attendees):** Standard evening meetups, multi-speaker briefings (e.g. CodeBase).
-- **Large (71–120+ attendees):** Annual keynotes, multi-track panels, seasonal summits.
-
-### 3.2 Accessibility & Technical Baseline (Mandatory)
-Every physical event listing and venue must account for:
-1. **Physical Mobility:** Step-free route from public transit to presentation space, working lifts, wide doorways, clearly signed accessible gender-neutral facilities.
-2. **Hearing Loops:** Audit for Induction Hearing Loops patched into the master soundboard; explicitly state availability (or lack thereof) on event announcements.
-3. **Livestream Feeds:** Dedicated, high-bandwidth connection (minimum 20 Mbps upload) isolated from public Wi-Fi.
-
-### 3.3 Virtual Event Operations (Google Meet to YouTube Live)
-- **Tech Stack:** Google Meet (speaker room) bridged via RTMP to YouTube Live (public broadcast).
-- **Pre-Flight Green Room (T-Minus 30 min):** Mandatory soundcheck (external mics + headphones to eliminate feedback), macOS screen-sharing permission tests, front-facing lighting checks.
-- **Moderation:** Live Q&A routed through dedicated Slido links or CSC Discord to avoid unmoderated chat spam.
+- **Core Framework:** [Astro v5](https://astro.build/) (Static Site Generation / SSG mode).
+- **Package & Runtime Manager:** [Bun](https://bun.sh/) (ultra-fast TypeScript/JavaScript runtime, package manager, and test runner).
+- **Styling & Design System:** Tailwind CSS v4 with customized brand color palettes, dark/light theme persistence, typography scale, and tactile glassmorphic cards.
+- **Content Engine:** Astro Content Collections with strict compile-time TypeScript / Zod validation schemas (`src/content.config.ts`).
+- **Icons:** `lucide-astro` (modern, lightweight SVG icons).
+- **Deployment & Hosting:** Pure static HTML/CSS/JS export (`dist/`) automatically deployed via GitHub Actions to GitHub Pages at `cyberscotlandconnect.com`.
 
 ---
 
-## 4. Speaker Guide & Content Policy
+## 3. Brand Identity & Visual Design Tokens
 
-CSC's community trust depends on technical integrity and neutrality. Every speaker must follow the **High-Signal, Zero-Sales** philosophy.
+CSC’s visual identity balances professional cybersecurity credibility with warm, accessible Scottish community aesthetics:
 
-### 4.1 Non-Negotiable Rules
-- **60-Second Intro Rule:** Speakers may show employer logo, job title, and company scale for a maximum of 60 seconds.
-- **Core Presentation:** Must focus exclusively on open methodologies, operational strategies, code patterns, threat research, or security architectures the audience can action independently.
-- **Strict Anti-Pitch Ban:** No product demos, vendor feature pitch decks, proprietary pricing, sales contact forms, or recruitment funnels.
-
-### 4.2 Content Alignment
-- **DO:** Base talks on standard frameworks (MITRE ATT&CK, SABSA, NIST, OWASP); share hard engineering lessons, failure retrospectives, and detection gaps; make complex topics accessible to career switchers and juniors.
-- **DON'T:** Present sanitized corporate marketing case studies or lean on exclusionary, gatekeeping jargon.
+- **Midnight Navy (`#21203a`):** Primary background for dark theme, representing deep technical focus and security resilience.
+- **Electric Heather / Thistle (`#895294`):** Primary brand accent inspired by the Scottish thistle, used for interactive badges, primary buttons, borders, and active highlights.
+- **Saltire Sky (`#6fb7e6`):** Secondary accent inspired by the Scottish flag and northern sky, used for tags, hyperlinks, and hover glow effects.
+- **Muted Lavender (`#bdaccf`):** Low-contrast supporting text, borders, and subtle icon accents.
+- **Warm White (`#fbf8f5`):** Warm background for light theme, avoiding stark clinical white.
 
 ---
 
-## 5. Promotion & Event Lifecycle Timelines
+## 4. Key Architectural & Security Decisions
 
-Organizers execute a 4-week cadence for all events:
-- **T-Minus 4 Weeks:** Publish Meetup page; initial LinkedIn announcement with date, city, and theme.
-- **T-Minus 2 Weeks:** Update Meetup with speaker bios and technical abstracts; structured LinkedIn update tagging speakers/orgs.
-- **T-Minus 1 Week:** Ticket capacity check; call-to-action on LinkedIn; reminder broadcast to RSVP'd attendees.
-- **T-Zero (Event Day 12:00 BST):** Final "Tonight" post with transit, check-in, or stream access details.
+1. **Pure Static Generation (SSG):** The entire site compiles to static assets. There are no server-side databases, serverless compute functions, or dynamic backend APIs. This minimizes the attack surface to zero server-side vulnerabilities.
+2. **Zero Client-Side Trackers:** The site uses zero intrusive third-party cookies, tracking pixels, or foreign ad networks.
+3. **Defensive Content Security Policy (CSP):** Strict security headers (`Content-Security-Policy`, `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-origin`) are embedded directly in the static layout templates.
+4. **Strict Scottish Geography Invariant:** Physical event locations and Royal Mail postcodes are strictly validated against genuine Scottish regions (`AB, DD, DG, EH, FK, G, HS, IV, KA, KW, KY, ML, PA, PH, TD, ZE`, excluding `TD15` Berwick-upon-Tweed). Non-Scottish UK locations fail build validation deterministically.
+5. **Strict Tri-State Accessibility Model:** All event files enforce a tri-state accessibility model (`stepFree: boolean | null`, `hearingLoop: boolean | null`). True assertions require specific accommodation notes to prevent guessing.
 
 ---
 
-## 6. Website Technical Architecture & Schema Implications
+## 5. Directory Structure & Key Files
 
-The website should be designed around structured, typed content models:
+```text
+csc-website/
+├── src/
+│   ├── components/            # Reusable Astro UI components (EventCard, Navbar, Footer, etc.)
+│   ├── content/               # Markdown content collections
+│   │   ├── events/            # Meetup archive & upcoming event records
+│   │   ├── leaders/           # Organizers and advisory board members
+│   │   ├── partners/          # Host venues, sponsors, and academic collaborators
+│   │   ├── resources/         # Curated reading list, tools, and living standards
+│   │   └── community/         # Scottish hacker societies and community groups
+│   ├── layouts/               # BaseLayout and page wrappers
+│   ├── pages/                 # File-based routes (index, events, partners, feeds, etc.)
+│   └── utils/                 # Geography, calendar, RSS, and partner registry utilities
+├── scripts/                   # Automated event discovery, Discord notifier, link checker
+├── tests/                     # Unit and archive integrity test suite (bun test)
+├── public/                    # Static assets (favicons, logos, brand vectors)
+└── astro.config.mjs           # Astro SSG build configuration
+```
 
-### 6.1 Recommended Page Structure
-1. **Home / Landing:** Mission, upcoming featured events, volunteer leadership section (`#leadership`), quick links to Discord/Meetup, supporter showcase.
-2. **Events Calendar (`/events`):** Filterable by chapter (Edinburgh, Glasgow, Dundee, Virtual), past archive with recordings and slide links, explicit accessibility tags.
-3. **Speakers & Call for Papers (`/speakers`):** Speaker guidelines, "Zero-Sales" policy, CFP submission guide, past speaker roster.
-4. **Community Hub (`/community`):** Dedicated Scottish cyber ecosystem directory, Discord showcase, DEF CON meetups, university cyber societies, diversity networks, and veteran pathways.
-5. **Resources & Reading Room (`/resources`):** Hand-curated directory of 36 premier open-source tools, living standards, Scottish/UK initiatives, and mental health support.
-6. **Partners & Transparency (`/partners`):** Host venues, academic clusters, and community sponsors; venue hosting criteria, financial transparency / donation links.
-7. **Governance & Safety (`/about`, `/code-of-conduct`, `/security`):** Contributor Covenant 2.1, security disclosure policy, organizing team info.
+---
 
-### 6.2 Data Schemas (Markdown / Content Collections)
-- **Event Schema (`src/content/events/*.md`):** `title`, `date`, `time`, `location`, `locationUrl`, `city` (Edinburgh, Glasgow, Dundee, Virtual, Aberdeen, Scotland-wide), `isPartnerEvent` (boolean, strictly true ONLY for verified partners in `src/content/partners/`), `partnerName`, `organizerType` (`Community` | `Commercial` | `Public Sector` | `Academic`), `accessType` (Open/Public, Corporate/Paid, Student/Academic, Restricted/Civil Service), `meetupUrl` (strictly Meetup.com), `registrationUrl` (Eventbrite, portals, external tickets), `streamUrl`, `slidesUrl`, `recordingUrl`, `accessibility` (strict tri-state `stepFree: boolean | null`, `hearingLoop: boolean | null`, `notes`), `speakers` (array of objects), `agenda` (array of objects).
-- **Leader / Organizer Schema (`src/content/leaders/*.md`):** `name`, `role`, `chapter`, `bio`, `avatar`, `linkedin`, `github`, `website`, `status`, `order`.
-- **Partner Schema (`src/content/partners/*.md`):** `name`, `tier` (Host Venue, Ecosystem Partner, Sponsor, Academic Partner), `logo`, `websiteUrl`, `active`, `order`.
-- **Resource Schema (`src/content/resources/*.md`):** `title`, `url`, `category` (6 domains), `type` (5 types), `description`, `isScottishOrUK`, `order`.
-- **Community Schema (`src/content/community/*.md`):** `name`, `category` (5 categories), `city` (6 regions), `websiteUrl`, `chatUrl`, `meetingFrequency`, `description`, `active`, `order`.
+## 6. Content Collections & Schema Specifications
+
+### Data Schemas (`src/content.config.ts`)
+- **Event Schema (`src/content/events/*.md`):** `title`, `date`, `time`, `location`, `locationUrl`, `city`, `isPartnerEvent` (boolean, strictly true ONLY for verified partners in `src/content/partners/`), `partnerName`, `organizerType`, `accessType`, `meetupUrl`, `registrationUrl`, `streamUrl`, `slidesUrl`, `recordingUrl`, `accessibility`, `speakers`, `agenda`.
+- **Leader Schema (`src/content/leaders/*.md`):** `name`, `role`, `chapter`, `bio`, `avatar`, `linkedin`, `github`, `website`, `status`, `order`.
+- **Partner Schema (`src/content/partners/*.md`):** `name`, `tier` (`Host Venue` | `Ecosystem Partner` | `Sponsor` | `Academic Partner`), `logo`, `websiteUrl`, `active`, `order`.
+- **Resource Schema (`src/content/resources/*.md`):** `title`, `url`, `category`, `type`, `description`, `isScottishOrUK`, `order`.
+- **Community Schema (`src/content/community/*.md`):** `name`, `category`, `city`, `websiteUrl`, `chatUrl`, `meetingFrequency`, `description`, `active`, `order`.
 
 ---
 
 ## 7. Community Origins & Foundational Leadership
 
 Cyber Scotland Connect was established through the merger of two prominent Scottish cyber security meetup groups, co-founded by **Harry McLaren** and **Stu Hirst**, and announced at DIGIT Expo.
-
-### 7.1 Community Moderators & Advisory Network
-The community is guided by volunteer cybersecurity leaders, chapter organisers, and moderators across Scotland:
-- **Co-Founders:** Harry McLaren, Stu Hirst
-- **Organisers & Chapter Leaders:** Federico Charosky, Gary Hunter, Magda de Jager, Dr. Rich Macfarlane, Sophie Lanc, Joshua Adegoke, Ben Haine, Iheanyi Obasi, James Ramirez, Jamie O'Hare, Kevin Gray, Miguel Marques, Richard Grey, Samuel English-Kershaw
-
-### 7.2 Ecosystem Collaborations
-CSC maintains active relationships across Scotland's broader cyber resilience ecosystem, including **ScotlandIS Cyber Cluster**, **Cyber and Fraud Centre Scotland**, **Abertay cyberQuarter**, **CodeBase**, and university student societies (e.g. ENUSEC).

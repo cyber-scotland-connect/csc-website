@@ -17,6 +17,7 @@ import {
 } from 'lucide-astro';
 
 import { getEventActionLinks } from '../utils/event-link';
+import { classifyEvent } from '../utils/partner-registry';
 
 interface Props {
   event: CollectionEntry<'events'>;
@@ -29,6 +30,7 @@ const actionLinks = getEventActionLinks(data);
 
 const eventDate = new Date(data.date);
 const isUpcoming = eventDate.getTime() >= new Date().setHours(0, 0, 0, 0);
+const classification = classifyEvent(data);
 
 const monthAbbr = eventDate.toLocaleDateString('en-GB', { month: 'short' }).toUpperCase();
 const dayNumber = eventDate.toLocaleDateString('en-GB', { day: 'numeric' });
@@ -98,19 +100,9 @@ const mapsUrl = (!isVirtual && !isCampaign) ? (data.locationUrl || `https://www.
             <CityIcon class="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
             <span>{data.city}</span>
           </span>
-          {data.isPartnerEvent ? (
-            <span class="text-xs px-2 py-0.5 rounded-full font-semibold bg-pink-100 dark:bg-[#895294]/30 text-pink-800 dark:text-pink-300 border border-pink-200 dark:border-[#895294]">
-              Partner: {data.partnerName || 'Ecosystem'}
-            </span>
-          ) : data.partnerName ? (
-            <span class="text-xs px-2 py-0.5 rounded-full font-semibold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
-              Host: {data.partnerName}
-            </span>
-          ) : (
-            <span class="text-xs px-2 py-0.5 rounded-full font-semibold bg-sky-100 dark:bg-[#6fb7e6]/20 text-sky-800 dark:text-sky-200 border border-sky-200 dark:border-[#6fb7e6]/40">
-              CSC Gathering
-            </span>
-          )}
+          <span class={`text-xs px-2 py-0.5 rounded-full font-semibold border ${classification.badgeClass}`}>
+            {classification.badgeLabel}
+          </span>
           {data.partnerName && data.organizerType && (
             <span class={`text-xs px-2 py-0.5 rounded-full font-semibold border ${
               data.organizerType === 'Commercial'

@@ -1,4 +1,5 @@
 import type { CollectionEntry } from 'astro:content';
+import { classifyEvent } from './partner-registry';
 
 interface CalendarOptions {
   calendarName: string;
@@ -160,13 +161,9 @@ export function generateIcs(
     let description = `${data.title}\\n\\n`;
     description += `📍 Venue: ${data.location}\\n`;
     if (data.time) description += `⏰ Time: ${data.time}\\n`;
-    if (data.isPartnerEvent) {
-      description += `🤝 Host: ${data.partnerName || 'Community Partner'} (Official CSC Partner)\\n`;
-    } else if (data.partnerName) {
-      description += `🏛️ Host: ${data.partnerName}${data.organizerType ? ` [${data.organizerType}]` : ''}\\n`;
-    } else {
-      description += `🛡️ Host: Cyber Scotland Connect\\n`;
-    }
+    
+    const classification = classifyEvent(data);
+    description += `🏛️ Host: ${classification.hostDescription}\\n`;
     description += `\\nEvent Details: ${eventUrl}\\n`;
     if (rsvpUrl) description += `RSVP / Register: ${rsvpUrl}\\n`;
 

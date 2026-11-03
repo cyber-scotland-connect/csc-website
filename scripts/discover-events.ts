@@ -17,6 +17,7 @@ import {
   hasScottishPostcode,
   isNonScottishLocation,
 } from '../src/utils/scottish-geography';
+import { isOfficialPartnerOrSponsor } from '../src/utils/partner-registry';
 
 interface SeedUrlSource {
   name: string;
@@ -570,30 +571,8 @@ export function sanitizePartnerName(name?: string): string | undefined {
 
 // Check whether an organizing entity is an official CSC partner
 export function isOfficialPartner(partnerName: string): boolean {
-  const normalized = partnerName.toLowerCase();
-  const partners = [
-    'abertay cyberquarter',
-    'adarma',
-    'codebase',
-    'cyber and fraud centre scotland',
-    'cyera',
-    'digit',
-    'edinburgh napier university',
-    'enusec',
-    'extrahop',
-    'freeagent',
-    'harvey nash',
-    'riversafe',
-    'scotlandis',
-    'skyscanner',
-    'the cyber academy',
-    'the data lab',
-    'trustpilot',
-    'university of strathclyde',
-    'wood mackenzie',
-    'cyberscotland',
-  ];
-  return partners.some((p) => normalized.includes(p));
+  if (!partnerName) return false;
+  return isOfficialPartnerOrSponsor(partnerName);
 }
 
 // Detect hosting entity classification
@@ -803,7 +782,7 @@ async function parseRssFeed(feed: RssFeedSource, todayStr: string): Promise<Disc
       time: eventTimeStr,
       location,
       city,
-      isPartnerEvent: true,
+      isPartnerEvent: isOfficialPartner(pName || ''),
       partnerName: pName,
       organizerType: detectOrganizerType(feed.category, pName || '', fullText),
       accessType: detectAccessType(feed.category, fullText),
@@ -882,7 +861,7 @@ async function parseWpTribeEvents(
           date: eventDateStr,
           location: locationStr,
           city,
-          isPartnerEvent: true,
+          isPartnerEvent: isOfficialPartner(pName || ''),
           partnerName: pName,
           organizerType: detectOrganizerType(source.category, pName || '', fullText),
           accessType: detectAccessType(source.category, fullText),
@@ -926,7 +905,7 @@ async function parseWpTribeEvents(
         time,
         location: locationStr,
         city,
-        isPartnerEvent: true,
+        isPartnerEvent: isOfficialPartner(pName || ''),
         partnerName: pName,
         organizerType: detectOrganizerType(source.category, pName || '', fullText),
         accessType: detectAccessType(source.category, fullText),
@@ -985,7 +964,7 @@ async function parseICalFeed(feed: ICalFeedSource, todayStr: string): Promise<Di
       date: eventDateStr,
       location: rawLocation || 'Scotland',
       city: detectCity(`${rawTitle} ${rawLocation} ${feed.name}`),
-      isPartnerEvent: true,
+      isPartnerEvent: isOfficialPartner(pName || ''),
       partnerName: pName,
       organizerType: detectOrganizerType(feed.category, pName || '', `${rawTitle} ${rawDesc}`),
       accessType: detectAccessType(feed.category, `${rawTitle} ${rawDesc}`),
@@ -1042,7 +1021,7 @@ async function parseSquarespaceJson(
         date: eventDateStr,
         location: item.location?.addressTitle || defaultLoc,
         city: detectCity(`${title} ${item.location?.addressLine2 || ''} ${defaultLoc}`),
-        isPartnerEvent: true,
+        isPartnerEvent: isOfficialPartner(partnerName || ''),
         partnerName,
         organizerType: detectOrganizerType(source.category, partnerName || '', `${title} ${desc}`),
         accessType: detectAccessType(source.category, `${title} ${desc}`),
@@ -1169,7 +1148,7 @@ async function parseHtmlSeedUrl(
       time: extractTimeRange(rawStart, rawEnd),
       location: locName || city,
       city,
-      isPartnerEvent: true,
+      isPartnerEvent: isOfficialPartner(pName || ''),
       partnerName: pName,
       organizerType: detectOrganizerType(seed.category, pName || '', fullText),
       accessType: detectAccessType(seed.category, fullText),
@@ -1306,7 +1285,7 @@ async function extractSeedEventsWithLocalAi(
       time: item.time && /\d{1,2}:\d{2}/.test(item.time) ? item.time.trim() : undefined,
       location: item.location ? stripHtml(item.location) : city,
       city,
-      isPartnerEvent: true,
+      isPartnerEvent: isOfficialPartner(pName || ''),
       partnerName: pName,
       organizerType: detectOrganizerType(seed.category, pName || '', fullText),
       accessType: detectAccessType(seed.category, fullText),
@@ -1440,7 +1419,7 @@ async function parseBlueskyFeed(
       date: eventDateStr,
       location: 'Scotland',
       city: detectCity(postText),
-      isPartnerEvent: true,
+      isPartnerEvent: isOfficialPartner(source.name),
       partnerName: pName,
       organizerType: detectOrganizerType('community', pName || '', postText),
       accessType: 'Open/Public',

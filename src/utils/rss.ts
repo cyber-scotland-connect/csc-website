@@ -1,4 +1,5 @@
 import type { CollectionEntry } from 'astro:content';
+import { classifyEvent } from './partner-registry';
 
 interface RssOptions {
   title: string;
@@ -40,13 +41,9 @@ export function generateEventRss(
       })}. `;
       if (data.time) description += `Time: ${data.time}. `;
       description += `Location: ${data.location}. `;
-      if (data.isPartnerEvent) {
-        description += `Host: ${data.partnerName || 'Partner Organisation'} (CSC Partner). `;
-      } else if (data.partnerName) {
-        description += `Host: ${data.partnerName}${data.organizerType ? ` [${data.organizerType}]` : ''}. `;
-      } else {
-        description += `Host: Cyber Scotland Connect. `;
-      }
+      
+      const classification = classifyEvent(data);
+      description += `Host: ${classification.hostDescription}. `;
 
       if (data.speakers && data.speakers.length > 0) {
         description += `Speakers: ${data.speakers.map((s) => `${s.name} ("${s.talkTitle}")`).join(', ')}. `;
@@ -61,7 +58,7 @@ export function generateEventRss(
       <pubDate>${pubDate}</pubDate>
       <description>${escapeXml(description)}</description>
       <category>${escapeXml(data.city)}</category>
-      <category>${data.isPartnerEvent ? 'Partner Event' : data.partnerName ? 'Ecosystem Event' : 'CSC Gathering'}</category>
+      <category>${escapeXml(classification.badgeLabel)}</category>
       ${data.organizerType ? `<category>${escapeXml(data.organizerType)}</category>` : ''}
       <source url="${escapeXml(rsvpUrl)}">${escapeXml(data.partnerName || 'Cyber Scotland Connect')}</source>
     </item>`;

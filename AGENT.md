@@ -119,8 +119,10 @@ When creating or modifying content, AI agents must strictly conform to the Zod s
      - `locationUrl`: optional Google Maps URL
      - `city`: `Edinburgh` | `Glasgow` | `Dundee` | `Virtual` | `Aberdeen` | `Scotland-wide`
      - `isPartnerEvent`: boolean — **STRICT CLASSIFICATION CONTRACT:**
-       - `false`: **STRICTLY reserved for official Cyber Scotland Connect self-hosted gatherings.** If `false`, `partnerName` must either be omitted or `"Cyber Scotland Connect"`, and the title must carry CSC branding (`CSC`, `Cyber Scotland Connect`, or `Security Scotland`).
-       - `true`: **REQUIRED for ALL external partner, ecosystem, community, and commercial events in Scotland.**
+       - `true`: **STRICTLY reserved for official CSC Partners or Sponsors** registered in `src/content/partners/` (e.g. `Cyber and Fraud Centre Scotland`, `Abertay cyberQuarter`, `DIGIT`, `Edinburgh Napier University`). Must be cross-validated against `src/utils/partner-registry.ts`.
+       - `false`: **Default for all other events:**
+         - If `partnerName` is omitted or `"Cyber Scotland Connect"`, it is an official self-hosted CSC gathering.
+         - If `partnerName` is specified (e.g. `Hack Thursday`, `Glasgow 2600`, `Cyber Connect`, `FutureScot`), it is a signposted Scottish community or external event.
      - `partnerName`: optional string. Identifies the organizing entity (e.g. `Cyber and Fraud Centre Scotland`, `OWASP Scotland Chapter`, `CodeBase`, `TechForce Cyber`). **CRITICAL: Never put generic ticketing platforms (`Eventbrite`, `Luma`, `Meetup`, `Ticketmaster`) as the `partnerName` — this will hard-fail compile-time schema validation.**
      - `organizerType`: `Community` | `Commercial` | `Public Sector` | `Academic` (default `Community`) — explicitly classifies the hosting entity so attendees are aware of commercial/sales contexts.
      - `accessType`: `Open/Public` | `Corporate/Paid` | `Student/Academic` | `Restricted/Civil Service` (default `Open/Public`)

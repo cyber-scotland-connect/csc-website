@@ -4,7 +4,7 @@ date: 2026-10-27
 time: '19:00 onwards'
 location: 'Bergies, 64-66 Bell Street, Dundee DD1 1HF'
 city: 'Dundee'
-isPartnerEvent: true
+isPartnerEvent: false
 partnerName: 'DEF CON Dundee (DC441382)'
 organizerType: "Community"
 accessType: 'Open/Public'
