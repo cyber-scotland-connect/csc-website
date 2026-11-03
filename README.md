@@ -37,7 +37,7 @@ CSC is dedicated to radical inclusivity and accessibility (WCAG 2.1 AA/AAA compl
 - **Static Site Generator:** [Astro 5](https://astro.build) (Pure SSG, zero runtime vulnerabilities)
 - **Styling:** [Tailwind CSS v4](https://tailwindcss.com) via `@tailwindcss/vite` with the CSC Brand System (`#21203a` Deep Purple, `#56548c` Lilac, `#895294` Pink)
 - **Type Safety & Schemas:** TypeScript + Zod content schemas (`src/content.config.ts`)
-- **Automated Event Discovery:** Multi-protocol discovery engine (`scripts/discover-events.ts`) monitoring 18 ecosystem feeds across RSS, iCal, Bluesky ATProto RSS, and Squarespace JSON APIs.
+- **Automated Event Discovery:** Multi-protocol discovery engine (`scripts/discover-events.ts`) monitoring 96 ecosystem sources across RSS/Atom, WordPress v2 CPT & Tribe REST APIs, iCal, Bluesky ATProto RSS, Squarespace JSON APIs, and Schema.org `ld+json` seed pages, guarded by a three-layer Scottish geography and Royal Mail postcode verifier (`src/utils/scottish-geography.ts`).
 - **Live Calendars & RSS Feeds:** Build-time generation of direct `.ics` and RSS `.xml` feeds for 1-click subscription in Google Calendar, Apple Calendar, Outlook, and Discord webhooks.
 - **Intelligent Platform Resolution:** Hostname-driven link resolver (`src/utils/event-link.ts`) guaranteeing links are never labeled "Meetup" unless pointing to `meetup.com`, with tailored CTAs for Eventbrite, Luma, LinkedIn, and external portals.
 - **SEO, AI Discovery & Security Standards:**
@@ -98,7 +98,7 @@ Open `http://localhost:4321` in your browser.
 # Using Bun
 bun test
 ```
-Executes 86+ automated regression and integrity assertions across all event collections and notification routing rules.
+Executes 90+ automated regression and integrity assertions across all event collections, Scottish geography/postcode guards, and notification routing rules.
 
 ### 6. Build for Production
 ```bash
@@ -167,6 +167,7 @@ csc-website/
 │   │   └── global.css             # Tailwind CSS v4 brand tokens & a11y styling
 │   └── utils/
 │       ├── event-link.ts          # Dynamic platform detection & link action resolver
+│       ├── scottish-geography.ts  # Scottish geography & Royal Mail postcode verification guard
 │       ├── calendar.ts            # Dynamic iCalendar (.ics) feed generator
 │       └── rss.ts                 # Dynamic RSS (.xml) feed generator
 ├── astro.config.mjs               # Astro configuration with @astrojs/sitemap

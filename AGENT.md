@@ -115,7 +115,7 @@ When creating or modifying content, AI agents must strictly conform to the Zod s
      - `title`: string
      - `date`: YYYY-MM-DD
      - `time`: optional string (e.g. `18:00 – 20:30 BST`)
-     - `location`: string (venue name, address, postcode)
+     - `location`: string (venue name, address, postcode) — **STRICT SCOTTISH GEOGRAPHY INVARIANT:** Physical venues must be located in Scotland (or `"Online"` / `"Virtual"`). Non-Scottish UK cities, counties (e.g. Newcastle, Gateshead, Sunderland, Carlisle, London, Manchester, Belfast, Cardiff), and non-Scottish Royal Mail postcodes (any UK postcode outside the 16 Scottish outward areas `AB, DD, DG, EH, FK, G, HS, IV, KA, KW, KY, ML, PA, PH, TD, ZE`, or `TD15` Berwick-upon-Tweed) are deterministically rejected at discovery time, unit test time, and Astro build time via `src/utils/scottish-geography.ts`.
      - `locationUrl`: optional Google Maps URL
      - `city`: `Edinburgh` | `Glasgow` | `Dundee` | `Virtual` | `Aberdeen` | `Scotland-wide`
      - `isPartnerEvent`: boolean — **STRICT CLASSIFICATION CONTRACT:**
@@ -158,8 +158,9 @@ Accessibility accommodations directly affect the safety and physical mobility of
 ## 🛰️ Automated Event Discovery Engine
 
 The repository includes a multi-protocol event discovery engine in `scripts/`:
-- **Engine Script:** `scripts/discover-events.ts` (dry run: `bun run discover:dry`, write mode: `bun run discover`)
-- **Sources Manifest:** `scripts/event-sources.json` (maps 18 ecosystem feeds across RSS, iCal, Bluesky ATProto RSS, and Squarespace JSON APIs)
+- **Engine Script:** `scripts/discover-events.ts` (dry run: `bun run discover:dry`, write mode: `bun run discover`, verbose diagnostics: `bun run scripts/discover-events.ts --verbose`)
+- **Sources Manifest:** `scripts/event-sources.json` (maps 96 ecosystem sources across RSS/Atom, WordPress v2 CPT & Tribe Events REST APIs, iCal, Bluesky ATProto RSS, Squarespace JSON APIs, and 64 HTML Schema.org `ld+json` seed URLs)
+- **Scottish Geography & Postcode Verifier:** `src/utils/scottish-geography.ts` enforces that physical venues and UK postcodes belong to Scotland across ingestion (`[GEO-GUARD]`), unit tests (`tests/event-archive-integrity.test.ts`), and compile-time Astro Zod validation (`src/content.config.ts`)
 - **Shell Runner:** `scripts/run-event-discovery.sh` (handles git branch isolation, build/lint gates, and commits)
 - **Action Details Engine:** `src/utils/event-link.ts` dynamically parses destination hostnames to render honest action CTAs (`Meetup`, `Eventbrite`, `Luma`, `LinkedIn`, `Register / Event Page`).
 

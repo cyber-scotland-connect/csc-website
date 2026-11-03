@@ -13,6 +13,10 @@
 
 import fs from 'fs';
 import path from 'path';
+import {
+  hasScottishPostcode,
+  isNonScottishLocation,
+} from '../src/utils/scottish-geography';
 
 interface SeedUrlSource {
   name: string;
@@ -210,6 +214,102 @@ function extractEventbriteId(raw?: string): string | null {
   return match ? match[1] : null;
 }
 
+const TITLE_DEDUP_STOPWORDS = new Set([
+  'about',
+  'aberdeen',
+  'after',
+  'annual',
+  'before',
+  'between',
+  'business',
+  'chapter',
+  'cloud',
+  'community',
+  'conference',
+  'cyber',
+  'cybersecurity',
+  'digital',
+  'dundee',
+  'edinburgh',
+  'event',
+  'events',
+  'from',
+  'gathering',
+  'glasgow',
+  'group',
+  'hack',
+  'hacking',
+  'highlands',
+  'info',
+  'information',
+  'infosec',
+  'into',
+  'meetup',
+  'meeting',
+  'monthly',
+  'more',
+  'national',
+  'network',
+  'networking',
+  'north',
+  'online',
+  'organisation',
+  'organisations',
+  'organization',
+  'over',
+  'partner',
+  'portal',
+  'programme',
+  'resilience',
+  'scotland',
+  'scottish',
+  'security',
+  'seminar',
+  'series',
+  'session',
+  'sessions',
+  'showcase',
+  'society',
+  'summit',
+  'symposium',
+  'tech',
+  'technology',
+  'that',
+  'their',
+  'them',
+  'then',
+  'there',
+  'these',
+  'they',
+  'this',
+  'threat',
+  'threats',
+  'through',
+  'training',
+  'under',
+  'user',
+  'virtual',
+  'webinar',
+  'week',
+  'what',
+  'when',
+  'where',
+  'which',
+  'while',
+  'with',
+  'within',
+  'workshop',
+  'your',
+]);
+
+export function getSignificantTitleWords(title: string): Set<string> {
+  return new Set(
+    normalizeTitle(title)
+      .split(' ')
+      .filter((w) => w.length > 3 && !TITLE_DEDUP_STOPWORDS.has(w))
+  );
+}
+
 // Load existing events to avoid duplicates
 function loadExistingEvents(): ExistingEventsIndex {
   const index: ExistingEventsIndex = {
@@ -237,11 +337,7 @@ function loadExistingEvents(): ExistingEventsIndex {
         const dateStr = dateMatch[1];
         index.normalizedKeys.add(`${dateStr}-${normalizeTitle(rawTitle)}`);
 
-        const words = new Set(
-          normalizeTitle(rawTitle)
-            .split(' ')
-            .filter((w) => w.length > 3)
-        );
+        const words = getSignificantTitleWords(rawTitle);
         const existingForDate = index.dateTitleWords.get(dateStr) || [];
         existingForDate.push({ title: rawTitle, words });
         index.dateTitleWords.set(dateStr, existingForDate);
@@ -271,17 +367,28 @@ function isValidUrl(u?: string): boolean {
   }
 }
 
-// Helper: Check if a seed URL belongs to a UK-wide organization (rather than a dedicated Scottish source)
+// Helper: Check if a seed URL belongs to a UK-wide organization or regional search directory
+// (where individual listings may bleed across the border into Northern England)
 // Uses parsed URL.hostname to satisfy CodeQL js/incomplete-url-substring-sanitization
 const UK_WIDE_DOMAINS = ['theiet.org', 'ciisec.org', 'thesasig.com'] as const;
+const EVENTBRITE_DOMAINS = ['eventbrite.co.uk', 'eventbrite.com'] as const;
 function isUkWideSourceUrl(rawUrl: string): boolean {
   try {
     const parsed = new URL(rawUrl);
+    const host = parsed.hostname.toLowerCase();
+    const pathLower = parsed.pathname.toLowerCase();
+    // Eventbrite regional directory searches (/d/...) include "nearby" events up to ~100 miles away
+    // (e.g. Newcastle & Gateshead on the Edinburgh search page), so each listing must independently prove Scottish location.
+    if (
+      EVENTBRITE_DOMAINS.some((domain) => host === domain || host.endsWith(`.${domain}`)) &&
+      pathLower.startsWith('/d/')
+    ) {
+      return true;
+    }
     // If the path specifically targets Scotland (e.g. /event/scotland-sasig/), treat as dedicated Scottish source
-    if (parsed.pathname.toLowerCase().includes('scotland')) {
+    if (pathLower.includes('scotland')) {
       return false;
     }
-    const host = parsed.hostname.toLowerCase();
     return UK_WIDE_DOMAINS.some((domain) => host === domain || host.endsWith(`.${domain}`));
   } catch {
     return false;
@@ -520,7 +627,16 @@ export function detectOrganizerType(
   return 'Community';
 }
 
-// Safe HTTP Fetch with timeout
+interface SourceHealthEntry {
+  url: string;
+  ok: boolean;
+  status?: number;
+  error?: string;
+}
+
+const sourceHealthLog: SourceHealthEntry[] = [];
+
+// Safe HTTP Fetch with timeout and source health tracking
 async function fetchWithTimeout(url: string, timeoutMs = 8000): Promise<string | null> {
   try {
     const controller = new AbortController();
@@ -534,9 +650,15 @@ async function fetchWithTimeout(url: string, timeoutMs = 8000): Promise<string |
       signal: controller.signal,
     });
     clearTimeout(timer);
-    if (!res.ok) return null;
+    if (!res.ok) {
+      sourceHealthLog.push({ url, ok: false, status: res.status });
+      return null;
+    }
+    sourceHealthLog.push({ url, ok: true, status: res.status });
     return await res.text();
-  } catch {
+  } catch (err) {
+    const msg = err instanceof Error && err.name === 'AbortError' ? 'timeout' : 'network-error';
+    sourceHealthLog.push({ url, ok: false, error: msg });
     return null;
   }
 }
@@ -586,7 +708,9 @@ async function parseRssFeed(feed: RssFeedSource, todayStr: string): Promise<Disc
       itemXml.match(/<title[^>]*><!\[CDATA\[([\s\S]*?)\]\]><\/title>/i) ||
       itemXml.match(/<title[^>]*>([\s\S]*?)<\/title>/i);
     const linkMatch =
+      itemXml.match(/<link[^>]+rel=["']alternate["'][^>]+href=["']([^"']+)["']/i) ||
       itemXml.match(/<link[^>]+href=["']([^"']+)["']/i) ||
+      itemXml.match(/<link><!\[CDATA\[([\s\S]*?)\]\]><\/link>/i) ||
       itemXml.match(/<link>([\s\S]*?)<\/link>/i);
     const descMatch =
       itemXml.match(/<(?:description|summary)[^>]*><!\[CDATA\[([\s\S]*?)\]\]><\/(?:description|summary)>/i) ||
@@ -596,6 +720,8 @@ async function parseRssFeed(feed: RssFeedSource, todayStr: string): Promise<Disc
       itemXml.match(/<content:encoded>([\s\S]*?)<\/content:encoded>/i);
     const evStartMatch =
       itemXml.match(/<(?:ev:startdate|tribe:start_date|startDate)>([\s\S]*?)<\/(?:ev:startdate|tribe:start_date|startDate)>/i);
+    const evEndMatch =
+      itemXml.match(/<(?:ev:enddate|tribe:end_date|endDate)>([\s\S]*?)<\/(?:ev:enddate|tribe:end_date|endDate)>/i);
     const pubDateMatch = itemXml.match(/<(?:pubDate|published|updated)>([\s\S]*?)<\/(?:pubDate|published|updated)>/i);
 
     if (!titleMatch || !linkMatch) continue;
@@ -616,10 +742,17 @@ async function parseRssFeed(feed: RssFeedSource, todayStr: string): Promise<Disc
 
     // 1. Check structured RSS event date tags first
     let eventDateStr: string | null = null;
+    let eventTimeStr: string | undefined;
     if (evStartMatch) {
-      const parsedEv = new Date(evStartMatch[1].trim());
+      const rawEvStart = evStartMatch[1].trim();
+      const rawEvEnd = evEndMatch ? evEndMatch[1].trim() : undefined;
+      const parsedEv = new Date(rawEvStart);
       if (!isNaN(parsedEv.getTime())) {
         eventDateStr = parsedEv.toISOString().slice(0, 10);
+        eventTimeStr = extractTimeRange(
+          rawEvStart.replace(' ', 'T'),
+          rawEvEnd ? rawEvEnd.replace(' ', 'T') : undefined
+        );
       }
     }
 
@@ -629,11 +762,16 @@ async function parseRssFeed(feed: RssFeedSource, todayStr: string): Promise<Disc
         extractNaturalDate(link, pubRefStr) || extractNaturalDate(fullText, pubRefStr);
     }
 
-    // 3. Fall back to pubDate if no embedded future event date found
+    // 3. Only fall back to pubDate if it is strictly in the future (> todayStr),
+    // which some WordPress event feeds use to encode future event dates.
+    // Never treat an article published today or earlier (<= todayStr) as an event date.
     if (!eventDateStr && pubDateMatch) {
       const parsed = new Date(pubDateMatch[1]);
       if (!isNaN(parsed.getTime())) {
-        eventDateStr = parsed.toISOString().slice(0, 10);
+        const candidatePubDate = parsed.toISOString().slice(0, 10);
+        if (candidatePubDate > todayStr) {
+          eventDateStr = candidatePubDate;
+        }
       }
     }
 
@@ -662,6 +800,7 @@ async function parseRssFeed(feed: RssFeedSource, todayStr: string): Promise<Disc
     events.push({
       title: rawTitle,
       date: eventDateStr,
+      time: eventTimeStr,
       location,
       city,
       isPartnerEvent: true,
@@ -679,35 +818,101 @@ async function parseRssFeed(feed: RssFeedSource, todayStr: string): Promise<Disc
   return events;
 }
 
-// Ingest WordPress Tribe Events REST API (/wp-json/tribe/events/v1/events)
+// Ingest WordPress Events REST API (supports both Tribe Events /wp-json/tribe/events/v1/events and WP v2 /wp-json/wp/v2/event CPTs)
 async function parseWpTribeEvents(
   source: WpFeedSource,
   todayStr: string
 ): Promise<DiscoveredEvent[]> {
-  const url = source.url.includes('start_date=')
-    ? source.url
-    : `${source.url}${source.url.includes('?') ? '&' : '?'}start_date=${todayStr}`;
+  const isWpV2Cpt = source.url.includes('/wp-json/wp/v2/');
+  const url =
+    isWpV2Cpt || source.url.includes('start_date=')
+      ? source.url
+      : `${source.url}${source.url.includes('?') ? '&' : '?'}start_date=${todayStr}`;
   const raw = await fetchWithTimeout(url);
   if (!raw) return [];
 
   try {
     const data = JSON.parse(raw);
-    const items = Array.isArray(data.events) ? data.events : [];
+    const maxFutureDateStr = getMaxFutureDateStr(todayStr);
+    const pName = sanitizePartnerName(source.name.split('—')[0].trim());
     const events: DiscoveredEvent[] = [];
+
+    // Format A: WordPress /wp-json/wp/v2/<event-cpt> array
+    if (Array.isArray(data)) {
+      for (const item of data) {
+        const rawTitle = item.title?.rendered ? stripHtml(String(item.title.rendered)) : '';
+        if (!rawTitle) continue;
+
+        const rawContent = item.content?.rendered ? stripHtml(String(item.content.rendered)) : '';
+        const rawExcerpt = item.excerpt?.rendered ? stripHtml(String(item.excerpt.rendered)) : '';
+        const desc = (rawExcerpt || rawContent || rawTitle).slice(0, 320);
+        const link = typeof item.link === 'string' && isValidUrl(item.link) ? item.link : source.url;
+        const fullText = `${rawTitle} ${rawExcerpt} ${rawContent}`;
+
+        const pubRefStr =
+          typeof item.date === 'string' && /^\d{4}-\d{2}-\d{2}/.test(item.date)
+            ? item.date.slice(0, 10)
+            : todayStr;
+
+        // Extract event date from ACF fields if present, or natural date in title/content, or future post date
+        const acfDate =
+          typeof item.acf?.event_date === 'string' || typeof item.acf?.start_date === 'string'
+            ? extractNaturalDate(String(item.acf.event_date || item.acf.start_date), pubRefStr)
+            : null;
+        let eventDateStr =
+          acfDate ||
+          extractNaturalDate(link, pubRefStr) ||
+          extractNaturalDate(fullText, pubRefStr);
+
+        if (!eventDateStr && pubRefStr > todayStr) {
+          eventDateStr = pubRefStr;
+        }
+        if (!eventDateStr || eventDateStr < todayStr || eventDateStr > maxFutureDateStr) continue;
+
+        const city = detectCity(fullText);
+        const locationStr =
+          typeof item.acf?.location === 'string' && item.acf.location.trim()
+            ? stripHtml(item.acf.location)
+            : city !== 'Scotland-wide'
+              ? city
+              : 'Scotland';
+
+        events.push({
+          title: rawTitle,
+          date: eventDateStr,
+          location: locationStr,
+          city,
+          isPartnerEvent: true,
+          partnerName: pName,
+          organizerType: detectOrganizerType(source.category, pName || '', fullText),
+          accessType: detectAccessType(source.category, fullText),
+          meetupUrl: link,
+          description: desc,
+          sourceUrl: source.url,
+          sourceType: 'wp-api',
+          isDedicatedScottishSource: true,
+        });
+      }
+      return events;
+    }
+
+    // Format B: Tribe Events /wp-json/tribe/events/v1/events
+    const items = Array.isArray(data.events) ? data.events : [];
 
     for (const item of items) {
       if (!item.title || !item.start_date) continue;
 
-      const maxFutureDateStr = getMaxFutureDateStr(todayStr);
       const eventDateStr = String(item.start_date).slice(0, 10);
       if (eventDateStr < todayStr || eventDateStr > maxFutureDateStr) continue;
 
       const title = stripHtml(String(item.title));
       const desc = item.description ? stripHtml(String(item.description)).slice(0, 320) : title;
       const venueName = item.venue?.venue ? stripHtml(String(item.venue.venue)) : '';
+      const venueAddress = item.venue?.address ? stripHtml(String(item.venue.address)) : '';
       const venueCity = item.venue?.city ? stripHtml(String(item.venue.city)) : '';
+      const venueZip = item.venue?.zip ? stripHtml(String(item.venue.zip)) : '';
       const locationStr =
-        [venueName, venueCity].filter(Boolean).join(', ') || 'Scotland';
+        [venueName, venueAddress, venueCity, venueZip].filter(Boolean).join(', ') || 'Scotland';
       const fullText = `${title} ${desc} ${locationStr}`;
       const city = detectCity(fullText);
       const time = extractTimeRange(
@@ -715,7 +920,6 @@ async function parseWpTribeEvents(
         item.end_date ? String(item.end_date).replace(' ', 'T') : undefined
       );
 
-      const pName = sanitizePartnerName(source.name.split('—')[0].trim());
       events.push({
         title,
         date: eventDateStr,
@@ -889,7 +1093,11 @@ async function parseHtmlSeedUrl(
 
   while ((match = ldScriptRegex.exec(html)) !== null) {
     try {
-      const parsed = JSON.parse(match[1].trim());
+      const cleanedJson = match[1]
+        .replace(/^\s*<!--/, '')
+        .replace(/-->\s*$/, '')
+        .trim();
+      const parsed = JSON.parse(cleanedJson);
       collectJsonLdEvents(parsed, ldNodes);
     } catch {
       // Ignore malformed JSON-LD blocks
@@ -920,26 +1128,31 @@ async function parseHtmlSeedUrl(
         : `Upcoming event hosted by ${seed.name}.`;
 
     let locName = seed.city;
-    if (node.location && typeof node.location === 'object') {
-      const locObj = node.location as Record<string, unknown>;
+    const locCandidates = Array.isArray(node.location) ? node.location : [node.location];
+    const physicalOrFirstLoc =
+      locCandidates.find(
+        (l) => l && typeof l === 'object' && (l as Record<string, unknown>)['@type'] !== 'VirtualLocation'
+      ) || locCandidates[0];
+    if (physicalOrFirstLoc && typeof physicalOrFirstLoc === 'object') {
+      const locObj = physicalOrFirstLoc as Record<string, unknown>;
       const placeName = typeof locObj.name === 'string' ? stripHtml(locObj.name) : '';
-      let locality = '';
+      const addrParts: string[] = [];
       if (locObj.address && typeof locObj.address === 'object') {
         const addr = locObj.address as Record<string, unknown>;
-        locality =
-          typeof addr.addressLocality === 'string'
-            ? stripHtml(addr.addressLocality)
-            : typeof addr.streetAddress === 'string'
-              ? stripHtml(addr.streetAddress)
-              : '';
+        for (const field of ['streetAddress', 'addressLocality', 'addressRegion', 'postalCode']) {
+          if (typeof addr[field] === 'string' && addr[field].trim()) {
+            addrParts.push(stripHtml(String(addr[field]).trim()));
+          }
+        }
       } else if (typeof locObj.address === 'string') {
-        locality = stripHtml(locObj.address);
+        addrParts.push(stripHtml(locObj.address));
       }
-      locName = [placeName, locality].filter(Boolean).join(', ') || seed.city;
+      locName = [placeName, ...addrParts].filter(Boolean).join(', ') || seed.city;
     }
 
+    const isDedicatedScottish = !isUkWideSourceUrl(seed.url);
     const fullText = `${rawName} ${rawDesc} ${locName}`;
-    const city = detectCity(fullText, seed.city);
+    const city = detectCity(fullText, isDedicatedScottish ? seed.city : undefined);
 
     let organizerName: string | undefined;
     if (node.organizer && typeof node.organizer === 'object') {
@@ -964,7 +1177,7 @@ async function parseHtmlSeedUrl(
       description: rawDesc,
       sourceUrl: seed.url,
       sourceType: 'ld-json',
-      isDedicatedScottishSource: !isUkWideSourceUrl(seed.url),
+      isDedicatedScottishSource: isDedicatedScottish,
     });
   }
 
@@ -1055,9 +1268,11 @@ async function extractSeedEventsWithLocalAi(
       .replace(/<(script|style|svg|nav|footer|header|noscript)[\s\S]*?<\/\1>/gi, ' ')
   );
 
-  // Only invoke local AI if the page text actually mentions a future year or upcoming event cues
+  // Only invoke local AI if the page text actually mentions a current/future year or upcoming event cues
+  const currentYear = parseInt(todayStr.slice(0, 4), 10);
+  const yearCueRegex = new RegExp(`\\b(${currentYear}|${currentYear + 1})\\b`);
   if (
-    !/\b(2026|2027)\b/.test(cleanedText) ||
+    !yearCueRegex.test(cleanedText) ||
     !/\b(cyber|security|infosec|hacking|owasp|resilience|fraud|ciso|meetup|conference|workshop|summit)\b/i.test(
       cleanedText
     )
@@ -1295,44 +1510,74 @@ async function main() {
 
   const candidateEvents: DiscoveredEvent[] = [];
 
-  // 1. Ingest RSS feeds
-  for (const feed of config.rssFeeds || []) {
-    if (!isJsonMode && isVerbose) process.stdout.write(`  [RSS] Fetching ${feed.name}... `);
-    const found = await parseRssFeed(feed, todayStr);
-    if (!isJsonMode && isVerbose) console.log(`${found.length} items`);
-    candidateEvents.push(...found);
+  // 1. Ingest RSS feeds concurrently
+  const rssFeeds = config.rssFeeds || [];
+  if (rssFeeds.length > 0) {
+    if (!isJsonMode && isVerbose) {
+      console.log(`  [RSS] Fetching ${rssFeeds.length} RSS/Atom feeds (concurrency: 6)...`);
+    }
+    const rssResults = await mapConcurrent(rssFeeds, 6, async (feed) => {
+      const found = await parseRssFeed(feed, todayStr);
+      if (!isJsonMode && isVerbose) console.log(`    [RSS] ${feed.name}: ${found.length} items`);
+      return found;
+    });
+    for (const found of rssResults) candidateEvents.push(...found);
   }
 
-  // 2. Ingest WordPress Tribe Events API feeds
-  for (const feed of config.wpFeeds || []) {
-    if (!isJsonMode && isVerbose) process.stdout.write(`  [WP-API] Fetching ${feed.name}... `);
-    const found = await parseWpTribeEvents(feed, todayStr);
-    if (!isJsonMode && isVerbose) console.log(`${found.length} items`);
-    candidateEvents.push(...found);
+  // 2. Ingest WordPress Tribe Events API feeds concurrently
+  const wpFeeds = config.wpFeeds || [];
+  if (wpFeeds.length > 0) {
+    if (!isJsonMode && isVerbose) {
+      console.log(`  [WP-API] Fetching ${wpFeeds.length} WordPress Tribe API feeds (concurrency: 4)...`);
+    }
+    const wpResults = await mapConcurrent(wpFeeds, 4, async (feed) => {
+      const found = await parseWpTribeEvents(feed, todayStr);
+      if (!isJsonMode && isVerbose) console.log(`    [WP-API] ${feed.name}: ${found.length} items`);
+      return found;
+    });
+    for (const found of wpResults) candidateEvents.push(...found);
   }
 
-  // 3. Ingest iCal feeds
-  for (const feed of config.iCalFeeds || []) {
-    if (!isJsonMode && isVerbose) process.stdout.write(`  [iCal] Fetching ${feed.name}... `);
-    const found = await parseICalFeed(feed, todayStr);
-    if (!isJsonMode && isVerbose) console.log(`${found.length} items`);
-    candidateEvents.push(...found);
+  // 3. Ingest iCal feeds concurrently
+  const iCalFeeds = config.iCalFeeds || [];
+  if (iCalFeeds.length > 0) {
+    if (!isJsonMode && isVerbose) {
+      console.log(`  [iCal] Fetching ${iCalFeeds.length} iCal feeds (concurrency: 5)...`);
+    }
+    const iCalResults = await mapConcurrent(iCalFeeds, 5, async (feed) => {
+      const found = await parseICalFeed(feed, todayStr);
+      if (!isJsonMode && isVerbose) console.log(`    [iCal] ${feed.name}: ${found.length} items`);
+      return found;
+    });
+    for (const found of iCalResults) candidateEvents.push(...found);
   }
 
-  // 4. Ingest JSON API feeds (Squarespace, etc.)
-  for (const feed of config.jsonFeeds || []) {
-    if (!isJsonMode && isVerbose) process.stdout.write(`  [JSON] Fetching ${feed.name}... `);
-    const found = await parseSquarespaceJson(feed, todayStr);
-    if (!isJsonMode && isVerbose) console.log(`${found.length} items`);
-    candidateEvents.push(...found);
+  // 4. Ingest JSON API feeds (Squarespace, etc.) concurrently
+  const jsonFeeds = config.jsonFeeds || [];
+  if (jsonFeeds.length > 0) {
+    if (!isJsonMode && isVerbose) {
+      console.log(`  [JSON] Fetching ${jsonFeeds.length} JSON API feeds...`);
+    }
+    const jsonResults = await mapConcurrent(jsonFeeds, 4, async (feed) => {
+      const found = await parseSquarespaceJson(feed, todayStr);
+      if (!isJsonMode && isVerbose) console.log(`    [JSON] ${feed.name}: ${found.length} items`);
+      return found;
+    });
+    for (const found of jsonResults) candidateEvents.push(...found);
   }
 
-  // 5. Ingest Bluesky feeds
-  for (const source of config.blueskyFeeds || []) {
-    if (!isJsonMode && isVerbose) process.stdout.write(`  [Bluesky] Fetching @${source.handle}... `);
-    const found = await parseBlueskyFeed(source, todayStr);
-    if (!isJsonMode && isVerbose) console.log(`${found.length} items`);
-    candidateEvents.push(...found);
+  // 5. Ingest Bluesky feeds concurrently
+  const blueskyFeeds = config.blueskyFeeds || [];
+  if (blueskyFeeds.length > 0) {
+    if (!isJsonMode && isVerbose) {
+      console.log(`  [Bluesky] Fetching ${blueskyFeeds.length} Bluesky feeds (concurrency: 6)...`);
+    }
+    const bskyResults = await mapConcurrent(blueskyFeeds, 6, async (source) => {
+      const found = await parseBlueskyFeed(source, todayStr);
+      if (!isJsonMode && isVerbose) console.log(`    [Bluesky] @${source.handle}: ${found.length} items`);
+      return found;
+    });
+    for (const found of bskyResults) candidateEvents.push(...found);
   }
 
   // 6. Ingest Seed URLs concurrently for Schema.org ld+json Event payloads
@@ -1350,6 +1595,8 @@ async function main() {
   // Deduplicate and filter candidates
   const newEvents: DiscoveredEvent[] = [];
   const seenInRun = new Set<string>();
+  const seenUrlsInRun = new Set<string>();
+  const seenEventbriteIdsInRun = new Set<string>();
 
   for (const ev of candidateEvents) {
     const maxFutureDateStr = getMaxFutureDateStr(todayStr);
@@ -1360,16 +1607,24 @@ async function main() {
     const fullText = `${ev.title} ${ev.description} ${ev.location} ${ev.partnerName || ''}`.toLowerCase();
     const eventContentText = `${ev.title} ${ev.description}`;
 
-    // 1. Check exclude keywords
-    if (config.filters.excludeKeywords?.some((kw) => fullText.includes(kw.toLowerCase()))) {
+    // 1. Check exclude keywords & deterministic non-Scottish UK geography/postcode guard
+    if (
+      config.filters.excludeKeywords?.some((kw) => fullText.includes(kw.toLowerCase())) ||
+      isNonScottishLocation(`${ev.location} ${ev.title}`)
+    ) {
+      if (!isJsonMode && isVerbose && isNonScottishLocation(`${ev.location} ${ev.title}`)) {
+        console.log(
+          `  [GEO-GUARD] Rejecting non-Scottish event "${ev.title}" (location: "${ev.location}")`
+        );
+      }
       continue;
     }
 
-    // 2. Check Scotland location requirement
+    // 2. Check Scotland location requirement (positive keyword, valid Scottish postcode, or verified Scottish source)
     if (config.filters.requireScotlandLocation) {
-      const hasLocationKeyword = config.filters.locationKeywords?.some((kw) =>
-        fullText.includes(kw.toLowerCase())
-      );
+      const hasLocationKeyword =
+        config.filters.locationKeywords?.some((kw) => fullText.includes(kw.toLowerCase())) ||
+        hasScottishPostcode(`${ev.location} ${ev.description}`);
       if (!hasLocationKeyword && !ev.isDedicatedScottishSource) {
         continue;
       }
@@ -1416,14 +1671,10 @@ async function main() {
       continue;
     }
 
-    // 3. Same-date title similarity match against archive
+    // 3. Same-date title similarity match against archive (using significant non-stopword tokens)
     const existingOnDate = existingEvents.dateTitleWords.get(ev.date);
     if (existingOnDate) {
-      const evWords = new Set(
-        normalizeTitle(ev.title)
-          .split(' ')
-          .filter((w) => w.length > 3)
-      );
+      const evWords = getSignificantTitleWords(ev.title);
       const normEv = normalizeTitle(ev.title);
       let isDuplicateOfArchive = false;
       for (const item of existingOnDate) {
@@ -1442,18 +1693,30 @@ async function main() {
       if (isDuplicateOfArchive) continue;
     }
 
-    // 4. Check if an event on the same date with similar title was already seen in this run
+    // 4. Check if an event with the same URL, Eventbrite ID, or same-date similar title was already seen in this run
+    if (candidateNormUrl && seenUrlsInRun.has(candidateNormUrl)) {
+      continue;
+    }
+    if (candidateEbId && seenEventbriteIdsInRun.has(candidateEbId)) {
+      continue;
+    }
+
     let isDuplicateInRun = false;
     for (const seenKey of seenInRun) {
-      if (seenKey.startsWith(ev.date)) {
-        const evWords = new Set(
-          normalizeTitle(ev.title)
-            .split(' ')
-            .filter((w) => w.length > 3)
-        );
-        const seenWords = seenKey.split(' ').filter((w) => w.length > 3);
+      if (seenKey === normalizedKey) {
+        isDuplicateInRun = true;
+        break;
+      }
+      if (seenKey.startsWith(`${ev.date}-`)) {
+        const normEv = normalizeTitle(ev.title);
+        const normSeen = seenKey.slice(ev.date.length + 1);
+        const evWords = getSignificantTitleWords(ev.title);
+        const seenWords = [...getSignificantTitleWords(normSeen)];
         const overlap = seenWords.filter((w) => evWords.has(w)).length;
-        if (overlap >= 2) {
+        if (
+          overlap >= 2 ||
+          (normEv.length > 8 && (normEv.includes(normSeen) || normSeen.includes(normEv)))
+        ) {
           isDuplicateInRun = true;
           break;
         }
@@ -1462,6 +1725,8 @@ async function main() {
     if (isDuplicateInRun) continue;
 
     seenInRun.add(normalizedKey);
+    if (candidateNormUrl) seenUrlsInRun.add(candidateNormUrl);
+    if (candidateEbId) seenEventbriteIdsInRun.add(candidateEbId);
 
     if (localAiOnline) {
       if (!isJsonMode && isVerbose) {
@@ -1491,9 +1756,18 @@ async function main() {
     (config.jsonFeeds?.length || 0) +
     (config.seedUrls?.length || 0);
 
+  const okSources = sourceHealthLog.filter((s) => s.ok).length;
+  const failedSources = sourceHealthLog.filter((s) => !s.ok);
+
   console.log(`\n-------------------------------------------------`);
   console.log(`📊 Ingestion Complete:`);
   console.log(`   Sources Checked: ${totalSourcesCount} sources (RSS, WP-API, iCal, JSON, Bluesky, LD+JSON Seeds)`);
+  console.log(`   Source Health:   ${okSources} reachable, ${failedSources.length} unreachable/failed`);
+  if (failedSources.length > 0 && isVerbose) {
+    for (const fail of failedSources) {
+      console.log(`     ⚠️  ${fail.url} (${fail.status ? `HTTP ${fail.status}` : fail.error})`);
+    }
+  }
   console.log(`   Total Items Scanned: ${candidateEvents.length}`);
   console.log(`   New Candidate Events: ${newEvents.length}`);
   console.log(`-------------------------------------------------\n`);

@@ -1,7 +1,7 @@
 {
   "_comment": "Seed configuration for the Antigravity automated event discovery agent. Add new community URLs here — no code changes needed. All sources are publicly listed on cyberscotlandconnect.com.",
-  "_version": "2.1.0",
-  "_updated": "2026-10-30",
+  "_version": "2.2.0",
+  "_updated": "2026-11-03",
 
   "seedUrls": [
     {
@@ -462,6 +462,12 @@
       "category": "partner"
     },
     {
+      "name": "CyberScotland Partnership — Events RSS",
+      "url": "https://www.cyberscotland.com/events/feed/",
+      "format": "rss",
+      "category": "policy"
+    },
+    {
       "name": "ScotlandIS — Events RSS",
       "url": "https://www.scotlandis.com/events/feed/",
       "format": "rss",
@@ -530,8 +536,8 @@
     },
     {
       "name": "CyberScotland Partnership — WP Events REST API",
-      "url": "https://www.cyberscotland.com/wp-json/tribe/events/v1/events?per_page=25",
-      "category": "partner"
+      "url": "https://www.cyberscotland.com/wp-json/wp/v2/event?per_page=25",
+      "category": "policy"
     },
     {
       "name": "CENSIS — WP Events REST API",
@@ -752,6 +758,14 @@
       "Leeds",
       "Belfast",
       "Cardiff",
+      "Newcastle",
+      "Gateshead",
+      "Sunderland",
+      "Middlesbrough",
+      "Carlisle",
+      "Sheffield",
+      "Liverpool",
+      "Nottingham",
       "paid training course",
       "certification exam bootcamp",
       "food security",
