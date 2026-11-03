@@ -3,7 +3,7 @@ title: 'CyberScotland Week 2027'
 date: 2027-10-04
 location: 'Scotland-wide'
 city: 'Scotland-wide'
-isPartnerEvent: true
+isPartnerEvent: false
 partnerName: 'CyberScotland'
 organizerType: "Public Sector"
 registrationUrl: 'https://www.cyberscotland.com/cyberscotland-week/'

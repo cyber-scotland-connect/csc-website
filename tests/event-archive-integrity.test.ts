@@ -6,6 +6,12 @@ import {
   hasScottishPostcode,
   isNonScottishLocation,
 } from '../src/utils/scottish-geography';
+import {
+  isOfficialPartnerOrSponsor,
+  isOfficialPartner,
+  isOfficialSponsor,
+  classifyEvent,
+} from '../src/utils/partner-registry';
 import { getSignificantTitleWords } from '../scripts/discover-events';
 
 describe('Event Archive Full Integrity Test', () => {
@@ -49,11 +55,9 @@ describe('Event Archive Full Integrity Test', () => {
       const isPartner = isPartnerRaw === 'true';
       const partnerName = fm.match(/^partnerName:\s*["']?([^"'\n\r]+)/m)?.[1]?.trim() || '';
 
-      if (!isPartner) {
-        // Official CSC event cannot define an external partner
-        expect(
-          partnerName === '' || partnerName === 'Cyber Scotland Connect'
-        ).toBe(true);
+      if (isPartner) {
+        // If an event is marked as a partner event, it MUST be a verified official partner or sponsor
+        expect(isOfficialPartnerOrSponsor(partnerName)).toBe(true);
       }
 
       // 4. partnerName cannot be a ticketing platform
@@ -77,6 +81,71 @@ describe('Event Archive Full Integrity Test', () => {
       expect(isNonScottishLocation(location)).toBe(false);
     });
   }
+
+  describe('Official Partner & Sponsor Deterministic Registry Guards', () => {
+    it('accurately identifies genuine CSC partners and sponsors', () => {
+      expect(isOfficialPartnerOrSponsor('CodeBase Edinburgh')).toBe(true);
+      expect(isOfficialPartnerOrSponsor('Cyber and Fraud Centre Scotland')).toBe(true);
+      expect(isOfficialPartnerOrSponsor('Abertay cyberQuarter')).toBe(true);
+      expect(isOfficialPartnerOrSponsor('DIGIT')).toBe(true);
+      expect(isOfficialPartnerOrSponsor('Edinburgh Napier University')).toBe(true);
+      expect(isOfficialPartnerOrSponsor('Adarma')).toBe(true);
+      expect(isOfficialSponsor('Adarma')).toBe(true);
+      expect(isOfficialPartner('CodeBase Edinburgh')).toBe(true);
+    });
+
+    it('strictly rejects non-partner commercial and external organisers from claiming partner status', () => {
+      expect(isOfficialPartnerOrSponsor('Cyber Connect')).toBe(false);
+      expect(isOfficialPartnerOrSponsor('FutureScot')).toBe(false);
+      expect(isOfficialPartnerOrSponsor('Holyrood Connect')).toBe(false);
+      expect(isOfficialPartnerOrSponsor('The SASIG')).toBe(false);
+      expect(isOfficialPartnerOrSponsor('TechForce Cyber')).toBe(false);
+      expect(isOfficialPartnerOrSponsor('Barclays Eagle Labs')).toBe(false);
+    });
+
+    it('classifies events deterministically into distinct affiliation tiers', () => {
+      // 1. Official CSC Gathering
+      const cscEvent = classifyEvent({ isPartnerEvent: false });
+      expect(cscEvent.type).toBe('csc');
+      expect(cscEvent.isOfficialCsc).toBe(true);
+      expect(cscEvent.badgeLabel).toBe('CSC Gathering');
+
+      // 2. Official Partner
+      const partnerEvent = classifyEvent({
+        isPartnerEvent: true,
+        partnerName: 'Cyber and Fraud Centre Scotland',
+      });
+      expect(partnerEvent.type).toBe('partner');
+      expect(partnerEvent.isPartnerOrSponsor).toBe(true);
+      expect(partnerEvent.badgeLabel).toBe('Partner: Cyber and Fraud Centre Scotland');
+
+      // 3. Official Sponsor
+      const sponsorEvent = classifyEvent({
+        isPartnerEvent: true,
+        partnerName: 'Adarma',
+      });
+      expect(sponsorEvent.type).toBe('sponsor');
+      expect(sponsorEvent.badgeLabel).toBe('Sponsor: Adarma');
+
+      // 4. Community Gathering (Signposted)
+      const communityEvent = classifyEvent({
+        isPartnerEvent: false,
+        partnerName: 'Glasgow Infosec / 2600',
+        organizerType: 'Community',
+      });
+      expect(communityEvent.type).toBe('community');
+      expect(communityEvent.badgeLabel).toBe('Community: Glasgow Infosec / 2600');
+
+      // 5. External Commercial (Signposted) - e.g. Cyber Connect
+      const externalEvent = classifyEvent({
+        isPartnerEvent: false,
+        partnerName: 'Cyber Connect',
+        organizerType: 'Commercial',
+      });
+      expect(externalEvent.type).toBe('external');
+      expect(externalEvent.badgeLabel).toBe('Signposted: Cyber Connect');
+    });
+  });
 
   describe('Scottish Geography & Discovery Hardening Guards', () => {
     it('rejects Northern England border-bleed venues and non-Scottish UK cities', () => {

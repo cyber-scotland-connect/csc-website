@@ -2,6 +2,7 @@ import { defineCollection } from 'astro:content';
 import { z } from 'astro/zod';
 import { glob } from 'astro/loaders';
 import { isNonScottishLocation } from './utils/scottish-geography';
+import { isOfficialPartnerOrSponsor } from './utils/partner-registry';
 
 const eventsCollection = defineCollection({
   loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: './src/content/events' }),
@@ -113,20 +114,18 @@ const eventsCollection = defineCollection({
   })
   .refine(
     (data) => {
-      // 1. Official CSC events cannot have an external partner specified
-      if (
-        !data.isPartnerEvent &&
-        data.partnerName &&
-        data.partnerName.trim() !== '' &&
-        data.partnerName !== 'Cyber Scotland Connect'
-      ) {
-        return false;
+      // 1. Official partner event guard:
+      // If isPartnerEvent is true, partnerName MUST be an official partner or sponsor registered in src/content/partners/
+      if (data.isPartnerEvent) {
+        if (!data.partnerName || !isOfficialPartnerOrSponsor(data.partnerName)) {
+          return false;
+        }
       }
       return true;
     },
     {
       message:
-        'Official Cyber Scotland Connect events (isPartnerEvent: false) cannot define an external partnerName. Only partner/ecosystem events (isPartnerEvent: true) can have external partner names.',
+        'Events with isPartnerEvent: true must specify an official partner or sponsor registered in src/content/partners/. For community or signposted external events (e.g. Cyber Connect, FutureScot, Hack Thursday), set isPartnerEvent: false and provide partnerName as the organizing group.',
     }
   )
   .refine(

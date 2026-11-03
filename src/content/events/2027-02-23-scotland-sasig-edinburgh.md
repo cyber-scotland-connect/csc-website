@@ -4,7 +4,7 @@ date: 2027-02-23
 time: "09:30 – 16:00 GMT"
 location: "Edinburgh City Centre (Venue confirmed upon registration)"
 city: "Edinburgh"
-isPartnerEvent: true
+isPartnerEvent: false
 partnerName: "The SASIG"
 organizerType: "Commercial"
 accessType: "Open/Public"
