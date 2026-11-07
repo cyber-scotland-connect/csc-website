@@ -1,62 +1,50 @@
 # Cyber Scotland Connect — Slide Deck Improvement Backlog
 
-This document tracks prioritized architectural and design enhancements for the native Google Slides automation pipeline (`scripts/slide-ops.ts`) and Master Presentation Template (`16TZeMduvfvE1NcIf0SaVxnqittEc2HNGJEvLO3928WQ`).
+This document tracks completed and future architectural and design enhancements for the native Google Slides automation pipeline (`scripts/slide-ops.ts`) and Master Presentation Template (`16TZeMduvfvE1NcIf0SaVxnqittEc2HNGJEvLO3928WQ`).
 
 ---
 
-## 🎯 Tier 1 — High Leverage & Low Friction
+## ✅ Completed Enhancements (Shipped 2026-11-07)
 
-### 1. Dynamic Sponsor & Venue Partner Logos (Slides 3 & 12)
-- **Current State:** Renders partner names and descriptions as text inside cards.
-- **Proposed Enhancement:** When `logoUrl` or local image asset exists in `src/assets/partners/`, dynamically insert company logos inside the top half of the cards via `gslides mutate insert-image-from-file` or `add-image`. Fall back to styled SVG icons when no logo is available.
-- **Data Hook:** `src/content/partners/*.md` (`logoUrl`, `logo`).
+### 1. Dynamic Sister & Partner Event Feed (Slide 10 — Open Mic)
+- **Status:** Shipped in `scripts/slide-ops.ts`.
+- **Capability:** Queries `src/content/events/*.md` at build time for gatherings in the 30-day window following the meetup date. Single-line character budgeting (`formatEvBullet`) prevents text wrapping and card collisions on `p8_i29` and `p8_i30`.
 
-### 2. Event-Specific Slido Poll & Q&A Room (Slide 10)
-- **Current State:** Uses a static placeholder question and generic options A–D in the master template.
-- **Proposed Enhancement:** Ingest a `poll:` frontmatter block from `src/content/events/<slug>.md`:
-  ```yaml
-  poll:
-    code: "CSC-EDI-NOV"
-    question: "Which defensive priority is top of mind for your team this quarter?"
-    options:
-      - "AI & Agentic SoC Automation"
-      - "Supply Chain & Build Config Security"
-      - "Evaluating LLM Agent Guardrails"
-      - "API Object-Level Authorization Controls"
-  ```
-  Dynamically populate the question, options, and generate an event-specific Slido QR code.
+### 2. Repurpose "Jobs" to Discord #careers Signpost (Slide 10)
+- **Status:** Shipped in master template and `scripts/slide-ops.ts`.
+- **Capability:** Replaced static, rot-prone job listings with a permanent Discord `#careers` community signpost (`• Post roles in Discord #careers`, `• Take 30s at the mic to shout out your role`).
 
-### 3. Dedicated Pub Name, Walking Time & Next Gathering City (Slide 13)
-- **Current State:** Generic "Social: Local Pub (Central Edinburgh) (All Welcome)".
-- **Proposed Enhancement:**
-  - Pull designated social venue from frontmatter (e.g. `pub: "The Hanging Bat (5 mins walk)"`).
-  - Scan `src/content/events/*.md` for the chronologically next scheduled meetup to dynamically populate: `"Next gathering: Glasgow • December 2026 • RSVPs open on Meetup"`.
+### 3. Slido Poll Purged from Master & Deck Rotation
+- **Status:** Shipped in master template and `scripts/slide-ops.ts`.
+- **Capability:** Deleted slide `p7` permanently from the master template. Pipeline produces a focused 12-slide presentation natively.
 
----
+### 4. Dynamic Agenda Timeline Grid (Slide 5)
+- **Status:** Shipped in master template and `scripts/slide-ops.ts`.
+- **Capability:**
+  - Card 1 subtitle updated to `"Arrivals & Refreshments"` across master template and pipeline fallback.
+  - Timestamps preserved at native `y: 261.75` inside container frames, preventing border clipping.
+  - Slide footer updated: `"Talks conclude at 20:15 with Q&A • Event closes at 20:30 for community social at the pub."`
+  - Dynamic width/gap scaling for 3–5 items; cleans unused text slots.
 
-## 🚀 Tier 2 — Visual Richness & Ecosystem Integration
+### 5. Word-Boundary Abstract Truncation (Slides 6–9)
+- **Status:** Shipped in `scripts/slide-ops.ts`.
+- **Capability:** Upgraded abstract processor to 210 characters with strict word-boundary clipping (`lastIndexOf(' ')`), eliminating mid-word cuts across speaker slides.
 
-### 4. Real Speaker Headshots & Author Takeaways (Slides 6–9)
-- **Current State:** Generic circular avatar silhouette and default takeaways list.
-- **Proposed Enhancement:**
-  - Pull speaker photo from `src/assets/speakers/<slug>.jpg` or remote avatar URL and position it over the circular avatar frame.
-  - Ingest custom `takeaways:` lists directly from the speaker metadata in event markdown, preserving practitioner-supplied bullet points.
-
-### 5. Automated Sister Event Feed on Open Mic (Slide 11)
-- **Current State:** Static placeholder bullet points for community events.
-- **Proposed Enhancement:** Query `src/content/events/*.md` at build time for events occurring in the 30-day window following the meetup date (e.g., upcoming DEFCON Dundee, OWASP Scotland, or Scot-Secure) and dynamically write the top 2–3 events onto the "Community Events" card.
-
-### 6. Flexible Agenda Timeline Grid (Slide 5)
-- **Current State:** Fixed 6-card timeline layout.
-- **Proposed Enhancement:** Add dynamic card count awareness. If an event has 3, 4, or 5 agenda items, dynamically adjust the card widths and X-offsets (or hide unused card shapes) to avoid empty placeholder slots.
+### 6. Pub & Next Meetup Auto-Detection (Slide 12)
+- **Status:** Shipped in `scripts/slide-ops.ts`.
+- **Capability:** Frontmatter `pub:` support, plus auto-scan of upcoming CSC meetups to dynamically inject next month's city into the closing slide subtitle.
 
 ---
 
-## 🔮 Tier 3 — Advanced Automations
+## 🔮 Future Backlog
 
-### 7. Venue Accessibility Direct Injection (Slide 4)
-- **Current State:** Generic statement on step-free access and hearing loops.
-- **Proposed Enhancement:** Pull venue-specific accessibility notes from `event.accessibility` (e.g., lift locations, step-free entrance details, hearing loop frequencies) and format them into the "Venue & Accessibility" card.
+### 1. Dynamic Sponsor & Venue Partner Logos (Slides 3 & 11)
+- **Current State:** Renders partner names and descriptions as text inside cards. Post-batch image insertion supported when `logoUrl` exists.
+- **Proposed Enhancement:** Expand local partner asset library in `src/assets/partners/` and automate logo image resizing and container positioning.
 
-### 8. GitHub Actions Slide Generation Workflow
-- **Proposed Enhancement:** Create `.github/workflows/generate-slides.yml` that triggers when an event markdown file in `src/content/events/` is created or modified on `main`. Automatically runs `slide-ops.ts`, saves the presentation ID into the event frontmatter, and commits the PDF to an event release asset.
+### 2. Venue Accessibility Direct Injection (Slide 4)
+- **Current State:** Master slide has standard statement on step-free access and hearing loops.
+- **Proposed Enhancement:** Ingest venue-specific notes from `event.accessibility.notes` (lift locations, step-free entrance details, hearing loop frequencies) and format them into the "Venue & Accessibility" card.
+
+### 3. GitHub Actions Slide Generation Workflow
+- **Proposed Enhancement:** Create `.github/workflows/generate-slides.yml` triggering on event markdown modifications on `main`. Automatically runs `slide-ops.ts`, saves the presentation ID into event frontmatter, and exports the production PDF as a release asset.

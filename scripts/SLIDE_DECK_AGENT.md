@@ -11,6 +11,7 @@ The Cyber Scotland Connect (CSC) slide automation engine generates presentation 
 - **Primary Data Sources:**
   - Event metadata & speakers: `src/content/events/<slug>.md`
   - Venue & sponsor descriptions: `src/content/partners/*.md`
+  - Sister/community events: `src/content/events/*.md` (30-day window)
 
 ---
 
@@ -44,14 +45,14 @@ Passing raw points directly to `width` or `height` without converting to scale f
 | :--- | :--- | :--- |
 | **1** | Welcome | `p1_i10` Date (`#6FB7E6`), `p1_i15` Venue, `p1_i17` MC Lead, `p1_i19` WiFi. All bold Plus Jakarta Sans. |
 | **2** | Ethos | Static master slide. Three core pillars: Strictly Zero-Sales, Radically Welcoming, Practitioner-Led. |
-| **3** | Ecosystem Partners | `p3_i21` Host Venue title, `p3_i18` Host description, `p3_i22` Sponsor title, `p3_i19` Sponsor description. Ingested from `src/content/partners/`. |
+| **3** | Ecosystem Partners | `p3_i21` Host Venue title, `p3_i18` Host description, `p3_i22` Sponsor title, `p3_i19` Sponsor description. Partner logos dynamically inserted when `logoUrl` exists. |
 | **4** | Code of Conduct | Static master slide. Contributor Covenant v2.1, Chatham House Rule, Photography Opt-Out. |
-| **5** | Agenda Timeline | 6 card slots. Titles positioned at `y=282` (h=36, 9.5pt bold). Descriptions/speakers positioned at `y=326` (h=45, 8.5pt regular) to prevent text collision. |
-| **6–9** | Speaker Slots | Speaker Name (15pt `#21203A`), Role (10pt `#895294`), Bio (9.5pt `#56548C`, h=44), LinkedIn pill (w=175pt, handle text offset right of icon). Unused slots deleted via `delete-slide`. |
-| **10** | Slido Poll | `p7_i20` Slido URL pill (h=24pt, 11pt bold). 4 survey options in Plus Jakarta Sans. |
-| **11** | Open Mic | Community shouts, hiring managers, and CFP announcement. |
+| **5** | Agenda Timeline | Dynamic 3–6 card grid. Card widths and X-offsets dynamically computed across slide width; unused cards cleanly blanked out. |
+| **6–9** | Speaker Slots | Speaker Name (15pt `#21203A`), Role (10pt `#895294`), Bio (9.5pt `#56548C`, h=44), LinkedIn pill (w=175pt). Ingests custom practitioner takeaways; unused slots deleted via `delete-slide`. |
+| **10** | Slido Poll | Dropped / deleted by default (`p7`) during provisioning unless explicit `poll:` frontmatter exists. |
+| **11** | Open Mic | Repurposes jobs card to direct Discord `#careers` community signpost; dynamically queries and injects upcoming sister/partner events (30-day window). |
 | **12** | Community Heroes | Gratitude for Speakers, Host Venue Partner, Community Sponsor, and Pay It Forward. |
-| **13** | Closing & Social | `p10_i17` Next month meetup subtitle. `p10_i19` Pub social pill text (single line, w=290pt). `p10_i18` Website centered at bottom. *(Do not write pub text to `p10_i18`)*. |
+| **13** | Closing & Social | `p10_i17` Next month meetup subtitle with dynamic city detection. `p10_i19` Pub social pill with frontmatter `pub` support. `p10_i18` Website centered at bottom. |
 
 ---
 
@@ -86,4 +87,3 @@ Slide output can never be declared complete without visual proof:
 
 A maintained list of prioritized architectural, visual, and data improvements is tracked in:
 👉 [`docs/SLIDE_IMPROVEMENTS.md`](../docs/SLIDE_IMPROVEMENTS.md)
-
