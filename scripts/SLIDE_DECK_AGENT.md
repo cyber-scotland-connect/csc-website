@@ -78,4 +78,12 @@ Slide output can never be declared complete without visual proof:
 ## Git & Repository Hygiene
 
 - **Do Not Commit `dist/`:** All PDF exports, JSON batches, and rendered PNG screenshots reside in `dist/slides/` which is protected by `.gitignore`.
-- **Committed Files:** Only commit production code (`scripts/slide-ops.ts`, `scripts/render-pdf.js`, `scripts/audit-fonts.ts`) and markdown guides (`scripts/SLIDE_DECK_AGENT.md`). Never commit temporary inspect or scratch scripts.
+- **Committed Files:** Only commit production code (`scripts/slide-ops.ts`, `scripts/render-pdf.js`, `scripts/audit-fonts.ts`) and markdown guides (`scripts/SLIDE_DECK_AGENT.md`, `docs/SLIDE_IMPROVEMENTS.md`). Never commit temporary inspect or scratch scripts.
+
+---
+
+## Improvement Backlog
+
+A maintained list of prioritized architectural, visual, and data improvements is tracked in:
+👉 [`docs/SLIDE_IMPROVEMENTS.md`](../docs/SLIDE_IMPROVEMENTS.md)
+
