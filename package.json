@@ -27,7 +27,10 @@
     "linkedin:simulate:csc": "bun run scripts/promote-linkedin.ts --simulate --stream csc --all-cadence",
     "linkedin:simulate:partners": "bun run scripts/promote-linkedin.ts --simulate --stream partners",
     "linkedin:simulate:community": "bun run scripts/promote-linkedin.ts --simulate --stream community",
-    "linkedin:simulate:evergreen": "bun run scripts/promote-linkedin.ts --simulate --stream evergreen --all-pillars"
+    "linkedin:simulate:evergreen": "bun run scripts/promote-linkedin.ts --simulate --stream evergreen --all-pillars",
+    "meetup:broadcast": "bun run scripts/meetup-ops.ts broadcast",
+    "meetup:recipe": "bun run scripts/meetup-ops.ts recipe",
+    "meetup:roster": "bun run scripts/meetup-ops.ts roster"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.12",

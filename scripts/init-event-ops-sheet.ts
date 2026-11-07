@@ -13,7 +13,12 @@ function writeRange(sheetName: string, rangeA1: string, rows: string[][]) {
   const serialized = rows
     .map((row) =>
       row
-        .map((cell) => cell.replace(/,/g, '\\,').replace(/\|/g, ' '))
+        .map((cell) =>
+          cell
+            .replace(/\\/g, '\\\\')
+            .replace(/,/g, '\\,')
+            .replace(/\|/g, ' ')
+        )
         .join(',')
     )
     .join('|');

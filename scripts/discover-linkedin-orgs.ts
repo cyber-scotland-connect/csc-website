@@ -78,13 +78,21 @@ export async function lookupLinkedinOrgIdByVanityName(
 }
 
 /**
+ * Checks whether a hostname belongs to LinkedIn (e.g., linkedin.com, www.linkedin.com, uk.linkedin.com).
+ */
+export function isLinkedinHostname(hostname: string): boolean {
+  const host = hostname.toLowerCase();
+  return host === 'linkedin.com' || host.endsWith('.linkedin.com');
+}
+
+/**
  * Extracts a LinkedIn company/school slug from a LinkedIn URL.
  */
 export function extractLinkedinHandleFromUrl(rawUrl?: string): string | undefined {
   if (!rawUrl) return undefined;
   try {
     const parsed = new URL(rawUrl.trim());
-    if (!parsed.hostname.toLowerCase().includes('linkedin.com')) return undefined;
+    if (!isLinkedinHostname(parsed.hostname)) return undefined;
     const match = parsed.pathname.match(/^\/(?:company|school)\/([a-zA-Z0-9_-]+)/);
     return match ? match[1].toLowerCase() : undefined;
   } catch {
@@ -223,14 +231,14 @@ export async function discoverAllOrgLinkedin(options?: {
       }
 
       // 3. Check if websiteUrl itself is a LinkedIn URL
-      if (websiteUrl && websiteUrl.includes('linkedin.com')) {
-        const handle = extractLinkedinHandleFromUrl(websiteUrl);
+      const handleFromWebsite = extractLinkedinHandleFromUrl(websiteUrl);
+      if (websiteUrl && handleFromWebsite) {
         results.push({
           name,
           collection,
           filePath: path.relative(REPO_ROOT, fullPath),
           websiteUrl,
-          linkedinHandle: handle,
+          linkedinHandle: handleFromWebsite,
           linkedinUrl: websiteUrl,
           source: 'frontmatter',
         });

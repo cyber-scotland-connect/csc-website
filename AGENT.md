@@ -196,6 +196,7 @@ When the maintainer prompts with intent to plan, stage, or coordinate an event (
 - **Public Git Repository (`git tracked`):**
   - Confirmed events: `src/content/events/*.md`
   - Operations engine: `scripts/event-ops.ts` (staging and Playbook V2 calculations)
+  - Meetup operations engine: `scripts/meetup-ops.ts` (repeatable waitlist broadcasts, browser recipes, security check-in rosters)
   - Google Sheet sync: `scripts/init-event-ops-sheet.ts`
   - LinkedIn promotion engine: `scripts/promote-linkedin.ts`
   - Speaker ingestion: `scripts/sync-potential-speakers.ts`

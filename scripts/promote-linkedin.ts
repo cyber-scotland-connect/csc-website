@@ -616,7 +616,8 @@ export function extractPersonalLinkedinHandle(rawUrl?: string): string | undefin
   if (!rawUrl) return undefined;
   try {
     const parsed = new URL(rawUrl.trim());
-    if (!parsed.hostname.toLowerCase().includes('linkedin.com')) return undefined;
+    const host = parsed.hostname.toLowerCase();
+    if (host !== 'linkedin.com' && !host.endsWith('.linkedin.com')) return undefined;
     const match = parsed.pathname.match(/^\/in\/([a-zA-Z0-9_-]+)/);
     return match ? match[1] : undefined;
   } catch {

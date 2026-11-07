@@ -10,6 +10,7 @@ import {
 } from '../scripts/discover-linkedin-orgs';
 import {
   validateAntiSlop,
+  extractPersonalLinkedinHandle,
   validateAntiBanCompliance,
   validateFactualIntegrity,
   canPublishUnderRateAndIdempotencyLimits,
@@ -61,6 +62,25 @@ describe('LinkedIn Event Promotion & Anti-Slop Engine', () => {
     expect(
       extractLinkedinHandleFromUrl('https://uk.linkedin.com/school/abertay-university/')
     ).toBe('abertay-university');
+
+    // Rejects spoofed / non-LinkedIn hostnames
+    expect(
+      extractLinkedinHandleFromUrl('https://evil-linkedin.com/company/fake/')
+    ).toBeUndefined();
+    expect(
+      extractLinkedinHandleFromUrl('https://linkedin.com.attacker.com/company/fake/')
+    ).toBeUndefined();
+
+    // Personal LinkedIn handles
+    expect(
+      extractPersonalLinkedinHandle('https://www.linkedin.com/in/caleb-eghan-b60a2bba/')
+    ).toBe('caleb-eghan-b60a2bba');
+    expect(
+      extractPersonalLinkedinHandle('https://evil-linkedin.com/in/attacker/')
+    ).toBeUndefined();
+    expect(
+      extractPersonalLinkedinHandle('https://linkedin.com.attacker.org/in/attacker/')
+    ).toBeUndefined();
 
     const sampleHtml = `<footer class="social"><a href="https://www.linkedin.com/company/scotlandis/">LinkedIn</a></footer>`;
     expect(extractLinkedinUrlFromHtml(sampleHtml)).toBe(
