@@ -30,7 +30,8 @@
     "linkedin:simulate:evergreen": "bun run scripts/promote-linkedin.ts --simulate --stream evergreen --all-pillars",
     "meetup:broadcast": "bun run scripts/meetup-ops.ts broadcast",
     "meetup:recipe": "bun run scripts/meetup-ops.ts recipe",
-    "meetup:roster": "bun run scripts/meetup-ops.ts roster"
+    "meetup:roster": "bun run scripts/meetup-ops.ts roster",
+    "slides:generate": "bun run scripts/slide-ops.ts"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.12",
