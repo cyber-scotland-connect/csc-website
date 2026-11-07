@@ -8,4 +8,6 @@ description: "Abertay University’s acclaimed ethical hacking student society a
 meetingFrequency: "Weekly during semester"
 active: true
 order: 31
+linkedinUrl: "https://www.linkedin.com/company/abertay-hackers/"
+linkedinHandle: "abertay-hackers"
 ---

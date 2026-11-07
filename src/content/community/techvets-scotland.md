@@ -7,4 +7,6 @@ description: "A non-profit community empowering veterans, service leavers, and m
 meetingFrequency: "Continuous online & hybrid"
 active: true
 order: 70
+linkedinUrl: "https://www.linkedin.com/company/techvets/"
+linkedinHandle: "techvets"
 ---

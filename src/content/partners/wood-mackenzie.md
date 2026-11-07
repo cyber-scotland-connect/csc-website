@@ -5,4 +5,6 @@ websiteUrl: "https://www.woodmac.com/"
 description: "Global energy and data analytics consultancy hosting early CSC gatherings in their Edinburgh office."
 active: true
 order: 11
+linkedinUrl: "https://www.linkedin.com/company/wood-mackenzie/"
+linkedinHandle: "wood-mackenzie"
 ---

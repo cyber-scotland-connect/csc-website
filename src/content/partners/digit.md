@@ -5,4 +5,6 @@ websiteUrl: "https://digit.fyi/"
 description: "Scotland's premier business technology and IT news community, media partner, and organiser of major Scottish tech summits."
 active: true
 order: 27
+linkedinUrl: "https://www.linkedin.com/company/digit-fyi/"
+linkedinHandle: "digit-fyi"
 ---

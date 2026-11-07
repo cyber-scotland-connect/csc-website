@@ -5,4 +5,6 @@ websiteUrl: "https://www.strath.ac.uk/"
 description: "Leading technological research university in Glasgow supporting regional cyber skills development and academic collaboration."
 active: true
 order: 15
+linkedinUrl: "https://www.linkedin.com/school/university-of-strathclyde/"
+linkedinHandle: "university-of-strathclyde"
 ---

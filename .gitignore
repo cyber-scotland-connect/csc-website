@@ -71,3 +71,7 @@ logs/
 tmp/
 temp/
 *.tmp
+
+# Staging Data & Private Form Responses (Google Drive CSVs/JSON)
+src/data/
+

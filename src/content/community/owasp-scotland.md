@@ -7,4 +7,6 @@ description: "The Scottish chapter of OWASP promoting software security, DevSecO
 meetingFrequency: "Quarterly meetups"
 active: true
 order: 22
+linkedinUrl: "https://www.linkedin.com/company/owasp-scotland/"
+linkedinHandle: "owasp-scotland"
 ---

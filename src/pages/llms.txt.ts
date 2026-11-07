@@ -67,7 +67,6 @@ CSC organizes regional gatherings across Scotland:
 - **Edinburgh:** Regular meetups, flagship volume gatherings, and technical lightning talks (frequent hosts include CodeBase Edinburgh).
 - **Glasgow:** Regional evening sessions, defensive engineering, and incident response case studies.
 - **Dundee:** Academic, game security, and practitioner sessions.
-- **Aberdeen:** Energy sector and industrial cybersecurity focus.
 - **Scotland-wide:** Virtual events and community collaborations.
 
 ## Key Principles & Policies

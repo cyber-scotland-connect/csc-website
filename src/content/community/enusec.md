@@ -7,4 +7,6 @@ description: "Edinburgh Napier University’s award-winning student cybersecurit
 meetingFrequency: "Weekly during semester"
 active: true
 order: 30
+linkedinUrl: "https://www.linkedin.com/company/enusec/"
+linkedinHandle: "enusec"
 ---

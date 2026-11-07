@@ -7,4 +7,6 @@ description: "Mobilising skilled technology volunteers across Scotland to suppor
 meetingFrequency: "Continuous projects"
 active: true
 order: 100
+linkedinUrl: "https://www.linkedin.com/company/scottish-tech-army/"
+linkedinHandle: "scottish-tech-army"
 ---

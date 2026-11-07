@@ -7,4 +7,6 @@ description: "Connecting IT audit, cybersecurity, governance, and risk managemen
 meetingFrequency: "Quarterly"
 active: true
 order: 42
+linkedinUrl: "https://www.linkedin.com/company/isaca-scotland-chapter/"
+linkedinHandle: "isaca-scotland-chapter"
 ---

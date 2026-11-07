@@ -13,7 +13,7 @@ The official website for **Cyber Scotland Connect (CSC)** — an inclusive, gras
 
 This repository contains the complete static website and content collections for Cyber Scotland Connect, hosted on **GitHub Pages**.
 
-- **Community Hub:** Meetups, conference updates, local chapter details across Edinburgh, Glasgow, Dundee, Aberdeen, and virtual streams.
+- **Community Hub:** Meetups, conference updates, local chapter details across Edinburgh, Glasgow, Dundee, and virtual streams.
 - **High-Signal, Zero-Sales:** Strict community charter prohibiting vendor sales pitches.
 - **Fast, Accessible & Lean:** Built with [Astro](https://astro.build), [TypeScript](https://www.typescriptlang.org/), and [Tailwind CSS](https://tailwindcss.com/) with zero client-side JavaScript overhead by default.
 - **Multi-Contributor & AI-Friendly:** All events, leaders, partners, and community resources are managed via type-safe Markdown files in `src/content/`. Anyone (or any AI agent) can add or update entries via standard Pull Requests.

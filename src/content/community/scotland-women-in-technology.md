@@ -7,4 +7,6 @@ description: "Champions, fosters, and advances gender diversity in the technolog
 meetingFrequency: "Quarterly"
 active: true
 order: 60
+linkedinUrl: "https://www.linkedin.com/company/scotland-women-in-technology/"
+linkedinHandle: "scotland-women-in-technology"
 ---

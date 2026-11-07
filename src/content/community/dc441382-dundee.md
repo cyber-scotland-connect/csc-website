@@ -7,4 +7,6 @@ description: "Dundee’s grassroots DEF CON group gathering security researchers
 meetingFrequency: "Monthly"
 active: true
 order: 25
+linkedinUrl: "https://www.linkedin.com/company/dc441382/"
+linkedinHandle: "dc441382"
 ---

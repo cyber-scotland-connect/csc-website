@@ -5,4 +5,6 @@ websiteUrl: "https://www.adarma.com/"
 description: "Leading independent UK cyber security services company and longstanding community partner across Scottish tech initiatives."
 active: false
 order: 13
+linkedinUrl: "https://www.linkedin.com/company/adarma-security/"
+linkedinHandle: "adarma-security"
 ---

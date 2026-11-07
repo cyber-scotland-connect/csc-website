@@ -7,4 +7,6 @@ description: "An inclusive network connecting, mentoring, and empowering women, 
 meetingFrequency: "Bi-monthly"
 active: true
 order: 50
+linkedinUrl: "https://www.linkedin.com/company/women-in-cybersecurity-scotland/"
+linkedinHandle: "women-in-cybersecurity-scotland"
 ---

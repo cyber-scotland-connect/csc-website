@@ -7,4 +7,6 @@ description: "Edinburgh’s local DEF CON group gathering security researchers, 
 meetingFrequency: "Monthly (1st Monday)"
 active: true
 order: 20
+linkedinUrl: "https://www.linkedin.com/company/dc44131/"
+linkedinHandle: "dc44131"
 ---

@@ -5,4 +5,6 @@ websiteUrl: "https://www.napier.ac.uk/courses/study-areas/computing/cyber-securi
 description: "Home to pioneering cyber research, student societies, and longstanding venue collaboration with CSC."
 active: true
 order: 14
+linkedinUrl: "https://www.linkedin.com/school/edinburgh-napier-university/"
+linkedinHandle: "edinburgh-napier-university"
 ---

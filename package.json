@@ -21,7 +21,13 @@
     "notify:discord:csc": "bun run scripts/notify-discord.ts --scope csc",
     "notify:discord:scotland": "bun run scripts/notify-discord.ts --scope scotland",
     "notify:discord:dry:csc": "bun run scripts/notify-discord.ts --scope csc --latest --dry-run",
-    "notify:discord:dry:scotland": "bun run scripts/notify-discord.ts --scope scotland --latest --dry-run"
+    "notify:discord:dry:scotland": "bun run scripts/notify-discord.ts --scope scotland --latest --dry-run",
+    "linkedin:discover-orgs": "bun run scripts/discover-linkedin-orgs.ts --simulate",
+    "linkedin:simulate": "bun run scripts/promote-linkedin.ts --simulate --stream all",
+    "linkedin:simulate:csc": "bun run scripts/promote-linkedin.ts --simulate --stream csc --all-cadence",
+    "linkedin:simulate:partners": "bun run scripts/promote-linkedin.ts --simulate --stream partners",
+    "linkedin:simulate:community": "bun run scripts/promote-linkedin.ts --simulate --stream community",
+    "linkedin:simulate:evergreen": "bun run scripts/promote-linkedin.ts --simulate --stream evergreen --all-pillars"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.12",

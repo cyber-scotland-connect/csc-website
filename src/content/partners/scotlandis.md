@@ -5,4 +5,6 @@ websiteUrl: "https://www.scotlandis.com/"
 description: "The membership organisation representing Scotland's digital technology ecosystem and Scottish Cyber Cluster."
 active: true
 order: 3
+linkedinUrl: "https://www.linkedin.com/company/scotlandis/"
+linkedinHandle: "scotlandis"
 ---

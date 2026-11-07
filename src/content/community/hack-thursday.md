@@ -7,4 +7,6 @@ description: "Glasgow’s monthly grassroots meetup for infoseccers, ethical hac
 meetingFrequency: "Monthly (3rd Thursday)"
 active: true
 order: 15
+linkedinUrl: "https://www.linkedin.com/company/hack-thursday/"
+linkedinHandle: "hack-thursday"
 ---

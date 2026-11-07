@@ -7,4 +7,5 @@ description: "The official Scottish chapter for (ISC)² certified practitioners 
 meetingFrequency: "Quarterly"
 active: true
 order: 40
+linkedinUrl: "https://www.linkedin.com/groups/7452327"
 ---

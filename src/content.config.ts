@@ -22,6 +22,8 @@ const eventsCollection = defineCollection({
     ]),
     isPartnerEvent: z.boolean().default(false),
     partnerName: z.string().optional(),
+    hostVenue: z.string().optional(),
+    sponsors: z.array(z.string()).optional(),
     organizerType: z
       .enum(['Community', 'Commercial', 'Public Sector', 'Academic'])
       .default('Community'),
@@ -74,6 +76,7 @@ const eventsCollection = defineCollection({
           talkTitle: z.string(),
           abstract: z.string().optional(),
           slidesUrl: z.string().optional(),
+          linkedinUrl: z.string().url().optional(),
         })
       )
       .optional(),
@@ -203,6 +206,8 @@ const partnersCollection = defineCollection({
       'Academic Partner',
     ]),
     websiteUrl: z.string().url(),
+    linkedinUrl: z.string().url().optional(),
+    linkedinHandle: z.string().optional(),
     description: z.string(),
     logo: z.string().optional(),
     active: z.boolean().default(true),
@@ -264,6 +269,8 @@ const communityCollection = defineCollection({
       'Scotland-wide',
     ]),
     websiteUrl: z.string().url(),
+    linkedinUrl: z.string().url().optional(),
+    linkedinHandle: z.string().optional(),
     chatUrl: z.string().url().optional(),
     description: z.string(),
     logo: z.string().optional(),
