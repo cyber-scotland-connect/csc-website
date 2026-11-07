@@ -1,7 +1,7 @@
 {
   "_comment": "Seed configuration for the Antigravity automated event discovery agent. Add new community URLs here — no code changes needed. All sources are publicly listed on cyberscotlandconnect.com.",
   "_version": "2.2.0",
-  "_updated": "2026-11-03",
+  "_updated": "2026-11-07",
 
   "seedUrls": [
     {
@@ -66,6 +66,13 @@
       "category": "community",
       "city": "Edinburgh",
       "cadence": "Monthly"
+    },
+    {
+      "name": "The Abercromby Group",
+      "url": "https://www.eventbrite.co.uk/o/121655449467",
+      "category": "community",
+      "city": "Edinburgh",
+      "cadence": "Quarterly"
     },
     {
       "name": "DC44141 Glasgow Hacker Meetup",
@@ -679,7 +686,9 @@
     "site:eventbrite.co.uk/o/cyberquarter 2026 2027",
     "TechForce Cyber Scotland Aberdeen 2026 2027",
     "site:thesasig.com (\"Scotland\" OR \"Edinburgh\" OR \"Glasgow\") 2026 2027",
-    "site:eventbrite.co.uk/d/united-kingdom--highland/cyber-security"
+    "site:eventbrite.co.uk/d/united-kingdom--highland/cyber-security",
+    "\"The Abercromby Group\" (\"security\" OR \"cyber\") 2026 2027",
+    "site:eventbrite.co.uk/o/121655449467"
   ],
 
   "filters": {
@@ -746,7 +755,9 @@
       "cryptography",
       "OT security",
       "ICS",
-      "Cyber & Script"
+      "Cyber & Script",
+      "Abercromby Group",
+      "The Abercromby Group"
     ],
     "excludeKeywords": [
       "webinar only",
