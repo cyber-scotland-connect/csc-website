@@ -94,7 +94,7 @@ export function calculateCateringRatios(attendees: number = 50): CateringEstimat
 export function generateEventOpsPack(eventSlug: string): string {
   // Check if corresponding markdown file exists in src/content/events/
   const eventFilePath = path.resolve(
-    import.meta.dir,
+    (import.meta as any).dir || process.cwd(),
     `../src/content/events/${eventSlug}.md`
   );
 

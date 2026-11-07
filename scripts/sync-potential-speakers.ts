@@ -16,7 +16,10 @@ import { execFileSync } from 'child_process';
 export const SPEAKER_SHEET_ID = '1KM6OMl4ShAziFsJp2bxdh8ZyDHVeAJ3wLfVXqPaiLA4';
 export const CFP_SHEET_ID = '1MMu9LNaSLx9SrMdV08-BjzDEO0ykk2t7AFIrdN6V4_4';
 
-export const SPEAKERS_DIR = path.resolve(import.meta.dir, '../src/data/speakers');
+export const SPEAKERS_DIR = path.resolve(
+  (import.meta as any).dir || process.cwd(),
+  '../src/data/speakers'
+);
 export const SPEAKERS_CSV_PATH = path.join(SPEAKERS_DIR, 'speakers.csv');
 export const CFP_CSV_PATH = path.join(SPEAKERS_DIR, 'cfp.csv');
 export const POTENTIAL_SPEAKERS_JSON_PATH = path.join(SPEAKERS_DIR, 'potential-speakers.json');

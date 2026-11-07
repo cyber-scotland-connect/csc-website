@@ -1545,7 +1545,7 @@ export async function buildEvergreenOrgPost(
       let topicTeaser = '';
       try {
         const potentialPath = path.resolve(
-          import.meta.dir,
+          (import.meta as any).dir || process.cwd(),
           '../src/data/speakers/potential-speakers.json'
         );
         if (fs.existsSync(potentialPath)) {
