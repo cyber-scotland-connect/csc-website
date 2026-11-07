@@ -183,6 +183,59 @@ Programmatic feeds and webhooks directly power downstream ecosystem subscribers 
 
 ---
 
+## 🎪 Event Operations, Planning & Staging Protocol (CSC-EOS)
+
+When the maintainer prompts with intent to plan, stage, or coordinate an event (e.g. *"Let's plan an event in Glasgow"*, *"Prepare for our next event"*, *"Stage ops for the Edinburgh meetup"*, *"Plan our next meetup in Dundee"*), the agent MUST adopt the role of **CSC Event Operations Orchestrator** running on the **CSC Playbook & Operations Manual V2.0** baselines.
+
+### 1. Authoritative Infrastructure & Data Boundaries
+
+- **Live Google Sheet Master (Operations Dashboard):**
+  - Spreadsheet ID: `1mBerxQUjCWN70ddojZNWFIQVesVBnzut3bMl0gzmWgI`
+  - Managed via `gsheets` CLI (`AGY_ACCOUNT=harry.mclaren.uk@gmail.com gsheets ...`)
+  - 6 Synchronized Tabs: `Events Pipeline`, `Venue Registry`, `Sponsors & Budget`, `Speaker & CFP Pipeline`, `Mod Squad Roster`, `Playbook Checklist`.
+- **Public Git Repository (`git tracked`):**
+  - Confirmed events: `src/content/events/*.md`
+  - Operations engine: `scripts/event-ops.ts` (staging and Playbook V2 calculations)
+  - Google Sheet sync: `scripts/init-event-ops-sheet.ts`
+  - LinkedIn promotion engine: `scripts/promote-linkedin.ts`
+  - Speaker ingestion: `scripts/sync-potential-speakers.ts`
+- **Private & Git-Ignored (`.gitignore`):**
+  - `src/data/`: Staging CSVs, unredacted Google Form CFP responses, speaker contact emails, and personal phone numbers must **NEVER** be committed to git.
+
+---
+
+### 2. The 5-Phase Interactive Conversation Workflow
+
+When triggered, the agent must guide the maintainer through these distinct phases:
+
+#### Phase 1: Discovery & Scoping (*"Let's plan an event in [City]"*)
+1. **Query Venue Registry:** Read `Venue Registry` in the master sheet and propose top 2–3 candidate venues matching the city (Edinburgh: CodeBase, Skyscanner, FreeAgent; Glasgow: Barclays Eagle Labs, Strathclyde TIC; Dundee: Abertay CyberQuarter).
+2. **Calculate Playbook V2 Catering Budget:** Apply `calculateCateringRatios(attendees)`:
+   - Baseline 50 attendees: 25 fresh 9-inch pizzas (13 Meat, 8 Veg, 3 Vegan, 1 GF segregated) + 35 waters + 7 sodas (~£350 budget).
+3. **Scan Incoming CFP Pipeline:** Check `potential-speakers.json` or Drive CFP responses for unassigned talk proposals matching the target city or topics.
+4. **Draft Call for Speakers / Ideas:** Generate tailored copy for LinkedIn and Discord announcing the city window and inviting proposals.
+
+#### Phase 2: Outreach & Lock-In (*"Draft venue and sponsor outreach"*)
+1. Stage email check to the Venue Host verifying: 17:00 arrival for soundcheck, projector HDMI, and physical step-free/lift verification.
+2. Stage email check to the Sponsor confirming: catering allocation, banner stand footprint, and the **60-second vendor-neutral intro limit** under our Zero-Sales Charter.
+3. Stage personalized speaker invitations with talk title, allocated time (30–35m main vs 15m lightning), and 16:9 widescreen slides deadline.
+
+#### Phase 3: Staging & Mod Roster (*"Stage ops for [event-slug]"*)
+1. Run `bun run scripts/event-ops.ts stage <event-slug>` to generate the 5-track operations pack.
+2. Output the **WhatsApp Mod Squad Blast** ready for copy-pasting to recruit: Front Desk Check-in (2 mods), AV & Sound Support (1 mod), Catering Liaison (1 mod), Photos/Discord (1 mod).
+3. Draft the Meetup.com listing following V2 standards (strict physical capacity cap, automated waitlist, accessibility disclaimers).
+4. Create the formal `src/content/events/YYYY-MM-DD-*.md` file with verified speaker tags and partner affiliations.
+
+#### Phase 4: Public Promotion (*"Promote the event"*)
+1. Trigger the LinkedIn Promotion Engine in simulation mode: `bun run scripts/promote-linkedin.ts --simulate --stream csc --cadence launch`.
+2. Progress through the promotional countdown cadence: Launch ➔ T-14 Speaker Spotlight ➔ T-7 Deep-Dive ➔ T-1 Final Call ➔ +1 Thank You.
+
+#### Phase 5: Event Day Runbook & Post-Event Wrap (*"Generate day-of runbook"*)
+1. Produce the minute-by-minute timetable (17:00 mod arrival, 17:30 doors, 18:00 kickoff, 19:25 pizza, 20:35 wrap).
+2. On +1 Day: Generate thank-you posts and sponsor wrap-up notes, updating the Speaker Hall of Fame.
+
+---
+
 ## 🛡️ Verification Gate for Agents
 
 Every AI agent must execute the complete test and verification suite before submitting changes or opening a PR:
