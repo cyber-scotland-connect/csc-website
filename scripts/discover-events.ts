@@ -1057,6 +1057,14 @@ function collectJsonLdEvents(node: unknown, results: Record<string, unknown>[]):
   if (obj.subEvent) collectJsonLdEvents(obj.subEvent, results);
 }
 
+// Helper: Clean raw JSON-LD script content wrapped in HTML comments (standard --> or HTML5 --!>)
+export function cleanJsonLdPayload(raw: string): string {
+  return raw
+    .replace(/^\s*<!--/, '')
+    .replace(/(?:-->|--!>)\s*$/, '')
+    .trim();
+}
+
 // Ingest HTML Seed URLs for Schema.org application/ld+json Event entities
 async function parseHtmlSeedUrl(
   seed: SeedUrlSource,
@@ -1072,10 +1080,7 @@ async function parseHtmlSeedUrl(
 
   while ((match = ldScriptRegex.exec(html)) !== null) {
     try {
-      const cleanedJson = match[1]
-        .replace(/^\s*<!--/, '')
-        .replace(/-->\s*$/, '')
-        .trim();
+      const cleanedJson = cleanJsonLdPayload(match[1]);
       const parsed = JSON.parse(cleanedJson);
       collectJsonLdEvents(parsed, ldNodes);
     } catch {

@@ -12,7 +12,10 @@ import {
   isOfficialSponsor,
   classifyEvent,
 } from '../src/utils/partner-registry';
-import { getSignificantTitleWords } from '../scripts/discover-events';
+import {
+  cleanJsonLdPayload,
+  getSignificantTitleWords,
+} from '../scripts/discover-events';
 
 describe('Event Archive Full Integrity Test', () => {
   const eventsDir = join(process.cwd(), 'src/content/events');
@@ -186,6 +189,21 @@ describe('Event Archive Full Integrity Test', () => {
       );
       const overlap = [...wordsA].filter((w) => wordsB.has(w));
       expect(overlap.length).toBe(0);
+    });
+
+    it('strips HTML comment wrappers with standard --> and HTML5 --!> endings from JSON-LD payloads', () => {
+      const standardComment = '<!-- {"@context":"https://schema.org","@type":"Event","name":"Test"} -->';
+      expect(cleanJsonLdPayload(standardComment)).toBe(
+        '{"@context":"https://schema.org","@type":"Event","name":"Test"}'
+      );
+
+      const bangComment = '\n<!-- \n{"@context":"https://schema.org","@type":"Event","name":"Test"}\n--!>\n';
+      expect(cleanJsonLdPayload(bangComment)).toBe(
+        '{"@context":"https://schema.org","@type":"Event","name":"Test"}'
+      );
+
+      const rawJson = '{"@context":"https://schema.org","@type":"Event","name":"Test"}';
+      expect(cleanJsonLdPayload(rawJson)).toBe(rawJson);
     });
   });
 });
