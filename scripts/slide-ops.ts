@@ -126,7 +126,7 @@ function extractScalar(text: string, field: string): string | undefined {
  */
 export function getPartnerDetails(partnerName: string): PartnerDetails | undefined {
   if (!partnerName) return undefined;
-  const partnersDir = path.resolve(import.meta.dir || process.cwd(), '../src/content/partners');
+  const partnersDir = path.resolve(process.cwd(), 'src/content/partners');
   if (!fs.existsSync(partnersDir)) return undefined;
 
   const norm = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, '');
@@ -150,8 +150,8 @@ export function getPartnerDetails(partnerName: string): PartnerDetails | undefin
 
 export function parseEventMarkdown(eventSlug: string): EventMetadata {
   const filePath = path.resolve(
-    import.meta.dir || process.cwd(),
-    `../src/content/events/${eventSlug}.md`
+    process.cwd(),
+    `src/content/events/${eventSlug}.md`
   );
 
   let title = 'Cyber Scotland Connect Meetup';
@@ -459,7 +459,7 @@ export function provisionEventSlideDeck(eventSlug: string): { url: string; pdfPa
   updateAndStyle(ops, 'p10_i19', `Social: Local Pub (Central ${meta.location.includes('Edinburgh') ? 'Edinburgh' : 'Glasgow'}) (All Welcome)`, 9.5, '#FFFFFF', true, 'CENTER');
 
   // Write batch payload to dist/slides/batch-ops.json
-  const batchDir = path.resolve(import.meta.dir || process.cwd(), '../dist/slides');
+  const batchDir = path.resolve(process.cwd(), 'dist/slides');
   fs.mkdirSync(batchDir, { recursive: true });
   const batchFilePath = path.join(batchDir, `batch-${eventSlug}.json`);
   fs.writeFileSync(batchFilePath, JSON.stringify(ops, null, 2), 'utf-8');
