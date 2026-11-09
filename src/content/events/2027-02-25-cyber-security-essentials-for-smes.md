@@ -4,6 +4,7 @@ date: 2027-02-25
 location: 'Bannockburn Community Enterprise Hub, 25 Quarkerfield, Bannockburn, Stirling, FK7 8JA'
 city: 'Scotland-wide'
 isPartnerEvent: false
+partnerName: 'Bannockburn Community Enterprise Hub'
 organizerType: 'Community'
 accessType: 'Open/Public'
 registrationUrl: 'https://www.eventbrite.co.uk/e/cyber-security-essentials-for-smes-tickets-2004480169145'

@@ -146,6 +146,12 @@ export function slugify(t: string): string {
     .replace(/-+$/, '');
 }
 
+// Helper: Filter out generic non-event titles and organizer placeholders
+export function isGenericEventTitle(title: string): boolean {
+  const t = title.trim().toLowerCase();
+  return /^(upcoming\s+events?|events?|tickets?|schedule|calendar|our\s+events|meetups?)$/i.test(t);
+}
+
 const HTML_ENTITIES: Record<string, string> = {
   '&lt;': '<',
   '&gt;': '>',
@@ -1092,7 +1098,7 @@ async function parseHtmlSeedUrl(
     const rawName = typeof node.name === 'string' ? stripHtml(node.name) : '';
     const rawStart = typeof node.startDate === 'string' ? node.startDate : '';
     const rawEnd = typeof node.endDate === 'string' ? node.endDate : undefined;
-    if (!rawName || !rawStart) continue;
+    if (!rawName || !rawStart || isGenericEventTitle(rawName)) continue;
 
     let eventDateStr: string | null = null;
     const parsedStart = new Date(rawStart);
@@ -1106,6 +1112,7 @@ async function parseHtmlSeedUrl(
 
     const rawUrl =
       typeof node.url === 'string' && isValidUrl(node.url) ? node.url : seed.url;
+    if (/eventbrite\.[a-z.]+\/o\//i.test(rawUrl) && !/eventbrite\.[a-z.]+\/e\//i.test(rawUrl)) continue;
     const rawDesc =
       typeof node.description === 'string' && node.description.trim()
         ? stripHtml(node.description).slice(0, 320)
@@ -1276,7 +1283,7 @@ async function extractSeedEventsWithLocalAi(
 
   const extracted: DiscoveredEvent[] = [];
   for (const item of result.events) {
-    if (!item.title || !item.date || item.isCyberRelevant === false) continue;
+    if (!item.title || !item.date || item.isCyberRelevant === false || isGenericEventTitle(item.title)) continue;
     const maxFutureDateStr = getMaxFutureDateStr(todayStr);
     if (!/^\d{4}-\d{2}-\d{2}$/.test(item.date) || item.date < todayStr || item.date > maxFutureDateStr) continue;
 
@@ -1337,7 +1344,12 @@ async function refineCandidateWithLocalAi(
   const refined = await queryLocalAiJson<AiRefinementPayload>(systemPrompt, userPrompt, 15000);
   if (!refined) return { keep: true, event: ev };
 
-  if (refined.isActualFutureEvent === false || refined.isCyberRelevant === false) {
+  if (
+    refined.isActualFutureEvent === false ||
+    refined.isCyberRelevant === false ||
+    isGenericEventTitle(ev.title) ||
+    (refined.cleanTitle && isGenericEventTitle(refined.cleanTitle))
+  ) {
     return { keep: false, event: ev };
   }
 
@@ -1782,13 +1794,19 @@ async function main() {
           ? `meetupUrl: '${ev.meetupUrl}'\n`
           : `registrationUrl: '${ev.meetupUrl}'\n`
         : '';
+      const partnerNameLine =
+        ev.partnerName && sanitizePartnerName(ev.partnerName)
+          ? `partnerName: '${sanitizePartnerName(ev.partnerName)!.replace(/'/g, "''")}'\n`
+          : !ev.isPartnerEvent && !/cyber\s*scotland\s*connect/i.test(ev.title)
+            ? `partnerName: 'Scottish Cyber Community'\n`
+            : '';
       const content = `---
 title: '${ev.title.replace(/'/g, "''")}'
 date: ${ev.date}
 ${ev.time ? `time: '${ev.time}'\n` : ''}location: '${ev.location.replace(/'/g, "''")}'
 ${isValidUrl(ev.locationUrl) ? `locationUrl: '${ev.locationUrl}'\n` : ''}city: '${ev.city}'
 isPartnerEvent: ${ev.isPartnerEvent}
-${ev.partnerName && sanitizePartnerName(ev.partnerName) ? `partnerName: '${sanitizePartnerName(ev.partnerName)!.replace(/'/g, "''")}'\n` : ''}organizerType: '${ev.organizerType || 'Community'}'
+${partnerNameLine}organizerType: '${ev.organizerType || 'Community'}'
 accessType: '${ev.accessType || 'Open/Public'}'
 ${urlFrontmatter}accessibility:
   stepFree: null

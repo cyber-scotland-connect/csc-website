@@ -85,6 +85,7 @@ if [ -n "$NEW_FILES" ]; then
       PR_URL=$("$GH_BIN" pr create \
         --base main \
         --head "$BRANCH" \
+        --assignee "@me" \
         --title "feat(events): auto-discovered Scottish cyber events ($(date '+%Y-%m-%d'))" \
         --body "### 🤖 Auto-Discovered Events ($(date '+%Y-%m-%d'))
 
