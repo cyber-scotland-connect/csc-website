@@ -13,6 +13,7 @@
     "test": "bun test",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
+    "assay:pre-deploy": "bash scripts/pre-deploy-assay.sh",
     "format": "prettier --check .",
     "format:write": "prettier --write .",
     "check:links": "bun run scripts/check-links.ts",
