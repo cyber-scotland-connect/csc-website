@@ -244,7 +244,7 @@ export function validateAntiSlop(text: string): {
       violations.push(rule.label);
     }
   }
-  const hashtagMatches = text.match(/(?:^|\s)#[a-zA-Z0-9_]+/g) || [];
+  const hashtagMatches = text.match(/(?:^|\s)#[a-zA-Z0-9_]*[a-zA-Z][a-zA-Z0-9_]*/g) || [];
   if (hashtagMatches.length > 4) {
     violations.push(`excessive hashtags (${hashtagMatches.length} > 4)`);
   }
@@ -309,7 +309,7 @@ export function validateAntiBanCompliance(params: {
     violations.push(`excessive speaker @mentions (${speakerMentionCount} > 6 max anti-spam cap)`);
   }
 
-  const hashtagMatches = postBody.match(/(?:^|\s)#[a-zA-Z0-9_]+/g) || [];
+  const hashtagMatches = postBody.match(/(?:^|\s)#[a-zA-Z0-9_]*[a-zA-Z][a-zA-Z0-9_]*/g) || [];
   const hashtagCount = hashtagMatches.length;
   if (hashtagCount === 0) {
     violations.push('missing hashtags in postBody (expected 1-4)');
