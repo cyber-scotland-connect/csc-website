@@ -1,15 +1,18 @@
-name: LinkedIn Event Promotion (Simulation & Manual Dispatch)
+name: LinkedIn Event Promotion
 
 on:
-  # NOTE: Automated cron schedules are intentionally commented out until live LinkedIn API
-  # credentials (LINKEDIN_ACCESS_TOKEN / LINKEDIN_ORG_URN) are approved and enabled.
-  # schedule:
-  #   - cron: '0 9 * * *'     # Daily 09:00 UTC check for CSC countdown cadence (T-14, T-7, T-4, T-3, T-2, T-1, +1)
-  #   - cron: '0 9 * * 2'     # Tuesdays 09:00 UTC — Stream B: Official CSC Partner Weekly Radar
-  #   - cron: '0 9 * * 4'     # Thursdays 09:00 UTC — Stream C: Scottish Cyber Community Weekly Radar
-  #   - cron: '0 10 1,15 * *' # 1st & 15th of month 10:00 UTC — Stream D: Bi-Weekly CSC Evergreen Org Spotlight
+  schedule:
+    - cron: '0 9 * * *'     # Daily 09:00 UTC check for CSC countdown cadence (T-14, T-7, T-4, T-3, T-2, T-1, +1)
+    - cron: '0 9 * * 2'     # Tuesdays 09:00 UTC — Stream B: Official CSC Partner Weekly Radar
+    - cron: '0 9 * * 4'     # Thursdays 09:00 UTC — Stream C: Scottish Cyber Community Weekly Radar
+    - cron: '0 10 1,15 * *' # 1st & 15th of month 10:00 UTC — Stream D: Bi-Weekly CSC Evergreen Org Spotlight
   workflow_dispatch:
     inputs:
+      live:
+        description: 'Publish live to LinkedIn (false = simulation only)'
+        required: false
+        default: false
+        type: boolean
       stream:
         description: 'Promotion stream to simulate (all | csc | partners | community | evergreen)'
         required: false
@@ -71,10 +74,15 @@ jobs:
           LINKEDIN_ACCESS_TOKEN: ${{ secrets.LINKEDIN_ACCESS_TOKEN }}
         run: bun run scripts/discover-linkedin-orgs.ts --simulate
 
-      - name: Simulate LinkedIn Promotion Copy & First-Comment Payloads
+      - name: Run LinkedIn Promotion Engine
         env:
-          STREAM: ${{ inputs.stream }}
-          CADENCE: ${{ inputs.csc_cadence }}
+          STREAM: ${{ inputs.stream || 'all' }}
+          CADENCE: ${{ inputs.csc_cadence || 'auto' }}
+          LIVE_MODE: ${{ github.event_name == 'schedule' || inputs.live == true }}
           LINKEDIN_ACCESS_TOKEN: ${{ secrets.LINKEDIN_ACCESS_TOKEN }}
         run: |
-          bun run scripts/promote-linkedin.ts --simulate --stream "$STREAM" --cadence "$CADENCE"
+          if [ "$LIVE_MODE" = "true" ]; then
+            bun run scripts/promote-linkedin.ts --live --stream "$STREAM" --cadence "$CADENCE"
+          else
+            bun run scripts/promote-linkedin.ts --simulate --stream "$STREAM" --cadence "$CADENCE"
+          fi

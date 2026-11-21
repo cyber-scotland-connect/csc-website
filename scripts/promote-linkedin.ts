@@ -1988,6 +1988,7 @@ async function main() {
       return;
     }
 
+    const orgUrn = process.env.LINKEDIN_ORG_URN?.trim() || 'urn:li:organization:98412650';
     const ledger = loadLedger();
     for (const post of generatedPosts) {
       const rateCheck = canPublishUnderRateAndIdempotencyLimits(post, ledger);
@@ -1995,7 +1996,80 @@ async function main() {
         console.log(`🛡️  [SKIPPED] ${post.ledgerKey} — ${rateCheck.reason}`);
         continue;
       }
-      console.log(`ℹ️  [LIVE] Ready for LinkedIn REST API /rest/posts delivery: ${post.ledgerKey}`);
+
+      console.log(`🚀 [LIVE] Publishing ${post.ledgerKey} to LinkedIn REST API /rest/posts...`);
+      const postRes = await fetch('https://api.linkedin.com/rest/posts', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'X-Restli-Protocol-Version': '2.0.0',
+          'Linkedin-Version': '202502',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          author: orgUrn,
+          commentary: post.apiReadyPostBody,
+          visibility: 'PUBLIC',
+          distribution: {
+            feedDistribution: 'MAIN_FEED',
+            targetEntities: [],
+            thirdPartyDistributionChannels: [],
+          },
+          lifecycleState: 'PUBLISHED',
+          isReshareDisabledByAuthor: false,
+        }),
+      });
+
+      if (!postRes.ok) {
+        const errBody = await postRes.text();
+        console.error(`❌ [LIVE] LinkedIn /rest/posts failed (${postRes.status}): ${errBody}`);
+        process.exit(1);
+      }
+
+      const postUrn = postRes.headers.get('x-restli-id') || '';
+      console.log(`✅ [LIVE] Published post URN: ${postUrn || '(no x-restli-id header)'}`);
+
+      if (postUrn && post.firstComment.trim()) {
+        console.log('⏳ [LIVE] Waiting 10s before posting first comment...');
+        await new Promise((resolve) => setTimeout(resolve, 10000));
+
+        const commentRes = await fetch(
+          `https://api.linkedin.com/rest/socialActions/${encodeURIComponent(postUrn)}/comments`,
+          {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'X-Restli-Protocol-Version': '2.0.0',
+              'Linkedin-Version': '202502',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              actor: orgUrn,
+              message: {
+                text: post.firstComment,
+              },
+            }),
+          }
+        );
+
+        if (!commentRes.ok) {
+          const commentErr = await commentRes.text();
+          console.warn(`⚠️  [LIVE] First comment failed (${commentRes.status}): ${commentErr}`);
+        } else {
+          console.log('✅ [LIVE] First comment posted successfully.');
+        }
+      }
+
+      ledger.records[post.ledgerKey] = {
+        ledgerKey: post.ledgerKey,
+        publishedAt: new Date().toISOString(),
+        contentSha256: computeContentSha256(post.postBody, post.firstComment),
+        stream: post.stream,
+        cadenceStep: post.cadenceStep,
+        evergreenPillar: post.evergreenPillar,
+      };
+      ledger.lastPublishedAt = new Date().toISOString();
+      saveLedger(ledger);
     }
   }
 }
