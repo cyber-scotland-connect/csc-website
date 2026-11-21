@@ -2060,16 +2060,12 @@ async function main() {
         }
       }
 
-      ledger.records[post.ledgerKey] = {
-        ledgerKey: post.ledgerKey,
-        publishedAt: new Date().toISOString(),
-        contentSha256: computeContentSha256(post.postBody, post.firstComment),
+      recordLedgerEntry({
+        key: post.ledgerKey,
         stream: post.stream,
-        cadenceStep: post.cadenceStep,
-        evergreenPillar: post.evergreenPillar,
-      };
-      ledger.lastPublishedAt = new Date().toISOString();
-      saveLedger(ledger);
+        postedAt: new Date().toISOString(),
+        contentSha256: computeContentSha256(post.postBody, post.firstComment),
+      });
     }
   }
 }
