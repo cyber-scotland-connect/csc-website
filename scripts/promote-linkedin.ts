@@ -2063,7 +2063,7 @@ async function main() {
       recordLedgerEntry({
         key: post.ledgerKey,
         stream: post.stream,
-        mode: post.cadenceStep || post.evergreenPillar || 'weekly-digest',
+        mode: 'live',
         eventSlugs: post.eventSlugs,
         postedAt: new Date().toISOString(),
         contentSha256: computeContentSha256(post.postBody, post.firstComment),
