@@ -1891,7 +1891,8 @@ async function main() {
         }
       } else {
         const resolved = resolveCscCadenceStep(ev.date, referenceDate, true);
-        const stepToRun: CscCadenceStep = explicitCadence || resolved.step || 't-14';
+        const isAutoCadence = !explicitCadence || (explicitCadence as string) === 'auto';
+        const stepToRun: CscCadenceStep = isAutoCadence ? (resolved.step || 't-14') : explicitCadence;
         generatedPosts.push(
           await buildCscCadencePost(ev, stepToRun, { enableAi, referenceDate })
         );
