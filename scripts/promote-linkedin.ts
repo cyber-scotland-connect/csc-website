@@ -2004,7 +2004,7 @@ async function main() {
         headers: {
           Authorization: `Bearer ${token}`,
           'X-Restli-Protocol-Version': '2.0.0',
-          'Linkedin-Version': '202502',
+          'Linkedin-Version': '202611',
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
@@ -2041,7 +2041,7 @@ async function main() {
             headers: {
               Authorization: `Bearer ${token}`,
               'X-Restli-Protocol-Version': '2.0.0',
-              'Linkedin-Version': '202502',
+              'Linkedin-Version': '202611',
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({
