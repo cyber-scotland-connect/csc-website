@@ -956,7 +956,8 @@ export function convertToApiUrnPostBody(
   postBody: string,
   resolvedTags: ResolvedOrgTag[]
 ): string {
-  let output = postBody;
+  // Escape literal parentheses for LinkedIn's Little Text Format before inserting @[Name](urn) mentions
+  let output = postBody.replace(/\(/g, '\\(').replace(/\)/g, '\\)');
   for (const tag of resolvedTags) {
     if (tag.mention.startsWith('@') && tag.apiUrnMention) {
       output = output.split(tag.mention).join(tag.apiUrnMention);
