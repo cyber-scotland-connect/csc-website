@@ -2046,6 +2046,7 @@ async function main() {
             },
             body: JSON.stringify({
               actor: orgUrn,
+              object: postUrn,
               message: {
                 text: post.firstComment,
               },
