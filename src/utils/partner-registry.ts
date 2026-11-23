@@ -195,7 +195,7 @@ export const COMMUNITY_LINKEDIN_DIRECTORY: CommunityOrgLinkedin[] = [
     aliases: ['cyber scotland connect', 'csc', 'security scotland'],
     linkedinHandle: 'cyber-scotland-connect',
     linkedinUrl: 'https://www.linkedin.com/company/cyber-scotland-connect/',
-    linkedinOrgId: '98412650',
+    linkedinOrgId: '35564327',
   },
   {
     canonicalName: 'Hack Thursday',

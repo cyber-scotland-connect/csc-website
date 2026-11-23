@@ -1989,7 +1989,7 @@ async function main() {
       return;
     }
 
-    const orgUrn = process.env.LINKEDIN_ORG_URN?.trim() || 'urn:li:organization:98412650';
+    const orgUrn = process.env.LINKEDIN_ORG_URN?.trim() || 'urn:li:organization:35564327';
     const ledger = loadLedger();
     for (const post of generatedPosts) {
       const rateCheck = canPublishUnderRateAndIdempotencyLimits(post, ledger);
