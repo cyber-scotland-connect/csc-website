@@ -956,10 +956,15 @@ export function convertToApiUrnPostBody(
   postBody: string,
   resolvedTags: ResolvedOrgTag[]
 ): string {
-  let result = postBody;
+  // Replace [Student/Academic] and [Corporate/Paid] with parentheses so unescaped
+  // square brackets don't break LinkedIn's Little Text Format parser.
+  let result = postBody
+    .replace(/\[Student\/Academic\]/g, '(Student/Academic)')
+    .replace(/\[Corporate\/Paid\]/g, '(Corporate/Paid)');
+
   for (const tag of resolvedTags) {
     if (tag.linkedinOrgId && tag.mention) {
-      const replacement = `@{urn:li:organization:${tag.linkedinOrgId}|${tag.name}}`;
+      const replacement = `@[${tag.name}](urn:li:organization:${tag.linkedinOrgId})`;
       result = result.split(tag.mention).join(replacement);
     }
   }

@@ -175,7 +175,7 @@ describe('LinkedIn Event Promotion & Anti-Slop Engine', () => {
       expect(post.antiSlopValidation.passed).toBe(true);
       expect(post.postBody).toContain('@CodeBase Edinburgh');
       expect(post.apiReadyPostBody).toContain(
-        '@{urn:li:organization:5017421|CodeBase Edinburgh}'
+        '@[CodeBase Edinburgh](urn:li:organization:5017421)'
       );
       expect(post.apiReadyPostBody).not.toContain('\\(');
       expect(post.resolvedSpeakerTags.length).toBe(4);
