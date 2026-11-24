@@ -193,7 +193,7 @@ describe('LinkedIn Event Promotion & Anti-Slop Engine', () => {
     });
     expect(partnerDigest.antiSlopValidation.passed).toBe(true);
     expect(partnerDigest.postBody).toContain('@DIGIT');
-    expect(partnerDigest.postBody).toContain('📅 Coming Up in the Next 14 Days:');
+    expect(partnerDigest.postBody).toContain('📅 Next 14 Days:');
 
     const hackThuEvent = parseRichEventMarkdown(
       path.join(

@@ -1339,19 +1339,19 @@ export async function buildWeeklyDigestPost(
   const formatEventBullet = (ev: RichEventRecord) => {
     const orgMention = formatLinkedinMention(ev.partnerName);
     const dateStr = formatReadableUkDate(ev.date);
-    const accessBadge = ev.accessType !== 'Open/Public' ? ` [${ev.accessType}]` : '';
-    return `• ${dateStr} (${ev.city}) — ${ev.title}\n  Hosted by ${orgMention}${accessBadge}`;
+    const accessBadge = ev.accessType !== 'Open/Public' ? ` · ${ev.accessType}` : '';
+    return `• ${dateStr} — ${ev.title} (${ev.city} · ${orgMention}${accessBadge})`;
   };
 
   const sections: string[] = [];
   if (next14DaysEvents.length > 0) {
     sections.push(
-      `📅 Coming Up in the Next 14 Days:\n${next14DaysEvents.map(formatEventBullet).join('\n\n')}`
+      `📅 Next 14 Days:\n${next14DaysEvents.map(formatEventBullet).join('\n')}`
     );
   }
   if (newlyTrackedFurtherOut.length > 0) {
     sections.push(
-      `🆕 Newly Added to the Radar:\n${newlyTrackedFurtherOut.map(formatEventBullet).join('\n\n')}`
+      `🆕 Newly Listed:\n${newlyTrackedFurtherOut.map(formatEventBullet).join('\n')}`
     );
   }
 
@@ -1361,12 +1361,8 @@ export async function buildWeeklyDigestPost(
     : `[WEEKLY SCOTTISH CYBER COMMUNITY RADAR] ${combinedEvents.length} Ecosystem Events (${next14DaysEvents.length} Next 14d · ${newlyTrackedFurtherOut.length} New)`;
 
   const introLine = isPartnerStream
-    ? `🏴󠁧󠁢󠁳󠁣󠁴󠁿 Scottish Cyber Partner Radar: ${combinedEvents.length} sessions from @Cyber Scotland Connect official partners and academic hubs.`
-    : `🏴󠁧󠁢󠁳󠁣󠁴󠁿 Scottish Cyber Community Radar: ${combinedEvents.length} grassroots meetups, hacker spaces, and sector sessions across Scotland.`;
-
-  const defaultHook = isPartnerStream
-    ? `We split our partner radar into sessions happening in the next fortnight and newly announced dates across ${cities}:`
-    : `Here is what is happening over the next 14 days, plus newly listed dates across ${cities}:`;
+    ? `🏴󠁧󠁢󠁳󠁣󠁴󠁿 ${combinedEvents.length} Scottish cyber partner sessions coming up (${cities}):`
+    : `🏴󠁧󠁢󠁳󠁣󠁴󠁿 ${combinedEvents.length} Scottish cyber meetups & community sessions coming up (${cities}):`;
 
   const digestCorpus = combinedEvents.map((e) => `${e.title} ${e.bodyText}`).join(' ');
   const digestHashtagLine = selectContextualHashtags({
@@ -1377,9 +1373,9 @@ export async function buildWeeklyDigestPost(
 
   const postBody = [
     introLine,
-    aiHook || defaultHook,
+    aiHook || undefined,
     sections.join('\n\n'),
-    `Know an upcoming Scottish infosec meetup or CFP we should list? Open a PR or drop it in the comments — direct registration links for every session above are in the first comment 👇\n\n${digestHashtagLine}`,
+    `Registration links are in the first comment 👇 Know a Scottish infosec meetup or CFP we should list? Drop it below.\n\n${digestHashtagLine}`,
   ]
     .filter(Boolean)
     .join('\n\n');
