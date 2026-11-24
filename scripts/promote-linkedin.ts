@@ -954,11 +954,16 @@ function collectResolvedSpeakerTags(speakers: EventSpeaker[]): ResolvedSpeakerTa
  */
 export function convertToApiUrnPostBody(
   postBody: string,
-  _resolvedTags: ResolvedOrgTag[]
+  resolvedTags: ResolvedOrgTag[]
 ): string {
-  // LinkedIn /rest/posts commentary renders @[Name](urn:...) and \( \) as raw literal text.
-  // Keep clean human-readable @Name text without raw URN markup or backslash escapes.
-  return postBody;
+  let result = postBody;
+  for (const tag of resolvedTags) {
+    if (tag.linkedinOrgId && tag.mention) {
+      const replacement = `@{urn:li:organization:${tag.linkedinOrgId}|${tag.name}}`;
+      result = result.split(tag.mention).join(replacement);
+    }
+  }
+  return result;
 }
 
 /**

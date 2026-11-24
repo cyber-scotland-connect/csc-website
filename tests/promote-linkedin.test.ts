@@ -174,8 +174,9 @@ describe('LinkedIn Event Promotion & Anti-Slop Engine', () => {
       });
       expect(post.antiSlopValidation.passed).toBe(true);
       expect(post.postBody).toContain('@CodeBase Edinburgh');
-      expect(post.apiReadyPostBody).toContain('@CodeBase Edinburgh');
-      expect(post.apiReadyPostBody).not.toContain('urn:li:organization:');
+      expect(post.apiReadyPostBody).toContain(
+        '@{urn:li:organization:5017421|CodeBase Edinburgh}'
+      );
       expect(post.apiReadyPostBody).not.toContain('\\(');
       expect(post.resolvedSpeakerTags.length).toBe(4);
       expect(post.resolvedSpeakerTags[0].mention).toBe('@Gary Hunter');
