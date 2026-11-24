@@ -1,10 +1,11 @@
 ---
 title: 'Cyber Security Essentials for SMEs'
 date: 2027-11-23
-location: 'STEP, Stirling Enterprise Park, Stirling, FK7 7RP'
+time: '10:00 – 12:00 GMT'
+location: 'STEP, Stirling Enterprise Park, Players Road, Stirling, FK7 7RP'
 city: 'Scotland-wide'
 isPartnerEvent: false
-partnerName: 'Scottish Cyber Community'
+partnerName: 'STEP'
 organizerType: 'Community'
 accessType: 'Open/Public'
 registrationUrl: 'https://www.eventbrite.co.uk/e/cyber-security-essentials-for-smes-tickets-1997975413245'
