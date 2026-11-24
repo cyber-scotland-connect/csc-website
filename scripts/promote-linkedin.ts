@@ -954,16 +954,11 @@ function collectResolvedSpeakerTags(speakers: EventSpeaker[]): ResolvedSpeakerTa
  */
 export function convertToApiUrnPostBody(
   postBody: string,
-  resolvedTags: ResolvedOrgTag[]
+  _resolvedTags: ResolvedOrgTag[]
 ): string {
-  // Escape literal parentheses for LinkedIn's Little Text Format before inserting @[Name](urn) mentions
-  let output = postBody.replace(/\(/g, '\\(').replace(/\)/g, '\\)');
-  for (const tag of resolvedTags) {
-    if (tag.mention.startsWith('@') && tag.apiUrnMention) {
-      output = output.split(tag.mention).join(tag.apiUrnMention);
-    }
-  }
-  return output;
+  // LinkedIn /rest/posts commentary renders @[Name](urn:...) and \( \) as raw literal text.
+  // Keep clean human-readable @Name text without raw URN markup or backslash escapes.
+  return postBody;
 }
 
 /**
