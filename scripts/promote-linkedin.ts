@@ -2248,7 +2248,7 @@ async function main() {
           );
 
           const isTruncated =
-            !storedCommentary.includes('#CyberScotlandConnect') ||
+            !storedCommentary.includes('CyberScotlandConnect') ||
             storedCommentary.length < post.postBody.length * 0.7;
 
           if (isTruncated) {
