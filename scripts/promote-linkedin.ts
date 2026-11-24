@@ -2225,6 +2225,63 @@ async function main() {
       const postUrn = postRes.headers.get('x-restli-id') || '';
       console.log(`✅ [LIVE] Published post URN: ${postUrn || '(no x-restli-id header)'}`);
 
+      // Live Read-Back & Auto-Rollback Verification: fetch the stored post back from LinkedIn
+      // to verify LinkedIn did not silently truncate `commentary`. If truncated, auto-DELETE it!
+      if (postUrn) {
+        const readBackRes = await fetch(
+          `https://api.linkedin.com/rest/posts/${encodeURIComponent(postUrn)}?viewContext=AUTHOR`,
+          {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'X-Restli-Protocol-Version': '2.0.0',
+              'Linkedin-Version': '202611',
+            },
+          }
+        );
+
+        if (readBackRes.ok) {
+          const storedData = (await readBackRes.json()) as { commentary?: string };
+          const storedCommentary = storedData.commentary || '';
+          console.log(
+            `📋 [LIVE READ-BACK] LinkedIn stored commentary (${storedCommentary.length} chars vs ${post.apiReadyPostBody.length} sent):\n---\n${storedCommentary}\n---`
+          );
+
+          const isTruncated =
+            !storedCommentary.includes('#CyberScotlandConnect') ||
+            storedCommentary.length < post.postBody.length * 0.7;
+
+          if (isTruncated) {
+            console.error(
+              `🛑 [AUTO-ROLLBACK] LinkedIn silently truncated commentary (${storedCommentary.length} chars, missing #CyberScotlandConnect)! Deleting malformed post ${postUrn} immediately...`
+            );
+            const delRes = await fetch(
+              `https://api.linkedin.com/rest/posts/${encodeURIComponent(postUrn)}`,
+              {
+                method: 'DELETE',
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                  'X-Restli-Protocol-Version': '2.0.0',
+                  'Linkedin-Version': '202611',
+                },
+              }
+            );
+            console.error(
+              `🗑️  [AUTO-ROLLBACK] Delete status for ${postUrn}: ${delRes.status}`
+            );
+            process.exit(1);
+          } else {
+            console.log(
+              `✅ [LIVE READ-BACK VERIFIED] Full commentary intact on LinkedIn (${storedCommentary.length} chars, includes #CyberScotlandConnect).`
+            );
+          }
+        } else {
+          console.warn(
+            `⚠️  [LIVE READ-BACK] Could not GET post (${readBackRes.status}): ${await readBackRes.text()}`
+          );
+        }
+      }
+
       if (postUrn && post.firstComment.trim()) {
         console.log('⏳ [LIVE] Waiting 10s before posting first comment...');
         await new Promise((resolve) => setTimeout(resolve, 10000));
