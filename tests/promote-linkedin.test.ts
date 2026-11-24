@@ -13,6 +13,7 @@ import {
   extractPersonalLinkedinHandle,
   validateAntiBanCompliance,
   validateFactualIntegrity,
+  validateLittleTextFormat,
   canPublishUnderRateAndIdempotencyLimits,
   computeContentSha256,
   resolveNextEvergreenPillar,
@@ -384,5 +385,81 @@ describe('LinkedIn Event Promotion & Anti-Slop Engine', () => {
     expect(glasgowOffsecTags).toContain('#CyberScotlandConnect');
     expect(glasgowOffsecTags).toContain('#GlasgowTech');
     expect(glasgowOffsecTags).toContain('#OffSec');
+  });
+
+  it('enforces the LinkedIn Little Text Format Linter and catches every truncation/parser trigger', () => {
+    // 1. Valid payload passes
+    const validCheck = validateLittleTextFormat({
+      stream: 'partners',
+      postBody: '🏴󠁧󠁢󠁳󠁣󠁴󠁿 2 Scottish cyber partner sessions coming up across Edinburgh:',
+      apiReadyPostBody: [
+        '🏴󠁧󠁢󠁳󠁣󠁴󠁿 2 Scottish cyber partner sessions coming up across Edinburgh:',
+        '',
+        '📅 Next 14 Days:',
+        '• Thu, 26 Nov 2026 — Intro to Cyber Security · Edinburgh · @[Cyber and Fraud Centre Scotland](urn:li:organization:18583194) · Student/Academic',
+        '',
+        '#CyberScotlandConnect #ScottishTech #InfoSec',
+      ].join('\n'),
+      firstComment: '🔗 Full calendar: https://cyberscotlandconnect.com/events/',
+    });
+    expect(validCheck.passed).toBe(true);
+    expect(validCheck.validUrnMentions).toEqual([
+      '@[Cyber and Fraud Centre Scotland](urn:li:organization:18583194)',
+    ]);
+
+    // 2. Unescaped parenthesis (causes LinkedIn /rest/posts silent truncation) is blocked
+    const parenCheck = validateLittleTextFormat({
+      stream: 'partners',
+      postBody: 'Test',
+      apiReadyPostBody:
+        '🏴󠁧󠁢󠁳󠁣󠁴󠁿 6 Scottish cyber partner sessions coming up (Edinburgh):\n📅 Next 14 Days:\n• Thu, 26 Nov 2026 — Intro\n#CyberScotlandConnect',
+      firstComment: 'https://cyberscotlandconnect.com/events/',
+    });
+    expect(parenCheck.passed).toBe(false);
+    expect(parenCheck.violations.some((v) => v.includes('unescaped parenthesis'))).toBe(true);
+
+    // 3. Unescaped square brackets [Student/Academic] (causes parser fallback to raw text) is blocked
+    const bracketCheck = validateLittleTextFormat({
+      stream: 'partners',
+      postBody: 'Test',
+      apiReadyPostBody:
+        '🏴󠁧󠁢󠁳󠁣󠁴󠁿 6 Scottish cyber partner sessions coming up across Edinburgh:\n📅 Next 14 Days:\n• Thu, 26 Nov 2026 — Intro [Student/Academic]\n#CyberScotlandConnect',
+      firstComment: 'https://cyberscotlandconnect.com/events/',
+    });
+    expect(bracketCheck.passed).toBe(false);
+    expect(bracketCheck.violations.some((v) => v.includes('unescaped square bracket'))).toBe(true);
+
+    // 4. Invalid curly-brace @{urn:...} mention syntax is blocked
+    const braceCheck = validateLittleTextFormat({
+      stream: 'partners',
+      postBody: 'Test',
+      apiReadyPostBody:
+        '🏴󠁧󠁢󠁳󠁣󠁴󠁿 6 Scottish cyber partner sessions coming up across Edinburgh:\n📅 Next 14 Days:\n• Thu, 26 Nov 2026 — Intro @{urn:li:organization:18583194|CFC}\n#CyberScotlandConnect',
+      firstComment: 'https://cyberscotlandconnect.com/events/',
+    });
+    expect(braceCheck.passed).toBe(false);
+    expect(braceCheck.violations.some((v) => v.includes('curly brace'))).toBe(true);
+
+    // 5. Bare @ mention without a numeric URN is blocked
+    const bareAtCheck = validateLittleTextFormat({
+      stream: 'community',
+      postBody: 'Test',
+      apiReadyPostBody:
+        '🏴󠁧󠁢󠁳󠁣󠁴󠁿 5 Scottish cyber meetups coming up across Glasgow:\n📅 Next 14 Days:\n• Wed, 9 Dec 2026 — GAUG · @Glasgow Azure User Group\n#CyberScotlandConnect',
+      firstComment: 'https://cyberscotlandconnect.com/events/',
+    });
+    expect(bareAtCheck.passed).toBe(false);
+    expect(bareAtCheck.violations.some((v) => v.includes('bare "@"'))).toBe(true);
+
+    // 6. Backslash escape \( \) is blocked
+    const backslashCheck = validateLittleTextFormat({
+      stream: 'partners',
+      postBody: 'Test',
+      apiReadyPostBody:
+        '🏴󠁧󠁢󠁳󠁣󠁴󠁿 6 Scottish cyber partner sessions coming up across Edinburgh:\n📅 Next 14 Days:\n• Thu, 26 Nov 2026 \\(Edinburgh\\) — Intro\n#CyberScotlandConnect',
+      firstComment: 'https://cyberscotlandconnect.com/events/',
+    });
+    expect(backslashCheck.passed).toBe(false);
+    expect(backslashCheck.violations.some((v) => v.includes('escape/markup character'))).toBe(true);
   });
 });

@@ -149,6 +149,13 @@ export interface AntiBanPolicyCheck {
   firstCommentLength: number;
 }
 
+export interface LittleTextValidationCheck {
+  passed: boolean;
+  violations: string[];
+  validUrnMentions: string[];
+  aboveTheFoldPreview: string;
+}
+
 export interface SimulatedLinkedinPost {
   stream: 'csc' | 'partners' | 'community' | 'evergreen';
   cadenceStep?: CscCadenceStep;
@@ -168,6 +175,7 @@ export interface SimulatedLinkedinPost {
   };
   factualIntegrity: FactualIntegrityCheck;
   antiBanCompliance: AntiBanPolicyCheck;
+  littleTextValidation: LittleTextValidationCheck;
   publishReady: boolean;
   eventSlugs: string[];
 }
@@ -950,25 +958,175 @@ function collectResolvedSpeakerTags(speakers: EventSpeaker[]): ResolvedSpeakerTa
 
 /**
  * Converts `@Org Name` mentions in human-readable copy into LinkedIn REST API
- * LittleText URN format (`@[Org Name](urn:li:organization:12345)`) wherever a numeric Org ID exists.
+ * LittleText URN format (`@[Org Name](urn:li:organization:12345)`) wherever a numeric Org ID exists,
+ * and sanitizes all Little Text Format reserved characters (`( ) [ ] { } | < > \ * _ ~ @ #`)
+ * outside of valid `@[Name](urn:li:organization:ID)` and `#Hashtag` elements so LinkedIn's
+ * `/rest/posts` parser never truncates or falls back to raw literal text.
  */
 export function convertToApiUrnPostBody(
   postBody: string,
   resolvedTags: ResolvedOrgTag[]
 ): string {
-  // Replace [Student/Academic] and [Corporate/Paid] with parentheses so unescaped
-  // square brackets don't break LinkedIn's Little Text Format parser.
-  let result = postBody
-    .replace(/\[Student\/Academic\]/g, '(Student/Academic)')
-    .replace(/\[Corporate\/Paid\]/g, '(Corporate/Paid)');
+  let result = postBody;
 
-  for (const tag of resolvedTags) {
-    if (tag.linkedinOrgId && tag.mention) {
-      const replacement = `@[${tag.name}](urn:li:organization:${tag.linkedinOrgId})`;
-      result = result.split(tag.mention).join(replacement);
+  const sortedTags = [...resolvedTags].sort(
+    (a, b) => (b.mention?.length || 0) - (a.mention?.length || 0)
+  );
+
+  const placeholders: Array<{ token: string; urnMention: string }> = [];
+
+  for (let i = 0; i < sortedTags.length; i++) {
+    const tag = sortedTags[i];
+    if (!tag.mention) continue;
+
+    if (tag.linkedinOrgId) {
+      const cleanName = tag.name
+        .replace(/[()[\]{}|<>\\@#*~_]/g, '')
+        .replace(/\s+/g, ' ')
+        .trim();
+      const token = `§LIURNTOKEN${i}§`;
+      placeholders.push({
+        token,
+        urnMention: `@[${cleanName}](urn:li:organization:${tag.linkedinOrgId})`,
+      });
+      result = result.split(tag.mention).join(token);
+    } else if (tag.mention.startsWith('@')) {
+      result = result.split(tag.mention).join(tag.name);
     }
   }
+
+  // Strip any remaining bare @ (e.g. speaker names without a numeric LinkedIn person URN)
+  result = result.replace(/@([A-Za-z0-9])/g, '$1').replace(/@/g, '');
+
+  // Convert numeric issue/meetup numbers like "#54" into "No. 54" so only alphabetic #Hashtags use #
+  result = result.replace(/#(\d+)\b/g, 'No. $1');
+
+  // Convert parentheticals (text) and bracketed [text] into clean " · text" separators
+  let prev = '';
+  while (prev !== result && (/\([^()]+\)/.test(result) || /\[[^\][\]]+\]/.test(result))) {
+    prev = result;
+    result = result
+      .replace(/\s*\(([^()]+)\)/g, ' · $1')
+      .replace(/\s*\[([^\][\]]+)\]/g, ' · $1');
+  }
+
+  // Strip any remaining Little Text Format reserved characters outside valid tokens
+  result = result
+    .replace(/[()[\]{}|<>\\*_~]/g, '')
+    .replace(/·\s*·/g, '·')
+    .replace(/([:—])\s*·\s*/g, '$1 ');
+
+  // Strip any stray # that is not the start of a valid alphabetic hashtag
+  result = result.replace(/#(?![A-Za-z][A-Za-z0-9]*)/g, '');
+
+  // Restore verified @[Org Name](urn:li:organization:ID) tokens
+  for (const { token, urnMention } of placeholders) {
+    result = result.split(token).join(urnMention);
+  }
+
   return result;
+}
+
+/**
+ * Local LinkedIn Little Text Format Linter & Pre-Publish Verification Gate.
+ * Mathematically verifies that `apiReadyPostBody` and `firstComment` contain zero
+ * unescaped Little Text Format reserved characters (`( ) [ ] { } | < > \ * _ ~ @ #`)
+ * outside of valid `@[DisplayName](urn:li:organization:ID)` and `#Hashtag` elements,
+ * and checks above-the-fold feed preview ergonomics.
+ */
+export function validateLittleTextFormat(params: {
+  stream: 'csc' | 'partners' | 'community' | 'evergreen';
+  postBody: string;
+  apiReadyPostBody: string;
+  firstComment: string;
+}): LittleTextValidationCheck {
+  const { stream, apiReadyPostBody, firstComment } = params;
+  const violations: string[] = [];
+
+  // 1. Extract and validate every @[DisplayName](urn:li:organization:ID) token
+  const validUrnRegex = /@\[([^\[\]()|{}<>\\@#*~_]+)\]\(urn:li:organization:(\d+)\)/g;
+  const validUrnMentions: string[] = [];
+  let match: RegExpExecArray | null;
+  while ((match = validUrnRegex.exec(apiReadyPostBody)) !== null) {
+    validUrnMentions.push(match[0]);
+  }
+
+  // 2. Strip valid URN mention tokens and valid alphabetic hashtags, then inspect the remainder
+  const stripped = apiReadyPostBody
+    .replace(validUrnRegex, ' ')
+    .replace(/(?:^|\s)#[A-Za-z][A-Za-z0-9]*/g, ' ');
+
+  if (/[()]/.test(stripped)) {
+    violations.push(
+      'unescaped parenthesis "(" or ")" found outside URN mention in apiReadyPostBody (causes LinkedIn /rest/posts silent truncation)'
+    );
+  }
+  if (/[\[\]]/.test(stripped)) {
+    violations.push(
+      'unescaped square bracket "[" or "]" found outside URN mention in apiReadyPostBody (breaks LinkedIn Little Text Format parser)'
+    );
+  }
+  if (/[{}]/.test(stripped)) {
+    violations.push(
+      'curly brace "{" or "}" found in apiReadyPostBody (reserved LinkedIn Little Text Format template syntax)'
+    );
+  }
+  if (/@/.test(stripped)) {
+    violations.push(
+      'bare "@" found in apiReadyPostBody without a valid @[Name](urn:li:organization:ID) token'
+    );
+  }
+  if (/#/.test(stripped)) {
+    violations.push(
+      'invalid "#" found in apiReadyPostBody outside valid alphabetic #Hashtag tokens'
+    );
+  }
+  if (/[|<>\\*_~]/.test(stripped)) {
+    violations.push(
+      'reserved Little Text Format escape/markup character (| < > \\ * _ ~) found in apiReadyPostBody'
+    );
+  }
+
+  // 3. Above-the-fold feed ergonomics check (first 3 visible lines / ~210 chars)
+  const visibleCopy = apiReadyPostBody.replace(
+    /@\[([^\]]+)\]\(urn:li:organization:\d+\)/g,
+    '$1'
+  );
+  const nonEmptyLines = visibleCopy
+    .split('\n')
+    .map((l) => l.trim())
+    .filter(Boolean);
+  const aboveTheFoldPreview = nonEmptyLines.slice(0, 3).join('\n');
+
+  if (aboveTheFoldPreview.length < 40) {
+    violations.push(
+      `above-the-fold preview too short (${aboveTheFoldPreview.length} chars) — post looks truncated`
+    );
+  }
+
+  if (stream === 'partners' || stream === 'community') {
+    const firstBulletIdx = nonEmptyLines.findIndex((l) => l.startsWith('•'));
+    if (firstBulletIdx === -1 || firstBulletIdx > 2) {
+      violations.push(
+        `weekly radar first event bullet appears too late (line ${firstBulletIdx + 1}) — must appear by line 3 above LinkedIn's fold`
+      );
+    }
+  }
+
+  // 4. First comment cleanliness check
+  if (/urn:li:organization:/i.test(firstComment)) {
+    violations.push('raw urn:li:organization markup leaked into firstComment');
+  }
+  if (/\\[()[\]]/.test(firstComment)) {
+    violations.push('raw backslash escape leaked into firstComment');
+  }
+
+  return {
+    passed: violations.length === 0,
+    violations,
+    validUrnMentions,
+    aboveTheFoldPreview,
+  };
 }
 
 /**
@@ -1230,8 +1388,8 @@ export async function buildCscCadencePost(
     case 'plus-1': {
       headline = `[CYBER SCOTLAND CONNECT · +1 DAY · POST-EVENT THANK YOU] ${ev.title}`;
       postBody = [
-        `Thank you to everyone who packed out ${venueMention} last night for @Cyber Scotland Connect.`,
-        `Big thanks to our speakers — ${ev.speakers.map((s) => `${formatSpeakerMention(s)}${s.company ? ` (${formatLinkedinMention(s.company)})` : ''}`).join(', ')} — for sharing candid engineering lessons from the field, and to ${sponsorMentions.join(' & ') || venueMention} for supporting the community.`,
+        `Thank you to everyone who packed out ${venueMention} last night · ${dateFormatted} for @Cyber Scotland Connect.`,
+        `Big thanks to our speakers — ${ev.speakers.map((s) => `${formatSpeakerMention(s)}${s.company ? ` · ${formatLinkedinMention(s.company)}` : ''}`).join(', ')} — for sharing candid engineering lessons from the field, and to ${sponsorMentions.join(' & ') || venueMention} for supporting the community.`,
         `If you attended, drop your key takeaway or questions for the speakers in the comments below 👇\n\n${hashtagLine}`,
       ]
         .filter(Boolean)
@@ -1276,8 +1434,17 @@ export async function buildCscCadencePost(
     resolvedSpeakerTags,
   });
   const apiReadyPostBody = convertToApiUrnPostBody(postBody, resolvedTags);
+  const littleTextValidation = validateLittleTextFormat({
+    stream: 'csc',
+    postBody,
+    apiReadyPostBody,
+    firstComment,
+  });
   const publishReady =
-    check.passed && factualIntegrity.passed && antiBanCompliance.passed;
+    check.passed &&
+    factualIntegrity.passed &&
+    antiBanCompliance.passed &&
+    littleTextValidation.passed;
 
   return {
     stream: 'csc',
@@ -1297,6 +1464,7 @@ export async function buildCscCadencePost(
     },
     factualIntegrity,
     antiBanCompliance,
+    littleTextValidation,
     publishReady,
     eventSlugs: [ev.slug],
   };
@@ -1305,8 +1473,8 @@ export async function buildCscCadencePost(
 /**
  * Builds Stream B (Official CSC Partner Roundup) or Stream C (Community & Ecosystem Roundup).
  * Splits events into two anti-fatigue sections:
- *   1. 📅 Coming Up in the Next 14 Days (imminent window)
- *   2. 🆕 Newly Tracked on the Radar (further out events not yet featured)
+ *   1. 📅 Next 14 Days (imminent window)
+ *   2. 🆕 Newly Listed (further out events not yet featured)
  */
 export async function buildWeeklyDigestPost(
   stream: 'partners' | 'community',
@@ -1340,7 +1508,7 @@ export async function buildWeeklyDigestPost(
     const orgMention = formatLinkedinMention(ev.partnerName);
     const dateStr = formatReadableUkDate(ev.date);
     const accessBadge = ev.accessType !== 'Open/Public' ? ` · ${ev.accessType}` : '';
-    return `• ${dateStr} — ${ev.title} (${ev.city} · ${orgMention}${accessBadge})`;
+    return `• ${dateStr} — ${ev.title} · ${ev.city} · ${orgMention}${accessBadge}`;
   };
 
   const sections: string[] = [];
@@ -1361,8 +1529,8 @@ export async function buildWeeklyDigestPost(
     : `[WEEKLY SCOTTISH CYBER COMMUNITY RADAR] ${combinedEvents.length} Ecosystem Events (${next14DaysEvents.length} Next 14d · ${newlyTrackedFurtherOut.length} New)`;
 
   const introLine = isPartnerStream
-    ? `🏴󠁧󠁢󠁳󠁣󠁴󠁿 ${combinedEvents.length} Scottish cyber partner sessions coming up (${cities}):`
-    : `🏴󠁧󠁢󠁳󠁣󠁴󠁿 ${combinedEvents.length} Scottish cyber meetups & community sessions coming up (${cities}):`;
+    ? `🏴󠁧󠁢󠁳󠁣󠁴󠁿 ${combinedEvents.length} Scottish cyber partner sessions coming up across ${cities}:`
+    : `🏴󠁧󠁢󠁳󠁣󠁴󠁿 ${combinedEvents.length} Scottish cyber meetups & community sessions coming up across ${cities}:`;
 
   const digestCorpus = combinedEvents.map((e) => `${e.title} ${e.bodyText}`).join(' ');
   const digestHashtagLine = selectContextualHashtags({
@@ -1383,7 +1551,7 @@ export async function buildWeeklyDigestPost(
   const commentLinks = combinedEvents
     .map((ev) => {
       const directUrl = ev.registrationUrl || ev.meetupUrl || `${SITE_ORIGIN}/events/${ev.slug}/`;
-      return `• ${ev.title} (${formatReadableUkDate(ev.date)}): ${directUrl}`;
+      return `• ${ev.title} · ${formatReadableUkDate(ev.date)}: ${directUrl}`;
     })
     .join('\n');
 
@@ -1409,8 +1577,17 @@ export async function buildWeeklyDigestPost(
     resolvedSpeakerTags: [],
   });
   const apiReadyPostBody = convertToApiUrnPostBody(postBody, resolvedTags);
+  const littleTextValidation = validateLittleTextFormat({
+    stream,
+    postBody,
+    apiReadyPostBody,
+    firstComment,
+  });
   const publishReady =
-    check.passed && factualIntegrity.passed && antiBanCompliance.passed;
+    check.passed &&
+    factualIntegrity.passed &&
+    antiBanCompliance.passed &&
+    littleTextValidation.passed;
 
   return {
     stream,
@@ -1428,6 +1605,7 @@ export async function buildWeeklyDigestPost(
     },
     factualIntegrity,
     antiBanCompliance,
+    littleTextValidation,
     publishReady,
     eventSlugs: combinedEvents.map((e) => e.slug),
   };
@@ -1648,8 +1826,17 @@ export async function buildEvergreenOrgPost(
     resolvedSpeakerTags: [],
   });
   const apiReadyPostBody = convertToApiUrnPostBody(postBody, resolvedTags);
+  const littleTextValidation = validateLittleTextFormat({
+    stream: 'evergreen',
+    postBody,
+    apiReadyPostBody,
+    firstComment,
+  });
   const publishReady =
-    check.passed && factualIntegrity.passed && antiBanCompliance.passed;
+    check.passed &&
+    factualIntegrity.passed &&
+    antiBanCompliance.passed &&
+    littleTextValidation.passed;
 
   return {
     stream: 'evergreen',
@@ -1668,6 +1855,7 @@ export async function buildEvergreenOrgPost(
     },
     factualIntegrity,
     antiBanCompliance,
+    littleTextValidation,
     publishReady,
     eventSlugs: [],
   };
@@ -1790,24 +1978,29 @@ function renderSimulationCard(post: SimulatedLinkedinPost): string {
   const slopBadge = post.antiSlopValidation.passed ? '✅ PASS' : '❌ FAIL';
   const factBadge = post.factualIntegrity.passed ? '✅ PASS' : '❌ FAIL';
   const banBadge = post.antiBanCompliance.passed ? '✅ PASS' : '❌ FAIL';
+  const linterBadge = post.littleTextValidation.passed ? '✅ PASS' : '❌ FAIL';
   const allViolations = [
     ...post.antiSlopValidation.violations.map((v) => `[SLOP] ${v}`),
     ...post.factualIntegrity.violations.map((v) => `[FACT] ${v}`),
     ...post.antiBanCompliance.violations.map((v) => `[ANTI-BAN] ${v}`),
+    ...post.littleTextValidation.violations.map((v) => `[LITTLE-TEXT-LINTER] ${v}`),
   ];
 
   return [
     `┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓`,
     `┃ STREAM: ${post.stream.toUpperCase().padEnd(10)} | MODE: ${modeBadge.padEnd(14)} | READY: ${post.publishReady ? '✅ YES' : '🛑 BLOCKED'} ┃`,
-    `┃ GATES -> ANTI-SLOP: ${slopBadge} | FACTUAL: ${factBadge} | ANTI-BAN: ${banBadge} (${post.antiBanCompliance.orgMentionCount}/6 orgs, ${post.antiBanCompliance.hashtagCount}/4 tags) ┃`,
+    `┃ GATES -> ANTI-SLOP: ${slopBadge} | FACTUAL: ${factBadge} | ANTI-BAN: ${banBadge} | LINTER: ${linterBadge} ┃`,
     `┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛`,
     ...(allViolations.length > 0
       ? [`🛑 GATE VIOLATIONS:\n  • ${allViolations.join('\n  • ')}`, ``]
       : []),
     `📌 ${post.headline}`,
     ``,
-    `--- [MAIN LINKEDIN POST COPY] --------------------------------------------------`,
+    `--- [MAIN LINKEDIN POST COPY (HUMAN PREVIEW)] ----------------------------------`,
     post.postBody,
+    ``,
+    `--- [EXACT /rest/posts API PAYLOAD (LINTER-VERIFIED)] --------------------------`,
+    post.apiReadyPostBody,
     ``,
     `--- [AUTO FIRST COMMENT (10s DELAY — AVOIDS LINK PENALTY)] ---------------------`,
     post.firstComment,
