@@ -14,6 +14,7 @@ import {
   validateAntiBanCompliance,
   validateFactualIntegrity,
   validateLittleTextFormat,
+  shouldRunStreamOnDate,
   canPublishUnderRateAndIdempotencyLimits,
   computeContentSha256,
   resolveNextEvergreenPillar,
@@ -461,5 +462,15 @@ describe('LinkedIn Event Promotion & Anti-Slop Engine', () => {
     });
     expect(backslashCheck.passed).toBe(false);
     expect(backslashCheck.violations.some((v) => v.includes('escape/markup character'))).toBe(true);
+
+    // 7. Day-of-week and fortnight schedule routing for automated --live --stream all runs
+    expect(shouldRunStreamOnDate('csc', '2026-11-24')).toBe(true);
+    expect(shouldRunStreamOnDate('partners', '2026-11-24')).toBe(true); // Tuesday
+    expect(shouldRunStreamOnDate('partners', '2026-11-25')).toBe(false); // Wednesday
+    expect(shouldRunStreamOnDate('community', '2026-11-26')).toBe(true); // Thursday
+    expect(shouldRunStreamOnDate('community', '2026-11-24')).toBe(false); // Tuesday
+    expect(shouldRunStreamOnDate('evergreen', '2026-11-01')).toBe(true); // 1st
+    expect(shouldRunStreamOnDate('evergreen', '2026-11-15')).toBe(true); // 15th
+    expect(shouldRunStreamOnDate('evergreen', '2026-11-24')).toBe(false); // 24th
   });
 });

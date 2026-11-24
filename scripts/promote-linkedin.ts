@@ -1949,6 +1949,34 @@ export function canPublishUnderRateAndIdempotencyLimits(
   return { allowed: true };
 }
 
+/**
+ * Determines whether a given promotion stream is scheduled to run on `referenceDateStr`
+ * during an automated `--live --stream all` cron run:
+ *   - 'csc': daily (gated per-event by exact countdown offset)
+ *   - 'partners': Tuesdays (UTC day === 2)
+ *   - 'community': Thursdays (UTC day === 4)
+ *   - 'evergreen': 1st and 15th of the month (UTC date === 1 or 15)
+ */
+export function shouldRunStreamOnDate(
+  stream: 'csc' | 'partners' | 'community' | 'evergreen',
+  referenceDateStr: string
+): boolean {
+  const parsed = new Date(`${referenceDateStr}T00:00:00Z`);
+  if (isNaN(parsed.getTime())) return false;
+  switch (stream) {
+    case 'csc':
+      return true;
+    case 'partners':
+      return parsed.getUTCDay() === 2;
+    case 'community':
+      return parsed.getUTCDay() === 4;
+    case 'evergreen': {
+      const dayOfMonth = parsed.getUTCDate();
+      return dayOfMonth === 1 || dayOfMonth === 15;
+    }
+  }
+}
+
 function renderSimulationCard(post: SimulatedLinkedinPost): string {
   const orgTagSummary =
     post.resolvedTags.length > 0
@@ -2064,6 +2092,40 @@ async function main() {
   const upcoming = loadUpcomingRichEvents(referenceDate);
   const generatedPosts: SimulatedLinkedinPost[] = [];
 
+  // Optional one-shot deletion mode: --delete-urns urn:li:share:123,urn:li:share:456
+  const deleteUrnsIdx = args.indexOf('--delete-urns');
+  const rawDeleteUrns =
+    deleteUrnsIdx !== -1 && args[deleteUrnsIdx + 1] ? args[deleteUrnsIdx + 1] : '';
+  if (rawDeleteUrns && !isSimulateMode) {
+    const token = process.env.LINKEDIN_ACCESS_TOKEN?.trim();
+    if (!token) {
+      console.error('❌ [DELETE] LINKEDIN_ACCESS_TOKEN is required to delete posts.');
+      process.exit(1);
+    }
+    const urns = rawDeleteUrns
+      .split(',')
+      .map((u) => u.trim())
+      .filter(Boolean);
+    for (const urn of urns) {
+      const delRes = await fetch(
+        `https://api.linkedin.com/rest/posts/${encodeURIComponent(urn)}`,
+        {
+          method: 'DELETE',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'X-Restli-Protocol-Version': '2.0.0',
+            'Linkedin-Version': '202611',
+          },
+        }
+      );
+      console.log(`🗑️  [DELETE] ${urn} -> HTTP ${delRes.status}`);
+    }
+    return;
+  }
+
+  const isAutoScheduledAll = !isSimulateMode && targetStream === 'all';
+  const initialLedger = loadLedger();
+
   // 1. Stream A: Official CSC Meetups
   if (targetStream === 'csc' || targetStream === 'all') {
     const cscEvents = upcoming.filter((e) => classifyPromotionStream(e) === 'csc');
@@ -2085,9 +2147,18 @@ async function main() {
           );
         }
       } else {
-        const resolved = resolveCscCadenceStep(ev.date, referenceDate, true);
+        const isNewlyPublished = !initialLedger.some(
+          (entry) => entry.mode === 'live' && entry.eventSlugs.includes(ev.slug)
+        );
+        const resolved = resolveCscCadenceStep(ev.date, referenceDate, isNewlyPublished);
         const isAutoCadence = !explicitCadence || (explicitCadence as string) === 'auto';
-        const stepToRun: CscCadenceStep = isAutoCadence ? (resolved.step || 't-14') : explicitCadence;
+        if (isAutoScheduledAll && isAutoCadence && !resolved.step) {
+          // Not an active countdown day for this CSC event during a live automated schedule run
+          continue;
+        }
+        const stepToRun: CscCadenceStep = isAutoCadence
+          ? resolved.step || 't-14'
+          : explicitCadence;
         generatedPosts.push(
           await buildCscCadencePost(ev, stepToRun, { enableAi, referenceDate })
         );
@@ -2095,8 +2166,12 @@ async function main() {
     }
   }
 
-  // 2. Stream B: Official CSC Partner Weekly Roundup
-  if (targetStream === 'partners' || targetStream === 'all') {
+  // 2. Stream B: Official CSC Partner Weekly Roundup (Tuesdays in live auto-schedule mode)
+  if (
+    targetStream === 'partners' ||
+    (targetStream === 'all' &&
+      (!isAutoScheduledAll || shouldRunStreamOnDate('partners', referenceDate)))
+  ) {
     const partnerEvents = upcoming
       .filter((e) => classifyPromotionStream(e) === 'partners' && e.date <= maxDateStr)
       .slice(0, 6);
@@ -2111,8 +2186,12 @@ async function main() {
     }
   }
 
-  // 3. Stream C: Community & Ecosystem Weekly Roundup
-  if (targetStream === 'community' || targetStream === 'all') {
+  // 3. Stream C: Community & Ecosystem Weekly Roundup (Thursdays in live auto-schedule mode)
+  if (
+    targetStream === 'community' ||
+    (targetStream === 'all' &&
+      (!isAutoScheduledAll || shouldRunStreamOnDate('community', referenceDate)))
+  ) {
     const communityEvents = upcoming
       .filter((e) => classifyPromotionStream(e) === 'community' && e.date <= maxDateStr)
       .slice(0, 6);
@@ -2127,8 +2206,12 @@ async function main() {
     }
   }
 
-  // 4. Stream D: Bi-Weekly Evergreen Organization & Platform Spotlight
-  if (targetStream === 'evergreen' || targetStream === 'all') {
+  // 4. Stream D: Bi-Weekly Evergreen Organization & Platform Spotlight (1st & 15th in live auto-schedule mode)
+  if (
+    targetStream === 'evergreen' ||
+    (targetStream === 'all' &&
+      (!isAutoScheduledAll || shouldRunStreamOnDate('evergreen', referenceDate)))
+  ) {
     if (showAllEvergreen) {
       for (const p of EVERGREEN_PILLAR_ROTATION) {
         generatedPosts.push(
@@ -2185,8 +2268,8 @@ async function main() {
     }
 
     const orgUrn = process.env.LINKEDIN_ORG_URN?.trim() || 'urn:li:organization:35564327';
-    const ledger = loadLedger();
     for (const post of generatedPosts) {
+      const ledger = loadLedger();
       const rateCheck = canPublishUnderRateAndIdempotencyLimits(post, ledger);
       if (!rateCheck.allowed) {
         console.log(`🛡️  [SKIPPED] ${post.ledgerKey} — ${rateCheck.reason}`);
@@ -2218,6 +2301,22 @@ async function main() {
 
       if (!postRes.ok) {
         const errBody = await postRes.text();
+        if (postRes.status === 422 && /duplicate/i.test(errBody)) {
+          console.log(
+            `🛡️  [SKIPPED — ALREADY LIVE ON LINKEDIN] ${post.ledgerKey} (${errBody})`
+          );
+          recordLedgerEntry({
+            key: post.ledgerKey,
+            stream: post.stream,
+            mode: 'live',
+            cadenceStep: post.cadenceStep,
+            evergreenPillar: post.evergreenPillar,
+            eventSlugs: post.eventSlugs,
+            contentSha256: computeContentSha256(post.postBody, post.firstComment),
+            postedAt: new Date().toISOString(),
+          });
+          continue;
+        }
         console.error(`❌ [LIVE] LinkedIn /rest/posts failed (${postRes.status}): ${errBody}`);
         process.exit(1);
       }

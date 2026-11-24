@@ -1,0 +1,42 @@
+[
+  {
+    "key": "digest:partners:2026-11-24",
+    "stream": "partners",
+    "eventSlugs": [
+      "2026-11-26-intro-to-cyber-security",
+      "2026-11-26-powering-digital-resilience-at-agentic-speed",
+      "2026-12-01-cyber-insurance-essentials",
+      "2026-12-03-ai-fraud-detection",
+      "2026-12-03-cyber-executive-education",
+      "2026-12-08-cyber-security-on-a-small-budget"
+    ],
+    "contentSha256": "partners-2026-11-24-live",
+    "postedAt": "2026-11-24T13:19:51.951Z",
+    "mode": "live"
+  },
+  {
+    "key": "digest:community:2026-11-24",
+    "stream": "community",
+    "eventSlugs": [
+      "2026-11-24-digital-scotland-2026",
+      "2026-12-01-panic-pizza-pints",
+      "2026-12-04-2600-glasgow-december",
+      "2026-12-09-glasgow-azure-user-group-54",
+      "2026-12-17-hack-thursday-glasgow-december"
+    ],
+    "contentSha256": "community-2026-11-24-live",
+    "postedAt": "2026-11-24T13:20:13.343Z",
+    "mode": "live"
+  },
+  {
+    "key": "csc:2026-11-26-edinburgh-codebase:t-2",
+    "stream": "csc",
+    "cadenceStep": "t-2",
+    "eventSlugs": [
+      "2026-11-26-edinburgh-codebase"
+    ],
+    "contentSha256": "csc-t-2-2026-11-24-live",
+    "postedAt": "2026-11-24T19:57:32.373Z",
+    "mode": "live"
+  }
+]
