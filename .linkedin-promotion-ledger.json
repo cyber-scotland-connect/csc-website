@@ -38,5 +38,16 @@
     "contentSha256": "csc-t-2-2026-11-24-live",
     "postedAt": "2026-11-24T19:57:32.373Z",
     "mode": "live"
+  },
+  {
+    "key": "csc:2026-11-26-edinburgh-codebase:t-1",
+    "stream": "csc",
+    "cadenceStep": "t-1",
+    "eventSlugs": [
+      "2026-11-26-edinburgh-codebase"
+    ],
+    "contentSha256": "csc-t-1-2026-11-25-live",
+    "postedAt": "2026-11-25T19:00:27.621Z",
+    "mode": "live"
   }
 ]
