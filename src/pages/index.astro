@@ -28,6 +28,7 @@ const isOfficialCsc = (e: (typeof sortedEvents)[0]) =>
   (!e.data.partnerName || e.data.partnerName === 'Cyber Scotland Connect');
 const cscUpcomingEvents = upcomingEvents.filter(isOfficialCsc);
 const cscPastEvents = sortedEvents.filter(isOfficialCsc);
+const isNextMeetupUpcoming = cscUpcomingEvents.length > 0;
 const nextMeetup = cscUpcomingEvents[0] || cscPastEvents[0];
 const nextMeetupUrl =
   nextMeetup?.data?.meetupUrl ||
@@ -153,11 +154,11 @@ const topPartners = partners
             <div class="lg:col-span-5">
               <div class="bg-white dark:bg-[#2a2948] p-7 rounded-2xl border-2 border-[#895294] dark:border-[#56548c] shadow-xl relative">
                 <div class="absolute -top-3.5 right-6 bg-[#895294] text-white text-[11px] uppercase font-bold tracking-wider px-3 py-1 rounded-full shadow">
-                  Next Upcoming Gathering
+                  {isNextMeetupUpcoming ? 'Next Upcoming Gathering' : 'Most Recent Gathering'}
                 </div>
 
                 <div class="flex items-center gap-2 text-xs font-semibold text-[#895294] dark:text-[#6fb7e6] mb-3">
-                  <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                  <span class={`w-2 h-2 rounded-full ${isNextMeetupUpcoming ? 'bg-emerald-500 animate-pulse' : 'bg-slate-400'}`} />
                   <span>{nextMeetup.data.city} Chapter · In-Person</span>
                 </div>
 
@@ -251,14 +252,23 @@ const topPartners = partners
                   >
                     View Talk Abstracts →
                   </a>
-                  <a
-                    href={nextMeetupUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class={`px-4 py-2 ${nextMeetupLink?.colorClass?.bg || 'bg-[#895294]'} ${nextMeetupLink?.colorClass?.hover || 'hover:bg-[#9d5fa8]'} text-white text-xs font-bold rounded-lg shadow transition-all`}
-                  >
-                    {nextMeetupLink?.label || 'RSVP on Meetup'} ↗
-                  </a>
+                  {isNextMeetupUpcoming ? (
+                    <a
+                      href={nextMeetupUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class={`px-4 py-2 ${nextMeetupLink?.colorClass?.bg || 'bg-[#895294]'} ${nextMeetupLink?.colorClass?.hover || 'hover:bg-[#9d5fa8]'} text-white text-xs font-bold rounded-lg shadow transition-all`}
+                    >
+                      {nextMeetupLink?.label || 'RSVP on Meetup'} ↗
+                    </a>
+                  ) : (
+                    <a
+                      href={`${base}/events`}
+                      class="px-4 py-2 bg-[#895294] hover:bg-[#9d5fa8] text-white text-xs font-bold rounded-lg shadow transition-all"
+                    >
+                      All Events →
+                    </a>
+                  )}
                 </div>
               </div>
             </div>
