@@ -1,0 +1,25 @@
+---
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const targetUrl = `${base}/speakers/`;
+const canonicalTarget = 'https://cyberscotlandconnect.com/speakers/';
+---
+
+<!DOCTYPE html>
+<html lang="en-GB" class="dark">
+  <head>
+    <meta charset="utf-8" />
+    <title>Redirecting to Call for Speakers | Cyber Scotland Connect</title>
+    <meta name="robots" content="noindex" />
+    <link rel="canonical" href={canonicalTarget} />
+    <meta http-equiv="refresh" content={`0;url=${targetUrl}`} />
+    <script is:inline define:vars={{ targetUrl }}>
+      window.location.replace(targetUrl);
+    </script>
+  </head>
+  <body style="background:#21203a;color:#ffffff;font-family:system-ui,sans-serif;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;padding:1.5rem;text-align:center;">
+    <p>
+      Redirecting to Call for Speakers:{' '}
+      <a href={targetUrl} style="color:#6fb7e6;font-weight:700;">{targetUrl}</a>…
+    </p>
+  </body>
+</html>
