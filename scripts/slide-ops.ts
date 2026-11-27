@@ -459,6 +459,10 @@ export function provisionEventSlideDeck(eventSlug: string): { url: string; pdfPa
     updateAndStyle(ops, 'p3_i19', meta.sponsorPartner.description, 10.5, '#382B5C', false, 'CENTER');
   }
 
+  // Slide 4: Code of Conduct — Recording & Livestream notice
+  updateAndStyle(ops, 'p4_i28', 'Recording & Livestream', 11.25, '#21203A', true, 'START');
+  updateAndStyle(ops, 'p4_i29', 'Sessions are recorded and livestreamed, with cameras focused on the speaker and front of the room only.', 9.5, '#56548C', false, 'START');
+
   // Slide 5: Run of Show / Dynamic Agenda Timeline Grid
   const agendaSlots = [
     { time: 'p5_i22', title: 'p5_i28', desc: 'p5_i29' },
