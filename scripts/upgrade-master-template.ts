@@ -42,14 +42,38 @@ console.log('Upgrading Master Slide Template:', MASTER_TEMPLATE_ID);
 
 const ops: any[] = [];
 
-// 1. Slide 5 (p5)
+// 1. Slide 4 (p4) - Recording & Livestream notice (replaces Photography Opt-Out)
+updateAndStyle(ops, 'p4_i28', 'Recording & Livestream', 11.25, '#21203A', true, 'START');
+updateAndStyle(ops, 'p4_i29', 'Sessions are recorded and livestreamed, with cameras focused on the speaker and front of the room only.', 9.5, '#56548C', false, 'START');
+
+// 2. Slide 5 (p5)
 updateAndStyle(ops, 'p5_i29', 'Arrivals & Refreshments', 8.5, '#56548C', false, 'START');
 updateAndStyle(ops, 'p5_i20', 'Talks conclude at 20:15 with Q&A • Event closes at 20:30 for community social at the pub.', 9.5, '#56548C', false, 'CENTER');
 
-// 2. Slide 8 (p8 - Slide 10 in 12-slide template)
-updateAndStyle(ops, 'p8_i19', 'Post open roles or browse active listings in our community Discord:', 10.5, '#382B5C', false, 'START');
+// 3. Slide 8 (p8 - Slide 10 in 12-slide template)
+updateAndStyle(ops, 'p8_i19', 'Join at cyberscotlandconnect.com/discord or browse active listings in #careers:', 10.5, '#382B5C', false, 'START');
 updateAndStyle(ops, 'p8_i23', '• Post roles in Discord #careers', 9.75, '#21203A', true, 'START');
 updateAndStyle(ops, 'p8_i24', '• Take 30s at the mic to shout out your role', 9.75, '#21203A', true, 'START');
+
+// 4. Add brand-matched QR codes for /discord (p8) and /support (p11)
+ops.push({
+  op: 'add-image',
+  slide: 'p8',
+  url: 'https://api.qrserver.com/v1/create-qr-code/?size=220x220&color=21203A&bgcolor=FFFFFF&data=https%3A%2F%2Fcyberscotlandconnect.com%2Fdiscord',
+  x: 785,
+  y: 355,
+  width: 90,
+  height: 90,
+});
+ops.push({
+  op: 'add-image',
+  slide: 'p11',
+  url: 'https://api.qrserver.com/v1/create-qr-code/?size=220x220&color=21203A&bgcolor=FFFFFF&data=https%3A%2F%2Fcyberscotlandconnect.com%2Fsupport',
+  x: 785,
+  y: 355,
+  width: 90,
+  height: 90,
+});
 
 const tmpFile = path.resolve(process.cwd(), 'dist/slides/master-upgrade-batch.json');
 fs.mkdirSync(path.dirname(tmpFile), { recursive: true });
