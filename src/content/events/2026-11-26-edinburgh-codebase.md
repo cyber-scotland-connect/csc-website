@@ -28,18 +28,21 @@ speakers:
     linkedinUrl: "https://www.linkedin.com/in/adegokejoshuao/"
     talkTitle: "Reading Malware Config Off the Blockchain (NullReceiver Malware)"
     abstract: "How a developer-targeted campaign used next.config.js and .vscode/tasks.json as execution primitives, and why config files deserve the same scrutiny as application code."
+    slidesUrl: "/slides/2026/2026-11-26-joshua-adegoke-nullreceiver-malware.pdf"
   - name: "Rory McCune"
     role: "Senior Security Researcher & Advocate"
     company: "Datadog"
     linkedinUrl: "https://www.linkedin.com/in/rorym/"
     talkTitle: "Surviving 2026: A Security Practitioner's Field Guide to LLMs and Agents"
     abstract: "This year I've tested nearly 50 models and used several of them to build real projects, from production software to PoC exploits. Over the course of the year agents have gone from novelty to everyday tooling, bringing new capabilities and a new attack surface with them. This talk is a practical guide from someone who's been hands-on all year. We'll talk about which models and tools actually deliver, how to get useful work out of agents, and where they fail, from confidently wrong output to security refusals. I'll also take a look at how to evaluate the constant stream of new releases without drowning in hype, so you leave with an approach that will still hold up when next week's model drops."
+    slidesUrl: "/slides/2026/2026-11-26-rory-mccune-surviving-2026-llms-agents.pdf"
   - name: "Caleb Eghan"
     role: "Senior AI and Application Security Consultant"
     company: "RiverSafe"
     linkedinUrl: "https://www.linkedin.com/in/caleb-eghan-b60a2bba/"
     talkTitle: "Break the Bank: Welcome to the Other Side of the Login Screen"
     abstract: "A lot of apps look secure from the login screen. This session shows what happens once you get past it. Using Rozolo, our deliberately vulnerable banking app, we follow a single £1 payment through the API layer and watch it turn into exposed customer data and unauthorised transactions. The weaknesses on show are the ones a scanner or firewall tends to miss: broken authorisation, weak object-level access control, and data the API hands back without being asked for it. The API layer is now the softest part of most estates, and perimeter controls do little to defend it. We use the walkthrough to show where a modern API security strategy actually earns its place: visibility over what your APIs expose, authorisation enforced per object rather than per endpoint, and testing that hunts for logic and access flaws rather than known signatures."
+    slidesUrl: "/slides/2026/2026-11-26-caleb-eghan-break-the-bank.pdf"
 agenda:
   - time: "17:30"
     title: "Doors Open & Community Networking"
@@ -81,7 +84,7 @@ agenda:
 
 Thank you to everyone who joined us in Central Edinburgh at [CodeBase Edinburgh](https://maps.app.goo.gl/3Fk8TNPhqXYdSLkc9) for our November gathering, and to our speakers **Gary Hunter**, **Joshua Adegoke**, **Rory McCune**, and **Caleb Eghan** for sharing practical, high-signal talks.
 
-> **Post-Event Update:** Talk slides and session recordings are coming soon and will be linked here once published.
+> **Post-Event Update:** PDF slides for Joshua Adegoke, Rory McCune, and Caleb Eghan are now linked below. Session recordings are coming soon.
 
 ### 🤝 Sponsored by RiverSafe
 
